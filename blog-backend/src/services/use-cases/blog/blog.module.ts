@@ -1,8 +1,8 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { BlogService } from './blog.service';
-import { BlogController } from './blog.controller';
+import { BlogController } from '../../../controllers/blog.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BlogSchema } from './schemas/blog.schema';
+import { BlogSchema } from '../../../frameworks/data-services/schemas/blog.schema';
 import { AuthenticationMiddleware } from 'src/common/authentication.middleware';
 
 @Module({

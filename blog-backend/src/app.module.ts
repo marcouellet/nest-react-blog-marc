@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from './controllers/app.controller';
+import { AppService } from './services/app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BlogModule } from './blog/blog.module';
+import { BlogModule } from './services/use-cases/blog/blog.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/nest-blog-project', { useNewUrlParser: true }),
+    MongooseModule.forRoot('mongodb://localhost/nest-blog-project', { useNewUrlParser: true, useUnifiedTopology: true }),
     BlogModule,
   ],
   controllers: [AppController],
