@@ -7,41 +7,42 @@ import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
 @Controller('api/post')
 export class PostController {
 
-  constructor(private blogService: PostServices) { }
+  constructor(private postServices: PostServices) { }
 
   // Fetch all posts
   @Get()
-  async getPosts(@Res() res) {
-    const posts = await this.blogService.getAllPosts();
+  async getAll(@Res() res) {
+    const posts = await this.postServices.getAllPosts();
     return res.status(HttpStatus.OK).json(posts);
   }
   // Fetch a particular post using ID
-  @Get(':postID')
-  async getPost(@Res() res, @Param('postID', new ValidateObjectId()) postID) {
-    const post = await this.blogService.getPostById(postID);
+  @Get(':id')
+  async getPost(@Res() res, @Param('id', new ValidateObjectId()) id) {
+    const post = await this.postServices.getPostById(id);
     if (!post) {
         throw new NotFoundException('Post does not exist!');
     }
     return res.status(HttpStatus.OK).json(post);
   }
-  // Submit a post
+
+  // Submit a new post
   @Post()
-  async addPost(@Res() res, @Body() createPostDto: CreatePostDto) {
-    const newPost = await this.blogService.createPost(createPostDto);
+  async createPost(@Res() res, @Body() createPostDto: CreatePostDto) {
+    const newPost = await this.postServices.createPost(createPostDto);
     return res.status(HttpStatus.OK).json({
-      message: 'Post has been submitted successfully!',
+      message: 'Post has been created successfully!',
       post: newPost,
     });
   }
 
-
+  // Update a post
   @Put('/edit')
   async editPost(
     @Res() res,
-    @Query('postID', new ValidateObjectId()) postID,
+    @Query('id', new ValidateObjectId()) id,
     @Body() createPostDto: CreatePostDto,
   ) {
-    const editedPost = await this.blogService.updatePost(postID, createPostDto);
+    const editedPost = await this.postServices.updatePost(id, createPostDto);
     if (!editedPost) {
         throw new NotFoundException('Post does not exist!');
     }
@@ -52,8 +53,8 @@ export class PostController {
   }
   // Delete a post using ID
   @Delete('/delete')
-  async deletePost(@Res() res, @Query('postID', new ValidateObjectId()) postID) {
-    const deletedPost = await this.blogService.deletePost(postID);
+  async deletePost(@Res() res, @Query('id', new ValidateObjectId()) id) {
+    const deletedPost = await this.postServices.deletePost(id);
     if (!deletedPost) {
         throw new NotFoundException('Post does not exist!');
     }
