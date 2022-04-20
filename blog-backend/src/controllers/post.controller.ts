@@ -1,33 +1,33 @@
 
 import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
-import { BlogService } from '../services/use-cases/blog/blog.service';
-import { CreatePostDTO } from '../core/dtos/create-post.dto';
+import { PostServices } from '../services/use-cases/post/post-services.service';
+import { CreatePostDto } from '../core/dtos';
 import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
 
-@Controller('blog')
-export class BlogController {
+@Controller('api/post')
+export class PostController {
 
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: PostServices) { }
 
   // Fetch all posts
-  @Get('posts')
+  @Get()
   async getPosts(@Res() res) {
-    const posts = await this.blogService.getPosts();
+    const posts = await this.blogService.getAllPosts();
     return res.status(HttpStatus.OK).json(posts);
   }
   // Fetch a particular post using ID
-  @Get('post/:postID')
+  @Get(':postID')
   async getPost(@Res() res, @Param('postID', new ValidateObjectId()) postID) {
-    const post = await this.blogService.getPost(postID);
+    const post = await this.blogService.getPostById(postID);
     if (!post) {
         throw new NotFoundException('Post does not exist!');
     }
     return res.status(HttpStatus.OK).json(post);
   }
   // Submit a post
-  @Post('/post')
-  async addPost(@Res() res, @Body() createPostDTO: CreatePostDTO) {
-    const newPost = await this.blogService.addPost(createPostDTO);
+  @Post()
+  async addPost(@Res() res, @Body() createPostDto: CreatePostDto) {
+    const newPost = await this.blogService.createPost(createPostDto);
     return res.status(HttpStatus.OK).json({
       message: 'Post has been submitted successfully!',
       post: newPost,
@@ -39,9 +39,9 @@ export class BlogController {
   async editPost(
     @Res() res,
     @Query('postID', new ValidateObjectId()) postID,
-    @Body() createPostDTO: CreatePostDTO,
+    @Body() createPostDto: CreatePostDto,
   ) {
-    const editedPost = await this.blogService.editPost(postID, createPostDTO);
+    const editedPost = await this.blogService.updatePost(postID, createPostDto);
     if (!editedPost) {
         throw new NotFoundException('Post does not exist!');
     }
