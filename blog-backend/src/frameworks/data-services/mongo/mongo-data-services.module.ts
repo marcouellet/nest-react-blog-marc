@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IDataServices } from '../../../core';
+import { IDataServicesRepositories } from '../../../core';
 import { DATA_BASE_CONFIGURATION } from '../../../configuration';
 import {
   Author,
@@ -8,22 +8,22 @@ import {
   Post,
   PostSchema,
 } from './model';
-import { MongoDataServices } from './mongo-data-services.service';
+import { MongoDataServicesRepositories } from './mongo-data-services-repositories';
 
 @Module({
   imports: [
+    MongooseModule.forRoot(DATA_BASE_CONFIGURATION.mongoConnectionString, { useNewUrlParser: true, useUnifiedTopology: true }),
     MongooseModule.forFeature([
       { name: Author.name, schema: AuthorSchema },
       { name: Post.name, schema:PostSchema },
     ]),
-    MongooseModule.forRoot(DATA_BASE_CONFIGURATION.mongoConnectionString),
   ],
   providers: [
     {
-      provide: IDataServices,
-      useClass: MongoDataServices,
+      provide: IDataServicesRepositories,
+      useClass: MongoDataServicesRepositories,
     },
   ],
-  exports: [IDataServices],
+  exports: [IDataServicesRepositories],
 })
 export class MongoDataServicesModule {}

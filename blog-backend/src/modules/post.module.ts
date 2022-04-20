@@ -22,13 +22,13 @@
 //     }
 // }
 import { Module } from '@nestjs/common';
-import { DataServicesModule } from '../../data-services/data-services.module';
-import { PostFactoryService } from './post-factory.service';
-import { PostServices } from './post-services.service';
+import { DataServicesModule } from './data-services.module';
+import { PostFactoryService } from '../services/post/post-factory.service';
+import { PostService } from '../services/post/post.service';
 
 @Module({
   imports: [DataServicesModule],
-  providers: [PostFactoryService, PostServices],
-  exports: [PostFactoryService, PostServices],
+  providers: [PostFactoryService, PostService],
+  exports: [PostFactoryService, PostService],
 })
-export class PostServicesModule {}
+export class PostModule {}

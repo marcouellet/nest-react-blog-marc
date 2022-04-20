@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
-import { IGenericRepository } from '../../../core';
+import { IGenericDataServicesRepository } from '../../../core';
 
-export class MongoGenericRepository<T> implements IGenericRepository<T> {
+export class MongoGenericDataServicesRepository<T> implements IGenericDataServicesRepository<T> {
   private _repository: Model<T>;
   private _populateOnFind: string[];
 

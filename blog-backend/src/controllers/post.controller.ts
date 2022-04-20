@@ -1,13 +1,13 @@
 
 import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
-import { PostServices } from '../services/use-cases/post/post-services.service';
+import { PostService } from '../services/post/post.service';
 import { CreatePostDto } from '../core/dtos';
 import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
 
 @Controller('api/post')
 export class PostController {
 
-  constructor(private postServices: PostServices) { }
+  constructor(private postServices: PostService) { }
 
   // Fetch all posts
   @Get()

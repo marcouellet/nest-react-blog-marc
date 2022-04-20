@@ -1,11 +1,11 @@
 import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
 import { CreateAuthorDto, UpdateAuthorDto } from '../core/dtos';
-import { AuthorServices } from '../services/use-cases/author/author-services.service';
+import { AuthorService } from '../services/author/author.service';
 import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
 
 @Controller('api/author')
 export class AuthorController {
-  constructor(private authorServices: AuthorServices) {}
+  constructor(private authorServices: AuthorService) {}
 
   @Get()
   async getAll(@Res() res) {

@@ -1,4 +1,4 @@
-export abstract class IGenericRepository<T> {
+export abstract class IGenericDataServicesRepository<T> {
   abstract getAll(): Promise<T[]>;
 
   abstract get(id: string): Promise<T>;
