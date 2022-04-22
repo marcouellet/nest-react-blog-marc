@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DataServicesModule } from './data-services.module';
+import { DataServicesModule } from '../frameworks/data-services/data-services.module';
 import { AuthorFactoryService } from '../services/author/author-factory.service';
 import { AuthorService } from '../services/author/author.service';
 

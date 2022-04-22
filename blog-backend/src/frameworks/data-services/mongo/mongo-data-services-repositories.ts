@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IDataServicesRepositories } from '../../../core';
+import { IDataServicesRepositories, IGenericDataServicesRepository } from '../../../core';
 import { MongoGenericDataServicesRepository } from './mongo-data-services-generic-repository';
 import {
   Author,
@@ -11,18 +11,17 @@ import {
 } from './model';
 
 @Injectable()
-export class MongoDataServicesRepositories
-  implements IDataServicesRepositories, OnApplicationBootstrap
+export class MongoDataServicesRepositories extends IDataServicesRepositories implements OnApplicationBootstrap
 {
-  authors : MongoGenericDataServicesRepository<Author>;
-  posts: MongoGenericDataServicesRepository<Post>;
+  override authors: IGenericDataServicesRepository<Author>;
+  override posts: IGenericDataServicesRepository<Post>;
 
   constructor(
     @InjectModel(Author.name)
     private AuthorRepository: Model<AuthorDocument>,
     @InjectModel(Post.name)
     private PostRepository: Model<PostDocument>,
-  ) {}
+  ) {super();}
 
   onApplicationBootstrap() {
     this.authors = new MongoGenericDataServicesRepository<Author>(this.AuthorRepository);
