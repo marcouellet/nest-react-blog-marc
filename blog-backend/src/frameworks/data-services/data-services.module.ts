@@ -1,7 +1,9 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
 
-@Module({})
+@Module({
+  
+})
 export class DataServicesModule {
 
   static forDataServicesModule(dataServicesModule: DynamicModule): DynamicModule {

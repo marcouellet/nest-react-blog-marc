@@ -8,7 +8,7 @@ import {
   PostSchema,
 } from './model';
 import { MongoDataServicesRepositories } from './mongo-data-services-repositories';
-import { MONGO_DATA_BASE_SERVER_CONFIGURATION } from '../../../configuration';
+import { CONFIG_MODULE_OPTIONS } from '../../../configuration';
 
 @Module({})
 export class MongoDataServicesModule {
@@ -17,7 +17,7 @@ export class MongoDataServicesModule {
         return {
           module: MongoDataServicesModule,
           imports: [
-            MongooseModule.forRoot(MONGO_DATA_BASE_SERVER_CONFIGURATION.connectionString, { useNewUrlParser: true, useUnifiedTopology: true }),
+            MongooseModule.forRoot(CONFIG_MODULE_OPTIONS.connectionString, { useNewUrlParser: true, useUnifiedTopology: true }),
             MongooseModule.forFeature([
               { name: Author.name, schema: AuthorSchema },
               { name: Post.name, schema:PostSchema },
