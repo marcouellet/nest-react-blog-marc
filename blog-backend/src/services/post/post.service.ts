@@ -6,6 +6,7 @@ import { PostFactoryService } from './post-factory.service';
 
 @Injectable()
 export class PostService {
+
   constructor(
     private dataRepositories: IDataServicesRepositories,
     private postFactoryService: PostFactoryService,

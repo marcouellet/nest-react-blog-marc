@@ -6,6 +6,7 @@ import { AuthorFactoryService } from './author-factory.service';
 
 @Injectable()
 export class AuthorService {
+
   constructor(
     private dataRepositories: IDataServicesRepositories,
     private authorFactoryService: AuthorFactoryService,

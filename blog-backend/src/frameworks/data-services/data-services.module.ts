@@ -1,18 +1,25 @@
-import { Module, DynamicModule } from '@nestjs/common';
-import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
+import { Module, DynamicModule, Global } from '@nestjs/common';
+import { IConfigModuleOptions, DataServerName } from '../../configuration'
+import { MongoDataServicesModule } from '../../frameworks/data-services/mongo/mongo-data-services.module';
+import { NotFoundException } from '@nestjs/common';
 
-@Module({
-  
-})
+@Global()
+@Module({})
 export class DataServicesModule {
+   
+  static configure(options: IConfigModuleOptions): DynamicModule {
 
-  static forDataServicesModule(dataServicesModule: DynamicModule): DynamicModule {
-
-    return {
-      module: DataServicesModule,
-      imports: [dataServicesModule],
-      exports: [dataServicesModule],
-      providers: dataServicesModule.providers
-    };
+    switch (options.dataServerName) {
+      case DataServerName.MONGO:
+        return {
+          module: DataServicesModule,
+          imports: [MongoDataServicesModule],
+          exports: [MongoDataServicesModule]
+        }
+    
+      default:
+          throw new NotFoundException("No implementations for data services of type " + 
+          options.dataServerName);
+    }
   }
 }

@@ -1,6 +1,14 @@
 import { Module, DynamicModule, Global } from '@nestjs/common';
-import { ConfigService, ConfigDataService} from './'
-import { IConfigModuleOptions} from './config.module.options'
+import { ConfigService } from './'
+
+export enum DataServerName {
+  MONGO,
+  MYSQL,
+}
+export abstract class IConfigModuleOptions {
+  dataServerName: DataServerName;
+  connectionString: string;
+}
 
 @Global()
 @Module({})
@@ -13,10 +21,9 @@ export class ConfigModule {
           provide: IConfigModuleOptions,
           useValue: options,
         },
-        ConfigService,
-        ConfigDataService
+        ConfigService
       ],
-      exports: [ConfigService, ConfigDataService],
+      exports: [IConfigModuleOptions, ConfigService],
     };
   }
 }
