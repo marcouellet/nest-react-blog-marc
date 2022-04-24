@@ -10,7 +10,7 @@ const validateDataServerName = (dataServerName) : Boolean => {
     return validDataServerNames.includes(dataServerName);
 }
 
-export abstract class IConfigOptions {
+export interface IConfigOptions {
     dataServerName: String;
     connectionString: String;
 }
