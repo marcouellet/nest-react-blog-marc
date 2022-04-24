@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '../configuration'
-import { ConfigService, CONFIG_MODULE_OPTIONS} from '../configuration'
+import { ConfigModule, ConfigService, GetConfigOptions } from '../config';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
 import { AuthorModule } from './author.module';
@@ -9,8 +8,8 @@ import { DataServicesModule } from '../frameworks/data-services/data-services.mo
 
 @Module({
   imports: [
-    ConfigModule.register(CONFIG_MODULE_OPTIONS),
-    DataServicesModule.configure(CONFIG_MODULE_OPTIONS),
+    ConfigModule,
+    DataServicesModule.register(GetConfigOptions()),
     AuthorModule,
     PostModule,
   ],
