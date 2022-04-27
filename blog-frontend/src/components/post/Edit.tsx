@@ -8,7 +8,7 @@ function Edit(): JSX.Element {
   const { getIdTokenClaims } = useAuth0();
 
   let history = useHistory();
-  let { postId } = useParams();
+  const { postId } = useParams<{ postId: string }>();
 
   interface IValues {
     [key: string]: any;

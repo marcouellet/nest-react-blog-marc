@@ -15,7 +15,7 @@ export class CreatePostDto {
   body: string;
 
   @IsNotEmpty()
-  authorId: any;
+  userId: any;
 
   @IsDate()
   publishDate: Date;

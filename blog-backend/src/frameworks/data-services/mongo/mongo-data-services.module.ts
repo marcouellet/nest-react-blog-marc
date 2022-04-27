@@ -3,8 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IDataServicesRepositories } from '../../../core';
 import { ConfigService } from '../../../config';
 import {
-  Author,
-  AuthorSchema,
+  User,
+  UserSchema,
   Post,
   PostSchema,
 } from './model';
@@ -18,7 +18,7 @@ import { MongoDataServicesRepositories } from './mongo-data-services-repositorie
       }),
       inject: [ConfigService]}),
     MongooseModule.forFeature([
-      { name: Author.name, schema: AuthorSchema },
+      { name: User.name, schema:UserSchema },
       { name: Post.name, schema:PostSchema },
     ]),
   ],

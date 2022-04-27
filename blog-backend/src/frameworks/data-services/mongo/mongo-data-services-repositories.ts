@@ -4,8 +4,8 @@ import { Model } from 'mongoose';
 import { IDataServicesRepositories, IGenericDataServicesRepository } from '../../../core';
 import { MongoGenericDataServicesRepository } from './mongo-data-services-generic-repository';
 import {
-  Author,
-  AuthorDocument,
+  User,
+  UserDocument,
   Post,
   PostDocument,
 } from './model';
@@ -13,18 +13,18 @@ import {
 @Injectable()
 export class MongoDataServicesRepositories extends IDataServicesRepositories implements OnApplicationBootstrap
 {
-  override authors: IGenericDataServicesRepository<Author>;
+  override users: IGenericDataServicesRepository<User>;
   override posts: IGenericDataServicesRepository<Post>;
 
   constructor(
-    @InjectModel(Author.name)
-    private AuthorRepository: Model<AuthorDocument>,
+    @InjectModel(User.name)
+    private UserRepository: Model<UserDocument>,
     @InjectModel(Post.name)
     private PostRepository: Model<PostDocument>,
   ) {super();}
 
   onApplicationBootstrap() {
-    this.authors = new MongoGenericDataServicesRepository<Author>(this.AuthorRepository);
-    this.posts = new MongoGenericDataServicesRepository<Post>(this.PostRepository, ['author']);
+    this.users = new MongoGenericDataServicesRepository<User>(this.UserRepository);
+    this.posts = new MongoGenericDataServicesRepository<Post>(this.PostRepository, ['user']);
   }
 }

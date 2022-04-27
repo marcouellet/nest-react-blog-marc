@@ -4,7 +4,7 @@ import { PostService } from '../services/post/post.service';
 import { CreatePostDto } from '../core/dtos';
 import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
 
-@Controller('api/post')
+@Controller('post')
 export class PostController {
 
   constructor(private postServices: PostService) { }
@@ -26,7 +26,7 @@ export class PostController {
   }
 
   // Submit a new post
-  @Post()
+  @Post('/create')
   async createPost(@Res() res, @Body() createPostDto: CreatePostDto) {
     const newPost = await this.postServices.createPost(createPostDto);
     return res.status(HttpStatus.OK).json({
@@ -36,7 +36,7 @@ export class PostController {
   }
 
   // Update a post
-  @Put('/edit')
+  @Put('/update')
   async editPost(
     @Res() res,
     @Query('id', new ValidateObjectId()) id,

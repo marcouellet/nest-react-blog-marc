@@ -4,13 +4,13 @@ import { CreatePostDto, UpdatePostDto } from '../../core/dtos';
 
 @Injectable()
 export class PostFactoryService {
-  createNewPost(createBookDto: CreatePostDto) {
+  createNewPost(createPostDto: CreatePostDto) {
     const newPost = new Post();
-    newPost.title = createBookDto.title;
-    newPost.description = createBookDto.description;
-    newPost.body = createBookDto.body;
-    newPost.author = createBookDto.authorId;
-    newPost.publishDate = createBookDto.publishDate;
+    newPost.title = createPostDto.title;
+    newPost.description = createPostDto.description;
+    newPost.body = createPostDto.body;
+    newPost.user = createPostDto.userId;
+    newPost.publishDate = createPostDto.publishDate;
 
     return newPost;
   }
@@ -20,7 +20,7 @@ export class PostFactoryService {
     newPost.title = updatePostDto.title;
     newPost.description = updatePostDto.description;
     newPost.body = updatePostDto.body;
-    newPost.author = updatePostDto.authorId;
+    newPost.user = updatePostDto.userId;
     newPost.publishDate = updatePostDto.publishDate;
 
     return newPost;

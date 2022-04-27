@@ -1,4 +1,4 @@
-export class Author {
+export class User {
   firstName: String;
   lastName: String;
 }

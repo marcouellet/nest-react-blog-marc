@@ -1,9 +1,9 @@
-import { Author } from './';
+import { User } from './';
 
 export class Post {
   title: String;
   description: String;
   body: String;
-  author: Author;
+  user: User;
   publishDate: Date;
 }

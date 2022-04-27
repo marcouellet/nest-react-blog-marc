@@ -1,0 +1,30 @@
+name: Build
+
+on: [push, label, release, pull_request]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: '12.x'
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Clean
+              run: yarn clean
+
+            - name: Linting
+              run: yarn lint
+
+            - name: Run tests
+              run: yarn test
+
+            - name: Create bundle
+              run: yarn dist

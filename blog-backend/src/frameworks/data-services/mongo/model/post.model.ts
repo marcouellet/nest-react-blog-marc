@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Author } from './';
+import { User } from './';
 
 export type PostDocument = Post & Document;
 
@@ -13,8 +13,8 @@ export class Post {
   @Prop({ required: true, unique: true })
   body: String;
   
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true })
-  author: Author;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  user: User;
 
   @Prop()
   publishDate: Date;

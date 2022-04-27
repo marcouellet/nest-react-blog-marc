@@ -1,7 +1,7 @@
-import { Post, Author } from '../entities';
+import { Post, User } from '../entities';
 import { IGenericDataServicesRepository } from './generic-data-services-repository.abstract';
 
 export abstract class IDataServicesRepositories {
-  authors: IGenericDataServicesRepository<Author>;
+  users: IGenericDataServicesRepository<User>;
   posts: IGenericDataServicesRepository<Post>;
 }
