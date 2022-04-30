@@ -1,4 +1,4 @@
-import { Component, createContext, useContext } from 'react';
+import React, { Component, createContext, useContext } from 'react';
 import { IUser } from "../models/user";
 
 interface ContextValueType {
@@ -13,7 +13,6 @@ interface ContextValueType {
 // create the context
 export const PassportContext: any = createContext<ContextValueType | null>(null);
 export const usePassport: any = () => useContext(PassportContext);
-
 interface IState {
 	user: IUser | null,
 	isLoading: boolean,

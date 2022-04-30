@@ -2,6 +2,7 @@ import * as React from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { BrowserRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import useAuth, { AuthProvider } from './contexts/auth';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
@@ -26,4 +27,10 @@ class App extends React.Component<{}, {}> {
   }
 }
 
-export default App;
+export default () => (
+  <AuthProvider>
+    <App />
+  </AuthProvider>
+);
+
+

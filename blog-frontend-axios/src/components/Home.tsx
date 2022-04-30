@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { toast } from "react-toastify";
 import { PostApiService } from "../services/api/PostApiService";
-import { IPost } from "../models/post";
+import { IPost } from "../types";
 import { usePassport } from '../contexts/passport-context';
 //import { useAuth0 } from '../contexts/auth0-context';
 
@@ -13,9 +14,19 @@ function Home(): JSX.Element {
 
   const deletePost = async(id: number) => {
     //const accessToken = await getIdTokenClaims();
-    await PostApiService.deletePost(id);
+    await PostApiService.deletePost(id)
+      .then(() => handleDeletePostSucess())
+      .catch(() => handleDeletePostError());
     _removePostFromView(id);
     history.push('/');
+  }
+
+  const handleDeletePostSucess = () => {
+    toast.success(`Post deleted successfully...`);
+  }
+
+  const handleDeletePostError = () => {
+    toast.error(`Post delete failed...`);
   }
 
   const _removePostFromView = (id: number) => {

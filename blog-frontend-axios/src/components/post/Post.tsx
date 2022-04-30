@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { IPost } from "../../models/post";
+import { IPost } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 
 function Post() {

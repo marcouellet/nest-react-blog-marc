@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { IPost } from "../../models/post";
+import { toast } from "react-toastify";
+import { IPost } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 
 //import { useAuth0 } from '../../contexts/auth0-context';
@@ -47,17 +48,22 @@ function Edit(): JSX.Element {
     }, 1500);
   }
 
-  const submitForm = async (formData: {}) => {
-    try {
-      if (post) {
-        const data: IPost = {...post, ...formData};
-        await PostApiService.updatePost(data);
-        return true;
-      }
-      return false;
-    } catch (ex) {
-      return false;
+  const submitForm = async (formData: {}) : Promise<boolean>  =>  {
+    if (post) {
+      const data: IPost = {...post, ...formData};
+      return await PostApiService.updatePost(data)
+      .then(() => { handleSubmitFormSucess();  return true;})
+      .catch(() =>  { handleSubmitFormError(); return false;});
     }
+    return Promise.resolve(false);
+  }
+
+  const handleSubmitFormSucess = () => {
+    toast.success(`Post updated successfully...`);
+  }
+
+  const handleSubmitFormError = () => {
+    toast.error(`Post update failed...`);
   }
 
   const setFormValues = (formValues: IValues) => {

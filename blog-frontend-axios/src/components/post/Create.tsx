@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { IPost } from "../../models/post";
+import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
 //import { useAuth0 } from '../../contexts/auth0-context';
 
@@ -37,13 +37,10 @@ function Create(): JSX.Element {
     }, 1500);
   }
 
-  const submitForm = async (formData: {}) => {
-    try {
-      await PostApiService.createPost(formData);
-      return true;
-  } catch (ex) {
-      return false;
-    }
+  const submitForm = async (formData: {}) : Promise<boolean>  =>  {
+    return await PostApiService.createPost(formData)
+      .then(() => { handleSubmitFormSucess();  return true;})
+      .catch(() =>  { handleSubmitFormError(); return false;});
   }
 
   const setFormValues = (formValues: IValues) => {
@@ -53,6 +50,14 @@ function Create(): JSX.Element {
   const handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     setFormValues({ [e.currentTarget.name]: e.currentTarget.value })
+  }
+
+  const handleSubmitFormSucess = () => {
+    toast.success(`Post created successfully...`);
+  }
+
+  const handleSubmitFormError = () => {
+    toast.error(`Post creation failed...`);
   }
 
   return (

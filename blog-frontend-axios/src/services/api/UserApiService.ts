@@ -1,30 +1,24 @@
 import HttpApiService from "./HttpApiService";
-import { API_BASE } from "../../config/api.config";
 import { IUser } from "../../models/user";
 
-
-const CONTACT_ENDPOINT = `${API_BASE}/user`;
-
+const USER_ENDPOINT = `/user`;
 export class UserApi extends HttpApiService<IUser> {
-  constructor() {
-    super(`${API_BASE}`);
-  }
 
   getUserById = (id: number) => {
-    return this.get(`${CONTACT_ENDPOINT}/${id}`);
+    return this.get(`${USER_ENDPOINT}/${id}`);
   };
 
   getAllUsers = () => {
-    const response = this.get(`${CONTACT_ENDPOINT}`);
+    const response = this.get(`${USER_ENDPOINT}`);
     return response
   };
 
   createUser = (data: any) => {
-    return super.create(`${CONTACT_ENDPOINT}`, data);
+    return super.create(`${USER_ENDPOINT}`, data);
   };
 
   updateUser = (data: IUser) => {
-    return super.update(`${CONTACT_ENDPOINT}`, data);
+    return super.update(`${USER_ENDPOINT}`, data);
   };
 }
 
