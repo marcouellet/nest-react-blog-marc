@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../services/api/PostApiService";
 import { IPost } from "../types";
@@ -7,7 +7,9 @@ import { usePassport } from '../contexts/passport-context';
 //import { useAuth0 } from '../contexts/auth0-context';
 
 const Home = () => {
-  let history = useHistory()
+  
+  const navigate = useNavigate();
+
   const { isAuthenticated, getIdTokenClaims, user } = usePassport();
 
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -18,7 +20,7 @@ const Home = () => {
       .then(() => handleDeletePostSucess())
       .catch(() => handleDeletePostError());
     _removePostFromView(id);
-    history.push('/');
+    navigate('/');
   }
 
   const handleDeletePostSucess = () => {

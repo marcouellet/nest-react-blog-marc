@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useRoutes } from 'react-router-dom';
 import { useAuth0 } from '../contexts/auth0-context';
 
 const Navbar = () => {
@@ -51,4 +51,4 @@ const Navbar = () => {
     );
 }
 
-export default withRouter(Navbar);
+export default Navbar;

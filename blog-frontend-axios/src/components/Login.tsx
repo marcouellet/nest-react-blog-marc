@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
-import { navigate, RouteComponentProps } from '@reach/router';
 
-const Login = (_: RouteComponentProps) => {
+const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -15,6 +14,8 @@ const Login = (_: RouteComponentProps) => {
     state: { user },
     dispatch,
   } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();

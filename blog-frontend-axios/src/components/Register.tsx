@@ -1,23 +1,25 @@
-import React from 'react';
-import { Link, navigate, RouteComponentProps } from '@reach/router';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 
-const Register = (_: RouteComponentProps) => {
-  const [form, setForm] = React.useState({
+const Register = () => {
+  const [form, setForm] = useState({
     username: '',
     email: '',
     password: '',
   });
 
-  const [loading, setLoading] = React.useState(false);
-  const [errors, setErrors] = React.useState<IErrors | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<IErrors | null>(null);
   const {
     state: { user },
     dispatch,
   } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     setForm({
