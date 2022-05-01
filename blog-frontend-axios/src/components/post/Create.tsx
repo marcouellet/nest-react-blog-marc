@@ -5,7 +5,7 @@ import { PostApiService } from "../../services/api/PostApiService";
 //import { useAuth0 } from '../../contexts/auth0-context';
 
 
-function Create(): JSX.Element {
+const Create = () => {
 
   let history = useHistory();
   //const { user, getIdTokenClaims } = useAuth0();

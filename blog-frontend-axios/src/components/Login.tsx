@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
-import { navigate, RouteComponentProps } from '@reach/router';
+import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
+import { navigate, RouteComponentProps } from '@reach/router';
 
-export default function Login(_: RouteComponentProps) {
+const Login = (_: RouteComponentProps) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -18,7 +20,7 @@ export default function Login(_: RouteComponentProps) {
     event.preventDefault();
     setLoading(true);
 
-   AUTHAPI.login(email, password)
+    AUTHAPI.login(email, password)
       .then(
         (user) => {
           dispatch({ type: 'LOAD_USER', user });
@@ -31,8 +33,7 @@ export default function Login(_: RouteComponentProps) {
         if (error.status === 422) {
           setErrors(error.data.errors);
       }})
-    } 
-  };
+  } 
 
   return (
     <div className="auth-page">
@@ -79,3 +80,5 @@ export default function Login(_: RouteComponentProps) {
     </div>
   );
 }
+
+export default Login;

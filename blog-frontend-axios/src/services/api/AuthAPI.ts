@@ -1,5 +1,5 @@
 import API, { TOKEN_KEY , setToken } from './APIUtils';
-import { IUser } from '../../models';
+import { IUser } from '../../types';
 import { setLocalStorage } from '../../utils/utils';
 
 type User = {

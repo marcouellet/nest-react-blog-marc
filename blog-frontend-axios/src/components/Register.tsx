@@ -5,7 +5,7 @@ import useAuth from '../contexts/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 
-export default function Register(_: RouteComponentProps) {
+const Register = (_: RouteComponentProps) => {
   const [form, setForm] = React.useState({
     username: '',
     email: '',
@@ -101,3 +101,5 @@ export default function Register(_: RouteComponentProps) {
     </div>
   );
 }
+
+export default Register;

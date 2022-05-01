@@ -6,7 +6,7 @@ import { IPost } from "../types";
 import { usePassport } from '../contexts/passport-context';
 //import { useAuth0 } from '../contexts/auth0-context';
 
-function Home(): JSX.Element {
+const Home = () => {
   let history = useHistory()
   const { isAuthenticated, getIdTokenClaims, user } = usePassport();
 

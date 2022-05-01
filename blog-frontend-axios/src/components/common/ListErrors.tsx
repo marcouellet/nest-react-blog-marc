@@ -1,7 +1,7 @@
 import React from 'react';
 import { IErrors } from '../../types';
 
-export default function ListErrors({ errors }: { errors: IErrors }) {
+const ListErrors = ({ errors }: { errors: IErrors }) => {
   return (
     <ul className="error-messages">
       {Object.entries(errors).map(([key, keyErrors], index) =>
@@ -14,3 +14,5 @@ export default function ListErrors({ errors }: { errors: IErrors }) {
     </ul>
   );
 }
+
+export default ListErrors;

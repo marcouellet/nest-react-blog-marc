@@ -6,7 +6,7 @@ import { PostApiService } from "../../services/api/PostApiService";
 
 //import { useAuth0 } from '../../contexts/auth0-context';
 
-function Edit(): JSX.Element {
+const Edit = () => {
 
   //const { getIdTokenClaims } = useAuth0();
 

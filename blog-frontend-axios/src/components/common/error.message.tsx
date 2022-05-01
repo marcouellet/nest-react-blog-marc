@@ -4,7 +4,7 @@ interface IOwnProps {
   error: any;
 }
 
-const ErrorMessage: React.FC<IOwnProps> = (props) => {
+const ErrorMessage = (props: IOwnProps) => {
   return (
     <>
       <div className="error">

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { useAuth0 } from '../contexts/auth0-context';
 
-function Navbar() {
+const Navbar = () => {
     const { isLoading, user, loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
     return (

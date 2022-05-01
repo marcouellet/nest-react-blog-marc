@@ -4,7 +4,7 @@ interface IOwnProps {
   message?: any;
 }
 
-const Loading: React.FC<IOwnProps> = (props) => {
+const Loading = (props: IOwnProps) => {
   return (
     <>
       <div className="loading">
