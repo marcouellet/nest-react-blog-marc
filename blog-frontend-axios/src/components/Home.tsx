@@ -3,22 +3,29 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../services/api/PostApiService";
 import { IPost } from "../types";
-import { usePassport } from '../contexts/passport-context';
-//import { useAuth0 } from '../contexts/auth0-context';
+import useAuth from '../contexts/auth';
+import { createActionLoading } from '../reducers/auth';
 
 const Home = () => {
   
   const navigate = useNavigate();
 
-  const { isAuthenticated, getIdTokenClaims, user } = usePassport();
+  const { state, dispatch } = useAuth();
+  const { isAuthenticated, isLoading, user } = state;
 
   const [posts, setPosts] = useState<IPost[]>([]);
 
-  const deletePost = async(id: number) => {
-    //const accessToken = await getIdTokenClaims();
+  const _removePostFromView = (id: number) => {
+    const index = posts.findIndex((post: { id: number; }) => post.id === id);
+    posts.splice(index, 1);
+  }
+
+  const handleDeletePost = async (id: number) => {
+    dispatch(createActionLoading(true));
     await PostApiService.deletePost(id)
-      .then(() => handleDeletePostSucess())
-      .catch(() => handleDeletePostError());
+     .then(() => handleDeletePostSucess())
+     .catch(() => handleDeletePostError());
+    dispatch(createActionLoading(false));
     _removePostFromView(id);
     navigate('/');
   }
@@ -29,11 +36,6 @@ const Home = () => {
 
   const handleDeletePostError = () => {
     toast.error(`Post delete failed...`);
-  }
-
-  const _removePostFromView = (id: number) => {
-    const index = posts.findIndex((post: { id: number; }) => post.id === id);
-    posts.splice(index, 1);
   }
 
   useEffect(() => {
@@ -73,18 +75,20 @@ const Home = () => {
 
                 <ul className="post-footer">
                   <li>
-                    <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
+                    {
+                      !isLoading && <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
+                    }
                   </li>
                   <li>
                     {
-                      isAuthenticated && (user.email === post.user.email) &&
+                      isAuthenticated && !isLoading && (user!.email === post.user.email) &&
                       <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
                     }
                   </li>
                   <li>
                     {
-                      isAuthenticated && (user.email === post.user.email) &&
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => deletePost(post.id)}>Delete Post</button>
+                      isAuthenticated && !isLoading && (user!.email === post.user.email) &&
+                      <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id)}>Delete Post</button>
                     }
                   </li>
                 </ul>

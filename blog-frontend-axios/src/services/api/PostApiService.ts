@@ -1,5 +1,5 @@
 import HttpApiService from "./HttpApiService";
-import { IPost } from "../../models/post";
+import { IPost } from "../../types";
 
 const POST_ENDPOINT = `/post`;
 

@@ -1,5 +1,5 @@
 import HttpApiService from "./HttpApiService";
-import { IUser } from "../../models/user";
+import { IUser } from "../../types";
 
 const USER_ENDPOINT = `/user`;
 export class UserApi extends HttpApiService<IUser> {

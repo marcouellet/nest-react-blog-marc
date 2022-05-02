@@ -1,6 +1,5 @@
-import axios, { AxiosPromise } from 'axios';
+import { AxiosPromise } from 'axios';
 import API from './APIUtils';
-import { useAuth0 } from '../../contexts/auth0-context';
 
 export enum EnumContentType {
   JSON = "application/json",
