@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { IPost } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
+import { createActionLoading } from '../../reducers/auth';
+import useAuth from '../../contexts/auth';
 
 const Post = () => {
 
   const { postId } = useParams<{ postId: string }>();
-
+  const { dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const post = await PostApiService.getPostById(Number.parseInt(postId));
+      dispatch(createActionLoading(true));
+      const post = await PostApiService.getPostById(Number.parseInt(postId!));
+      dispatch(createActionLoading(false));
       setPost(post.data);
     }
     fetchData();

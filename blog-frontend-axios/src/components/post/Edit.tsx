@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { IPost } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
-
-//import { useAuth0 } from '../../contexts/auth0-context';
+import { createActionLoading } from '../../reducers/auth';
+import useAuth from '../../contexts/auth';
 
 const Edit = () => {
 
-  //const { getIdTokenClaims } = useAuth0();
-
-  let history = useHistory();
+  const navigate = useNavigate();
+  const { state, dispatch } = useAuth();
+  const { isLoading } = state;
   const { postId } = useParams<{ postId: string }>();
-
   interface IValues {
     [key: string]: any | null;
   }
@@ -20,11 +19,12 @@ const Edit = () => {
   const [post, setPost] = useState<IPost>();
   const [values, setValues] = useState<IValues>([]);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const post = await PostApiService.getPostById(Number.parseInt(postId));
+      dispatch(createActionLoading(true));
+      const post = await PostApiService.getPostById(Number.parseInt(postId!));
+      dispatch(createActionLoading(false));
       setPost(post.data);
     }
     fetchData();    
@@ -32,7 +32,6 @@ const Edit = () => {
 
   const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setLoading(true);
 
     const formData = {
       title: values.title,
@@ -42,18 +41,20 @@ const Edit = () => {
 
     const submitSuccess: boolean = await submitForm(formData);
     setSubmitSuccess(submitSuccess);
-    setLoading(false);
     setTimeout(() => {
-      history.push('/');
+      navigate('/');
     }, 1500);
   }
 
   const submitForm = async (formData: {}) : Promise<boolean>  =>  {
     if (post) {
       const data: IPost = {...post, ...formData};
-      return await PostApiService.updatePost(data)
-      .then(() => { handleSubmitFormSucess();  return true;})
-      .catch(() =>  { handleSubmitFormError(); return false;});
+      dispatch(createActionLoading(true));
+      const isOk = await PostApiService.updatePost(data)
+        .then(() => { handleSubmitFormSucess();  return true;})
+        .catch(() =>  { handleSubmitFormError(); return false;});
+      dispatch(createActionLoading(false));
+      return isOk;
     }
     return Promise.resolve(false);
   }
@@ -105,7 +106,7 @@ const Edit = () => {
             <button className="btn btn-success" type="submit">
               Edit Post
             </button>
-            {loading &&
+            {isLoading &&
               <span className="fa fa-circle-o-notch fa-spin" />
             }
           </div>

@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
-//import { useAuth0 } from '../../contexts/auth0-context';
-
+import { createActionLoading } from '../../reducers/auth';
+import useAuth from '../../contexts/auth';
 
 const Create = () => {
 
-  let history = useHistory();
-  //const { user, getIdTokenClaims } = useAuth0();
-
+  const navigate = useNavigate();
+  const { state, dispatch } = useAuth();
+  const { isLoading } = state;
   interface IValues {
     [key: string]: any;
   }
 
   const [values, setValues] = useState<IValues>([]);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setLoading(true);
 
     const formData = {
       title: values.title,
@@ -31,16 +29,18 @@ const Create = () => {
     const submitSuccess: boolean = await submitForm(formData);
     setSubmitSuccess(submitSuccess);
     setValues({...values, formData});
-    setLoading(false);
     setTimeout(() => {
-      history.push('/');
+      navigate('/');
     }, 1500);
   }
 
   const submitForm = async (formData: {}) : Promise<boolean>  =>  {
-    return await PostApiService.createPost(formData)
+    dispatch(createActionLoading(true));
+    const isOk = await PostApiService.createPost(formData)
       .then(() => { handleSubmitFormSucess();  return true;})
       .catch(() =>  { handleSubmitFormError(); return false;});
+    dispatch(createActionLoading(false));
+    return isOk;
   }
 
   const setFormValues = (formValues: IValues) => {
@@ -96,7 +96,7 @@ const Create = () => {
           <button className="btn btn-success" type="submit">
             Create Post
           </button>
-          {loading &&
+          {isLoading &&
             <span className="fa fa-circle-o-notch fa-spin" />
           }
         </div>
@@ -106,4 +106,4 @@ const Create = () => {
   );
 
 }
-export default withRouter(Create)
+export default Create
