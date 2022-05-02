@@ -4,6 +4,8 @@ import {
   initialState,
   AuthAction,
   AuthState,
+  createActionLogin,
+  createActionLogout
 } from '../reducers/auth';
 import { getLocalStorageValue } from '../utils/utils';
 import { TOKEN_KEY, setToken, isTokenValid } from '../services/api/APIUtils';
@@ -28,9 +30,9 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
 
     if (isTokenValid(token)) {
       setToken(token);
-      dispatch({ type: 'LOGIN' });
+      dispatch(createActionLogin());
     } else {
-      dispatch({ type: 'LOGOUT' });
+      dispatch(createActionLogout());
       AUTHAPI.logout();
     }
   }, []);

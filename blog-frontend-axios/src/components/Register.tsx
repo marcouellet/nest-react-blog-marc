@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
+import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 
@@ -12,10 +13,9 @@ const Register = () => {
     password: '',
   });
 
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<IErrors | null>(null);
   const {
-    state: { user },
+    state: { isLoading },
     dispatch,
   } = useAuth();
 
@@ -30,20 +30,20 @@ const Register = () => {
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    setLoading(true);
+    dispatch(createActionLoading(true));
     const { username, email, password } = form;
 
-    
    AUTHAPI.register({username, email, password})
    .then(
      (user) => {
-       dispatch({ type: 'LOAD_USER', user });
+      dispatch(createActionLoading(false));
+       dispatch(createActionLoadUser(user));
        navigate('/');    
      }
    )
    .catch((error) => {
      console.log(error);
-     setLoading(false);
+     dispatch(createActionLoading(false));
      if (error.status === 422) {
        setErrors(error.data.errors);
    }})
@@ -92,7 +92,7 @@ const Register = () => {
               </fieldset>
               <button
                 className="btn btn-lg btn-primary pull-xs-right"
-                disabled={loading}
+                disabled={isLoading}
               >
                 Sign Up
               </button>

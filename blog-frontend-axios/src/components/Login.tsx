@@ -1,36 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
+import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 
 const Login = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<IErrors | null>();
   const {
-    state: { user },
+    state: { isLoading },
     dispatch,
   } = useAuth();
 
   const navigate = useNavigate();
 
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setForm({
+      ...form,
+      [event.currentTarget.name]: event.currentTarget.value,
+    });
+  };
+
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    setLoading(true);
-
+    dispatch(createActionLoading(true));
+    const { email, password } = form;
     AUTHAPI.login(email, password)
       .then(
         (user) => {
-          dispatch({ type: 'LOAD_USER', user });
+          dispatch(createActionLoading(false));
+          dispatch(createActionLoadUser(user));
           navigate('/');    
         }
       )
       .catch((error) => {
         console.log(error);
-        setLoading(false);
+        dispatch(createActionLoading(false));
         if (error.status === 422) {
           setErrors(error.data.errors);
       }})
@@ -52,9 +63,9 @@ const Login = () => {
                   name="email"
                   className="form-control form-control-lg"
                   type="email"
-                  value={email}
+                  value={form.email}
                   placeholder="Email"
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={handleChange}
                 />
               </fieldset>
               <fieldset className="form-group">
@@ -62,15 +73,15 @@ const Login = () => {
                   name="password"
                   className="form-control form-control-lg"
                   type="password"
-                  value={password}
+                  value={form.password}
                   placeholder="Password"
-                  onChange={(event) => setPassword(event.target.value)}
+                  onChange={handleChange}
                 />
               </fieldset>
               <button
                 className="btn btn-lg btn-primary pull-xs-right"
                 type="submit"
-                disabled={loading}
+                disabled={isLoading}
               >
                 Sign In
               </button>
