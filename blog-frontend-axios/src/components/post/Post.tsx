@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { IPost } from "../../types";
+import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
@@ -26,6 +27,7 @@ const Post = () => {
   }, [postId, dispatch]);
 
   const handleFetchPostError = (apiErrors: IErrors) => {
+    toast.error(`Post reading failed, see error list`);
     setErrors(apiErrors);
   }
 

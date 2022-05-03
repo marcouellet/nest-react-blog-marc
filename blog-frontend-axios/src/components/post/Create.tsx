@@ -60,7 +60,7 @@ const Create = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    toast.error(`Post creation failed...`);
+    toast.error(`Post creation failed, see error list`);
     setErrors(apiErrors);
   }
 

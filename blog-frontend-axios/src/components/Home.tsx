@@ -39,7 +39,7 @@ const Home = () => {
   }
 
   const handleDeletePostError = (apiErrors: IErrors) => {
-    toast.error(`Post delete failed...`);
+    toast.error(`Post delete failed, see error list`);
     setErrors(apiErrors);
   }
 

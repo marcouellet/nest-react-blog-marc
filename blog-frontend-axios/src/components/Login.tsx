@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
+import { toast } from "react-toastify";
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
@@ -39,6 +40,7 @@ const Login = () => {
         }
       )
       .catch((apiErrors: IErrors) => {
+        toast.error(`Login failed, see error list`);
         setErrors(apiErrors);
       });
     dispatch(createActionLoading(false));

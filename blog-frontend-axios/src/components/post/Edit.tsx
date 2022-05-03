@@ -67,7 +67,7 @@ const Edit = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    toast.error(`Post update failed...`);
+    toast.error(`Post update failed, see error list`);
     setErrors(apiErrors);
 }
 
