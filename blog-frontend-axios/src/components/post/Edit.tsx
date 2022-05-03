@@ -55,7 +55,7 @@ const Edit = () => {
       dispatch(createActionLoading(true));
       const isOk = await PostApiService.updatePost(data)
         .then(() => { handleSubmitFormSucess();  return true;})
-        .catch((error) =>  { handleSubmitFormError(error); return false;});
+        .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); return false;});
       dispatch(createActionLoading(false));
       return isOk;
     }
@@ -66,10 +66,9 @@ const Edit = () => {
     toast.success(`Post updated successfully...`);
   }
 
-  const handleSubmitFormError = (error: any) => {
+  const handleSubmitFormError = (apiErrors: IErrors) => {
     toast.error(`Post update failed...`);
-    console.log(error);
-    setErrors(error.data.errors);
+    setErrors(apiErrors);
 }
 
   const setFormValues = (formValues: IValues) => {

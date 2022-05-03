@@ -40,8 +40,8 @@ const Register = () => {
           navigate('/');    
         }
       )
-      .catch((error) => {
-        setErrors(error.data.errors);  
+      .catch((apiErrors: IErrors) => {
+        setErrors(apiErrors);  
       });
     dispatch(createActionLoading(false));
  } 
@@ -51,7 +51,7 @@ const Register = () => {
       <div className="container page">
         <div className="row">
           <div className="col-md-6 offset-md-3 col-xs-12">
-            <h1 className="text-xs-center">Sign up</h1>
+            <h1 className="text-xs-center">Register</h1>
             <p className="text-xs-center">
               <Link to="/login">Have an account?</Link>
             </p>
@@ -89,9 +89,10 @@ const Register = () => {
               </fieldset>
               <button
                 className="btn btn-lg btn-primary pull-xs-right"
+                type="submit"
                 disabled={isLoading}
               >
-                Sign Up
+                Register
               </button>
             </form>
           </div>

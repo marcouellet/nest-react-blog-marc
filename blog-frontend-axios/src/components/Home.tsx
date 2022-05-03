@@ -28,7 +28,7 @@ const Home = () => {
     dispatch(createActionLoading(true));
     await PostApiService.deletePost(id)
      .then(() => handleDeletePostSucess())
-     .catch((error) => handleDeletePostError(error))
+     .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
     dispatch(createActionLoading(false));
     _removePostFromView(id);
     navigate('/');
@@ -38,10 +38,9 @@ const Home = () => {
     toast.success(`Post deleted successfully...`);
   }
 
-  const handleDeletePostError = (error: any) => {
+  const handleDeletePostError = (apiErrors: IErrors) => {
     toast.error(`Post delete failed...`);
-    console.log(error);
-    setErrors(error.data.errors);
+    setErrors(apiErrors);
   }
 
   useEffect(() => {

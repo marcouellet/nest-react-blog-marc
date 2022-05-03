@@ -19,15 +19,14 @@ const Post = () => {
       dispatch(createActionLoading(true));
       await PostApiService.getPostById(Number.parseInt(postId!))
       .then((post) => setPost(post.data))
-      .catch((error) => handleFetchPostError(error))
+      .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
       dispatch(createActionLoading(false));
     }
     fetchData();
   }, [postId, dispatch]);
 
-  const handleFetchPostError = (error: any) => {
-    console.log(error);
-    setErrors(error.data.errors);
+  const handleFetchPostError = (apiErrors: IErrors) => {
+    setErrors(apiErrors);
   }
 
     return (

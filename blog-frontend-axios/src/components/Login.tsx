@@ -38,9 +38,8 @@ const Login = () => {
           navigate('/');    
         }
       )
-      .catch((error) => {
-        console.log(error);
-        setErrors(error.data.errors);
+      .catch((apiErrors: IErrors) => {
+        setErrors(apiErrors);
       });
     dispatch(createActionLoading(false));
   } 
@@ -50,7 +49,7 @@ const Login = () => {
       <div className="container page">
         <div className="row">
           <div className="col-md-6 offset-md-3 col-xs-12">
-            <h1 className="text-xs-center">Sign in</h1>
+            <h1 className="text-xs-center">Log in</h1>
             <p className="text-xs-center">
               <Link to="/register">Need an account?</Link>
             </p>
@@ -81,7 +80,7 @@ const Login = () => {
                 type="submit"
                 disabled={isLoading}
               >
-                Sign In
+                Log In
               </button>
             </form>
           </div>

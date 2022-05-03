@@ -10,12 +10,12 @@ import Create from "../components/post/Create";
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={"/"} element={Home} />
-      <Route path={"/login"} element={Login} />
-      <Route path={"/register"} element={Register} />
-      <Route path={"/post/:postId"} element={Post}/>
-      <Route path={"/edit/:postId"} element={Edit}/>
-      <Route path={"/post/create"} element={Create} />
+      <Route path={"/"} element={<Home/>} />
+      <Route path={"/login"} element={<Login/>} />
+      <Route path={"/register"} element={<Register/>} />
+      <Route path={"/post/:postId"} element={<Post/>}/>
+      <Route path={"/edit/:postId"} element={<Edit/>}/>
+      <Route path={"/post/create"} element={<Create/>} />
       <Route
           path="*"
           element={<Navigate to="/" replace />}

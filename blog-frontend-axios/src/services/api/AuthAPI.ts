@@ -6,7 +6,7 @@ type User = {
   user: IUser & { token: string };
 };
 
-function handleUserResponse({ user: { token, ...user } }: User) {
+function handleUserData({ user: { token, ...user } }: User) {
   setLocalStorage(TOKEN_KEY, token);
   setToken(token);
   return user;
@@ -19,7 +19,7 @@ function getCurrentUser() {
 function login(email: string, password: string) {
   return API.post<User>('/users/login', {
     user: { email, password },
-  }).then((user) => handleUserResponse(user.data));
+  }).then((response) => handleUserData(response.data));
 }
 
 function register(user: {
@@ -27,8 +27,8 @@ function register(user: {
   email: string;
   password: string;
 }) {
-  return API.post<User>('/users', { user }).then((user) =>
-    handleUserResponse(user.data),
+  return API.post<User>('/users', { user }).then((response) =>
+    handleUserData(response.data),
   );
 }
 
