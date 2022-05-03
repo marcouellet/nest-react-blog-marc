@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
+import ListErrors from '../common/ListErrors';
+import { IErrors } from '../../types';
 
 const Create = () => {
 
@@ -16,6 +18,7 @@ const Create = () => {
 
   const [values, setValues] = useState<IValues>([]);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+  const [errors, setErrors] = React.useState<IErrors | null>();
 
   const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -38,7 +41,7 @@ const Create = () => {
     dispatch(createActionLoading(true));
     const isOk = await PostApiService.createPost(formData)
       .then(() => { handleSubmitFormSucess();  return true;})
-      .catch(() =>  { handleSubmitFormError(); return false;});
+      .catch((error) =>  { handleSubmitFormError(error); return false;});
     dispatch(createActionLoading(false));
     return isOk;
   }
@@ -56,8 +59,10 @@ const Create = () => {
     toast.success(`Post created successfully...`);
   }
 
-  const handleSubmitFormError = () => {
+  const handleSubmitFormError = (error: any) => {
     toast.error(`Post creation failed...`);
+    console.log(error);
+    setErrors(error.data.errors);
   }
 
   return (
@@ -75,21 +80,21 @@ const Create = () => {
           The form was successfully submitted!
                         </div>
       )}
-
+      {errors && <ListErrors errors={errors} />}
       <form id={"create-post-form"} onSubmit={handleFormSubmission} noValidate={true}>
         <div className="form-group col-md-12">
           <label htmlFor="title"> Title </label>
-          <input type="text" id="title" onChange={(e) => handleInputChanges(e)} name="title" className="form-control" placeholder="Enter title" />
+          <input type="text" id="title" onChange={handleInputChanges} name="title" className="form-control" placeholder="Enter title" />
         </div>
 
         <div className="form-group col-md-12">
           <label htmlFor="description"> Description </label>
-          <input type="text" id="description" onChange={(e) => handleInputChanges(e)} name="description" className="form-control" placeholder="Enter Description" />
+          <input type="text" id="description" onChange={handleInputChanges} name="description" className="form-control" placeholder="Enter Description" />
         </div>
 
         <div className="form-group col-md-12">
           <label htmlFor="body"> Write Content </label>
-          <input type="text" id="body" onChange={(e) => handleInputChanges(e)} name="body" className="form-control" placeholder="Enter content" />
+          <input type="text" id="body" onChange={handleInputChanges} name="body" className="form-control" placeholder="Enter content" />
         </div>
 
         <div className="form-group col-md-4 pull-right">

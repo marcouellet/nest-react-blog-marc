@@ -14,9 +14,8 @@ interface ContextValueType {
 }
 
 // create the context
-export const Auth0Context: any = createContext<ContextValueType | null>(null);
+export const Auth0Context = createContext<ContextValueType | null>(null);
 export const useAuth0: any = () => useContext(Auth0Context);
-
 interface IState {
 	auth0Client: any,
 	isLoading: boolean,

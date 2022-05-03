@@ -5,6 +5,8 @@ import { PostApiService } from "../services/api/PostApiService";
 import { IPost } from "../types";
 import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
+import ListErrors from './common/ListErrors';
+import { IErrors } from '../types';
 
 const Home = () => {
   
@@ -12,6 +14,8 @@ const Home = () => {
 
   const { state, dispatch } = useAuth();
   const { isAuthenticated, isLoading, user } = state;
+
+  const [errors, setErrors] = React.useState<IErrors | null>();
 
   const [posts, setPosts] = useState<IPost[]>([]);
 
@@ -24,7 +28,7 @@ const Home = () => {
     dispatch(createActionLoading(true));
     await PostApiService.deletePost(id)
      .then(() => handleDeletePostSucess())
-     .catch(() => handleDeletePostError());
+     .catch((error) => handleDeletePostError(error))
     dispatch(createActionLoading(false));
     _removePostFromView(id);
     navigate('/');
@@ -34,8 +38,10 @@ const Home = () => {
     toast.success(`Post deleted successfully...`);
   }
 
-  const handleDeletePostError = () => {
+  const handleDeletePostError = (error: any) => {
     toast.error(`Post delete failed...`);
+    console.log(error);
+    setErrors(error.data.errors);
   }
 
   useEffect(() => {
@@ -48,6 +54,7 @@ const Home = () => {
 
     return (
         <section className="blog-area section">
+        {errors && <ListErrors errors={errors} />}
         <div className="container">
           <div className="row">
             {posts && posts.map((post: IPost) => (

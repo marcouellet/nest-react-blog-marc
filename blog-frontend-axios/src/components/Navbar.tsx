@@ -1,17 +1,21 @@
 import React from 'react';
-import { Link, useRoutes } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
 import { createActionLogout } from '../reducers/auth';
+import AUTHAPI from '../services/api/AuthAPI';
 
 const Navbar = () => {
     const { state, dispatch } = useAuth();
-    const { user, isLoading } = state;
+    const { user, isLoading, isAuthenticated } = state;
+    const navigate = useNavigate();
 
-    const handleLogout = (event: React.FormEvent<HTMLInputElement>) => {
+    const handleLogout = () => {
         dispatch(createActionLogout());
+        AUTHAPI.logout();
+        navigate('/');
       };
 
-    return (
+      return (
         <header>
             <div className="container-fluid position-relative no-side-padding">
                 <div className="menu-nav-icon" data-nav-menu="#main-menu">
@@ -19,32 +23,25 @@ const Navbar = () => {
                 </div>
 
                 <ul className="main-menu visible-on-click" id="main-menu">
-                    <li><Link className={"nav-link"} to={"/"}> Nest React TypeScript Blog </Link></li>
-                    <li>
-                    <Link className={"nav-link"} to={"/"}>
-                        {!isLoading && !user && (
-                            <>
-                                <button className="btn btn-dark" onClick={loginWithRedirect}>
-                                    Sign In
-                                </button>
-                            </>
-                        )}
-
-                        {!isLoading && user && (
-                            <>
-                                <div>
-                                    <label className="mr-2">{user.userName}</label>
-                                    <button className="btn btn-dark" onClick={() => logout({ returnTo: window.location.origin })}>
-                                        Sign Out 
-                                    </button>
-                                </div>
-                            </>
-                        )}
-                    </Link>
-                    </li>
                     <li><Link className={"nav-link"} to={"/"}> Home </Link></li>
-                    {isAuthenticated && (
-                    <li><Link className={"nav-link"} to={"/create"}> Create </Link></li>
+                    {!isLoading && isAuthenticated && (
+                        <li><Link className={"nav-link"} to={"/create"}> Create </Link></li>
+                    )}
+                    {!isLoading && !isAuthenticated && (
+                        <li><Link className={"nav-link"} to={"/login"}> Login </Link></li>
+                    )}
+                    {!isLoading && !isAuthenticated && (
+                        <li><Link className={"nav-link"} to={"/register"}> Register </Link></li>
+                    )}
+                    {!isLoading && user && (
+                        <li>
+                            <div>
+                                <label className="mr-2">{user.userName}</label>
+                                <button className="btn" onClick={handleLogout}>
+                                    Log Out 
+                                </button>
+                            </div>
+                        </li>
                     )}
                 </ul>
             </div>

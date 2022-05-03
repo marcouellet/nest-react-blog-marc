@@ -31,20 +31,18 @@ const Login = () => {
     event.preventDefault();
     dispatch(createActionLoading(true));
     const { email, password } = form;
-    AUTHAPI.login(email, password)
+    await AUTHAPI.login(email, password)
       .then(
         (user) => {
-          dispatch(createActionLoading(false));
           dispatch(createActionLoadUser(user));
           navigate('/');    
         }
       )
       .catch((error) => {
         console.log(error);
-        dispatch(createActionLoading(false));
-        if (error.status === 422) {
-          setErrors(error.data.errors);
-      }})
+        setErrors(error.data.errors);
+      });
+    dispatch(createActionLoading(false));
   } 
 
   return (

@@ -4,25 +4,35 @@ import { IPost } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
+import ListErrors from '../common/ListErrors';
+import { IErrors } from '../../types';
 
 const Post = () => {
 
   const { postId } = useParams<{ postId: string }>();
   const { dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
+  const [errors, setErrors] = React.useState<IErrors | null>();
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       dispatch(createActionLoading(true));
-      const post = await PostApiService.getPostById(Number.parseInt(postId!));
+      await PostApiService.getPostById(Number.parseInt(postId!))
+      .then((post) => setPost(post.data))
+      .catch((error) => handleFetchPostError(error))
       dispatch(createActionLoading(false));
-      setPost(post.data);
     }
     fetchData();
-  }, [postId]);
+  }, [postId, dispatch]);
+
+  const handleFetchPostError = (error: any) => {
+    console.log(error);
+    setErrors(error.data.errors);
+  }
 
     return (
         <section className="post-area">
+        {errors && <ListErrors errors={errors} />}
         <div className="container">
           <div className="row">
             <div className="col-lg-1 col-md-0" />

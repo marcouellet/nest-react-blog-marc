@@ -33,20 +33,17 @@ const Register = () => {
     dispatch(createActionLoading(true));
     const { username, email, password } = form;
 
-   AUTHAPI.register({username, email, password})
-   .then(
-     (user) => {
-      dispatch(createActionLoading(false));
-       dispatch(createActionLoadUser(user));
-       navigate('/');    
-     }
-   )
-   .catch((error) => {
-     console.log(error);
-     dispatch(createActionLoading(false));
-     if (error.status === 422) {
-       setErrors(error.data.errors);
-   }})
+    await AUTHAPI.register({username, email, password})
+      .then(
+        (user) => {
+          dispatch(createActionLoadUser(user));
+          navigate('/');    
+        }
+      )
+      .catch((error) => {
+        setErrors(error.data.errors);  
+      });
+    dispatch(createActionLoading(false));
  } 
 
   return (

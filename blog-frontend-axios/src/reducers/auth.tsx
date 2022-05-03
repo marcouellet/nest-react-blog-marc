@@ -1,6 +1,6 @@
 import { IUser } from '../types';
 
-export const enum AuthActionType {
+export enum AuthActionType {
   Login = 'LOGIN',
   LoadUser = 'LOAD_USER',
   Logout = 'LOGOUT',
