@@ -13,11 +13,11 @@ function handleUserData({ user: { token, ...user } }: User) {
 }
 
 function getCurrentUser() {
-  return API.get<User>('/user');
+  return API.get<User>('/auth/user');
 }
 
 function login(email: string, password: string) {
-  return API.post<User>('/users/login', {
+  return API.post<User>('/auth/login', {
     user: { email, password },
   }).then((response) => handleUserData(response.data));
 }
@@ -27,13 +27,9 @@ function register(user: {
   email: string;
   password: string;
 }) {
-  return API.post<User>('/users', { user }).then((response) =>
+  return API.post<User>('/auth/register', { user }).then((response) =>
     handleUserData(response.data),
   );
-}
-
-function updateUser(user: IUser & Partial<{ password: string }>) {
-  return API.put<User>('/user', { user });
 }
 
 function logout() {
@@ -41,6 +37,6 @@ function logout() {
   setToken(null);
 }
 
-const AUTHAPI = {getCurrentUser, updateUser, login, register, logout}
+const AUTHAPI = {getCurrentUser, login, register, logout}
 
 export default AUTHAPI

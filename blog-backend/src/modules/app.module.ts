@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService, GetConfigOptions } from '../config';
-import { AppController } from '../controllers/app.controller';
-import { AppService } from '../services/app.service';
-import {UserModule } from './user.module';
-import { PostModule } from './post.module';
+import { GetConfig } from '../config';
+import { AppController } from '../controllers';
+import { ConfigService, AppService, AuthService } from '../services';
+import { ConfigModule, UserModule, PostModule, AuthModule } from './';
 import { DataServicesModule } from '../frameworks/data-services/data-services.module';
 
 @Module({
   imports: [
     ConfigModule,
-    DataServicesModule.register(GetConfigOptions()),
+    AuthModule,
+    DataServicesModule.register(GetConfig()),
     UserModule,
     PostModule,
   ],
   controllers: [AppController],
-  providers: [ConfigService, AppService],
+  providers: [ConfigService, AppService, AuthService],
 })
 export class AppModule {}

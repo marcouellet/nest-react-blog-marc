@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IDataServicesRepositories } from '../../../core';
-import { ConfigService } from '../../../config';
+import { ConfigService } from '../../../services';
 import {
   User,
   UserSchema,

@@ -10,12 +10,12 @@ const validateDataServerName = (dataServerName) : Boolean => {
     return validDataServerNames.includes(dataServerName);
 }
 
-export interface IConfigOptions {
+export interface IConfig {
     dataServerName: String;
     connectionString: String;
 }
 
-export const GetConfigOptions = () : IConfigOptions => {
+export const GetConfig = () : IConfig => {
 
     const dataServerName = process.env.DATA_SERVER_NAME;
     const connectionString =  process.env.DATA_SERVER_CONNECTION_STRING;

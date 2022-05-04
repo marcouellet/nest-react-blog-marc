@@ -15,6 +15,7 @@ export class PostController {
     const posts = await this.postServices.getAllPosts();
     return res.status(HttpStatus.OK).json(posts);
   }
+
   // Fetch a particular post using ID
   @Get(':id')
   async getPost(@Res() res, @Param('id', new ValidateObjectId()) id) {
@@ -51,6 +52,7 @@ export class PostController {
       post: editedPost,
     });
   }
+  
   // Delete a post using ID
   @Delete('/delete')
   async deletePost(@Res() res, @Query('id', new ValidateObjectId()) id) {
