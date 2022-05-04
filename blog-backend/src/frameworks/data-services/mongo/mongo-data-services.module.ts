@@ -14,12 +14,12 @@ import { MongoDataServicesRepositories } from './mongo-data-services-repositorie
   imports: [
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.getOptions().connectionString,
+        uri: configService.getConfig().connectionString,
       }),
       inject: [ConfigService]}),
     MongooseModule.forFeature([
-      { name: User.name, schema:UserSchema },
-      { name: Post.name, schema:PostSchema },
+      { name: User.name, schema: UserSchema },
+      { name: Post.name, schema: PostSchema },
     ]),
   ],
   providers: [

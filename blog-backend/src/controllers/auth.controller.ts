@@ -30,6 +30,4 @@ export class AuthController {
       message: 'Login successfully!',
     });
   }
-
-
 }

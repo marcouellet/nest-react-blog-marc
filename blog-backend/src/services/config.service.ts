@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { IConfig, GetConfig } from '../config/config'
-
+import { IConfig, GetConfig } from '../config/config';
 @Injectable()
 export class ConfigService {
-    private config : IConfig;
+    private config: IConfig;
 
     constructor() {
         this.config = GetConfig();
     }
-    
-    getOptions() : IConfig {
+
+    getConfig(): IConfig {
         return this.config;
     }
 }

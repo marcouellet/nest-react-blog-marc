@@ -5,10 +5,38 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/blog-backend/src/main.ts",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "Nest Blog Backend",
+            "type": "node",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\blog-backend\\src\\main.ts",
+            "cwd": "${workspaceFolder}\\blog-backend",
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register",
+                "-r",
+                "tsconfig-paths/register"
+            ],
+            "sourceMaps": true,
+            "envFile": "${workspaceFolder}\\blog-backend\\.env",
+            "console": "integratedTerminal",
+        },
+        {
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3000",
+            "url": "http://localhost:5000/api",
             "webRoot": "${workspaceFolder}"
         }
     ]

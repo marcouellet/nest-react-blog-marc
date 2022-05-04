@@ -7,10 +7,10 @@ import { NotFoundException } from '@nestjs/common';
 @Module({})
 export class DataServicesModule {
 
-  public static register(config : IConfig): DynamicModule {
+  public static register(config: IConfig): DynamicModule {
 
-    let modules: any[] = [];
-    let providers: any[] = [];
+    const modules: any[] = [];
+    const providers: any[] = [];
     let serverFound: boolean = true;
 
     const dataServerName = config.dataServerName;
@@ -20,7 +20,7 @@ export class DataServicesModule {
         modules.push(MongoDataServicesModule);
         providers.push(IDataServicesRepositories);
         break;
-      default: 
+      default:
         serverFound = false;
     }
 
@@ -28,12 +28,11 @@ export class DataServicesModule {
       return {
         module: DataServicesModule,
         imports: modules,
-        providers: providers,
+        providers,
         exports: [IDataServicesRepositories],
       };
     } else {
-      throw new NotFoundException("No implementations for data services of type " + 
-      dataServerName);          
+      throw new NotFoundException(`No implementations for data services of type ${dataServerName}`);
     }
   }
 }

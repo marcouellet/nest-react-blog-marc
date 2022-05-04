@@ -21,7 +21,7 @@ export class MongoDataServicesRepositories extends IDataServicesRepositories imp
     private UserRepository: Model<UserDocument>,
     @InjectModel(Post.name)
     private PostRepository: Model<PostDocument>,
-  ) {super();}
+  ) { super(); }
 
   onApplicationBootstrap() {
     this.users = new MongoGenericDataServicesRepository<User>(this.UserRepository);
