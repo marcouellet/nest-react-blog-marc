@@ -12,7 +12,7 @@ export class UserController {
     const users = await this.userServices.getAllUsers();
     return res.status(HttpStatus.OK).json(users);
   }
- 
+
   @Get(':id')
   async getById(@Res() res, @Param('id', new ValidateObjectId()) id: any) {
     const user = await this.userServices.getUserById(id);
@@ -48,7 +48,7 @@ export class UserController {
       user: updatedUser,
     });
   }
-a
+
   // Delete user using ID
   @Delete('/delete')
   async deleteUser(@Res() res, @Query('id', new ValidateObjectId()) id) {

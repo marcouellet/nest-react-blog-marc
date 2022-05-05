@@ -1,13 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IDataServicesRepositories } from '../../../core';
-import { ConfigService } from '../../../services';
-import {
-  User,
-  UserSchema,
-  Post,
-  PostSchema,
-} from './model';
+import { ConfigService } from '../../../services/config.service';
+import {  User, UserSchema } from './model/user.model';
+import {  Post, PostSchema } from './model/post.model';
 import { MongoDataServicesRepositories } from './mongo-data-services-repositories';
 
 @Module({

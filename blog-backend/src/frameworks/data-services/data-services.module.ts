@@ -28,7 +28,7 @@ export class DataServicesModule {
       return {
         module: DataServicesModule,
         imports: modules,
-        providers,
+        providers: providers,
         exports: [IDataServicesRepositories],
       };
     } else {

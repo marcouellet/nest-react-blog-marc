@@ -3,13 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IDataServicesRepositories, IGenericDataServicesRepository } from '../../../core';
 import { MongoGenericDataServicesRepository } from './mongo-data-services-generic-repository';
-import {
-  User,
-  UserDocument,
-  Post,
-  PostDocument,
-} from './model';
-
+import {  User, UserDocument } from './model/user.model';
+import {  Post, PostDocument } from './model/post.model';
 @Injectable()
 export class MongoDataServicesRepositories extends IDataServicesRepositories implements OnApplicationBootstrap
 {

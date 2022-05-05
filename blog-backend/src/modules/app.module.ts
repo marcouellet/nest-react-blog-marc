@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { GetConfig } from '../config';
-import { AppController } from '../controllers';
-import { ConfigService, AppService } from '../services';
-import { ConfigModule, UserModule, PostModule, AuthModule } from './';
+import { GetConfig } from '../config/config';
+import { AppController } from '../controllers/app.controller';
+import { ConfigService } from '../services/config.service';
+import { AppService } from '../services/app.service';
+import { ConfigModule } from './config.module';
+import { AuthModule } from './auth.module';
 import { DataServicesModule } from '../frameworks/data-services/data-services.module';
+import { UserModule } from './user.module';
+import { PostModule } from './post.module';
 
 @Module({
   imports: [

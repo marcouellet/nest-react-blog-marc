@@ -52,7 +52,7 @@ export class PostController {
       post: editedPost,
     });
   }
-  
+
   // Delete a post using ID
   @Delete('/delete')
   async deletePost(@Res() res, @Query('id', new ValidateObjectId()) id) {
