@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Res, Body, HttpStatus } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto } from '../core/dtos';
-
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -9,25 +8,24 @@ export class AuthController {
   // Get current user
   @Get('/user')
   async currentUser(@Res() res) {
-    const user = await this.authService.getCurrentUser();
-    return res.status(HttpStatus.OK).json(user);
+    this.authService.getCurrentUser()
+      .then((user) => res.status(HttpStatus.OK).json({user}))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Login user
   @Post('/login')
-  async login(@Res() res, @Body() loginDto: LoginDto) {
-    const newPost = await this.authService.login(loginDto);
-    return res.status(HttpStatus.OK).json({
-      message: 'Login successfully!',
-    });
+  async login(@Res() res, @Body() body) {
+    this.authService.login(body.user)
+      .then((user) => res.status(HttpStatus.OK).json({user}))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Register user
   @Post('/register')
-  async register(@Res() res, @Body() registerDto: RegisterDto) {
-    const newUser = await this.authService.register(registerDto);
-    return res.status(HttpStatus.OK).json({
-      newUser
-    });
+  async register(@Res() res, @Body() body) {
+    this.authService.register(body.user)
+      .then((user) => res.status(HttpStatus.OK).json({user}))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

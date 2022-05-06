@@ -29,8 +29,8 @@ export class UserService {
   }
 
   createUser(createUserDto: CreateUserDto): Promise<User> {
-    const author = this.userFactoryService.createNewUser(createUserDto);
-    return this.dataServicesRepositories.users.create(author);
+    const user = this.userFactoryService.createNewUser(createUserDto);
+    return this.dataServicesRepositories.users.create(user);
   }
 
   updateUser(
@@ -41,7 +41,7 @@ export class UserService {
     return this.dataServicesRepositories.users.update(userId, user);
   }
 
-  deleteUser(id: any) : Promise<User>
+  deleteUser(id: any): Promise<User>
   {
     return this.dataServicesRepositories.users.delete(id);
   }
