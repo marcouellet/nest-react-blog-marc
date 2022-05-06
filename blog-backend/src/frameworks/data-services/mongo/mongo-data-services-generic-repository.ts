@@ -18,6 +18,14 @@ export class MongoGenericDataServicesRepository<T> implements IGenericDataServic
     return this._repository.findById(id).populate(this._populateOnFind).exec() as Promise<T>;
   }
 
+  findOne(criterias: {}): Promise<T> {
+    return this._repository.findOne(criterias).populate(this._populateOnFind).exec() as Promise<T>;
+  }
+
+  findMany(criterias: {}): Promise<T[]> {
+    return this._repository.find(criterias).populate(this._populateOnFind).exec() as Promise<T[]>;
+  }
+
   create(item: T): Promise<T> {
     return this._repository.create(item);
   }

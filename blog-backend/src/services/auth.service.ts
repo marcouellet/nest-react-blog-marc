@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { LoginDto, RegisterDto } from '../core/dtos';
-
+import { CreateUserDto, LoginDto, RegisterDto } from '../core/dtos';
+import { UserService } from '../services/user/user.service';
+import { User } from '../core/entities';
 @Injectable()
 export class AuthService {
 
-  getCurrentUser(): string {
-    return 'Get Current User successfull!';
+  constructor(
+    private userService: UserService
+  ) {}
+
+  getCurrentUser(): Promise<User> {
+    return null;
   }
 
-  login(loginDto: LoginDto): string {
-    return 'Login successfull!';
+  login(loginDto: LoginDto): Promise<User> {
+    return this.userService.findUser(loginDto);
   }
 
-  register(registerDto: RegisterDto): string {
-    return 'Register successfull!';
+  register(registerDto: RegisterDto): Promise<User> {
+    return this.userService.createUser(registerDto);
   }
 }
+
+

@@ -20,6 +20,14 @@ export class UserService {
     return this.dataServicesRepositories.users.get(id);
   }
 
+  findUser(criterias: any): Promise<User> {
+    return this.dataServicesRepositories.users.findOne(criterias);
+  }
+
+  findManyUsers(criterias: any): Promise<User[]> {
+    return this.dataServicesRepositories.users.findMany(criterias);
+  }
+
   createUser(createUserDto: CreateUserDto): Promise<User> {
     const author = this.userFactoryService.createNewUser(createUserDto);
     return this.dataServicesRepositories.users.create(author);

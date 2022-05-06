@@ -5,7 +5,7 @@ import useAuth from '../contexts/auth';
 import { toast } from "react-toastify";
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
-import { IErrors } from '../types';
+import { IErrors, User } from '../types';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -34,10 +34,10 @@ const Register = () => {
     dispatch(createActionLoading(true));
     const { username, email, password } = form;
 
-    await AUTHAPI.register({username, email, password})
+    await AUTHAPI.register(username, email, password)
       .then(
-        (user) => {
-          dispatch(createActionLoadUser(user));
+        (user: User) => {
+          dispatch(createActionLoadUser(user!));
           navigate('/');    
         }
       )

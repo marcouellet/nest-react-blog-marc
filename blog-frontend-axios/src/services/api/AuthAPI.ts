@@ -1,35 +1,48 @@
 import API, { TOKEN_KEY , setToken } from './APIUtils';
-import { IUser } from '../../types';
+import { User } from '../../types';
 import { setLocalStorage } from '../../utils/utils';
 
-type User = {
-  user: IUser & { token: string };
-};
-
-function handleUserData({ user: { token, ...user } }: User) {
+function handleToken(token: string) {
   setLocalStorage(TOKEN_KEY, token);
   setToken(token);
-  return user;
 }
 
-function getCurrentUser() {
-  return API.get<User>('/auth/user');
+async function  getCurrentUser(): Promise<User> {
+  return new Promise((resolve, reject) => {
+    API.get<User>('/auth/user')
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
 
-function login(email: string, password: string) {
-  return API.post<User>('/auth/login', {
-    user: { email, password },
-  }).then((response) => handleUserData(response.data));
+async function login(email: string, password: string): Promise<User> {
+  return new Promise((resolve, reject) => {
+    API.post<User>('/auth/login', {user: { email, password }})
+      .then(response => {
+        handleToken(response.data.token!);
+        resolve(response.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
 
-function register(user: {
-  username: string;
-  email: string;
-  password: string;
-}) {
-  return API.post<User>('/auth/register', { user }).then((response) =>
-    handleUserData(response.data),
-  );
+async function register(username: string, email: string, password: string) : Promise<User> {
+  return new Promise((resolve, reject) => {
+    API.post<User>('/auth/register', { user: { username, email, password }})
+      .then(response => {
+        handleToken(response.data.token!);
+        resolve(response.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
 
 function logout() {

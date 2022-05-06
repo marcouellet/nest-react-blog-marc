@@ -14,7 +14,7 @@
             "type": "node"
         },
         {
-            "name": "Nest Blog Backend",
+            "name": "Marc Nest Blog Backend",
             "type": "node",
             "request": "launch",
             "skipFiles": [
@@ -33,11 +33,17 @@
             "console": "integratedTerminal",
         },
         {
-            "type": "pwa-chrome",
+            "name": "Marc Nest Blog FrontEnd-Axios",
+            "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:5000/api",
-            "webRoot": "${workspaceFolder}"
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}\\blog-frontend-axios\\src",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "sourceMaps": true,
+            "envFile": "${workspaceFolder}\\blog-frontend-axios\\src\\.env",
+            "console": "integratedTerminal",
         }
     ]
 }

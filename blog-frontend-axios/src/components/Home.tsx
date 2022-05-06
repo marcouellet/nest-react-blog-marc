@@ -20,7 +20,7 @@ const Home = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
 
   const _removePostFromView = (id: number) => {
-    const index = posts.findIndex((post: { id: number; }) => post.id === id);
+    const index = posts.findIndex((post: IPost) => post.id === id);
     posts.splice(index, 1);
   }
 
@@ -94,7 +94,7 @@ const Home = () => {
                   <li>
                     {
                       isAuthenticated && !isLoading && (user!.email === post.user.email) &&
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id)}>Delete Post</button>
+                      <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id!)}>Delete Post</button>
                     }
                   </li>
                 </ul>

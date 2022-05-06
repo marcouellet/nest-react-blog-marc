@@ -6,16 +6,18 @@ import { CreateUserDto, UpdateUserDto } from '../../core/dtos';
 export class UserFactoryService {
   createNewUser(createUserDto: CreateUserDto) {
     const newUser = new User();
-    newUser.firstName = createUserDto.firstName;
-    newUser.lastName = createUserDto.lastName;
+    newUser.username = createUserDto.username;
+    newUser.email = createUserDto.email;
+    newUser.password = createUserDto.password;
 
     return newUser;
   }
 
   updateUser(updateUserDto: UpdateUserDto) {
     const newUser = new User();
-    newUser.firstName = updateUserDto.firstName;
-    newUser.lastName = updateUserDto.lastName;
+    newUser.username = updateUserDto.username;
+    newUser.email = updateUserDto.email;
+    newUser.password = updateUserDto.password;
 
     return newUser;
   }

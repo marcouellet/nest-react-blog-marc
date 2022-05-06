@@ -1,9 +1,10 @@
 import { User } from './';
 
 export class Post {
-  title: String;
-  description: String;
-  body: String;
+  id?: string;
+  title: string;
+  description: string;
+  body: string;
   user: User;
   publishDate: Date;
 }

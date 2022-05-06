@@ -36,7 +36,7 @@ const Navbar = () => {
                     {!isLoading && user && (
                         <li>
                             <div>
-                                <label className="mr-2">{user.userName}</label>
+                                <label className="mr-2">{user.username}</label>
                                 <button className="btn" onClick={handleLogout}>
                                     Log Out 
                                 </button>
