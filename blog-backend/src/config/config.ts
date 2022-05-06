@@ -1,43 +1,41 @@
-require('dotenv').config({ path: '.env' })
-
+import * as dotenv from 'dotenv';
 import { NotFoundException } from '@nestjs/common';
 
-export const MONGO_SERVER_NAME = "MONGODB"
+export const MONGO_SERVER_NAME = 'MONGODB';
 
-const validDataServerNames: String[] =  [MONGO_SERVER_NAME];
+const result = dotenv.config();
 
-const validateDataServerName = (dataServerName) : Boolean => {
+if (result?.error) {
+    throw new Error('Add .env file');
+}
+
+const validDataServerNames: string[] =  [MONGO_SERVER_NAME];
+
+const validateDataServerName = (dataServerName: string): boolean => {
     return validDataServerNames.includes(dataServerName);
-}
-
+};
 export interface IConfig {
-    dataServerName: String;
-    connectionString: String;
+    dataServerName: string;
+    connectionString: string;
 }
 
-export const GetConfig = () : IConfig => {
+export const GetConfig = (): IConfig => {
 
     const dataServerName = process.env.DATA_SERVER_NAME;
     const connectionString =  process.env.DATA_SERVER_CONNECTION_STRING;
 
     if (!dataServerName) {
-        throw new NotFoundException("Please, provide a value for DATA_SERVER_NAME in env file"); 
+        throw new NotFoundException('Please, provide a value for DATA_SERVER_NAME in env file'); 
     }
 
     if (!connectionString) {
-        throw new NotFoundException("Please, provide a value for DATA_SERVER_CONNECTION_STRING in env file"); 
+        throw new NotFoundException('Please, provide a value for DATA_SERVER_CONNECTION_STRING in env file'); 
     }
 
     if (!validateDataServerName(dataServerName)) {
-        throw new NotFoundException("Invalid data server name : " + dataServerName +
-        ", should belong to " +  validDataServerNames.toString());
+        throw new NotFoundException('Invalid data server name : ' + dataServerName +
+        ', should belong to ' +  validDataServerNames.toString());
     }
- 
-    return { dataServerName:  dataServerName, connectionString: connectionString }
-}  
 
-
-
-
-
-
+    return { dataServerName, connectionString };
+};

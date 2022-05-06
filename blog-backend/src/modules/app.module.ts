@@ -8,7 +8,6 @@ import { AuthModule } from './auth.module';
 import { DataServicesModule } from '../frameworks/data-services/data-services.module';
 import { UserModule } from './user.module';
 import { PostModule } from './post.module';
-
 @Module({
   imports: [
     ConfigModule,

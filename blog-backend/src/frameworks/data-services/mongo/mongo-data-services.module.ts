@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IDataServicesRepositories } from '../../../core';
 import { ConfigService } from '../../../services/config.service';
 import {  User, UserSchema } from './model/user.model';
 import {  Post, PostSchema } from './model/post.model';
 import { MongoDataServicesRepositories } from './mongo-data-services-repositories';
-
+import { GetConfig } from '../../../config/config';
+@Global()
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -23,8 +24,7 @@ import { MongoDataServicesRepositories } from './mongo-data-services-repositorie
       provide: IDataServicesRepositories,
       useClass: MongoDataServicesRepositories,
     },
-  ],
+],
   exports: [IDataServicesRepositories],
-
 })
 export class MongoDataServicesModule {}
