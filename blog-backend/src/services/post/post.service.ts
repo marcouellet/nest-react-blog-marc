@@ -3,7 +3,6 @@ import { Post } from '../../core/entities';
 import { IDataServicesRepositories } from '../../core/abstracts';
 import { CreatePostDto, UpdatePostDto } from '../../core/dtos';
 import { PostFactoryService } from './post-factory.service';
-
 @Injectable()
 export class PostService {
 
@@ -13,16 +12,19 @@ export class PostService {
   ) {}
 
   getAllPosts(): Promise<Post[]> {
-    return this.dataRepositories.posts.getAll();
+    return this.dataRepositories.posts.getAll()
+    .then(posts => posts.map(post => this.dataRepositories.posts.convertToGenericId(post)));
   }
 
   getPostById(id: any): Promise<Post> {
-    return this.dataRepositories.posts.get(id);
+    return this.dataRepositories.posts.get(id)
+    .then(post => this.dataRepositories.posts.convertToGenericId(post));
   }
 
   createPost(createPostDto: CreatePostDto): Promise<Post> {
     const post = this.postFactoryService.createNewPost(createPostDto);
-    return this.dataRepositories.posts.create(post);
+    return this.dataRepositories.posts.create(post)
+      .then(post => this.dataRepositories.posts.convertToGenericId(post));
   }
 
   updatePost(
@@ -30,7 +32,8 @@ export class PostService {
     updatePostDto: UpdatePostDto,
   ): Promise<Post> {
     const post = this.postFactoryService.updatePost(updatePostDto);
-    return this.dataRepositories.posts.update(postId, post);
+    return this.dataRepositories.posts.update(postId, post)
+      .then(post => this.dataRepositories.posts.convertToGenericId(post));
   }
 
   deletePost(id: any )  : Promise<Post>

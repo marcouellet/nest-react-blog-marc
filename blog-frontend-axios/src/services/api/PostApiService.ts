@@ -5,7 +5,7 @@ const POST_ENDPOINT = `/post`;
 
 export class PostApi extends HttpApiService<IPost> {
  
-  getPostById = (id: number) => {
+  getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);
   };
 
@@ -14,11 +14,11 @@ export class PostApi extends HttpApiService<IPost> {
   };
 
   createPost = (data: any) => {
-    return super.create(`${POST_ENDPOINT}`, data);
+    return super.create(`${POST_ENDPOINT}/create`, data);
   };
 
   updatePost = (data: IPost) => {
-    return super.update(`${POST_ENDPOINT}`, data);
+    return super.update(`${POST_ENDPOINT}/update`, data);
   };
 
   deletePost = (id: number) => {

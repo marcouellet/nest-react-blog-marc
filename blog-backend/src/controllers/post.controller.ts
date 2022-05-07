@@ -1,39 +1,55 @@
-
 import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
 import { PostService } from '../services/post/post.service';
-import { CreatePostDto } from '../core/dtos';
+import { UserService } from '../services/user/user.service';
+import { CreatePostDto, UpdatePostDto, PostDto } from '../core/dtos';
 import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
+import { Post as PostEntity } from '../core/entities/post.entity';
 
 @Controller('post')
 export class PostController {
 
-  constructor(private postServices: PostService) { }
+  constructor(private postService: PostService, private userService: UserService) { }
+
+  private createPostDto(post: PostEntity): PostDto {
+    const postDto = new PostDto();
+    postDto.id = post.id;
+    postDto.title = post.title;
+    postDto.description = post.description;
+    postDto.body = post.body;
+    postDto.userId = post.user.id;
+    postDto.publishDate = post.publishDate;
+
+    return postDto;
+  }
 
   // Fetch all posts
   @Get()
   async getAll(@Res() res) {
-    const posts = await this.postServices.getAllPosts();
-    return res.status(HttpStatus.OK).json(posts);
+    this.postService.getAllPosts()
+    .then((posts) => {
+      const postDtos: PostDto[] = posts.map((post) => this.createPostDto(post));
+      res.status(HttpStatus.OK).json(postDtos)})
+    .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Fetch a particular post using ID
   @Get(':id')
   async getPost(@Res() res, @Param('id', new ValidateObjectId()) id) {
-    const post = await this.postServices.getPostById(id);
-    if (!post) {
-        throw new NotFoundException('Post does not exist!');
-    }
-    return res.status(HttpStatus.OK).json(post);
+    this.postService.getPostById(id)
+    .then((post) => res.status(HttpStatus.OK).json(this.createPostDto(post)))
+    .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Submit a new post
   @Post('/create')
   async createPost(@Res() res, @Body() createPostDto: CreatePostDto) {
-    const newPost = await this.postServices.createPost(createPostDto);
-    return res.status(HttpStatus.OK).json({
-      message: 'Post has been created successfully!',
-      post: newPost,
-    });
+    // Validate userId
+    await this.userService.getUserById(createPostDto.userId)
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+    // userId match a User
+    this.postService.createPost(createPostDto)
+      .then((post) => res.status(HttpStatus.OK).json(this.createPostDto(post)))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Update a post
@@ -41,28 +57,18 @@ export class PostController {
   async editPost(
     @Res() res,
     @Query('id', new ValidateObjectId()) id,
-    @Body() createPostDto: CreatePostDto,
+    @Body() updatePostDto: UpdatePostDto,
   ) {
-    const editedPost = await this.postServices.updatePost(id, createPostDto);
-    if (!editedPost) {
-        throw new NotFoundException('Post does not exist!');
-    }
-    return res.status(HttpStatus.OK).json({
-      message: 'Post has been successfully updated',
-      post: editedPost,
-    });
+    this.postService.updatePost(id, updatePostDto)
+      .then((post) => res.status(HttpStatus.OK).json(this.createPostDto(post)))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Delete a post using ID
   @Delete('/delete')
   async deletePost(@Res() res, @Query('id', new ValidateObjectId()) id) {
-    const deletedPost = await this.postServices.deletePost(id);
-    if (!deletedPost) {
-        throw new NotFoundException('Post does not exist!');
-    }
-    return res.status(HttpStatus.OK).json({
-      message: 'Post has been deleted!',
-      post: deletedPost,
-    });
+    this.postService.deletePost(id)
+      .then((post) => res.status(HttpStatus.OK))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

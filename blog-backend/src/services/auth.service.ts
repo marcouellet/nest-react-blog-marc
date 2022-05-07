@@ -18,7 +18,8 @@ export class AuthService {
   }
 
   login(loginDto: LoginDto): Promise<User> {
-    return this.userService.findUser(loginDto);
+    const { email, password } = loginDto;
+    return this.userService.findUser({ email, password });
   }
 
   register(registerDto: RegisterDto): Promise<User> {

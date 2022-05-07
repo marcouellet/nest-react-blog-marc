@@ -10,31 +10,38 @@ export class MongoGenericDataServicesRepository<T> implements IGenericDataServic
     this._populateOnFind = populateOnFind;
   }
 
-  getAll(): Promise<T[]> {
+  convertToGenericId(obj: any): T {
+    let newObj = obj;
+    obj.id = obj._id;
+    delete newObj['_id'];
+    return newObj;
+  }
+
+  async getAll(): Promise<T[]> {
     return this._repository.find().populate(this._populateOnFind).exec();
   }
 
-  get(id: string): Promise<T> {
+  async get(id: string): Promise<T> {
     return this._repository.findById(id).populate(this._populateOnFind).exec() as Promise<T>;
   }
 
-  findOne(criterias: {}): Promise<T> {
+  async findOne(criterias: {}): Promise<T> {
     return this._repository.findOne(criterias).populate(this._populateOnFind).exec() as Promise<T>;
   }
 
-  findMany(criterias: {}): Promise<T[]> {
+  async findMany(criterias: {}): Promise<T[]> {
     return this._repository.find(criterias).populate(this._populateOnFind).exec() as Promise<T[]>;
   }
 
-  create(item: T): Promise<T> {
+  async create(item: T): Promise<T> {
     return this._repository.create(item);
   }
 
-  update(id: string, item: T) {
+  async update(id: string, item: T) {
     return this._repository.findByIdAndUpdate(id, item);
   }
 
-  delete(id: string) {
+  async delete(id: string) {
     return this._repository.findByIdAndDelete(id);
   }
 }

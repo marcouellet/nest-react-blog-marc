@@ -18,7 +18,7 @@ const Post = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       dispatch(createActionLoading(true));
-      await PostApiService.getPostById(Number.parseInt(postId!))
+      await PostApiService.getPostById(postId!)
       .then((post) => setPost(post.data))
       .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
       dispatch(createActionLoading(false));

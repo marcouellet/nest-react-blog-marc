@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Res, Body, HttpStatus } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { LoginDto, RegisterDto } from '../core/dtos';
+import { User } from '../core/entities/user.entity';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -9,7 +9,11 @@ export class AuthController {
   @Get('/user')
   async currentUser(@Res() res) {
     this.authService.getCurrentUser()
-      .then((user) => res.status(HttpStatus.OK).json({user}))
+      .then((user) => {
+        const {username, email} = user;
+        const data = {username, email, token: this.authService.createToken()};
+        return res.status(HttpStatus.OK).json(data);
+      })
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
@@ -18,8 +22,8 @@ export class AuthController {
   async login(@Res() res, @Body() body) {
     this.authService.login(body.user)
       .then((user) => {
-        const {username, email} = user;
-        const data = {username, email, token: this.authService.createToken()};
+        const {id, username, email } = user;
+        const data = {id, username, email, token: this.authService.createToken()};
         return res.status(HttpStatus.OK).json(data);
       })
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -30,8 +34,8 @@ export class AuthController {
   async register(@Res() res, @Body() body) {
     this.authService.register(body.user)
       .then((user) => {
-        const {username, email} = user;
-        const data = {username, email, token: this.authService.createToken()};
+        const {id, username, email} = user;
+        const data = {id, username, email, token: this.authService.createToken()};
         return res.status(HttpStatus.OK).json(data);
       })
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));

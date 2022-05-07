@@ -12,4 +12,6 @@ export interface IGenericDataServicesRepository<T> {
   update(id: string, item: T);
 
   delete(id: string);
+
+  convertToGenericId(obj: any): T;
 }

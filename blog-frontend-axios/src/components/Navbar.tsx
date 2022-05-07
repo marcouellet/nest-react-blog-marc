@@ -25,7 +25,7 @@ const Navbar = () => {
                 <ul className="main-menu visible-on-click" id="main-menu">
                     <li><Link className={"nav-link"} to={"/"}> Home </Link></li>
                     {!isLoading && isAuthenticated && (
-                        <li><Link className={"nav-link"} to={"/create"}> Create </Link></li>
+                        <li><Link className={"nav-link"} to={"/post/create"}> Create </Link></li>
                     )}
                     {!isLoading && !isAuthenticated && (
                         <li><Link className={"nav-link"} to={"/login"}> Log In </Link></li>

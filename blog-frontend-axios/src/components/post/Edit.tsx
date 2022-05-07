@@ -26,7 +26,7 @@ const Edit = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       dispatch(createActionLoading(true));
-      const post = await PostApiService.getPostById(Number.parseInt(postId!));
+      const post = await PostApiService.getPostById(postId!);
       dispatch(createActionLoading(false));
       setPost(post.data);
     }
