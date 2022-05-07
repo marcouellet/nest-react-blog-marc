@@ -4,7 +4,6 @@ import { setLocalStorage } from '../../utils/utils';
 
 function handleToken(token: string) {
   setLocalStorage(TOKEN_KEY, token);
-  setToken(token);
 }
 
 async function  getCurrentUser(): Promise<User> {

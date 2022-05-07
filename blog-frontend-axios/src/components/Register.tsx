@@ -37,7 +37,7 @@ const Register = () => {
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
-          dispatch(createActionLoadUser(user!));
+          dispatch(createActionLoadUser(user));
           navigate('/');    
         }
       )

@@ -30,7 +30,6 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
 
     if (isTokenValid(token)) {
       setToken(token);
-      dispatch(createActionLogin());
     } else {
       dispatch(createActionLogout());
       AUTHAPI.logout();
