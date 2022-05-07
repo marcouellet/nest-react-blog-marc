@@ -1,7 +1,7 @@
 export interface IUser {
   id?: number; // Identifier uniq
   username: string;
-  password: string;
+  password?: string;
   email: string;
 }
 

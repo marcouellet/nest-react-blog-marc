@@ -4,7 +4,6 @@ import {
   initialState,
   AuthAction,
   AuthState,
-  createActionLogin,
   createActionLogout
 } from '../reducers/auth';
 import { getLocalStorageValue } from '../utils/utils';

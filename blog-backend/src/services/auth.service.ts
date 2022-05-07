@@ -13,6 +13,10 @@ export class AuthService {
     return null;
   }
 
+  createToken(): string {
+    return 'token';
+  }
+
   login(loginDto: LoginDto): Promise<User> {
     return this.userService.findUser(loginDto);
   }

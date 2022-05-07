@@ -17,7 +17,11 @@ export class AuthController {
   @Post('/login')
   async login(@Res() res, @Body() body) {
     this.authService.login(body.user)
-      .then((user) => res.status(HttpStatus.OK).json({user}))
+      .then((user) => {
+        const {username, email} = user;
+        const data = {username, email, token: this.authService.createToken()};
+        return res.status(HttpStatus.OK).json(data);
+      })
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
@@ -25,7 +29,11 @@ export class AuthController {
   @Post('/register')
   async register(@Res() res, @Body() body) {
     this.authService.register(body.user)
-      .then((user) => res.status(HttpStatus.OK).json({user}))
+      .then((user) => {
+        const {username, email} = user;
+        const data = {username, email, token: this.authService.createToken()};
+        return res.status(HttpStatus.OK).json(data);
+      })
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

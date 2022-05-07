@@ -1,4 +1,4 @@
-import { IUser } from '../types';
+import { User } from '../types';
 
 export enum AuthActionType {
   LoadUser = 'LOAD_USER',
@@ -6,13 +6,13 @@ export enum AuthActionType {
   Loading = 'LOADING'
 }
 export const createActionLogout = () : AuthAction => { return {type:  AuthActionType.Logout}}
-export const createActionLoadUser = (user: IUser) : AuthAction => { return {type:  AuthActionType.LoadUser, user: user}}
+export const createActionLoadUser = (user: User) : AuthAction => { return {type:  AuthActionType.LoadUser, user: user}}
 export const createActionLoading = (isLoading: boolean) : AuthAction => { return {type:  AuthActionType.Loading, isLoading: isLoading}}
 
 export type AuthAction =
   | {
       type: AuthActionType.LoadUser;
-      user: IUser;
+      user: User;
     }
   | { type: AuthActionType.Logout }
   | { 
@@ -23,7 +23,7 @@ export type AuthAction =
 export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
-  user: IUser | null;
+  user: User | null;
 }
 
 export const initialState: AuthState = {
