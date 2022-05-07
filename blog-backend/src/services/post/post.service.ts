@@ -7,24 +7,34 @@ import { PostFactoryService } from './post-factory.service';
 export class PostService {
 
   constructor(
-    private dataRepositories: IDataServicesRepositories,
+    private dataServicesRepositories: IDataServicesRepositories,
     private postFactoryService: PostFactoryService,
   ) {}
 
   getAllPosts(): Promise<Post[]> {
-    return this.dataRepositories.posts.getAll()
-    .then(posts => posts.map(post => this.dataRepositories.posts.convertToGenericId(post)));
+    return this.dataServicesRepositories.posts.getAll()
+    .then(posts => posts.map(post => this.dataServicesRepositories.posts.convertToGenericId(post)));
   }
 
   getPostById(id: any): Promise<Post> {
-    return this.dataRepositories.posts.get(id)
-    .then(post => this.dataRepositories.posts.convertToGenericId(post));
+    return this.dataServicesRepositories.posts.get(id)
+    .then(post => this.dataServicesRepositories.posts.convertToGenericId(post));
+  }
+
+  findPost(criterias: any): Promise<Post> {
+    return this.dataServicesRepositories.posts.findOne(criterias)
+      .then(post => this.dataServicesRepositories.posts.convertToGenericId(post));
+  }
+
+  findManyPosts(criterias: any): Promise<Post[]> {
+    return this.dataServicesRepositories.posts.findMany(criterias)
+      .then(posts => posts.map(post => this.dataServicesRepositories.posts.convertToGenericId(post)));
   }
 
   createPost(createPostDto: CreatePostDto): Promise<Post> {
     const post = this.postFactoryService.createNewPost(createPostDto);
-    return this.dataRepositories.posts.create(post)
-      .then(post => this.dataRepositories.posts.convertToGenericId(post));
+    return this.dataServicesRepositories.posts.create(post)
+      .then(post => this.dataServicesRepositories.posts.convertToGenericId(post));
   }
 
   updatePost(
@@ -32,12 +42,12 @@ export class PostService {
     updatePostDto: UpdatePostDto,
   ): Promise<Post> {
     const post = this.postFactoryService.updatePost(updatePostDto);
-    return this.dataRepositories.posts.update(postId, post)
-      .then(post => this.dataRepositories.posts.convertToGenericId(post));
+    return this.dataServicesRepositories.posts.update(postId, post)
+      .then(post => this.dataServicesRepositories.posts.convertToGenericId(post));
   }
 
   deletePost(id: any )  : Promise<Post>
   {
-    return this.dataRepositories.posts.delete(id);
+    return this.dataServicesRepositories.posts.delete(id);
   }
 }
