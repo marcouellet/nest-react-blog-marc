@@ -13,7 +13,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   const { state, dispatch } = useAuth();
-  const { isAuthenticated, isLoading, user } = state;
 
   const [errors, setErrors] = React.useState<IErrors | null>();
 
@@ -44,9 +43,9 @@ const Home = () => {
   }
 
   useEffect(() => {
-    const fetchPosts = async (): Promise<any> => {
-      const posts = await PostApiService.getAllPosts();
-      setPosts(posts.data);
+    const fetchPosts = async (): Promise<void> => {
+      PostApiService.getAllPosts()
+        .then(posts => setPosts(posts));
     }
     fetchPosts();
   }, [])
@@ -82,18 +81,18 @@ const Home = () => {
                 <ul className="post-footer">
                   <li>
                     {
-                      !isLoading && <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
+                      !state.isLoading && <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
                     }
                   </li>
                   <li>
                     {
-                      isAuthenticated && !isLoading && (user!.email === post.user.email) &&
+                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user.email) &&
                       <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
                     }
                   </li>
                   <li>
                     {
-                      isAuthenticated && !isLoading && (user!.email === post.user.email) &&
+                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user.email) &&
                       <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id!)}>Delete Post</button>
                     }
                   </li>

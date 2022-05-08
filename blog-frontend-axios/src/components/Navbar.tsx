@@ -6,7 +6,6 @@ import AUTHAPI from '../services/api/AuthAPI';
 
 const Navbar = () => {
     const { state, dispatch } = useAuth();
-    const { user, isLoading, isAuthenticated } = state;
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -24,16 +23,16 @@ const Navbar = () => {
 
                 <ul className="main-menu visible-on-click" id="main-menu">
                     <li><Link className={"nav-link"} to={"/"}> Home </Link></li>
-                    {!isLoading && isAuthenticated && (
+                    {!state.isLoading && state.isAuthenticated && (
                         <li><Link className={"nav-link"} to={"/post/create"}> Create </Link></li>
                     )}
-                    {!isLoading && !isAuthenticated && (
+                    {!state.isLoading && !state.isAuthenticated && (
                         <li><Link className={"nav-link"} to={"/login"}> Log In </Link></li>
                     )}
-                    {!isLoading && !isAuthenticated && (
+                    {!state.isLoading && !state.isAuthenticated && (
                         <li><Link className={"nav-link"} to={"/register"}> Register </Link></li>
                     )}
-                    {!isLoading && user && (
+                    {!state.isLoading && state.user && (
                         <li>
                             <div>
                                 <button className="btn" onClick={handleLogout}>

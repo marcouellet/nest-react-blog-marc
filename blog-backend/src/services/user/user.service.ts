@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../core/entities';
 import { IDataServicesRepositories } from '../../core/abstracts';
-import { CreateUserDto as CreateUserDto, UpdateUserDto } from '../../core/dtos';
+import { UserDto } from '../../core/dtos';
 import { UserFactoryService } from './user-factory.service';
 
 @Injectable()
@@ -12,39 +12,40 @@ export class UserService {
     private userFactoryService: UserFactoryService,
   ) {}
 
-  getAllUsers(): Promise<User[]> {
+  createUserDto(user: User): UserDto {
+    return this.userFactoryService.createUserDto(this.dataServicesRepositories.users.convertToGenericId(user));
+  }
+
+  getAllUsers(): Promise<UserDto[]> {
     return this.dataServicesRepositories.users.getAll()
-      .then(users => users.map(user => this.dataServicesRepositories.users.convertToGenericId(user)));
+      .then(users => users.map(user => this.createUserDto(user)))
   }
 
-  getUserById(id: any): Promise<User> {
+  getUserById(id: any): Promise<UserDto> {
     return this.dataServicesRepositories.users.get(id)
-      .then(user => this.dataServicesRepositories.users.convertToGenericId(user));
+      .then(user => this.createUserDto(user));
   }
 
-  findUser(criterias: any): Promise<User> {
+  findUser(criterias: any): Promise<UserDto> {
     return this.dataServicesRepositories.users.findOne(criterias)
-      .then(user => this.dataServicesRepositories.users.convertToGenericId(user));
+      .then(user => this.createUserDto(user));
   }
 
-  findManyUsers(criterias: any): Promise<User[]> {
+  findManyUsers(criterias: any): Promise<UserDto[]> {
     return this.dataServicesRepositories.users.findMany(criterias)
-      .then(users => users.map(user => this.dataServicesRepositories.users.convertToGenericId(user)));
+      .then(users => users.map(user => this.createUserDto(user)));
   }
 
-  createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = this.userFactoryService.createNewUser(createUserDto);
+  createUser(userDto: UserDto): Promise<UserDto> {
+    const user = this.userFactoryService.createUser(userDto);
     return this.dataServicesRepositories.users.create(user)
-      .then(user => this.dataServicesRepositories.users.convertToGenericId(user));
+      .then(user => this.createUserDto(user));
   }
 
-  updateUser(
-    userId: string,
-    updateUserDto: UpdateUserDto,
-  ): Promise<User> {
-    const user = this.userFactoryService.updateUser(updateUserDto);
-    return this.dataServicesRepositories.users.update(userId, user)
-      .then(user => this.dataServicesRepositories.users.convertToGenericId(user));
+  updateUser(userDto:UserDto): Promise<UserDto> {
+    const user = this.userFactoryService.updateUser(userDto);
+    return this.dataServicesRepositories.users.update(user.id, user)
+      .then(user => this.createUserDto(user));
   }
 
   deleteUser(id: any): Promise<User>

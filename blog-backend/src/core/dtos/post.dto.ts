@@ -1,10 +1,10 @@
 import { IsString, IsNotEmpty, IsDate } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { UserDto } from './user.dto';
 
 export class PostDto {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  id?: string;
 
   @IsString()
   @IsNotEmpty()
@@ -19,31 +19,8 @@ export class PostDto {
   body: string;
 
   @IsNotEmpty()
-  userId: any;
+  user: UserDto;
 
   @IsDate()
   publishDate: Date;
 }
-
-export class CreatePostDto {
-  @IsString()
-  @IsNotEmpty()
-  title: string;
-
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  body: string;
-
-  @IsNotEmpty()
-  userId: any;
-
-  @IsDate()
-  publishDate: Date;
-}
-
-export class UpdatePostDto extends PartialType(CreatePostDto) {}
-

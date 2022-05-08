@@ -19,7 +19,7 @@ const Post = () => {
     const fetchData = async (): Promise<void> => {
       dispatch(createActionLoading(true));
       await PostApiService.getPostById(postId!)
-      .then((post) => setPost(post.data))
+      .then((post) => setPost(post))
       .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
       dispatch(createActionLoading(false));
     }

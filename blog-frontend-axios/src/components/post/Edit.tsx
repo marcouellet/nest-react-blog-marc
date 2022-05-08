@@ -28,7 +28,8 @@ const Edit = () => {
       dispatch(createActionLoading(true));
       const post = await PostApiService.getPostById(postId!);
       dispatch(createActionLoading(false));
-      setPost(post.data);
+      setPost(post);
+      setValues(post);
     }
     fetchData();    
   }, [postId, dispatch]);

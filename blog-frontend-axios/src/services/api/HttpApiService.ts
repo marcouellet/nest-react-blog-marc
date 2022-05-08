@@ -1,4 +1,3 @@
-import { AxiosPromise } from 'axios';
 import API from './APIUtils';
 
 export enum EnumContentType {
@@ -8,11 +7,11 @@ export enum EnumContentType {
 }
 class HttpApiService<T> {
 
-  protected getAll(endpoint: string, conf = {}): AxiosPromise<T[]> {
+  protected getAll(endpoint: string, conf = {}): Promise<T[]> {
     return new Promise((resolve, reject) => {
       API.get<T[]>(`${endpoint}`, conf)
         .then(response => {
-          resolve(response);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
@@ -20,11 +19,11 @@ class HttpApiService<T> {
     });
   }
 
-  protected get(endpoint: string, conf = {}): AxiosPromise<T> {
+  protected get(endpoint: string, conf = {}): Promise<T> {
     return new Promise((resolve, reject) => {
       API.get<T>(`${endpoint}`, conf)
         .then(response => {
-          resolve(response);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
@@ -32,15 +31,15 @@ class HttpApiService<T> {
     });
   }
 
-  protected create(endpoint: string, data: {}, conf = {}): AxiosPromise<T> {
+  protected create(endpoint: string, data: {}, conf = {}): Promise<T> {
     return this.post(endpoint, data, conf)
   }
 
-  protected post(endpoint: string, data: {}, conf = {}): AxiosPromise<T> {
+  protected post(endpoint: string, data: {}, conf = {}): Promise<T> {
     return new Promise((resolve, reject) => {
       API.post<T>(`${endpoint}`, data, conf)
         .then(response => {
-          resolve(response);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
@@ -48,11 +47,11 @@ class HttpApiService<T> {
     });
   }
 
-  protected update(endpoint: string, data: T, conf = {}): AxiosPromise<T> {
+  protected update(endpoint: string, data: T, conf = {}): Promise<T> {
     return new Promise((resolve, reject) => {
       API.put<T>(`${endpoint}`, data, conf)
         .then(response => {
-          resolve(response);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
@@ -60,11 +59,11 @@ class HttpApiService<T> {
     });
   }
 
-  protected delete(endpoint: string, id: any, conf = {}): AxiosPromise<T> {
+  protected delete(endpoint: string, id: any, conf = {}): Promise<T> {
     return new Promise((resolve, reject) => {
       API.delete<T>(`${endpoint}/${id}`, conf)
         .then(response => {
-          resolve(response);
+          resolve(response.data);
         })
         .catch(error => {
           reject(error);
