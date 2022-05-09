@@ -1,5 +1,5 @@
 import HttpApiService from "./HttpApiService";
-import { IPost } from "../../types";
+import { IPost, IUpdatePost } from "../../types";
 
 const POST_ENDPOINT = `/post`;
 
@@ -18,12 +18,12 @@ export class PostApi extends HttpApiService<IPost> {
     return super.create(`${POST_ENDPOINT}/create`, data);
   };
 
-  updatePost = (data: IPost) => {
-    return super.update(`${POST_ENDPOINT}/update/${data.id}`, data);
+  updatePost = (id: string, data: IUpdatePost) => {
+    return super.update(`${POST_ENDPOINT}/update/${id}`, data);
   };
 
-  deletePost = (id: number) => {
-    return super.delete(`${POST_ENDPOINT}/delete`, id);
+  deletePost = (id: string) => {
+    return super.delete(`${POST_ENDPOINT}/delete/${id}`);
   };
 }
 

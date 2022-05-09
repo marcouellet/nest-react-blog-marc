@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
-import { IPost } from "../../types";
+import { IPost, IUpdatePost, createPostForUpdate } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
@@ -52,9 +52,9 @@ const Edit = () => {
 
   const submitForm = async (formData: {}) : Promise<boolean>  =>  {
     if (post) {
-      const data: IPost = {...post, ...formData};
       dispatch(createActionLoading(true));
-      const isOk = await PostApiService.updatePost(data)
+      const updatePost: IUpdatePost = createPostForUpdate({...post, ...formData});
+      const isOk = await PostApiService.updatePost(post.id!, updatePost)
         .then(() => { handleSubmitFormSucess();  return true;})
         .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); return false;});
       dispatch(createActionLoading(false));

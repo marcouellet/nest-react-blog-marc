@@ -39,8 +39,8 @@ const Create = () => {
 
   const submitForm = async (formData: {}) : Promise<boolean>  =>  {
     dispatch(createActionLoading(true));
-    const userId = state.user!.id;
-    const data = {...formData, userId}
+    const user = state.user!;
+    const data = {...formData, user}
     const isOk = await PostApiService.createPost(data)
       .then(() => { handleSubmitFormSucess();  return true;})
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); return false;});

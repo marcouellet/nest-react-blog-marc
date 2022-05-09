@@ -24,3 +24,19 @@ export class PostDto {
   @IsDate()
   publishDate: Date;
 }
+export class UpdatePostDto {
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  body: string;
+
+  @IsDate()
+  publishDate: Date;
+}

@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../core/entities';
 import { UserDto } from '../../core/dtos';
-
+import { IDataServicesRepositories } from '../../core/abstracts';
 @Injectable()
 export class UserFactoryService {
+
+  constructor(
+    private dataServicesRepositories: IDataServicesRepositories) {}
+
   createUser(userDto: UserDto): User {
     const user = new User();
     user.id = userDto.id;
@@ -11,7 +15,7 @@ export class UserFactoryService {
     user.email = userDto.email;
     user.password = userDto.password;
 
-    return user;
+    return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
 
   updateUser(userDto: UserDto): User {
@@ -21,14 +25,15 @@ export class UserFactoryService {
     user.email = userDto.email;
     user.password = userDto.password;
 
-    return user;
+    return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
-  
+
   createUserDto(user: User): UserDto {
+    const newUser = this.dataServicesRepositories.users.convertToGenericEntity(user);
     const userDto = new UserDto();
-    userDto.id = user.id;
-    userDto.email = user.email;
-    userDto.username = user.username;
+    userDto.id = newUser.id;
+    userDto.email = newUser.email;
+    userDto.username = newUser.username;
 
     return userDto;
   }

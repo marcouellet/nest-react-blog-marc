@@ -41,21 +41,34 @@ const Post = () => {
               {post && 
                 <div className="main-post">
                   <div className="post-top-area">
-                    <h5 className="pre-title">Nest React Blog</h5>
-                    <h3 className="title">
-                      <span>
-                        <b>{post.title}</b>
-                      </span>
-                    </h3>
-
-                    <p className="para">
-                      {post.body}
-                    </p>
+                    <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
+                      <div>
+                        <br/>
+                        <h4 className="title">
+                          <span>
+                            Title:
+                          </span>
+                        </h4>
+                        {post.title}
+                        <h4 className="description">
+                          <span>
+                            Description:
+                          </span>
+                        </h4>
+                        {post.description}
+                        <h4 className="body">
+                          <span>
+                            Detail: 
+                          </span>
+                        </h4>
+                        <p className="para">
+                          {post.body}
+                        </p>
+                      </div>
                   </div>
                 </div>              
               }
             </div>
-
           </div>
         </div>
       </section>

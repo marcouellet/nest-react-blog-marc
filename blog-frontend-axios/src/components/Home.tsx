@@ -18,12 +18,12 @@ const Home = () => {
 
   const [posts, setPosts] = useState<IPost[]>([]);
 
-  const _removePostFromView = (id: number) => {
-    const index = posts.findIndex((post: IPost) => post.id === id);
+  const _removePostFromView = (id: string) => {
+    const index = posts.findIndex((post: IPost) => post.id! === id);
     posts.splice(index, 1);
   }
 
-  const handleDeletePost = async (id: number) => {
+  const handleDeletePost = async (id: string) => {
     dispatch(createActionLoading(true));
     await PostApiService.deletePost(id)
      .then(() => handleDeletePostSucess())
@@ -86,13 +86,13 @@ const Home = () => {
                   </li>
                   <li>
                     {
-                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user.email) &&
+                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
                       <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
                     }
                   </li>
                   <li>
                     {
-                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user.email) &&
+                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
                       <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id!)}>Delete Post</button>
                     }
                   </li>

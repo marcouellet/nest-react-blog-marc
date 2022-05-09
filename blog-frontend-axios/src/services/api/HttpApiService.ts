@@ -59,9 +59,9 @@ class HttpApiService<T> {
     });
   }
 
-  protected delete(endpoint: string, id: any, conf = {}): Promise<T> {
+  protected delete(endpoint: string, conf = {}): Promise<T> {
     return new Promise((resolve, reject) => {
-      API.delete<T>(`${endpoint}/${id}`, conf)
+      API.delete<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
         })

@@ -1,7 +1,7 @@
 import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
-import { PostDto } from '../core/dtos';
+import { PostDto, UpdatePostDto } from '../core/dtos';
 import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
 
 @Controller('post')
@@ -38,22 +38,18 @@ export class PostController {
   }
 
   // Update a post
-  @Put('/update')
-  async updatePost(
-    @Res() res,
-    @Query('id', new ValidateObjectId()) id,
-    @Body() postDto: PostDto,
-  ) {
-    this.postService.updatePost(postDto)
+  @Put('/update/:id')
+  async updatePost(@Res() res, @Param('id', new ValidateObjectId()) id, @Body() updatePostDto: UpdatePostDto) {
+    this.postService.updatePost(id, updatePostDto)
       .then((post) => res.status(HttpStatus.OK).json(post))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
-  // Delete a post using ID
-  @Delete('/delete')
-  async deletePost(@Res() res, @Query('id', new ValidateObjectId()) id) {
+  // Delete a post
+  @Delete('/delete/:id')
+  async deletePost(@Res() res, @Param('id', new ValidateObjectId()) id) {
     this.postService.deletePost(id)
-      .then((post) => res.status(HttpStatus.OK))
+      .then((post) => res.status(HttpStatus.OK).json(post))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

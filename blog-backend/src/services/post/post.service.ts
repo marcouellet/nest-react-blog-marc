@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from '../../core/entities';
 import { IDataServicesRepositories } from '../../core/abstracts';
-import { PostDto } from '../../core/dtos';
+import { PostDto, UpdatePostDto } from '../../core/dtos';
 import { PostFactoryService } from './post-factory.service';
 @Injectable()
 export class PostService {
@@ -11,44 +11,40 @@ export class PostService {
     private postFactoryService: PostFactoryService,
   ) {}
 
-  createPostDto(post: Post): PostDto {
-    return this.postFactoryService.createPostDto(this.dataServicesRepositories.posts.convertToGenericId(post));
-  }
-
   getAllPosts(): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.getAll()
-    .then(posts => posts.map(post => this.createPostDto(post)));
+      .then(posts => posts.map(post => this.postFactoryService.createPostDto(post)));
   }
 
   getPostById(id: any): Promise<PostDto> {
     return this.dataServicesRepositories.posts.get(id)
-    .then(post =>this.createPostDto(post));
+      .then(post => this.postFactoryService.createPostDto(post));
   }
 
   findPost(criterias: any): Promise<PostDto> {
     return this.dataServicesRepositories.posts.findOne(criterias)
-      .then(post => this.createPostDto(post));
+      .then(post => this.postFactoryService.createPostDto(post));
   }
 
   findManyPosts(criterias: any): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.findMany(criterias)
-      .then(posts => posts.map(post => this.createPostDto(post)));
+      .then(posts => posts.map(post => this.postFactoryService.createPostDto(post)));
   }
 
   createPost(postDto: PostDto): Promise<PostDto> {
-    const post = this.postFactoryService.createPost(postDto);
-    return this.dataServicesRepositories.posts.create(post)
-      .then(post => this.createPostDto(post));
+    const newPost = this.postFactoryService.createPost(postDto);
+    return this.dataServicesRepositories.posts.create(newPost)
+      .then(post => this.postFactoryService.createPostDto(post));
   }
 
-  updatePost(postDto: PostDto): Promise<PostDto> {
-    const post = this.postFactoryService.updatePost(postDto);
-    return this.dataServicesRepositories.posts.update(post.id, post)
-      .then(post => this.createPostDto(post));
+  updatePost(id:string, updatePostDto: UpdatePostDto): Promise<PostDto> {
+    const populate: string = 'user';
+    return this.dataServicesRepositories.posts.update(id, updatePostDto, populate)
+      .then(post => this.postFactoryService.createPostDto(post));
   }
 
-  deletePost(id: any )  : Promise<Post>
-  {
-    return this.dataServicesRepositories.posts.delete(id);
+  deletePost(id: any): Promise<PostDto> {
+    return this.dataServicesRepositories.posts.delete(id)
+      .then(post => this.postFactoryService.createPostDto(post));
   }
 }
