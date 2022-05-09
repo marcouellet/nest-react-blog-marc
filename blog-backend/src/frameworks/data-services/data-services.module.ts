@@ -1,16 +1,13 @@
 import { Module, DynamicModule, Global } from '@nestjs/common';
-import { IDataServicesRepositories } from '../../core';
 import { IConfig, MONGO_SERVER_NAME } from '../../config/config';
 import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
 import { NotFoundException } from '@nestjs/common';
-@Global()
 @Module({})
 export class DataServicesModule {
 
   public static register(config: IConfig): DynamicModule {
 
     const modules: any[] = [];
-    const providers: any[] = [];
     let serverFound: boolean = true;
 
     const dataServerName = config.dataServerName;
@@ -18,7 +15,6 @@ export class DataServicesModule {
     switch (dataServerName) {
       case MONGO_SERVER_NAME:
         modules.push(MongoDataServicesModule);
-        providers.push(IDataServicesRepositories);
         break;
       default:
         serverFound = false;
@@ -28,8 +24,6 @@ export class DataServicesModule {
       return {
         module: DataServicesModule,
         imports: modules,
-        providers,
-        exports: [IDataServicesRepositories],
       };
     } else {
       throw new NotFoundException(`No implementations for data services of type ${dataServerName}`);
