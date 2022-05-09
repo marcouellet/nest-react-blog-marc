@@ -30,16 +30,16 @@ export class UserController {
   }
 
   // Update a user
-  @Put('/update')
-  async updateUser(@Res() res, @Query('id', new ValidateObjectId()) id, @Body() userDto: UserDto) {
+  @Put('/update/:id')
+  async updateUser(@Res() res, @Param('id', new ValidateObjectId()) id, @Body() userDto: UserDto) {
     this.userService.updateUser(userDto)
       .then((user) => res.status(HttpStatus.OK).json(user))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Delete user using ID
-  @Delete('/delete')
-  async deleteUser(@Res() res, @Query('id', new ValidateObjectId()) id) {
+  @Delete('/delete/:id')
+  async deleteUser(@Res() res, @Param('id', new ValidateObjectId()) id) {
     const deletedUser = await this.userService.deleteUser(id)
       .then((user) => res.status(HttpStatus.OK))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));

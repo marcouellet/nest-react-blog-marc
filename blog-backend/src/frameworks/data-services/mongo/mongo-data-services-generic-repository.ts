@@ -1,4 +1,3 @@
-import { rejects } from 'assert';
 import { Model } from 'mongoose';
 import { IGenericDataServicesRepository } from '../../../core';
 

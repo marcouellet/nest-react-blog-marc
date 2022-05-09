@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return "Marc Nest Blog API"', () => {
+      expect(appController.getServerInfo());
     });
   });
 });

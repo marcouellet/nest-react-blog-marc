@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Post } from '../../core/entities';
 import { IDataServicesRepositories } from '../../core/abstracts';
 import { PostDto, UpdatePostDto } from '../../core/dtos';
 import { PostFactoryService } from './post-factory.service';
