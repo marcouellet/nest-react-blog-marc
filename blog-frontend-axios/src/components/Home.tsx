@@ -7,6 +7,7 @@ import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
+import DeleteButton from './common/deleteConfirmation'
 
 const Home = () => {
   
@@ -22,6 +23,8 @@ const Home = () => {
     const index = posts.findIndex((post: IPost) => post.id! === id);
     posts.splice(index, 1);
   }
+
+  const deletePostMessage = (post: IPost) => `${post.title} post`;
 
   const handleDeletePost = async (id: string) => {
     dispatch(createActionLoading(true));
@@ -93,7 +96,7 @@ const Home = () => {
                   <li>
                     {
                       state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id!)}>Delete Post</button>
+                      <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
                     }
                   </li>
                 </ul>

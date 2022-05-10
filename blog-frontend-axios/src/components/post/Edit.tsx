@@ -110,7 +110,7 @@ const Edit = () => {
 
           <div className="form-group col-md-4 pull-right">
             <button className="btn btn-success" type="submit">
-              Edit Post
+              Update Post
             </button>
             {isLoading &&
               <span className="fa fa-circle-o-notch fa-spin" />

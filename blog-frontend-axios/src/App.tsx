@@ -8,15 +8,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from "./routes/AppRoutes";
+import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
 
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Navbar/>
-        <AppRoutes />
-        <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
-      </BrowserRouter>
+      <ConfirmationModalContextProvider>
+        <BrowserRouter>
+          <Navbar/>
+          <AppRoutes />
+          <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
+        </BrowserRouter>
+      </ConfirmationModalContextProvider>
     </>
   );
 }
