@@ -8,6 +8,5 @@ import { PostFactoryService } from '../services/post/post-factory.service';
   imports: [UserModule],
   controllers: [PostController],
   providers: [PostFactoryService, PostService, UserService],
-  exports: [PostFactoryService, PostService],
 })
 export class PostModule {}

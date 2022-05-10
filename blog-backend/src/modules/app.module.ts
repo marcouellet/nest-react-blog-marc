@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GetConfig } from '../config/config';
 import { AppController } from '../controllers/app.controller';
-import { ConfigService } from '../services/config.service';
 import { AppService } from '../services/app.service';
 import { ConfigModule } from './config.module';
 import { AuthModule } from './auth.module';
@@ -17,6 +16,6 @@ import { PostModule } from './post.module';
     PostModule,
  ],
   controllers: [AppController],
-  providers: [ConfigService, AppService],
+  providers: [AppService],
 })
 export class AppModule {}
