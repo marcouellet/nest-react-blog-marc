@@ -70,7 +70,7 @@ const Home = () => {
                   <span className="avatar">
                     <img src="http://res.cloudinary.com/yemiwebby-com-ng/image/upload/v1513770253/WEB_FREAK_50PX-01_yaqxg7.png" alt="Profile" />
                     <span>
-                     <h4>Usager: {post.user!.username} </h4> 
+                     <h4>User: {post.user!.username} </h4> 
                   </span>
                  </span>
 
