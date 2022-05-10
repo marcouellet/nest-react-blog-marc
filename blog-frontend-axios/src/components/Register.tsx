@@ -38,7 +38,7 @@ const Register = () => {
       .then(
         (user: User) => {
           dispatch(createActionLoadUser(user));
-          navigate('/');    
+          navigate('/login');    
         }
       )
       .catch((apiErrors: IErrors) => {

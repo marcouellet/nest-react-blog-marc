@@ -1,21 +1,20 @@
 import * as React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../components/Home";
-import Login from "../components/Login";
-import Register from "../components/Register";
 import Post from "../components/post/Post";
-import Edit from "../components/post/Edit";
-import Create from "../components/post/Create";
+import useAuth from '../contexts/auth';
+import PrivateRoutes from "./PrivateRoutes";
+import RestrictedRoutes from "./RestrictedRoutes";
 
 export const AppRoutes = () => {
+
+  const { state : { isAuthenticated } } = useAuth()
+
   return (
     <Routes>
       <Route path={"/"} element={<Home/>} />
-      <Route path={"/login"} element={<Login/>} />
-      <Route path={"/register"} element={<Register/>} />
       <Route path={"/post/:postId"} element={<Post/>}/>
-      <Route path={"/post/edit/:postId"} element={<Edit/>}/>
-      <Route path={"/post/create"} element={<Create/>} />
+      {isAuthenticated ?  PrivateRoutes() : RestrictedRoutes()}
       <Route
           path="*"
           element={<Navigate to="/" replace />}
@@ -23,4 +22,3 @@ export const AppRoutes = () => {
     </Routes>
    );
 }
-
