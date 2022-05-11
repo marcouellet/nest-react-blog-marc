@@ -1,6 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
-
+import { UserRole } from '../enum'
 export class UserDto {
   @IsString()
   @IsNotEmpty()
@@ -17,4 +16,7 @@ export class UserDto {
   @IsString()
   @IsNotEmpty()
   password?: string;
+
+  @IsNotEmpty()
+  role?: UserRole;
 }

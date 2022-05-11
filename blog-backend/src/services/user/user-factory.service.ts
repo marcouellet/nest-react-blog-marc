@@ -6,7 +6,7 @@ import { IDataServicesRepositories } from '../../core/abstracts';
 export class UserFactoryService {
 
   constructor(
-    private dataServicesRepositories: IDataServicesRepositories) {}
+    private readonly dataServicesRepositories: IDataServicesRepositories) {}
 
   createUser(userDto: UserDto): User {
     const user = new User();

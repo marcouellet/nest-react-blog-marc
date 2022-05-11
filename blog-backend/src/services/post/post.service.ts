@@ -6,8 +6,8 @@ import { PostFactoryService } from './post-factory.service';
 export class PostService {
 
   constructor(
-    private dataServicesRepositories: IDataServicesRepositories,
-    private postFactoryService: PostFactoryService,
+    private readonly dataServicesRepositories: IDataServicesRepositories,
+    private readonly postFactoryService: PostFactoryService,
   ) {}
 
   getAllPosts(): Promise<PostDto[]> {

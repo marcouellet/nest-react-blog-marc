@@ -2,12 +2,11 @@ import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body,
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
-import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
-
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 @Controller('post')
 export class PostController {
 
-  constructor(private postService: PostService, private userService: UserService) { }
+  constructor(private readonly postService: PostService, private readonly userService: UserService) { }
 
   // Fetch all posts
   @Get()
@@ -19,7 +18,7 @@ export class PostController {
 
   // Fetch a particular post using ID
   @Get(':id')
-  async getPost(@Res() res, @Param('id', new ValidateObjectId()) id) {
+  async getPost(@Res() res, @Param('id') id) {
     this.postService.getPostById(id)
     .then((post) => res.status(HttpStatus.OK).json(post))
     .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -27,7 +26,7 @@ export class PostController {
 
   // Submit a new post
   @Post('/create')
-  async createPost(@Res() res, @Body() postDto: PostDto) {
+  async createPost(@Res() res, @Body(new ValidationPipe()) postDto: PostDto) {
     // Validate userId
     await this.userService.getUserById(postDto.user.id)
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -39,7 +38,7 @@ export class PostController {
 
   // Update a post
   @Put('/update/:id')
-  async updatePost(@Res() res, @Param('id', new ValidateObjectId()) id, @Body() updatePostDto: UpdatePostDto) {
+  async updatePost(@Res() res, @Param('id') id, @Body(new ValidationPipe()) updatePostDto: UpdatePostDto) {
     this.postService.updatePost(id, updatePostDto)
       .then((post) => res.status(HttpStatus.OK).json(post))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -47,7 +46,7 @@ export class PostController {
 
   // Delete a post
   @Delete('/delete/:id')
-  async deletePost(@Res() res, @Param('id', new ValidateObjectId()) id) {
+  async deletePost(@Res() res, @Param('id') id) {
     this.postService.deletePost(id)
       .then((post) => res.status(HttpStatus.OK).json(post))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));

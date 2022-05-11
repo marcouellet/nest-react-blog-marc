@@ -6,7 +6,7 @@ import { User } from '../core/entities';
 export class AuthService {
 
   constructor(
-    private userService: UserService,
+    private readonly userService: UserService,
   ) {}
 
   getCurrentUser(): Promise<User> {

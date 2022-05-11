@@ -8,8 +8,8 @@ import { UserFactoryService } from '../user/user-factory.service';
 export class PostFactoryService {
 
   constructor(
-    private dataServicesRepositories: IDataServicesRepositories,
-    private userFactoryService: UserFactoryService) {}
+    private readonly dataServicesRepositories: IDataServicesRepositories,
+    private readonly userFactoryService: UserFactoryService) {}
 
   createPost(postDto: PostDto): Post {
     const post = new Post();

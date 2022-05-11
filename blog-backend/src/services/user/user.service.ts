@@ -3,13 +3,15 @@ import { User } from '../../core/entities';
 import { IDataServicesRepositories } from '../../core/abstracts';
 import { UserDto } from '../../core/dtos';
 import { UserFactoryService } from './user-factory.service';
+import { CryptographerService } from '../cryptographer.service';
 
 @Injectable()
 export class UserService {
 
   constructor(
-    private dataServicesRepositories: IDataServicesRepositories,
-    private userFactoryService: UserFactoryService,
+    private readonly dataServicesRepositories: IDataServicesRepositories,
+    private readonly userFactoryService: UserFactoryService,
+    private readonly cryptoService: CryptographerService
   ) {}
 
   getAllUsers(): Promise<UserDto[]> {

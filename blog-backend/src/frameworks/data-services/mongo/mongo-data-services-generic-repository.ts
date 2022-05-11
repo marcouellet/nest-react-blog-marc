@@ -2,13 +2,8 @@ import { Model } from 'mongoose';
 import { IGenericDataServicesRepository } from '../../../core';
 
 export class MongoGenericDataServicesRepository<T> implements IGenericDataServicesRepository<T> {
-  private repository: Model<T>;
-  private populateOnFind: string[];
 
-  constructor(repository: Model<T>, populateOnFind: string[] = []) {
-    this.repository = repository;
-    this.populateOnFind = populateOnFind;
-  }
+  constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}
 
   convertToGenericEntity(obj: any): T {
     const newObj = obj;

@@ -13,9 +13,9 @@ export class MongoDataServicesRepositories extends IDataServicesRepositories imp
 
   constructor(
     @InjectModel(User.name)
-    private UserRepository: Model<UserDocument>,
+    private readonly UserRepository: Model<UserDocument>,
     @InjectModel(Post.name)
-    private PostRepository: Model<PostDocument>,
+    private readonly PostRepository: Model<PostDocument>,
   ) { super(); }
 
   onApplicationBootstrap() {
