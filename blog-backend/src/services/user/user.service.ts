@@ -14,39 +14,40 @@ export class UserService {
     private readonly cryptoService: CryptographerService
   ) {}
 
-  getAllUsers(): Promise<UserDto[]> {
+  async getAllUsers(): Promise<UserDto[]> {
     return this.dataServicesRepositories.users.getAll()
-      .then(users => users.map(user => this.userFactoryService.createUserDto(user)))
+      .then(users => users.map(user => this.userFactoryService.createUserDto(user)));
   }
 
-  getUserById(id: any): Promise<UserDto> {
+  async getUserById(id: string): Promise<UserDto> {
     return this.dataServicesRepositories.users.get(id)
       .then(user => this.userFactoryService.createUserDto(user));
   }
 
-  findUser(criterias: any): Promise<UserDto> {
+  async findUser(criterias: {}): Promise<UserDto> {
     return this.dataServicesRepositories.users.findOne(criterias)
       .then(user => this.userFactoryService.createUserDto(user));
   }
 
-  findManyUsers(criterias: any): Promise<UserDto[]> {
+  async findManyUsers(criterias: {}): Promise<UserDto[]> {
     return this.dataServicesRepositories.users.findMany(criterias)
       .then(users => users.map(user => this.userFactoryService.createUserDto(user)));
   }
 
-  createUser(userDto: UserDto): Promise<UserDto> {
+  async createUser(userDto: UserDto): Promise<UserDto> {
     const newUser = this.userFactoryService.createUser(userDto);
     return this.dataServicesRepositories.users.create(newUser)
       .then(user => this.userFactoryService.createUserDto(user));
   }
 
-  updateUser(userDto: UserDto): Promise<UserDto> {
+  async updateUser(id: string, userDto: UserDto): Promise<UserDto> {
     const updatedUser = this.userFactoryService.updateUser(userDto);
-    return this.dataServicesRepositories.users.update(updatedUser.id, updatedUser)
+    return this.dataServicesRepositories.users.update(id, updatedUser)
       .then(user => this.userFactoryService.createUserDto(user));
   }
 
-  deleteUser(id: any): Promise<User> {
-    return this.dataServicesRepositories.users.delete(id);
+  async deleteUser(id: string): Promise<UserDto> {
+    return this.dataServicesRepositories.users.delete(id)
+      .then(user => this.userFactoryService.createUserDto(user));
   }
 }

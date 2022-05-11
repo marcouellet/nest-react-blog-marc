@@ -37,6 +37,7 @@ const Register = () => {
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
+          toast.success(`${user.username} is registered`);
           dispatch(createActionLoadUser(user));
           navigate('/login');    
         }
