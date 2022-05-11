@@ -35,6 +35,7 @@ const Login = () => {
     await AUTHAPI.login(email, password)
       .then(
         (user) => {
+          toast.info(`${user.username} is logged in`);
           dispatch(createActionLoadUser(user));
           navigate('/');    
         }

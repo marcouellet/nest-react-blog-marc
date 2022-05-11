@@ -10,7 +10,7 @@ export class ValidationPipe implements PipeTransform<any> {
       return value;
     }
     const object = plainToClass(metatype, Object.assign({}, value));
-    const errors = await validate(object, { skipMissingProperties: false });
+    const errors = await validate(object, { skipMissingProperties: true });
     if (errors.length > 0) {
       throw new BadRequestException('Properties : ' + errors.map((error) => 
       `${error.property}`).join(' '));

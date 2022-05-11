@@ -20,7 +20,7 @@ async function  getCurrentUser(): Promise<User> {
 
 async function login(email: string, password: string): Promise<User> {
   return new Promise((resolve, reject) => {
-    API.post<User>('/auth/login', {user: { email, password }})
+    API.post<User>('/auth/login', { email, password })
       .then(response => {
         handleToken(response.data.token!);
         resolve(response.data);
@@ -33,7 +33,7 @@ async function login(email: string, password: string): Promise<User> {
 
 async function register(username: string, email: string, password: string) : Promise<User> {
   return new Promise((resolve, reject) => {
-    API.post<User>('/auth/register', { user: { username, email, password }})
+    API.post<User>('/auth/register', { username, email, password })
       .then(response => {
         handleToken(response.data.token!);
         resolve(response.data);

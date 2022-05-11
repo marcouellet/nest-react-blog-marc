@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
 import { createActionLogout } from '../reducers/auth';
 import AUTHAPI from '../services/api/AuthAPI';
+import { toast } from "react-toastify";
 
 const Navbar = () => {
     const { state, dispatch } = useAuth();
@@ -11,6 +12,7 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(createActionLogout());
         AUTHAPI.logout();
+        toast.info(`${state.user!.username} is logged out`);
         navigate('/');
       };
 
