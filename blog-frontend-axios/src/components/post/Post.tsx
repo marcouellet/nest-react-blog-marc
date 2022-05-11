@@ -7,6 +7,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
+import { toLocalDateString } from '../../utils/utils';
 
 const Post = () => {
 
@@ -31,6 +32,14 @@ const Post = () => {
     setErrors(apiErrors);
   }
 
+  const getDateString = (date: Date): string => {
+    if (date) {
+      return toLocalDateString(date)!;
+    } else {
+      return "no date provided"
+    }
+  }
+
     return (
         <section className="post-area">
         {errors && <ListErrors errors={errors} />}
@@ -46,25 +55,33 @@ const Post = () => {
                         <br/>
                         <h4 className="title">
                           <span>
+                            Date posted:&nbsp;{getDateString(post.publishDate!)}
+                          </span>
+                        </h4>
+                        <br/>
+                       <h4 className="title">
+                          <span>
                             Title:
                           </span>
                         </h4>
-                        {post.title}
+                        <h5>{post.title}</h5>
+                        <br/>
                         <h4 className="description">
                           <span>
                             Description:
                           </span>
                         </h4>
-                        {post.description}
+                        <h5>{post.description}</h5>
+                        <br/>
                         <h4 className="body">
                           <span>
                             Detail: 
                           </span>
+                          <p className="para">
+                            {post.body}
+                          </p>
                         </h4>
-                        <p className="para">
-                          {post.body}
-                        </p>
-                      </div>
+                       </div>
                   </div>
                 </div>              
               }

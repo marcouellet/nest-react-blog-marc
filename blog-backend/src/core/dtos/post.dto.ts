@@ -22,7 +22,7 @@ export class PostDto {
   user: UserDto;
 
   @IsDate()
-  publishDate: Date;
+  publishDate?: Date;
 }
 export class UpdatePostDto {
   @IsString()
@@ -36,7 +36,8 @@ export class UpdatePostDto {
   @IsString()
   @IsNotEmpty()
   body: string;
-
-  @IsDate()
-  publishDate: Date;
 }
+
+export type UpdatePostCriterias = {title: string, description: string, body: string}
+
+

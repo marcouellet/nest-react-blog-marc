@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IDataServicesRepositories } from '../../core/abstracts';
-import { PostDto, UpdatePostDto } from '../../core/dtos';
+import { PostDto, UpdatePostDto, UpdatePostCriterias } from '../../core/dtos';
 import { PostFactoryService } from './post-factory.service';
 @Injectable()
 export class PostService {
@@ -37,8 +37,8 @@ export class PostService {
   }
 
   updatePost(id:string, updatePostDto: UpdatePostDto): Promise<PostDto> {
-    const populate: string = 'user';
-    return this.dataServicesRepositories.posts.update(id, updatePostDto, populate)
+    const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
+    return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, 'user')
       .then(post => this.postFactoryService.createPostDto(post));
   }
 
