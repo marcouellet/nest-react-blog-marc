@@ -40,8 +40,7 @@ export class UserService {
 
   updateUser(userDto: UserDto): Promise<UserDto> {
     const updatedUser = this.userFactoryService.updateUser(userDto);
-    const populate = '';
-    return this.dataServicesRepositories.users.update(updatedUser.id, updatedUser, populate)
+    return this.dataServicesRepositories.users.update(updatedUser.id, updatedUser)
       .then(user => this.userFactoryService.createUserDto(user));
   }
 

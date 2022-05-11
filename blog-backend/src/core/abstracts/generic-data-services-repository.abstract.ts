@@ -9,9 +9,9 @@ export interface IGenericDataServicesRepository<T> {
 
   create(item: T): Promise<T>;
 
-  update(id: string, update: {}, populate: string): Promise<T>;
+  update(id: string, update: {}, populate?: string);
 
-  delete(id: string): Promise<T>;
+  delete(id: string, populate?: string): Promise<T>;
 
   convertToGenericEntity(obj: any): T;
 

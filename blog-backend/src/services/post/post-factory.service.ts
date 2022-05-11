@@ -38,7 +38,8 @@ export class PostFactoryService {
 
   // Make sure only desired criterias are selected from the incomming object
   createUpdatePostCriterias(updatePostDto: UpdatePostDto): UpdatePostCriterias {
+    const populate = {populate: { path: 'user' }};
     const {title, description, body} = updatePostDto;
-    return {title, description, body} as UpdatePostCriterias;
+    return {title, description, body, populate} as UpdatePostCriterias;
   }
 }

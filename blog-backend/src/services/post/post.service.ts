@@ -43,7 +43,7 @@ export class PostService {
   }
 
   deletePost(id: any): Promise<PostDto> {
-    return this.dataServicesRepositories.posts.delete(id)
+    return this.dataServicesRepositories.posts.delete(id, 'user')
       .then(post => this.postFactoryService.createPostDto(post));
   }
 }

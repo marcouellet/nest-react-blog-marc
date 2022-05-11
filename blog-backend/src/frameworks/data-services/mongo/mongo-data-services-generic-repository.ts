@@ -25,7 +25,7 @@ export class MongoGenericDataServicesRepository<T> implements IGenericDataServic
   }
 
   async getAll(): Promise<T[]> {
-    return this.repository.find().populate(this.populateOnFind).exec();
+    return this.repository.find().populate(this.populateOnFind).exec() as Promise<T[]>;
   }
 
   async get(id: string): Promise<T> {
@@ -41,14 +41,22 @@ export class MongoGenericDataServicesRepository<T> implements IGenericDataServic
   }
 
   async create(item: T): Promise<T> {
-    return this.repository.create(item);
+    return this.repository.create(item) as Promise<T>;
   }
 
-  async update(id: string, update: {}, populate: string): Promise<T> {
-    return this.repository.findByIdAndUpdate(id, update);
+  async update(id: string, update: {}, populate?: string) {
+    let populateCriterias: any = null;
+    if (populate) {
+      populateCriterias = {populate: { path: populate }};
+    }
+    return this.repository.findByIdAndUpdate(id, update, populateCriterias).exec();
   }
 
-  async delete(id: string) {
-    return this.repository.findByIdAndDelete(id);
+  async delete(id: string, populate?: string): Promise<T> {
+    let populateCriterias: any = null;
+    if (populate) {
+      populateCriterias = {populate: { path: populate }};
+    }
+    return await this.repository.findByIdAndDelete(id, populateCriterias).exec();
   }
 }
