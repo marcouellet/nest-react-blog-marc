@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsDate, IsEmail, IsEnum } from '@nestjs/class-validator';
+import { Type } from '@nestjs/class-transformer';
 import { UserRole } from '../enum'
 import { IAuthToken } from '../../auth/interfaces/auth-token.interface'
 export class UserDto {
@@ -10,7 +11,7 @@ export class UserDto {
   @IsNotEmpty()
   username: string;
 
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 
@@ -18,10 +19,12 @@ export class UserDto {
   @IsNotEmpty()
   password?: string;
 
+  @IsEnum(UserRole)
   @IsNotEmpty()
   role?: UserRole;
 
   @IsNotEmpty()
+  @Type(() => IAuthToken)
   authtoken?: IAuthToken;
 
   @IsDate()

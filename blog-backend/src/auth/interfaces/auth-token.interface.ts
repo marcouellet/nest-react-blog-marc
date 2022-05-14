@@ -1,4 +1,4 @@
-export interface IAuthToken {
+export class IAuthToken {
     accessToken: any;
 }
   

@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
 }
 
-export interface IAuthToken {
+export class IAuthToken {
   accessToken: any;
 }
 
