@@ -85,23 +85,30 @@ const Home = () => {
                 </div>
 
                 <ul className="post-footer">
-                  <li>
+                  {
+                    !state.isLoading &&
+                    <li>
                     {
-                      !state.isLoading && <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
+                      <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
                     }
                   </li>
-                  <li>
+                  }
+                  {
+                    state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
+                    <li>
                     {
-                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
                       <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
                     }
-                  </li>
-                  <li>
+                    </li>
+                  }
+                  {
+                    state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&                    
+                    <li>
                     {
-                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
                       <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
                     }
-                  </li>
+                    </li>
+                  }
                 </ul>
               </div>
             </div>
