@@ -4,15 +4,15 @@ import { User } from '../../types';
 import TokenService from './TokenService';
 
 type JWTPayload = {
-  email: string;
-  expiresIn: number;
+  sub: string;
+  exp: number;
 };
 
 export function isTokenValid(token: string) {
   try {
     const decoded_jwt: JWTPayload = jwtDecode<JWTPayload>(token);
     const current_time = Date.now().valueOf() / 1000;
-    return decoded_jwt.expiresIn > current_time;
+    return decoded_jwt.exp > current_time;
   } catch (error) {
     return false;
   }

@@ -18,7 +18,8 @@ export class AuthService {
 
   private createToken({ email }: UserDto): IAuthToken {
     const expiresIn = toMs(this.configService.getConfig().authExpiresIn);
-    const payload: JwtPayload = { email, expiresIn };
+    const sub = email;
+    const payload: JwtPayload = { sub };
     const accessToken = this.jwtService.sign(payload);
     return { accessToken } as IAuthToken;
   }
@@ -29,8 +30,8 @@ export class AuthService {
   }
 
   async findUserByPayload(payload: JwtPayload): Promise<UserDto> {
-    const {email} = payload;
-    return this.userService.findUser({email});
+    const {sub} = payload;
+    return this.userService.findUser({sub});
   }
 
   async validateUser(criterias: {}): Promise<UserDto> {

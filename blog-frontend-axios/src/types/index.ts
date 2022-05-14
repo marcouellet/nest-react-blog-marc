@@ -7,7 +7,6 @@ export interface IUser {
 
 export interface IAuthToken {
   accessToken: any;
-  expiresIn: any;
 }
 
 export type User = IUser & { authtoken?: IAuthToken };
