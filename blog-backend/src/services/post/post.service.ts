@@ -36,7 +36,7 @@ export class PostService {
       .then(post => this.postFactoryService.createPostDto(post));
   }
 
-  async updatePost(id:string, updatePostDto: UpdatePostDto): Promise<PostDto> {
+  async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<PostDto> {
     const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
     return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, 'user')
       .then(post => this.postFactoryService.createPostDto(post));

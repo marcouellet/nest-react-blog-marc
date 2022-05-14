@@ -1,5 +1,6 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 import { UserRole } from '../enum'
+import { IAuthToken } from '../../auth/interfaces/auth-token.interface'
 export class UserDto {
   @IsString()
   @IsNotEmpty()
@@ -19,4 +20,11 @@ export class UserDto {
 
   @IsNotEmpty()
   role?: UserRole;
+
+  @IsNotEmpty()
+  authtoken?: IAuthToken;
+
+  @IsDate()
+  createdOn?: Date;
 }
+

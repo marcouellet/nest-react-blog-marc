@@ -1,46 +1,35 @@
-import { Controller, Get, Post, Res, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../services/auth.service';
-import { UserRole } from '../core/enum';
-import { LoginDto } from 'src/core/dtos/login.dto';
+import { LoginDto } from 'src/core/dtos';
 import { RegisterDto } from 'src/core/dtos/register.dto';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { Request, Response } from 'express';
+import { JwtPayload } from '../auth/interfaces/payload.interface';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   // Get current user
-  @Get('/user')
-  async currentUser(@Res() res) {
-    this.authService.getCurrentUser()
-      .then((user) => {
-        const {username, email} = user;
-        const data = {username, email, token: this.authService.createToken()};
-        return res.status(HttpStatus.OK).json(data);
-      })
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Get('/whoami')
+  @UseGuards(AuthGuard())
+  async whoAmI(@Req() req: Request): Promise<JwtPayload> {
+    return this.authService.whoAmI(req.headers.authorization);
   }
 
   // Login user
   @Post('/login')
-  async login(@Res() res, @Body(new ValidationPipe()) body: LoginDto) {
-    this.authService.login(body)
-      .then((user) => {
-        const {id, username, email, role } = user;
-        const data = {id, username, email, role, token: this.authService.createToken()};
-        return res.status(HttpStatus.OK).json(data);
-      })
+  async login(@Res() res: Response, @Body(new ValidationPipe()) body: LoginDto) {
+    return this.authService.login(body)
+      .then((user) => res.status(HttpStatus.OK).json(user))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Register user
   @Post('/register')
-  async register(@Res() res, @Body(new ValidationPipe()) body: RegisterDto) {
+  async register(@Res() res: Response, @Body(new ValidationPipe()) body: RegisterDto) {
     this.authService.register(body)
-      .then((user) => {
-        const {id, username, email} = user;
-        const data = {id, username, email, role: UserRole.USER, token: this.authService.createToken()};
-        return res.status(HttpStatus.OK).json(data);
-      })
+      .then((user) => res.status(HttpStatus.OK).json(user))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
-  }
+}
 }

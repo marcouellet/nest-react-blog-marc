@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../core/entities';
 import { IDataServicesRepositories } from '../../core/abstracts';
 import { UserDto } from '../../core/dtos';
 import { UserFactoryService } from './user-factory.service';
-import { CryptographerService } from '../cryptographer.service';
 
 @Injectable()
 export class UserService {
@@ -11,7 +9,6 @@ export class UserService {
   constructor(
     private readonly dataServicesRepositories: IDataServicesRepositories,
     private readonly userFactoryService: UserFactoryService,
-    private readonly cryptoService: CryptographerService
   ) {}
 
   async getAllUsers(): Promise<UserDto[]> {

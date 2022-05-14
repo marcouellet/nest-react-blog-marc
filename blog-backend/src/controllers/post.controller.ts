@@ -1,4 +1,5 @@
-import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
@@ -27,6 +28,7 @@ export class PostController {
 
   // Submit a new post
   @Post('/create')
+  @UseGuards(AuthGuard())
   async createPost(@Res() res: Response, @Body(new ValidationPipe()) postDto: PostDto) {
     // Validate userId
     await this.userService.getUserById(postDto.user.id)
@@ -39,6 +41,7 @@ export class PostController {
 
   // Update a post
   @Put('/update/:id')
+  @UseGuards(AuthGuard())
   async updatePost(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) updatePostDto: UpdatePostDto) {
     this.postService.updatePost(id, updatePostDto)
       .then((post) => res.status(HttpStatus.OK).json(post))
@@ -46,6 +49,7 @@ export class PostController {
   }
 
   // Delete a post
+  @UseGuards(AuthGuard())
   @Delete('/delete/:id')
   async deletePost(@Res() res: Response, @Param('id') id: string) {
     this.postService.deletePost(id)

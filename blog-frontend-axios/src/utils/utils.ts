@@ -12,8 +12,12 @@ export function getLocalStorageValue(key: string) {
   }
 }
 
-export function setLocalStorage(key: string, value: string) {
+export function setLocalStorageValue(key: string, value: any) {
   localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function removeLocalStorageValue(key: string) {
+  localStorage.removeItem(key);
 }
 
 export const toLocalDateString = (date: Date) => {

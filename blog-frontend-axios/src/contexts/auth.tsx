@@ -6,8 +6,8 @@ import {
   AuthState,
   createActionLogout
 } from '../reducers/auth';
-import { getLocalStorageValue } from '../utils/utils';
-import { TOKEN_KEY, setToken, isTokenValid } from '../services/api/APIUtils';
+import TokenService from '../services/api/TokenService';
+import { isTokenValid } from '../services/api/AuthAPI';
 import AUTHAPI from '../services/api/AuthAPI';
 
 type AuthContextProps = {
@@ -23,13 +23,11 @@ const AuthContext = React.createContext<AuthContextProps>({
 export function AuthProvider(props: React.PropsWithChildren<{}>) {
   const [state, dispatch] = React.useReducer(authReducer, initialState);
   React.useEffect(() => {
-    const token = getLocalStorageValue(TOKEN_KEY);
+    const token = TokenService.getLocalAccessToken();
 
     if (!token) return;
 
-    if (isTokenValid(token)) {
-      setToken(token);
-    } else {
+    if (!isTokenValid(token.accessToken)) {
       dispatch(createActionLogout());
       AUTHAPI.logout();
     }

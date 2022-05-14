@@ -5,7 +5,12 @@ export interface IUser {
   email: string;
 }
 
-export type User = IUser & { token?: string };
+export interface IAuthToken {
+  accessToken: any;
+  expiresIn: any;
+}
+
+export type User = IUser & { authtoken?: IAuthToken };
 
 export interface IPost {
   id?: string; // Identifier uniq

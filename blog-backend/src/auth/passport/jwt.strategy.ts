@@ -1,46 +1,25 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AuthService } from '../auth.service';
+import { ConfigService } from '../../services/config.service';
+import { AuthService } from '../../services/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-
+import { JwtPayload } from '../interfaces/payload.interface';
+import { UserDto } from '../../core/dtos';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       passReqToCallback: false,
-      secretOrKey: process.env.SECRET_KEY,
+      secretOrKey: configService.getConfig().authSecretKey,
     });
   }
 
-  async validate(payload: any, done: Function) {
-    return await this.authService.verify(payload)
-    .then(signedUser =>  done(null, signedUser))
-    .catch( err => done(err, false))
-  }
-}
-
-export const callback = (err, user, info) => {
-  let message: any
-  if (err) {
-    return (err || new UnauthorizedException(info.message));
-  } else if (typeof info != 'undefined' || !user) {
-    switch (info.message) {
-      case 'No auth token':
-      case 'invalid signature':
-      case 'jwt malformed':
-      case 'invalid token':
-      case 'invalid signature':
-        message = "You must provide a valid authenticated access token"
-        break
-      case 'jwt expired':
-        message = "Your session has expired"
-        break
-      default:
-        message = info.message;
-        break
+  async validate(payload: JwtPayload): Promise<UserDto> {
+    try {
+      return this.authService.findUserByPayload(payload)
+    } catch (err) {
+        throw new UnauthorizedException('Invalid token');
     }
-    throw new UnauthorizedException(message);
   }
-  return user;
 }
