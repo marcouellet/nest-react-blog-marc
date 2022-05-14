@@ -16,6 +16,9 @@ export const USER_KEY = 'user';
     }
   };
   
+  const getUserFromToken = (token: IAuthToken) => {
+  }
+
   const getUser = (): User => {
     return getLocalStorageValue(USER_KEY) as User;
   };
