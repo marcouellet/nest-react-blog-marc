@@ -27,6 +27,10 @@ export class UserDto {
   @Type(() => IAuthToken)
   authtoken?: IAuthToken;
 
+  @IsNotEmpty()
+  @Type(() => IAuthToken)
+  authrefreshtoken?: IAuthToken;
+
   @IsDate()
   createdOn?: Date;
 }

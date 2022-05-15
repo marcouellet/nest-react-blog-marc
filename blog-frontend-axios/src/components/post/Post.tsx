@@ -27,6 +27,7 @@ const Post = () => {
       }
       fetchData();  
     }
+  // eslint-disable-next-line
   }, []);
 
   const handleFetchPostError = (apiErrors: IErrors) => {

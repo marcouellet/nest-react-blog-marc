@@ -36,6 +36,7 @@
     "class-validator": "^0.13.2",
     "class-transformer": "^0.5.1",
     "dotenv": "^8.2.0",
+    "bcryptjs":"^2.4.3",
     "express-jwt": "^5.3.1",
     "jwks-rsa": "^1.6.0",
     "mongoose": "^6.3.0",

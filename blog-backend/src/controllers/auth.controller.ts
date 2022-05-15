@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../services/auth.service';
-import { LoginDto } from 'src/core/dtos';
-import { RegisterDto } from 'src/core/dtos/register.dto';
+import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request, Response } from 'express';
 import { JwtPayload } from '../auth/interfaces/payload.interface';
@@ -31,5 +30,13 @@ export class AuthController {
     this.authService.register(body)
       .then((user) => res.status(HttpStatus.OK).json(user))
       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
-}
+  }
+
+  // Refresh auth token
+  @Post('/refresh')
+  async refresh(@Res() res: Response, @Body(new ValidationPipe()) body: RefreshDto) {
+    this.authService.refresh(body)
+      .then((user) => res.status(HttpStatus.OK).json(user))
+      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  }
 }

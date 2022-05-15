@@ -28,6 +28,8 @@ export interface IConfig {
     authStrategyName: string,
     authSecretKey: string;
     authExpiresIn: string;
+    authRefreshTokenSecretKey: string;
+    authRefreshTokenExpiresIn: string;
 }
 
 export const GetConfig = (): IConfig => {
@@ -37,6 +39,9 @@ export const GetConfig = (): IConfig => {
     const authStrategyName = process.env.AUTH_STRATEGY_NAME;
     const authSecretKey = process.env.AUTH_SECRET_KEY;
     const authExpiresIn = process.env.AUTH_EXPIRES_IN;
+    const authRefreshTokenSecretKey = process.env.AUTH_REFRESH_TOKEN_SECRET_KEY;
+    const authRefreshTokenExpiresIn = process.env.AUTH_REFRESH_TOKEN_EXPIRES_IN;
+    ;
 
     if (!dataServerName) {
         throw new NotFoundException('Please, provide a value for DATA_SERVER_NAME in env file'); 
@@ -58,6 +63,14 @@ export const GetConfig = (): IConfig => {
         throw new NotFoundException('Please, provide a value for AUTH_EXPIRES_IN in env file'); 
     }
 
+    if (!authRefreshTokenSecretKey) {
+        throw new NotFoundException('Please, provide a value for AUTH_REFRESH_TOKEN_SECRET_KEY in env file'); 
+    }
+
+    if (!authRefreshTokenExpiresIn) {
+        throw new NotFoundException('Please, provide a value for AUTH_REFRESH_TOKEN_EXPIRES_IN in env file'); 
+    }
+
     if (!validateAuthStrategyName(authStrategyName)) {
         throw new NotFoundException('Invalid auth strategy name : ' + authStrategyName +
         ', should belong to ' +  validateAuthStrategyNames.toString());
@@ -69,5 +82,6 @@ export const GetConfig = (): IConfig => {
         ', should belong to ' +  validDataServerNames.toString());
     }
 
-    return { dataServerName, connectionString, authStrategyName, authSecretKey, authExpiresIn };
+    return { dataServerName, connectionString, authStrategyName, 
+            authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn };
 };
