@@ -17,15 +17,17 @@ const Post = () => {
   const [errors, setErrors] = React.useState<IErrors | null>();
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      dispatch(createActionLoading(true));
-      await PostApiService.getPostById(postId!)
-      .then((post) => setPost(post))
-      .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
-      dispatch(createActionLoading(false));
+    if (!post) {
+      const fetchData = async (): Promise<void> => {
+        dispatch(createActionLoading(true));
+        await PostApiService.getPostById(postId!)
+        .then((post) => setPost(post))
+        .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
+        dispatch(createActionLoading(false));
+      }
+      fetchData();  
     }
-    fetchData();
-  }, [postId, dispatch]);
+  }, []);
 
   const handleFetchPostError = (apiErrors: IErrors) => {
     toast.error(`Post reading failed, see error list`);

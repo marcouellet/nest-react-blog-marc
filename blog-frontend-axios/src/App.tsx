@@ -9,12 +9,14 @@ import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from "./routes/AppRoutes";
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
+import SessionTimeoutHandler from "./components/auth/sessionTimeoutHandler";
 
 const App = () => {
   return (
     <>
       <ConfirmationModalContextProvider>
         <BrowserRouter>
+          <SessionTimeoutHandler/>
           <Navbar/>
           <AppRoutes />
           <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />

@@ -13,7 +13,9 @@ const Navbar = () => {
         dispatch(createActionLogout());
         AUTHAPI.logout();
         toast.success(`${state.user!.username} is logged out`);
-        navigate('/');
+        setTimeout(() => {
+            navigate('/');
+          }, 1500);
       };
 
       return (

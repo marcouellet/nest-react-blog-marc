@@ -12,6 +12,7 @@ const Edit = () => {
 
   const navigate = useNavigate();
   const { state, dispatch } = useAuth();
+
   const { isLoading } = state;
   const { postId } = useParams<{ postId: string }>();
   interface IValues {
@@ -24,15 +25,22 @@ const Edit = () => {
   const [errors, setErrors] = React.useState<IErrors | null>();
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      dispatch(createActionLoading(true));
-      const post = await PostApiService.getPostById(postId!);
-      dispatch(createActionLoading(false));
-      setPost(post);
-      setValues(post);
+    if (!post) {
+      const fetchData = async (): Promise<void> => {
+        dispatch(createActionLoading(true));
+        await PostApiService.getPostById(postId!)
+        .then((post) => { setPost(post); setValues(post); })
+        .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
+        dispatch(createActionLoading(false));
+       }
+      fetchData();      
     }
-    fetchData();    
-  }, [postId, dispatch]);
+  }, []);
+
+  const handleFetchPostError = (apiErrors: IErrors) => {
+    toast.error(`Post reading failed, see error list`);
+    setErrors(apiErrors);
+  }
 
   const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();

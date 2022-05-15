@@ -4,12 +4,11 @@ import {
   initialState,
   AuthAction,
   AuthState,
-  createActionLogout,
-  createActionLoadUser
+  createActionLoadUser,
+  createActionSessionExpired,
 } from '../reducers/auth';
 import TokenService from '../services/api/TokenService';
 import { isTokenValid } from '../services/api/AuthAPI';
-import AUTHAPI from '../services/api/AuthAPI';
 
 type AuthContextProps = {
   state: AuthState;
@@ -24,16 +23,14 @@ const AuthContext = React.createContext<AuthContextProps>({
 export function AuthProvider(props: React.PropsWithChildren<{}>) {
   const [state, dispatch] = React.useReducer(authReducer, initialState);
   React.useEffect(() => {
-    const token = TokenService.getLocalAccessToken();
     const user = TokenService.getUser();
 
     if (!user) return;
 
-    if (isTokenValid(user.authtoken!.accessToken)) {
-      dispatch(createActionLoadUser(user));
-    } else {
-      dispatch(createActionLogout());
-      AUTHAPI.logout();
+    dispatch(createActionLoadUser(user));
+
+    if (!isTokenValid(user.authtoken!.accessToken)) {
+      dispatch(createActionSessionExpired());
     }
   }, []);
 
