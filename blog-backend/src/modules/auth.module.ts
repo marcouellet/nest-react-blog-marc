@@ -1,5 +1,6 @@
 import { Module, Global, UseFilters } from '@nestjs/common';
 import { JwtStrategy } from '../auth/passport/jwt.strategy';
+import { JwtRefreshTokenStrategy } from '../auth/passport/jwt-refresh.strategy';
 import { LocalStrategy } from '../auth/passport/local.strategy';
 import { AuthController } from '../controllers/auth.controller';
 import { AuthService } from '../services/auth.service';
@@ -49,7 +50,7 @@ import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/conf
 ],
 
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
+  providers: [AuthService, JwtStrategy, JwtRefreshTokenStrategy, LocalStrategy],
   exports: [AuthService, PassportModule],
 })
 export class AuthModule {}

@@ -4,6 +4,7 @@ import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface'
 import { Response } from 'express';
 @Controller('post')
 export class PostController {
@@ -28,7 +29,7 @@ export class PostController {
 
   // Submit a new post
   @Post('/create')
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   async createPost(@Res() res: Response, @Body(new ValidationPipe()) postDto: PostDto) {
     // Validate userId
     await this.userService.getUserById(postDto.user.id)
@@ -41,7 +42,7 @@ export class PostController {
 
   // Update a post
   @Put('/update/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   async updatePost(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) updatePostDto: UpdatePostDto) {
     this.postService.updatePost(id, updatePostDto)
       .then((post) => res.status(HttpStatus.OK).json(post))
@@ -49,7 +50,7 @@ export class PostController {
   }
 
   // Delete a post
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   @Delete('/delete/:id')
   async deletePost(@Res() res: Response, @Param('id') id: string) {
     this.postService.deletePost(id)

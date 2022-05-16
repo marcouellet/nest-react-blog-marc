@@ -5,7 +5,7 @@ import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { JwtPayload } from '../auth/interfaces/payload.interface';
+import { JwtPayload } from '../auth/interfaces/jwt.interface';
 import { IAuthToken } from '../auth/interfaces/auth-token.interface';
 @Injectable()
 export class AuthService {
@@ -17,18 +17,27 @@ export class AuthService {
   ) {}
 
   private createToken({ email }: UserDto): IAuthToken {
-    const expiresIn = toMs(this.configService.getConfig().authExpiresIn);
     const sub = email;
     const payload: JwtPayload = { sub };
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload /*, this.getTokenOptions() fails*/);
     return { accessToken } as IAuthToken;
   }
 
+  private getTokenOptions() {
+    const options: JwtSignOptions = {
+      secret: this.configService.getConfig().authExpiresIn
+    };
+    const expiration: string = this.configService.getConfig().authExpiresIn;
+    if (expiration) {
+      options.expiresIn = expiration;
+    }
+    return options;
+  }
+
   private createRefreshToken({ email }: UserDto): IAuthToken {
-    const expiresIn = toMs(this.configService.getConfig().authRefreshTokenExpiresIn);
     const sub = email;
     const payload: JwtPayload = { sub };
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload /*, this.getRefreshTokenOptions() fails */);
     return { accessToken } as IAuthToken;
   }
 
