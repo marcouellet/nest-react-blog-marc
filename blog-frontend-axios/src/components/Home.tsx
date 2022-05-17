@@ -8,6 +8,8 @@ import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 import DeleteButton from './common/deleteConfirmation'
+import { checkSessionExpired } from '../utils/session';
+import { createActionSessionExpired } from '../reducers/auth';
 
 const Home = () => {
   
@@ -41,8 +43,13 @@ const Home = () => {
   }
 
   const handleDeletePostError = (apiErrors: IErrors) => {
-    toast.error(`Post delete failed, see error list`);
-    setErrors(apiErrors);
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`Post delete failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else {
+      toast.error(`Post delete failed, see error list`);
+      setErrors(apiErrors);      
+    }
   }
 
   useEffect(() => {
