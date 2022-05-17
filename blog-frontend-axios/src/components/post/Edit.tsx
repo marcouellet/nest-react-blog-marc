@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { IPost, IUpdatePost, createPostForUpdate } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
@@ -13,25 +17,38 @@ import { createActionSessionExpired } from '../../reducers/auth';
 const Edit = () => {
 
   const navigate = useNavigate();
-  const { state, dispatch } = useAuth();
-
-  const { isLoading } = state;
+  const { state: { isLoading, user }, dispatch } = useAuth();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
-  interface IValues {
-    [key: string]: any | null;
-  }
-
   const [post, setPost] = useState<IPost>();
-  const [values, setValues] = useState<IValues>([]);
-  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
-  const [errors, setErrors] = React.useState<IErrors | null>();
+ 
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required('Title is required'),
+    description: Yup.string().required('Description is required'),
+    body: Yup.string().required('Body is required'),
+  });
+
+  type UpdateSubmitForm = {
+    title: string;
+    description: string;
+    body: string;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<UpdateSubmitForm>({
+    resolver: yupResolver(validationSchema)
+  });
 
   useEffect(() => {
     if (!post) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
         await PostApiService.getPostById(postId!)
-        .then((post) => { setPost(post); setValues(post); })
+        .then((post) => { setPost(post); reset(post);})
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         dispatch(createActionLoading(false));
        }
@@ -40,42 +57,25 @@ const Edit = () => {
   // eslint-disable-next-line
   }, []);
 
-  const handleFetchPostError = (apiErrors: IErrors) => {
-    toast.error(`Post reading failed, see error list`);
-    setErrors(apiErrors);
-  }
-
-  const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-
-    const formData = {
-      title: values.title,
-      description: values.description,
-      body: values.body,
-    }
-
-    const submitSuccess: boolean = await submitForm(formData);
-    setSubmitSuccess(submitSuccess);
-    setTimeout(() => {
-      navigate('/');
-    }, 1500);
-  }
-
-  const submitForm = async (formData: {}) : Promise<boolean>  =>  {
+  const onSubmit = async (data: UpdateSubmitForm) => {
     if (post) {
       dispatch(createActionLoading(true));
-      const updatePost: IUpdatePost = createPostForUpdate({...post, ...formData});
-      const isOk = await PostApiService.updatePost(post.id!, updatePost)
-        .then(() => { handleSubmitFormSucess();  return true;})
-        .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); return false;});
+      const postData: IUpdatePost = createPostForUpdate({...post, ...data});
+      await PostApiService.updatePost(post.id!, postData)
+      .then(() => { handleSubmitFormSucess(); })
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
       dispatch(createActionLoading(false));
-      return isOk;
-    }
-    return Promise.resolve(false);
+     }
+  } 
+
+  const handleFetchPostError = (apiErrors: IErrors) => {
+    toast.error(`Post reading failed, see error list`);
+    setErrorList(apiErrors);
   }
 
   const handleSubmitFormSucess = () => {
     toast.success(`Post updated successfully...`);
+    navigate('/'); 
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
@@ -84,17 +84,9 @@ const Edit = () => {
       dispatch(createActionSessionExpired());
     } else {
       toast.error(`Post update failed, see error list`);
-      setErrors(apiErrors);      
+      setErrorList(apiErrors);      
     }
 }
-
-  const setFormValues = (formValues: IValues) => {
-    setValues({...values, ...formValues})
-  }
-
-  const handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
-    setFormValues({ [e.currentTarget.id]: e.currentTarget.value })
-  }
 
   return (
     <div className={'page-wrapper'}>
@@ -102,27 +94,39 @@ const Edit = () => {
       (
         <div className={"col-md-12 form-wrapper"}>
           <h2> Edit Post  </h2>
-
-          {submitSuccess && (
-            <div className="alert alert-info" role="alert">
-              The post has been edited successfully!
-                          </div>
-          )}
-          {errors && <ListErrors errors={errors} />}
-          <form id={"create-post-form"} onSubmit={handleFormSubmission} noValidate={true}>
+          {errorList && <ListErrors errors={errorList} />}
+          <form id={"create-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
             <div className="form-group col-md-12">
               <label htmlFor="title"> Title </label>
-              <input type="text" id="title" defaultValue={post.title.toString()} onChange={handleInputChanges} name="title" className="form-control" placeholder="Enter title" />
-            </div>
+              <input 
+                type="text"
+                placeholder="Enter title"
+                {...register('title')}
+                className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
+              />
+              <div className="invalid-feedback">{errors.title?.message}</div>
+           </div>
 
             <div className="form-group col-md-12">
               <label htmlFor="description"> Description </label>
-              <input type="text" id="description" defaultValue={post.description.toString()} onChange={handleInputChanges} name="description" className="form-control" placeholder="Enter Description" />
+              <input 
+                type="text" 
+                placeholder="Enter description"
+                {...register('description')}
+                className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
+              />
+              <div className="invalid-feedback">{errors.description?.message}</div>
             </div>
 
             <div className="form-group col-md-12">
-              <label htmlFor="body"> Write Content </label>
-              <input type="text" id="body" defaultValue={post.body.toString()} onChange={handleInputChanges} name="body" className="form-control" placeholder="Enter content" />
+              <label htmlFor="body"> Enter Content </label>
+              <input 
+                type="text" 
+                placeholder="Enter content" 
+                {...register('body')}
+                className={`form-control ${errors.body ? 'is-invalid' : ''}`}           
+              />
+              <div className="invalid-feedback">{errors.body?.message}</div>
             </div>
 
             <div className="form-group col-md-4 pull-right">
