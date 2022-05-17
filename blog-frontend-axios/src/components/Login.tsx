@@ -11,14 +11,9 @@ import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 
 const Login = () => {
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
-
-  const {
-    state: { isLoading },
-    dispatch,
-  } = useAuth();
-
   const navigate = useNavigate();
+  const { state: { isLoading }, dispatch } = useAuth();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required'),
@@ -37,7 +32,6 @@ const Login = () => {
   } = useForm<LoginSubmitForm>({
     resolver: yupResolver(validationSchema)
   });
-
 
   const onSubmit = async (data: LoginSubmitForm) => {
     dispatch(createActionLoading(true));
