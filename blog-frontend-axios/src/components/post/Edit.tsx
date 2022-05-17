@@ -92,41 +92,43 @@ const Edit = () => {
   return (
     <div className={'page-wrapper'}>
     {post &&
-      <div className={"col-md-12 form-wrapper"}>
-        <h2> Edit Post  </h2>
+      (
+        <div className={"col-md-12 form-wrapper"}>
+          <h2> Edit Post  </h2>
 
-        {submitSuccess && (
-          <div className="alert alert-info" role="alert">
-            The post has been edited successfully!
-                        </div>
-        )}
-        {errors && <ListErrors errors={errors} />}
-        <form id={"create-post-form"} onSubmit={handleFormSubmission} noValidate={true}>
-          <div className="form-group col-md-12">
-            <label htmlFor="title"> Title </label>
-            <input type="text" id="title" defaultValue={post.title.toString()} onChange={handleInputChanges} name="title" className="form-control" placeholder="Enter title" />
-          </div>
+          {submitSuccess && (
+            <div className="alert alert-info" role="alert">
+              The post has been edited successfully!
+                          </div>
+          )}
+          {errors && <ListErrors errors={errors} />}
+          <form id={"create-post-form"} onSubmit={handleFormSubmission} noValidate={true}>
+            <div className="form-group col-md-12">
+              <label htmlFor="title"> Title </label>
+              <input type="text" id="title" defaultValue={post.title.toString()} onChange={handleInputChanges} name="title" className="form-control" placeholder="Enter title" />
+            </div>
 
-          <div className="form-group col-md-12">
-            <label htmlFor="description"> Description </label>
-            <input type="text" id="description" defaultValue={post.description.toString()} onChange={handleInputChanges} name="description" className="form-control" placeholder="Enter Description" />
-          </div>
+            <div className="form-group col-md-12">
+              <label htmlFor="description"> Description </label>
+              <input type="text" id="description" defaultValue={post.description.toString()} onChange={handleInputChanges} name="description" className="form-control" placeholder="Enter Description" />
+            </div>
 
-          <div className="form-group col-md-12">
-            <label htmlFor="body"> Write Content </label>
-            <input type="text" id="body" defaultValue={post.body.toString()} onChange={handleInputChanges} name="body" className="form-control" placeholder="Enter content" />
-          </div>
+            <div className="form-group col-md-12">
+              <label htmlFor="body"> Write Content </label>
+              <input type="text" id="body" defaultValue={post.body.toString()} onChange={handleInputChanges} name="body" className="form-control" placeholder="Enter content" />
+            </div>
 
-          <div className="form-group col-md-4 pull-right">
-            <button className="btn btn-success" type="submit">
-              Update Post
-            </button>
-            {isLoading &&
-              <span className="fa fa-circle-o-notch fa-spin" />
-            }
-          </div>
-        </form>
-      </div>
+            <div className="form-group col-md-4 pull-right">
+              <button className="btn btn-success" type="submit">
+                Update Post
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+            </div>
+          </form>
+        </div>
+      )
     }
   </div>
   )

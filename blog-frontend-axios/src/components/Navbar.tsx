@@ -12,7 +12,7 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(createActionLogout());
         AUTHAPI.logout();
-        toast.success(`${state.user!.username} is logged out`);
+        toast.info(`${state.user!.username} is logged out`);
         setTimeout(() => {
             navigate('/');
           }, 1500);

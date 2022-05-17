@@ -35,7 +35,7 @@ export class AuthController {
 
   // Refresh auth token
   @Post('/refresh')
-  @UseGuards(JwtRefreshTokenAuthGuard)
+ // @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Res() res: Response, @Body(new ValidationPipe()) body: RefreshDto) {
     this.authService.refresh(body)
       .then((user) => res.status(HttpStatus.OK).json(user))

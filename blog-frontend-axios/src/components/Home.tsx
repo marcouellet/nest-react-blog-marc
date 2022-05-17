@@ -87,27 +87,33 @@ const Home = () => {
                 <ul className="post-footer">
                   {
                     !state.isLoading &&
-                    <li>
-                    {
-                      <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
-                    }
-                  </li>
+                    (
+                      <li>
+                      {
+                        <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
+                      }
+                      </li>
+                    )
                   }
                   {
                     state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
-                    <li>
-                    {
-                      <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
-                    }
-                    </li>
+                    (
+                      <li>
+                      {
+                        <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
+                      }
+                      </li>
+                    )
                   }
                   {
-                    state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&                    
-                    <li>
-                    {
-                      <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
-                    }
-                    </li>
+                    state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) && 
+                    (                   
+                      <li>
+                      {
+                        <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
+                      }
+                      </li>
+                    )
                   }
                 </ul>
               </div>

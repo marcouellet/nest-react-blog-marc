@@ -1,12 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import API from './APIUtils';
-import { User } from '../../types';
+import { User, ILogin, IRegister, IRefresh, JWTPayload, IAuthToken } from '../../types';
 import TokenService from './TokenService';
-
-type JWTPayload = {
-  sub: string;
-  exp: number;
-};
 
 export function isTokenValid(token: string) {
   try {
@@ -24,7 +19,8 @@ function getCurrentUser(): User {
 
 async function login(email: string, password: string): Promise<User> {
   return new Promise((resolve, reject) => {
-    API.post<User>('/auth/login', { email, password })
+    const loginParms: ILogin = { email, password }
+    API.post<User>('/auth/login', loginParms)
       .then(response => {
         TokenService.setUser(response.data);
         resolve(response.data);
@@ -37,7 +33,22 @@ async function login(email: string, password: string): Promise<User> {
 
 async function register(username: string, email: string, password: string) : Promise<User> {
   return new Promise((resolve, reject) => {
-    API.post<User>('/auth/register', { username, email, password })
+    const registerParms: IRegister = { username, email, password }
+    API.post<User>('/auth/register', registerParms)
+      .then(response => {
+        TokenService.setUser(response.data);
+        resolve(response.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
+
+async function refresh(authrefreshtoken: IAuthToken) : Promise<User> {
+  return new Promise((resolve, reject) => {
+    const refreshParms: IRefresh = { authrefreshtoken };
+    API.post<User>('/auth/refresh', refreshParms)
       .then(response => {
         TokenService.setUser(response.data);
         resolve(response.data);
@@ -52,6 +63,6 @@ function logout() {
   TokenService.removeUser();
 }
 
-const AUTHAPI = {getCurrentUser, login, register, logout}
+const AUTHAPI = {getCurrentUser, login, register, refresh, logout}
 
 export default AUTHAPI

@@ -63,16 +63,20 @@ export class AuthService {
       if (!user) {
         throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
       }
-      const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user.authrefreshtoken);
-      if (!isRefreshTokenMatching) {
-        throw new UnauthorizedException('Invalid token');
-      }
-      return this.jwtService.verifyAsync<IAuthToken>(refreshToken, this.getRefreshTokenOptions())
-      .then(() => {
-        user.authtoken = this.createToken(user);
-        user.authrefreshtoken = this.createRefreshToken(user);
-        return user; 
-      });
+      // const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user.authrefreshtoken);
+      // if (!isRefreshTokenMatching) {
+      //   throw new UnauthorizedException('Invalid token');
+      // }
+      // return this.jwtService.verifyAsync<IAuthToken>(refreshToken, this.getRefreshTokenOptions())
+      // .then(() => {
+      //   user.authtoken = this.createToken(user);
+      //   user.authrefreshtoken = this.createRefreshToken(user);
+      //   return user; 
+      // });
+      user.authtoken = this.createToken(user);
+      user.authrefreshtoken = this.createRefreshToken(user);
+      return user; 
+
     } catch {
       throw new UnauthorizedException('Invalid token');
     }

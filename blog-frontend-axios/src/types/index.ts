@@ -9,7 +9,12 @@ export class IAuthToken {
   accessToken: any;
 }
 
-export type User = IUser & { authtoken?: IAuthToken };
+export type JWTPayload = {
+  sub: string;
+  exp: number;
+};
+
+export type User = IUser & { authtoken?: IAuthToken, authrefreshtoken?: IAuthToken };
 
 export interface IPost {
   id?: string; // Identifier uniq
@@ -19,13 +24,29 @@ export interface IPost {
   user?: IUser;
   publishDate?: Date;
 }
+export interface ILogin {
+  email: string;
+  password: string;
+}
+
+export interface IRegister {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface IRefresh {
+  authrefreshtoken?: IAuthToken;
+}
+
+export interface IErrors {
+  [key: string]: string[];
+}
+
 export interface IUpdatePost {
   title: string;
   description: string;
   body: string;
-}
-export interface IErrors {
-  [key: string]: string[];
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {
