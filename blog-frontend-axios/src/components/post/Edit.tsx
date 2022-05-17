@@ -7,6 +7,8 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
+import { checkSessionExpired } from '../../utils/session';
+import { createActionSessionExpired } from '../../reducers/auth';
 
 const Edit = () => {
 
@@ -77,8 +79,13 @@ const Edit = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    toast.error(`Post update failed, see error list`);
-    setErrors(apiErrors);
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`Post update failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else {
+      toast.error(`Post update failed, see error list`);
+      setErrors(apiErrors);      
+    }
 }
 
   const setFormValues = (formValues: IValues) => {

@@ -25,19 +25,21 @@ const SessionTimeoutHandler = () => {
     }
 
     const handleLogout = () => {
-        dispatch(createActionLogout());
-        AUTHAPI.logout();
-        toast.info(`${state.user!.username} is logged out`);
-        setTimeout(() => {
-            navigate('/');
-          }, 1500);
+        if (state.isAuthenticated) {
+            dispatch(createActionLogout());
+            AUTHAPI.logout();
+            toast.info(`${state.user!.username} is logged out`);
+            setTimeout(() => {
+                navigate('/');
+              }, 1500);    
+        }
       };
 
     const handleRefresh = () => {
         AUTHAPI.refresh(state.user!.authrefreshtoken!)
         .then((user) => {
             dispatch(createActionLoadUser(user));
-            toast.info(`Session refreshed!`);
+            toast.info(`Session renewed!`);
             setTimeout(() => {
                 navigate('/');
               }, 1500);

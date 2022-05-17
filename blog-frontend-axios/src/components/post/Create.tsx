@@ -6,6 +6,8 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
+import { checkSessionExpired } from '../../utils/session';
+import { createActionSessionExpired } from '../../reducers/auth';
 
 const Create = () => {
 
@@ -62,8 +64,13 @@ const Create = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    toast.error(`Post creation failed, see error list`);
-    setErrors(apiErrors);
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`Post creation failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else {
+      toast.error(`Post creation failed, see error list`);
+      setErrors(apiErrors);      
+    }
   }
 
   return (
