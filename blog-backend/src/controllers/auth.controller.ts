@@ -5,6 +5,7 @@ import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request, Response } from 'express';
 import { JwtPayload } from '../auth/interfaces/jwt.interface';
+import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface'
 import { JwtRefreshTokenAuthGuard } from '../auth/interfaces/jwt-refresh.strategy.interface';
 @Controller('auth')
 export class AuthController {
@@ -12,7 +13,7 @@ export class AuthController {
 
   // Get current user
   @Get('/whoami')
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   async whoAmI(@Req() req: Request): Promise<JwtPayload> {
     return this.authService.whoAmI(req.headers.authorization);
   }

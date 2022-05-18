@@ -24,7 +24,11 @@ const Navbar = () => {
                 <div className="menu-nav-icon" data-nav-menu="#main-menu">
                     <i className="ion-navicon" />
                 </div>
-
+                { state.user && (
+                    <div>
+                        <h5>User: {state.user.username}</h5>
+                    </div>
+                )}
                 <ul className="main-menu visible-on-click" id="main-menu">
                     <li><Link className={"nav-link"} to={"/"}> Home </Link></li>
                     {!state.isLoading && state.isAuthenticated && (
