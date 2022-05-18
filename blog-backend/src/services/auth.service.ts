@@ -92,7 +92,7 @@ export class AuthService {
 
   async findUserByPayload(payload: JwtPayload): Promise<UserDto> {
     const {sub} = payload;
-    return this.userService.findUser({sub});
+    return this.userService.findUser({email: sub});
   }
 
   async validateUser(criterias: {}): Promise<UserDto> {
@@ -101,9 +101,9 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<UserDto> {
     const { email, password } = loginDto;
-    return await this.userService.findUserUnrestricted({ email })
+    return this.userService.findUserUnrestricted({ email })
     .then(async user => {
-      return await this.cryptoService.checkPassword(user.password, password)
+      return this.cryptoService.checkPassword(user.password, password)
       ? (user => 
       {
         user.authtoken = this.createToken(user);
