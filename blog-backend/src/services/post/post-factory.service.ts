@@ -30,7 +30,7 @@ export class PostFactoryService {
     postDto.title = newPost.title;
     postDto.description = newPost.description;
     postDto.body = newPost.body;
-    postDto.user = this.userFactoryService.createUserDto(newPost.user);
+    postDto.user = this.userFactoryService.removeRestrictedProperties(this.userFactoryService.createUserDto(newPost.user));
     postDto.publishDate = newPost.publishDate;
 
     return postDto;

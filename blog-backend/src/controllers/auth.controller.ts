@@ -21,16 +21,16 @@ export class AuthController {
   @Post('/login')
   async login(@Res() res: Response, @Body(new ValidationPipe()) body: LoginDto) {
     return this.authService.login(body)
-      .then((user) => res.status(HttpStatus.OK).json(user))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user))
+      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Register user
   @Post('/register')
   async register(@Res() res: Response, @Body(new ValidationPipe()) body: RegisterDto) {
     this.authService.register(body)
-      .then((user) => res.status(HttpStatus.OK).json(user))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user))
+      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Refresh auth token
@@ -38,7 +38,7 @@ export class AuthController {
  // @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Res() res: Response, @Body(new ValidationPipe()) body: RefreshDto) {
     this.authService.refresh(body)
-      .then((user) => res.status(HttpStatus.OK).json(user))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user))
+      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

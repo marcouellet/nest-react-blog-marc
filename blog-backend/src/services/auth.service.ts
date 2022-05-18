@@ -7,6 +7,8 @@ import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { JwtPayload } from '../auth/interfaces/jwt.interface';
 import { IAuthToken } from '../auth/interfaces/auth-token.interface';
+import { CryptographerService } from './cryptographer.service';
+
 @Injectable()
 export class AuthService {
 
@@ -14,6 +16,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly cryptoService: CryptographerService
   ) {}
 
   private createToken({ email }: UserDto): IAuthToken {
@@ -59,7 +62,7 @@ export class AuthService {
         throw new Error();
       }
       const {sub} = decoded;
-      const user = await this.userService.findUser({sub});
+      const user = await this.userService.findUser({email: sub});
       if (!user) {
         throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
       }
@@ -98,14 +101,23 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<UserDto> {
     const { email, password } = loginDto;
-    return this.userService.findUser({ email, password })
-      .then((user) => {
+    return await this.userService.findUserUnrestricted({ email })
+    .then(async user => {
+      return await this.cryptoService.checkPassword(user.password, password)
+      ? (user => 
+      {
         user.authtoken = this.createToken(user);
         user.authrefreshtoken = this.createRefreshToken(user);
-        return user; });
-  }
+        delete user.password;
+        return Promise.resolve(user)
+      })(user)
+      : Promise.reject(new UnauthorizedException('Invalid password'))
+    })
+    .catch(err => Promise.reject(err))
+   }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
+    registerDto.password = this.cryptoService.hashPassword(registerDto.password)
     return this.userService.createUser(registerDto);
   }
 

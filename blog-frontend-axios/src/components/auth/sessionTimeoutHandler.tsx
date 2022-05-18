@@ -13,7 +13,7 @@ const SessionTimeoutHandler = () => {
 
     const showSessionTimeoutModel = async (): Promise<boolean> => {
         return modalContext.showConfirmation(
-            'Session expired',
+            `${state.user!.username} session expired!`,
             (
                 <div style={{border: "2px solid blue", padding: "10px"}}>
                     <p>
@@ -39,7 +39,7 @@ const SessionTimeoutHandler = () => {
         AUTHAPI.refresh(state.user!.authrefreshtoken!)
         .then((user) => {
             dispatch(createActionLoadUser(user));
-            toast.info(`Session renewed!`);
+            toast.info(`${user.username} session renewed!`);
             setTimeout(() => {
                 navigate('/');
               }, 1500);

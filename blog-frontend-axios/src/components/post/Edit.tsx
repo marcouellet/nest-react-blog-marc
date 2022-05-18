@@ -17,7 +17,7 @@ import { createActionSessionExpired } from '../../reducers/auth';
 const Edit = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading, user }, dispatch } = useAuth();
+  const { state: { isLoading }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<IPost>();

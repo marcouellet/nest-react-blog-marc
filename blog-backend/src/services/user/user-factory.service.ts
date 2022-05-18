@@ -34,7 +34,10 @@ export class UserFactoryService {
     userDto.id = newUser.id;
     userDto.email = newUser.email;
     userDto.username = newUser.username;
+    userDto.password = newUser.password;
 
     return userDto;
   }
+
+  removeRestrictedProperties (user: UserDto): UserDto { delete user.password; return user; }
 }
