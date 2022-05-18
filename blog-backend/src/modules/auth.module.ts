@@ -38,18 +38,8 @@ import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/conf
       },
       inject: [ConfigService],
     }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.getConfig().authSecretKey,
-        signOptions: {
-          expiresIn: configService.getConfig().authExpiresIn,
-        },
-      }),
-    inject: [ConfigService],
-  }),
-],
-
+    JwtModule.register({}),
+  ],
   controllers: [AuthController],
   providers: [AuthService, CryptographerService, JwtStrategy, JwtRefreshTokenStrategy, LocalStrategy],
   exports: [AuthService, PassportModule],

@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '../../services/config.service';
 import { AuthService } from '../../services/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { UserDto } from '../../core/dtos';
 import { JWT_STRATEGY_NAME } from '../../auth/interfaces/jwt.strategy.interface';
@@ -21,9 +21,9 @@ export class JwtStrategy extends PassportStrategy(
 
   async validate(payload: JwtPayload): Promise<UserDto> {
     try {
-      return this.authService.findUserByPayload(payload)
+      return this.authService.findUserByPayload(payload);
     } catch (err) {
-        throw new UnauthorizedException('Invalid token');
+        throw new ForbiddenException('Access Denied');
     }
   }
 }

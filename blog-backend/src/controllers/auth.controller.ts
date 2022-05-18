@@ -1,11 +1,10 @@
 import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request, Response } from 'express';
 import { JwtPayload } from '../auth/interfaces/jwt.interface';
-import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface'
+import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface';
 import { JwtRefreshTokenAuthGuard } from '../auth/interfaces/jwt-refresh.strategy.interface';
 @Controller('auth')
 export class AuthController {
@@ -36,7 +35,7 @@ export class AuthController {
 
   // Refresh auth token
   @Post('/refresh')
- // @UseGuards(JwtRefreshTokenAuthGuard)
+  @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Res() res: Response, @Body(new ValidationPipe()) body: RefreshDto) {
     this.authService.refresh(body)
       .then(user => res.status(HttpStatus.OK).json(user))

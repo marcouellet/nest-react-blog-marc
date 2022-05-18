@@ -1,6 +1,6 @@
 import { toMs }from 'ms-typescript'
 import { bcrypt } from 'bcryptjs';
-import { Injectable, HttpStatus, HttpException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
@@ -16,19 +16,19 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly cryptoService: CryptographerService
+    private readonly cryptoService: CryptographerService,
   ) {}
 
   private createToken({ email }: UserDto): IAuthToken {
     const sub = email;
     const payload: JwtPayload = { sub };
-    const accessToken = this.jwtService.sign(payload /*, this.getTokenOptions() fails*/);
+    const accessToken = this.jwtService.sign(payload, this.getTokenSignOptions());
     return { accessToken } as IAuthToken;
   }
 
-  private getTokenOptions() {
+  private getTokenSignOptions() {
     const options: JwtSignOptions = {
-      secret: this.configService.getConfig().authExpiresIn
+      secret: this.configService.getConfig().authSecretKey,
     };
     const expiration: string = this.configService.getConfig().authExpiresIn;
     if (expiration) {
@@ -40,13 +40,13 @@ export class AuthService {
   private createRefreshToken({ email }: UserDto): IAuthToken {
     const sub = email;
     const payload: JwtPayload = { sub };
-    const accessToken = this.jwtService.sign(payload /*, this.getRefreshTokenOptions() fails */);
+    const accessToken = this.jwtService.sign(payload, this.getRefreshTokenSignOptions());
     return { accessToken } as IAuthToken;
   }
 
-  private getRefreshTokenOptions() {
+  private getRefreshTokenSignOptions() {
     const options: JwtSignOptions = {
-      secret: this.configService.getConfig().authRefreshTokenSecretKey
+      secret: this.configService.getConfig().authRefreshTokenSecretKey,
     };
     const expiration: string = this.configService.getConfig().authRefreshTokenExpiresIn;
     if (expiration) {
@@ -64,7 +64,7 @@ export class AuthService {
       const {sub} = decoded;
       const user = await this.userService.findUser({email: sub});
       if (!user) {
-        throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
+        throw new NotFoundException('User does not exist');
       }
       // const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user.authrefreshtoken);
       // if (!isRefreshTokenMatching) {
@@ -78,10 +78,10 @@ export class AuthService {
       // });
       user.authtoken = this.createToken(user);
       user.authrefreshtoken = this.createRefreshToken(user);
-      return user; 
+      return user;
 
     } catch {
-      throw new UnauthorizedException('Invalid token');
+      throw  new ForbiddenException('Access Denied');
     }
 }
  
@@ -104,14 +104,13 @@ export class AuthService {
     return this.userService.findUserUnrestricted({ email })
     .then(async user => {
       return this.cryptoService.checkPassword(user.password, password)
-      ? (user => 
-      {
-        user.authtoken = this.createToken(user);
-        user.authrefreshtoken = this.createRefreshToken(user);
-        delete user.password;
-        return Promise.resolve(user)
+      ? (usr => {
+        usr.authtoken = this.createToken(user);
+        usr.authrefreshtoken = this.createRefreshToken(user);
+        delete usr.password;
+        return Promise.resolve(usr);
       })(user)
-      : Promise.reject(new UnauthorizedException('Invalid password'))
+      : Promise.reject( new ForbiddenException('Access Denied') )
     })
     .catch(err => Promise.reject(err))
    }

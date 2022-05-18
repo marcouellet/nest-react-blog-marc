@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { AuthService } from '../../services/auth.service';
@@ -14,7 +14,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         try {
             return this.authService.validateUser({username, password});
         } catch (err) {
-            throw new UnauthorizedException('Invalid token');
+            throw  new ForbiddenException('Access Denied');;
         }
      }
 }
