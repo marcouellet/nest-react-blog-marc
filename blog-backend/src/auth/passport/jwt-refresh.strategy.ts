@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '../../services/config.service';
 import { AuthService } from '../../services/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { UserDto } from '../../core/dtos';
 import { JWT_REFRESH_TOKEN_STRATEGY_NAME } from '../../auth/interfaces/jwt-refresh.strategy.interface'
@@ -17,24 +17,15 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
     private readonly configService: ConfigService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField('authrefreshtoken'),
-      secretOrKey: configService.getConfig().authRefreshTokenSecretKey,
-      passReqToCallback: false,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: configService.getConfig().authSecretKey,
+      passReqToCallback: true,
       ignoreExpiration: true,
     });
   }
 
   async validate(req: Request, payload: JwtPayload): Promise<UserDto> {
-    try {
-      return this.authService.findUserByPayload(payload);
-    } catch (err) {
-        throw  new ForbiddenException('Access Denied');
-    }
+    const body = req.body as any;
+    return this.authService.getUserFromToken(body.authrefreshtoken.accessToken);
   }
-  // async validate(payload: JwtPayload): Promise<RefreshDto> {
-  //   const accessToken = payload.sub;
-  //   const authrefreshtoken: IAuthToken = { accessToken }
-  //   const refreshDto: RefreshDto = { authrefreshtoken }
-  //   return refreshDto;
-  // }
- }
+}

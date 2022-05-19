@@ -36,7 +36,7 @@ const SessionTimeoutHandler = () => {
       };
 
     const handleRefresh = () => {
-        AUTHAPI.refresh(state.user!.authrefreshtoken!)
+        AUTHAPI.refresh(state.user!)
         .then((user) => {
             dispatch(createActionLoadUser(user));
             toast.info(`${user.username} session renewed!`);

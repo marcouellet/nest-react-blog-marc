@@ -36,6 +36,7 @@ export interface IRegister {
 }
 
 export interface IRefresh {
+  authtoken?: IAuthToken;
   authrefreshtoken?: IAuthToken;
 }
 

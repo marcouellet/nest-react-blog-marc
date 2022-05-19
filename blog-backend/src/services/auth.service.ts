@@ -1,6 +1,4 @@
-import { toMs }from 'ms-typescript'
-import { bcrypt } from 'bcryptjs';
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
@@ -55,36 +53,24 @@ export class AuthService {
     return options;
   }
 
-  async createAccessTokenFromRefreshToken(refreshToken: string) {
+  async getUserFromToken(token: string): Promise<UserDto> {
     try {
-      const decoded = this.jwtService.decode(refreshToken) as JwtPayload;
-      if (!decoded) {
-        throw new Error();
+      const decodedjwt: any = this.jwtService.decode(token);
+      if (!decodedjwt) {
+        throw  new ForbiddenException('Access Denied');
       }
-      const {sub} = decoded;
-      const user = await this.userService.findUser({email: sub});
-      if (!user) {
-        throw new NotFoundException('User does not exist');
+      const currenttime = Date.now().valueOf() / 1000;
+      if (decodedjwt.exp < currenttime) {
+        throw  new ForbiddenException('Access Denied');
       }
-      // const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user.authrefreshtoken);
-      // if (!isRefreshTokenMatching) {
-      //   throw new UnauthorizedException('Invalid token');
-      // }
-      // return this.jwtService.verifyAsync<IAuthToken>(refreshToken, this.getRefreshTokenOptions())
-      // .then(() => {
-      //   user.authtoken = this.createToken(user);
-      //   user.authrefreshtoken = this.createRefreshToken(user);
-      //   return user; 
-      // });
-      user.authtoken = this.createToken(user);
-      user.authrefreshtoken = this.createRefreshToken(user);
-      return user;
 
-    } catch {
+      const {sub} = decodedjwt;
+      return this.userService.findUser({email: sub});
+     } catch {
       throw  new ForbiddenException('Access Denied');
     }
-}
- 
+  }
+
   async whoAmI(token: string): Promise<JwtPayload> {
     return this.jwtService.verifyAsync(token);
 
@@ -110,19 +96,23 @@ export class AuthService {
         delete usr.password;
         return Promise.resolve(usr);
       })(user)
-      : Promise.reject( new ForbiddenException('Access Denied') )
+      : Promise.reject( new ForbiddenException('Access Denied') );
     })
-    .catch(err => Promise.reject(err))
+    .catch(err => Promise.reject(err));
    }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
-    registerDto.password = this.cryptoService.hashPassword(registerDto.password)
+    registerDto.password = this.cryptoService.hashPassword(registerDto.password);
     return this.userService.createUser(registerDto);
   }
 
   async refresh(refreshDto: RefreshDto): Promise<UserDto> {
-    return this.createAccessTokenFromRefreshToken(refreshDto.authrefreshtoken.accessToken);
+    return this.getUserFromToken(refreshDto.authtoken.accessToken)
+      .then(user => {
+        user.authtoken = this.createToken(user);
+        user.authrefreshtoken = this.createRefreshToken(user);
+        delete user.password;
+        return user;
+      });
   }
 }
-
-

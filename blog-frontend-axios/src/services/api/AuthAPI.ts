@@ -45,9 +45,10 @@ async function register(username: string, email: string, password: string) : Pro
   });
 }
 
-async function refresh(authrefreshtoken: IAuthToken) : Promise<User> {
+async function refresh(user: User) : Promise<User> {
   return new Promise((resolve, reject) => {
-    const refreshParms: IRefresh = { authrefreshtoken };
+    const { authtoken, authrefreshtoken } = user;
+    const refreshParms: IRefresh = { authtoken, authrefreshtoken };
     API.post<User>('/auth/refresh', refreshParms)
       .then(response => {
         TokenService.setUser(response.data);

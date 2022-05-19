@@ -10,7 +10,7 @@ export class UserService {
   constructor(
     private readonly dataServicesRepositories: IDataServicesRepositories,
     private readonly userFactoryService: UserFactoryService,
-    private readonly cryptoService: CryptographerService
+    private readonly cryptoService: CryptographerService,
   ) {}
 
   async getAllUsers(): Promise<UserDto[]> {

@@ -9,7 +9,7 @@ export class CryptographerService {
   }
 
   public hashPassword(password: string) {
-    const salt = randomBytes(32).toString('hex'); 
+    const salt = randomBytes(32).toString('hex');
     const hash = this.getHash(password, salt);
     return [salt, hash].join('$');
   }
@@ -18,6 +18,6 @@ export class CryptographerService {
     const originalHash = saltedPasswordHash.split('$')[1];
     const salt = saltedPasswordHash.split('$')[0];
     const hash = this.getHash(candidatePassword, salt);
-    return (hash === originalHash) ? true : false
+    return (hash === originalHash) ? true : false;
   }
 }
