@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
@@ -53,7 +53,7 @@ export class AuthService {
     return options;
   }
 
-  async getUserFromToken(token: string): Promise<UserDto> {
+  async validateRefreshToken(token: string) {
     try {
       const decodedjwt: any = this.jwtService.decode(token);
       if (!decodedjwt) {
@@ -63,9 +63,20 @@ export class AuthService {
       if (decodedjwt.exp < currenttime) {
         throw  new ForbiddenException('Access Denied');
       }
+    } catch {
+      throw  new ForbiddenException('Access Denied');
+    }
+  }
 
+  async getUserFromToken(token: string): Promise<UserDto> {
+    try {
+      const decodedjwt: any = this.jwtService.decode(token);
+      if (!decodedjwt) {
+        throw  new ForbiddenException('Access Denied');
+      }
       const {sub} = decodedjwt;
-      return this.userService.findUser({email: sub});
+      return this.userService.findUser({email: sub})
+        .catch(error => { throw new NotFoundException('User not found'); });
      } catch {
       throw  new ForbiddenException('Access Denied');
     }
