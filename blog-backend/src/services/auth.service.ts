@@ -2,7 +2,7 @@ import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/commo
 import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
-import { JwtService, JwtSignOptions } from '@nestjs/jwt';
+import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { JwtPayload } from '../auth/interfaces/jwt.interface';
 import { IAuthToken } from '../auth/interfaces/auth-token.interface';
 import { CryptographerService } from './cryptographer.service';
@@ -53,8 +53,17 @@ export class AuthService {
     return options;
   }
 
+  private getRefreshTokenVerifyOptions() {
+    const options: JwtVerifyOptions = {
+      secret: this.configService.getConfig().authRefreshTokenSecretKey,
+    };
+    return options;
+  }
+
+
   async validateRefreshToken(token: string) {
     try {
+      this.jwtService.verify(token, this.getRefreshTokenVerifyOptions());
       const decodedjwt: any = this.jwtService.decode(token);
       if (!decodedjwt) {
         throw  new ForbiddenException('Access Denied');
