@@ -21,7 +21,8 @@ export class JwtStrategy extends PassportStrategy(
 
   async validate(payload: JwtPayload): Promise<UserDto> {
     try {
-      return this.authService.findUserByPayload(payload);
+      const {sub} = payload;
+      return this.authService.validateUser({email: sub});
     } catch (err) {
         throw new ForbiddenException('Access Denied');
     }

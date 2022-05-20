@@ -14,16 +14,14 @@ export class PostController {
   @Get()
   async getAll(@Res() res: Response) {
     this.postService.getAllPosts()
-    .then(posts => res.status(HttpStatus.OK).json(posts))
-    .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+    .then(posts => res.status(HttpStatus.OK).json(posts));
   }
 
   // Fetch a particular post using ID
   @Get(':id')
   async getPost(@Res() res: Response, @Param('id') id: string) {
     this.postService.getPostById(id)
-    .then(post => res.status(HttpStatus.OK).json(post))
-    .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+    .then(post => res.status(HttpStatus.OK).json(post));
   }
 
   // Submit a new post
@@ -31,12 +29,10 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   async createPost(@Res() res: Response, @Body(new ValidationPipe()) postDto: PostDto) {
     // Validate userId
-    await this.userService.getUserById(postDto.user.id)
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+    await this.userService.getUserById(postDto.user.id);
     // userId match a User
     this.postService.createPost(postDto)
-      .then(post => res.status(HttpStatus.OK).json(post))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(post => res.status(HttpStatus.OK).json(post));
   }
 
   // Update a post
@@ -44,8 +40,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   async updatePost(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) updatePostDto: UpdatePostDto) {
     this.postService.updatePost(id, updatePostDto)
-      .then(post => res.status(HttpStatus.OK).json(post))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(post => res.status(HttpStatus.OK).json(post));
   }
 
   // Delete a post
@@ -53,7 +48,6 @@ export class PostController {
   @Delete('/delete/:id')
   async deletePost(@Res() res: Response, @Param('id') id: string) {
     this.postService.deletePost(id)
-      .then(post => res.status(HttpStatus.OK).json(post))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(post => res.status(HttpStatus.OK).json(post));
   }
 }

@@ -12,15 +12,13 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async getAll(@Res() res: Response) {
     this.userService.getAllUsers()
-      .then(users => {res.status(HttpStatus.OK).json(users)})
-       .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(users => {res.status(HttpStatus.OK).json(users)});
   }
 
   @Get(':id')
   async getById(@Res() res: Response, @Param('id') id: string) {
     this.userService.getUserById(id)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 
   // Submit a new user
@@ -28,8 +26,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async createUser(@Res() res: Response, @Body(new ValidationPipe()) userDto: UserDto) {
     this.userService.createUser(userDto)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 
   // Update a user
@@ -37,8 +34,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUser(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) userDto: UserDto) {
     this.userService.updateUser(id, userDto)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 
   // Delete user using ID
@@ -46,7 +42,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async deleteUser(@Res() res: Response, @Param('id') id: string) {
     this.userService.deleteUser(id)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 }

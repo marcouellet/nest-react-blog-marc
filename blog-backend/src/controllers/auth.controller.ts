@@ -28,8 +28,7 @@ export class AuthController {
   @Post('/register')
   async register(@Res() res: Response, @Body(new ValidationPipe()) body: RegisterDto) {
     this.authService.register(body)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 
   // Refresh auth token
