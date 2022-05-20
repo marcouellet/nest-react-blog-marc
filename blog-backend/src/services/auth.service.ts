@@ -60,18 +60,9 @@ export class AuthService {
     return options;
   }
 
-
   async validateRefreshToken(token: string) {
     try {
       this.jwtService.verify(token, this.getRefreshTokenVerifyOptions());
-      const decodedjwt: any = this.jwtService.decode(token);
-      if (!decodedjwt) {
-        throw  new ForbiddenException('Access Denied');
-      }
-      const currenttime = Date.now().valueOf() / 1000;
-      if (decodedjwt.exp < currenttime) {
-        throw  new ForbiddenException('Access Denied');
-      }
     } catch {
       throw  new ForbiddenException('Access Denied');
     }
