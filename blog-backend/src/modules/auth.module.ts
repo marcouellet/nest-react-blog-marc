@@ -1,4 +1,4 @@
-import { Module, Global, UseFilters } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { JwtStrategy } from '../auth/passport/jwt.strategy';
 import { JwtRefreshTokenStrategy } from '../auth/passport/jwt-refresh.strategy';
 import { LocalStrategy } from '../auth/passport/local.strategy';
@@ -10,9 +10,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '../modules/config.module';
 import { ConfigService } from '../services/config.service';
-import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/config';
-@UseFilters(new HttpExceptionFilter())
+
 @Global()
 @Module({
   imports: [

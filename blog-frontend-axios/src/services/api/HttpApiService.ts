@@ -12,11 +12,8 @@ class HttpApiService<T> {
       API.get<T[]>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
-    });
+     });
   }
 
   protected get(endpoint: string, conf = {}): Promise<T> {
@@ -24,11 +21,8 @@ class HttpApiService<T> {
       API.get<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
-    });
+     });
   }
 
   protected create(endpoint: string, data: {}, conf = {}): Promise<T> {
@@ -40,9 +34,6 @@ class HttpApiService<T> {
       API.post<T>(`${endpoint}`, data, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
     });
   }
@@ -52,11 +43,8 @@ class HttpApiService<T> {
       API.put<T>(`${endpoint}`, data, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
-    });
+     });
   }
 
   protected delete(endpoint: string, conf = {}): Promise<T> {
@@ -64,9 +52,6 @@ class HttpApiService<T> {
       API.delete<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
     });
   }

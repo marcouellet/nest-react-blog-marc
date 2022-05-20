@@ -2,7 +2,7 @@ import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, UseGu
 import { UserDto } from '../core/dtos';
 import { UserService } from '../services/user/user.service';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface'
+import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface';
 import { Response } from 'express';
 @Controller('user')
 export class UserController {
@@ -13,14 +13,14 @@ export class UserController {
   async getAll(@Res() res: Response) {
     this.userService.getAllUsers()
       .then(users => {res.status(HttpStatus.OK).json(users)})
-       .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+       .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   @Get(':id')
   async getById(@Res() res: Response, @Param('id') id: string) {
     this.userService.getUserById(id)
       .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Submit a new user
@@ -29,7 +29,7 @@ export class UserController {
   async createUser(@Res() res: Response, @Body(new ValidationPipe()) userDto: UserDto) {
     this.userService.createUser(userDto)
       .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Update a user
@@ -38,7 +38,7 @@ export class UserController {
   async updateUser(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) userDto: UserDto) {
     this.userService.updateUser(id, userDto)
       .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 
   // Delete user using ID
@@ -47,6 +47,6 @@ export class UserController {
   async deleteUser(@Res() res: Response, @Param('id') id: string) {
     this.userService.deleteUser(id)
       .then(user => res.status(HttpStatus.OK).json(user))
-      .catch(error => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+      .catch(_ => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

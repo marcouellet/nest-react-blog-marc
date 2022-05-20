@@ -9,7 +9,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkSessionExpired } from '../../utils/session';
+import { checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const Create = () => {
@@ -53,7 +53,7 @@ const Create = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkSessionExpired(apiErrors)) {
+    if (checkForbidden(apiErrors)) {
       toast.error(`Post creation failed, session expired`);
       dispatch(createActionSessionExpired());
     } else {

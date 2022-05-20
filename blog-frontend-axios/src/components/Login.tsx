@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
+import { checkForbidden, checkNotFound } from '../utils/response';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,6 +34,17 @@ const Login = () => {
     resolver: yupResolver(validationSchema)
   });
 
+  const handleSubmitFormError = (apiErrors: IErrors) => {
+    if (checkNotFound(apiErrors)) {
+      toast.error(`User not found`);    
+    } else if (checkForbidden(apiErrors)) {
+      toast.error(`Invalid credentials`);
+    } else {
+      toast.error(`Login failed, see error list`);
+      setErrorList(apiErrors);
+    }
+   }
+
   const onSubmit = async (data: LoginSubmitForm) => {
     dispatch(createActionLoading(true));
     await AUTHAPI.login(data.email, data.password)
@@ -43,10 +55,7 @@ const Login = () => {
           navigate('/');    
         }
       )
-      .catch((apiErrors: IErrors) => {
-        toast.error(`Login failed, see error list`);
-        setErrorList(apiErrors);
-      });
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
     dispatch(createActionLoading(false));
   } 
 

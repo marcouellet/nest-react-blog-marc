@@ -44,7 +44,7 @@ const SessionTimeoutHandler = () => {
                 navigate('/');
               }, 1500);
             })
-        .catch((error) => {
+        .catch(_ => {
             toast.error(`Refresh session failed, logging out!`);
             handleLogout();
         });

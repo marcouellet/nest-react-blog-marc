@@ -29,11 +29,15 @@ const Register = () => {
     });
   };
 
+  const handleSubmitFormError = (apiErrors: IErrors) => {
+    toast.error(`User registration failed, see error list`);
+    setErrors(apiErrors);
+  }
+
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     dispatch(createActionLoading(true));
     const { username, email, password } = form;
-
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
@@ -42,10 +46,7 @@ const Register = () => {
           navigate('/login');    
         }
       )
-      .catch((apiErrors: IErrors) => {
-        toast.error(`User registration failed, see error list`);
-        setErrors(apiErrors);  
-      });
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); }); 
     dispatch(createActionLoading(false));
  } 
 

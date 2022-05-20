@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import API from './APIUtils';
-import { User, ILogin, IRegister, IRefresh, JWTPayload, IAuthToken } from '../../types';
+import { User, ILogin, IRegister, IRefresh, JWTPayload, IErrors } from '../../types';
 import TokenService from './TokenService';
 
 export function isTokenValid(token: string) {
@@ -8,7 +8,7 @@ export function isTokenValid(token: string) {
     const decoded_jwt: JWTPayload = jwtDecode<JWTPayload>(token);
     const current_time = Date.now().valueOf() / 1000;
     return decoded_jwt.exp > current_time;
-  } catch (error) {
+  } catch (_) {
     return false;
   }
 }
@@ -18,46 +18,31 @@ function getCurrentUser(): User {
 };
 
 async function login(email: string, password: string): Promise<User> {
-  return new Promise((resolve, reject) => {
-    const loginParms: ILogin = { email, password }
-    API.post<User>('/auth/login', loginParms)
-      .then(response => {
-        TokenService.setUser(response.data);
-        resolve(response.data);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  const loginParms: ILogin = { email, password }
+  return API.post<User>('/auth/login', loginParms)
+    .then(response => {
+      TokenService.setUser(response.data);
+      return response.data;
+    });
 }
 
 async function register(username: string, email: string, password: string) : Promise<User> {
-  return new Promise((resolve, reject) => {
-    const registerParms: IRegister = { username, email, password }
-    API.post<User>('/auth/register', registerParms)
-      .then(response => {
-        TokenService.setUser(response.data);
-        resolve(response.data);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  const registerParms: IRegister = { username, email, password }
+  return API.post<User>('/auth/register', registerParms)
+    .then(response => {
+      TokenService.setUser(response.data);
+      return response.data;
+    });
 }
 
 async function refresh(user: User) : Promise<User> {
-  return new Promise((resolve, reject) => {
-    const { authtoken, authrefreshtoken } = user;
-    const refreshParms: IRefresh = { authtoken, authrefreshtoken };
-    API.post<User>('/auth/refresh', refreshParms)
-      .then(response => {
-        TokenService.setUser(response.data);
-        resolve(response.data);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  const { authtoken, authrefreshtoken } = user;
+  const refreshParms: IRefresh = { authtoken, authrefreshtoken };
+  return API.post<User>('/auth/refresh', refreshParms)
+    .then(response => {
+      TokenService.setUser(response.data);
+      return response.data;
+    });
 }
 
 function logout() {

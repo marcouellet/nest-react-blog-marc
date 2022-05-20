@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException, InternalServerErrorException, HttpStatus, HttpException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
@@ -42,6 +42,13 @@ export class AuthService {
     return { accessToken } as IAuthToken;
   }
 
+  private setupUserWithNewTokens(user: UserDto): UserDto {
+    user.authtoken = this.createToken(user);
+    user.authrefreshtoken = this.createRefreshToken(user);
+    delete user.password;
+    return user;
+  }
+
   private getRefreshTokenSignOptions() {
     const options: JwtSignOptions = {
       secret: this.configService.getConfig().authRefreshTokenSecretKey,
@@ -60,12 +67,9 @@ export class AuthService {
     return options;
   }
 
-  async validateRefreshToken(token: string) {
-    try {
-      this.jwtService.verify(token, this.getRefreshTokenVerifyOptions());
-    } catch {
-      throw  new ForbiddenException('Access Denied');
-    }
+  async validateRefreshToken(token: string): Promise<JwtPayload> {
+      return this.jwtService.verifyAsync<JwtPayload>(token, this.getRefreshTokenVerifyOptions())
+        .catch(_ => { throw new ForbiddenException('Access Denied'); });
   }
 
   async getUserFromToken(token: string): Promise<UserDto> {
@@ -76,54 +80,54 @@ export class AuthService {
       }
       const {sub} = decodedjwt;
       return this.userService.findUser({email: sub})
-        .catch(error => { throw new NotFoundException('User not found'); });
+        .catch(_ => { throw new NotFoundException('User not found'); });
      } catch {
       throw  new ForbiddenException('Access Denied');
     }
   }
 
-  async whoAmI(token: string): Promise<JwtPayload> {
-    return this.jwtService.verifyAsync(token);
-
+  async validateToken(token: string): Promise<JwtPayload> {
+    return this.jwtService.verifyAsync<JwtPayload>(token);
   }
 
   async findUserByPayload(payload: JwtPayload): Promise<UserDto> {
     const {sub} = payload;
-    return this.userService.findUser({email: sub});
+    return this.userService.findUser({email: sub})
+      .catch(_ => { throw new NotFoundException('User not found'); });
   }
 
   async validateUser(criterias: {}): Promise<UserDto> {
-    return this.userService.findUser(criterias);
+    return this.userService.findUser(criterias)
+      .catch(_ => { throw new NotFoundException('User not found'); });
   }
 
   async login(loginDto: LoginDto): Promise<UserDto> {
     const { email, password } = loginDto;
     return this.userService.findUserUnrestricted({ email })
-    .then(async user => {
-      return this.cryptoService.checkPassword(user.password, password)
-      ? (usr => {
-        usr.authtoken = this.createToken(user);
-        usr.authrefreshtoken = this.createRefreshToken(user);
-        delete usr.password;
-        return Promise.resolve(usr);
-      })(user)
-      : Promise.reject( new ForbiddenException('Access Denied') );
-    })
-    .catch(err => Promise.reject(err));
-   }
+      .then(user => {
+        if (this.cryptoService.checkPassword(user.password, password)) {
+          return this.setupUserWithNewTokens(user);
+        } else {
+          throw new ForbiddenException('Access Denied');
+        }
+      })
+      .catch(error => { 
+        if ((error instanceof HttpException) && (error.getStatus() != HttpStatus.FORBIDDEN)) {
+          throw new NotFoundException('User not found');
+        }
+        throw error;
+      });
+     }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
     registerDto.password = this.cryptoService.hashPassword(registerDto.password);
-    return this.userService.createUser(registerDto);
+    return this.userService.createUser(registerDto)
+    .catch(_ => { throw new InternalServerErrorException('Cannot create user!'); });
   }
 
   async refresh(refreshDto: RefreshDto): Promise<UserDto> {
     return this.getUserFromToken(refreshDto.authtoken.accessToken)
-      .then(user => {
-        user.authtoken = this.createToken(user);
-        user.authrefreshtoken = this.createRefreshToken(user);
-        delete user.password;
-        return user;
-      });
+      .then(user => this.setupUserWithNewTokens(user))
+      .catch(_ => { throw new NotFoundException('User not found'); });
   }
 }

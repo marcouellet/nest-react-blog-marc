@@ -1,10 +1,8 @@
-import { Module, UseFilters } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UserController } from '../controllers/user.controller';
 import { UserService } from '../services/user/user.service';
 import { CryptographerService } from '../services/cryptographer.service';
 import { UserFactoryService } from '../services/user/user-factory.service';
-import { HttpExceptionFilter } from '../common/http-exception.filter';
-@UseFilters(new HttpExceptionFilter())
 @Module({
   imports: [UserModule],
   controllers: [UserController, ],

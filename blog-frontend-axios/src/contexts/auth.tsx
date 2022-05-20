@@ -29,7 +29,7 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
 
     dispatch(createActionLoadUser(user));
 
-    if (!isTokenValid(user.authtoken!.accessToken)) {
+    if (user.authtoken && !isTokenValid(user.authtoken!.accessToken)) {
       dispatch(createActionSessionExpired());
     }
   }, []);
