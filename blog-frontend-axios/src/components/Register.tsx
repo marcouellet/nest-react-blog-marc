@@ -4,6 +4,7 @@ import AUTHAPI from '../services/api/AuthAPI';
 import useAuth from '../contexts/auth';
 import { toast } from "react-toastify";
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
+import { checkForbidden } from '../utils/response';
 import ListErrors from './common/ListErrors';
 import { IErrors, User } from '../types';
 
@@ -30,8 +31,12 @@ const Register = () => {
   };
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    toast.error(`User registration failed, see error list`);
-    setErrors(apiErrors);
+    if (checkForbidden(apiErrors)) {
+      toast.error(`Registration failed, email already used!`);
+    } else {
+      toast.error(`User registration failed, see error list`);
+      setErrors(apiErrors);
+      }
   }
 
   const handleSubmit = async (event: React.SyntheticEvent) => {

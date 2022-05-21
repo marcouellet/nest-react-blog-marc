@@ -1,4 +1,4 @@
-import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, UseGuards, HttpException } from '@nestjs/common';
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
@@ -14,14 +14,16 @@ export class PostController {
   @Get()
   async getAll(@Res() res: Response) {
     this.postService.getAllPosts()
-    .then(posts => res.status(HttpStatus.OK).json(posts));
+    .then(posts => res.status(HttpStatus.OK).json(posts))
+    .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
   }
 
   // Fetch a particular post using ID
   @Get(':id')
   async getPost(@Res() res: Response, @Param('id') id: string) {
     this.postService.getPostById(id)
-    .then(post => res.status(HttpStatus.OK).json(post));
+    .then(post => res.status(HttpStatus.OK).json(post))
+    .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
   }
 
   // Submit a new post
@@ -32,7 +34,8 @@ export class PostController {
     await this.userService.getUserById(postDto.user.id);
     // userId match a User
     this.postService.createPost(postDto)
-      .then(post => res.status(HttpStatus.OK).json(post));
+      .then(post => res.status(HttpStatus.OK).json(post))
+      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
   }
 
   // Update a post
@@ -40,7 +43,8 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   async updatePost(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) updatePostDto: UpdatePostDto) {
     this.postService.updatePost(id, updatePostDto)
-      .then(post => res.status(HttpStatus.OK).json(post));
+      .then(post => res.status(HttpStatus.OK).json(post))
+      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
   }
 
   // Delete a post
@@ -48,6 +52,7 @@ export class PostController {
   @Delete('/delete/:id')
   async deletePost(@Res() res: Response, @Param('id') id: string) {
     this.postService.deletePost(id)
-      .then(post => res.status(HttpStatus.OK).json(post));
+      .then(post => res.status(HttpStatus.OK).json(post))
+      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
   }
 }

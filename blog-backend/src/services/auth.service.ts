@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException, NotFoundException, InternalServerErrorException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
@@ -89,7 +89,7 @@ export class AuthService {
     return this.userService.findUser(criterias)
       .catch(_ => { throw new NotFoundException('User not found'); });
   }
-  
+
   async validateUserUnrestricted(criterias: {}): Promise<UserDto> {
     return this.userService.findUserUnrestricted(criterias)
       .catch(_ => { throw new NotFoundException('User not found'); });
@@ -108,9 +108,20 @@ export class AuthService {
     }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
-    registerDto.password = this.cryptoService.hashPassword(registerDto.password);
-    return this.userService.createUser(registerDto)
-      .catch(_ => { throw new InternalServerErrorException('Cannot create user!'); });
+    const { email } = registerDto;
+    return this.userService.verifyUserExist({ email })
+      .then(async exist => {
+        if (exist) {
+          throw new ForbiddenException('User with same email already exist!');;
+        } else {
+          registerDto.password = this.cryptoService.hashPassword(registerDto.password);
+          try {
+            return await this.userService.createUser(registerDto);
+          } catch (_) {
+            throw new InternalServerErrorException('Cannot create user!');
+          }  
+        }
+      });   
   }
 
   async refresh(refreshDto: RefreshDto): Promise<UserDto> {

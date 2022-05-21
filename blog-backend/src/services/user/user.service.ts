@@ -45,7 +45,12 @@ export class UserService {
   async findUser(criterias: {}): Promise<UserDto> {
     return this.dataServicesRepositories.users.findOne(criterias)
       .then(user => this.processUser(user));
-   }
+  }
+
+  async verifyUserExist(criterias: {}): Promise<boolean> {
+    return this.dataServicesRepositories.users.findOne(criterias)
+      .then(user => Promise.resolve(user != null));
+  }
 
   async findUserUnrestricted(criterias: {}): Promise<UserDto> {
     return this.dataServicesRepositories.users.findOne(criterias)
