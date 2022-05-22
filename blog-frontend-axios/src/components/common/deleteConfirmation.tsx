@@ -11,13 +11,15 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({children, className, message
     const handleOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         const result = await modalContext.showConfirmation(
             'Delete Confirmation!',
-            <div style={{border: "2px solid blue", padding: "10px"}}>
-                <p>
-                    Are you sure you want to delete
-                    <span style={{fontSize: "18px"}}><i> {message}</i></span> ?
+            (
+                <div style={{border: "2px solid blue", padding: "10px"}}>
+                    <p>
+                        Are you sure you want to delete
+                        <span style={{fontSize: "18px"}}><i> {message}</i></span> ?
 
-                </p>
-             </div>
+                    </p>
+                </div>
+            )
         );
         result && onClick && onClick(event);
     };

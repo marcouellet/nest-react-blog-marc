@@ -14,13 +14,14 @@ const CancelButton: React.FC<CancelButtonProps> = ({children, className, message
         if (prompt) {
                 const result = await modalContext.showConfirmation(
                 'Cancel Confirmation!',
-                <div style={{border: "2px solid blue", padding: "10px"}}>
-                    <p>
-                        Are you sure you want to cancel
-                        <span style={{fontSize: "18px"}}><i> {message}</i></span> ?
-
-                    </p>
-                </div>
+                ( 
+                    <div style={{border: "2px solid blue", padding: "10px"}}>
+                        <p>
+                            Are you sure you want to cancel
+                            <span style={{fontSize: "18px"}}><i> {message}</i></span> ?
+                        </p>
+                    </div>
+                )
             );
             result && onClick && onClick(event);
         }

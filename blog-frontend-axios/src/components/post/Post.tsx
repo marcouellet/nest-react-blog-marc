@@ -51,6 +51,7 @@ const Post = () => {
             <div className="col-lg-1 col-md-0" />
             <div className="col-lg-10 col-md-12">
               {post && 
+              (
                 <div className="main-post">
                   <div className="post-top-area">
                     <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
@@ -86,7 +87,8 @@ const Post = () => {
                         </h4>
                        </div>
                   </div>
-                </div>              
+                </div>   
+                )           
               }
             </div>
           </div>

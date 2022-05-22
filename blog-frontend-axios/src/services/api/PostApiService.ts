@@ -7,7 +7,6 @@ export class PostApi extends HttpApiService<IPost> {
  
   getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);
-;
   };
 
   getAllPosts = () => {

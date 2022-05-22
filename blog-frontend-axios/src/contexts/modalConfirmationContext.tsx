@@ -65,7 +65,8 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
         <ConfirmationModalContext.Provider value={modalContext}>
             {props.children}
 
-            {content &&
+            {content && 
+            (
                 <Modal show={show} onHide={onHide} centered dialogClassName={`modal-md`}>
                     <Modal.Header>
                         <label>{content.title}</label>
@@ -73,14 +74,14 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
                     <Modal.Body>
                         <label>{content.message}</label>
                     </Modal.Body>
-
                     <Modal.Footer>
                         <button className="btn btn-default" onClick={handleCancel}>Cancel</button>
                         <button className="btn btn-primary" onClick={handleOk}>OK</button>
                     </Modal.Footer>
-
-                </Modal>}
+                </Modal>
+            )}
         </ConfirmationModalContext.Provider>
+        
     )
 };
 

@@ -8,7 +8,7 @@ export enum EnumContentType {
 class HttpApiService<T> {
 
   protected getAll(endpoint: string, conf = {}): Promise<T[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.get<T[]>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
@@ -17,7 +17,7 @@ class HttpApiService<T> {
   }
 
   protected get(endpoint: string, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.get<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
@@ -30,7 +30,7 @@ class HttpApiService<T> {
   }
 
   protected post(endpoint: string, data: {}, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.post<T>(`${endpoint}`, data, conf)
         .then(response => {
           resolve(response.data);
@@ -39,7 +39,7 @@ class HttpApiService<T> {
   }
 
   protected update(endpoint: string, data: T, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.put<T>(`${endpoint}`, data, conf)
         .then(response => {
           resolve(response.data);
@@ -48,7 +48,7 @@ class HttpApiService<T> {
   }
 
   protected delete(endpoint: string, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.delete<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
