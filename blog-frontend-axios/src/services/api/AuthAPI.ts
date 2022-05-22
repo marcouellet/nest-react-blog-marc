@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import API from './APIUtils';
-import { User, ILogin, IRegister, IRefresh, JWTPayload, IErrors } from '../../types';
+import { User, ILogin, IRegister, IRefresh, JWTPayload } from '../../types';
 import TokenService from './TokenService';
 
 export function isTokenValid(token: string) {

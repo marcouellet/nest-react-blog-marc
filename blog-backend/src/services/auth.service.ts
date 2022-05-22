@@ -3,8 +3,7 @@ import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
-import { JwtPayload } from '../auth/interfaces/jwt.interface';
-import { IAuthToken } from '../auth/interfaces/auth-token.interface';
+import { JwtPayload, IAuthToken } from '../auth/interfaces/jwt.interface';
 import { CryptographerService } from './cryptographer.service';
 
 @Injectable()

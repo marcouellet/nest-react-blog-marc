@@ -3,8 +3,8 @@ import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request, Response } from 'express';
-import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface';
-import { JwtRefreshTokenAuthGuard } from '../auth/interfaces/jwt-refresh.strategy.interface';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { JwtRefreshTokenAuthGuard } from '../auth/guards/jwt-refresh.guard';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

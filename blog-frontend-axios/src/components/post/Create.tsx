@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
+import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
@@ -30,12 +31,16 @@ const Create = () => {
     body: string;
   };
 
+  const defaultValues = {title: '', description: '', body: ''};
+
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isDirty },
+    reset
   } = useForm<CreateSubmitForm>({
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues
   });
 
   const onSubmit = async (data: CreateSubmitForm) => {
@@ -61,6 +66,16 @@ const Create = () => {
       setErrorList(apiErrors);      
     }
   }
+
+  const cancelCreatePostMessage = () => `post creation and loose changes`;
+
+  const handleClearEditPost = () => {
+    reset(defaultValues, { keepDirty: false});
+  }
+
+  const handleCancelCreatePost = () => {
+    navigate('/');   
+  };
 
   return (
     <div>
@@ -101,15 +116,30 @@ const Create = () => {
           <div className="invalid-feedback">{errors.body?.message}</div>
         </div>
 
-        <div className="form-group col-md-4 pull-right">
-          <button className="btn btn-success" type="submit">
+        <div className="form-group col-md-1 pull-right">
+          <button className="btn btn-success"  disabled={!isDirty} type="submit">
             Create Post
           </button>
           {isLoading &&
             <span className="fa fa-circle-o-notch fa-spin" />
           }
         </div>
+  
+        <div className="form-group col-md-1 pull-right">
+          <button className="btn btn-secondary"  disabled={!isDirty} onClick={ () => handleClearEditPost() } >
+            Clear
+          </button>
+          {isLoading &&
+            <span className="fa fa-circle-o-notch fa-spin" />
+          }
+        </div>
+
       </form>
+
+      <div className="form-group col-md-1 pull-right">
+              <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn btn-danger">Cancel</CancelButton>
+            </div>
+
     </div>
   </div>
   );

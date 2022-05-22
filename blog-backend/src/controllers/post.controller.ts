@@ -3,7 +3,7 @@ import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { Response } from 'express';
 @Controller('post')
 export class PostController {

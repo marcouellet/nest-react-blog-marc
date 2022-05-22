@@ -5,7 +5,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { UserDto } from '../../core/dtos';
-import { JWT_REFRESH_TOKEN_STRATEGY_NAME } from '../../auth/interfaces/jwt-refresh.strategy.interface'
+import { JWT_REFRESH_TOKEN_STRATEGY_NAME } from '../guards/jwt-refresh.guard'
 
 @Injectable()
 export class JwtRefreshTokenStrategy extends PassportStrategy(

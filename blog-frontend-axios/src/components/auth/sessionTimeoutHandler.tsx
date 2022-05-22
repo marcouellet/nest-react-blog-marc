@@ -29,9 +29,7 @@ const SessionTimeoutHandler = () => {
             dispatch(createActionLogout());
             AUTHAPI.logout();
             toast.info(`${state.user!.username} is logged out`);
-            setTimeout(() => {
-                navigate('/');
-              }, 1500);    
+            navigate('/');
         }
       };
 
@@ -40,9 +38,7 @@ const SessionTimeoutHandler = () => {
         .then((user) => {
             dispatch(createActionLoadUser(user));
             toast.info(`${user.username} session renewed!`);
-            setTimeout(() => {
-                navigate('/');
-              }, 1500);
+            navigate('/');
             })
         .catch(_ => {
             toast.error(`Refresh session failed, logging out!`);

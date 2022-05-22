@@ -2,7 +2,7 @@ import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete, UseGu
 import { UserDto } from '../core/dtos';
 import { UserService } from '../services/user/user.service';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { JwtAuthGuard } from '../auth/interfaces/jwt.strategy.interface';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { Response } from 'express';
 @Controller('user')
 export class UserController {

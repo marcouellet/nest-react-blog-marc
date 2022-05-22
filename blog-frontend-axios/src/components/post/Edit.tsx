@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
+import CancelButton from '../common/cancelConfirmation'
 import { IPost, IUpdatePost, createPostForUpdate } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
@@ -34,13 +34,17 @@ const Edit = () => {
     body: string;
   };
 
+  const defaultValues = {title: post?.title, description: post?.description, body: post?.body};
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    
+    formState: { errors, isDirty }
   } = useForm<UpdateSubmitForm>({
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(validationSchema),
+    defaultValues: defaultValues
   });
 
   useEffect(() => {
@@ -58,7 +62,7 @@ const Edit = () => {
   }, []);
 
   const onSubmit = async (data: UpdateSubmitForm) => {
-    if (post) {
+    if (post && isDirty) {
       dispatch(createActionLoading(true));
       const postData: IUpdatePost = createPostForUpdate({...post, ...data});
       await PostApiService.updatePost(post.id!, postData)
@@ -88,6 +92,16 @@ const Edit = () => {
       setErrorList(apiErrors);      
     }
 }
+
+const cancelEditPostMessage = () => `post edition and loose changes`;
+
+const handleResetEditPost = () => {
+  reset(defaultValues, { keepDirty: false});
+}
+
+const handleCancelEditPost = () => {
+  navigate('/');   
+};
 
   return (
     <div className={'page-wrapper'}>
@@ -131,14 +145,30 @@ const Edit = () => {
             </div>
 
             <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success" type="submit">
+              <button className="btn btn-success"  disabled={!isDirty} type="submit">
                 Update Post
               </button>
               {isLoading &&
                 <span className="fa fa-circle-o-notch fa-spin" />
               }
             </div>
+
+            <div className="form-group col-md-1 pull-right">
+              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
+                Reset
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+            </div>
           </form>
+
+          <div className="form-group col-md-1 pull-right">
+              {
+              <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn btn-danger">Cancel</CancelButton>
+              }
+           </div>
+
         </div>
       )
     }

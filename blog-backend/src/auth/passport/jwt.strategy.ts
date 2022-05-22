@@ -5,7 +5,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { UserDto } from '../../core/dtos';
-import { JWT_STRATEGY_NAME } from '../../auth/interfaces/jwt.strategy.interface';
+import { JWT_STRATEGY_NAME } from '../guards/jwt.guard';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(
   Strategy,
