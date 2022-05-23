@@ -1,8 +1,14 @@
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user'
+}
+
 export interface IUser {
   id?: string; // Identifier uniq
   username: string;
   password?: string;
   email: string;
+  role: UserRole;
 }
 
 export class IAuthToken {

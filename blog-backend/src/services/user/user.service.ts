@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IDataServicesRepositories } from '../../core/abstracts';
 import { User } from '../../core/entities';
+import { UserRole } from '../../core/enum'
 import { UserDto } from '../../core/dtos';
 import { UserFactoryService } from './user-factory.service';
 import { CryptographerService } from '../../services/cryptographer.service';
@@ -63,6 +64,7 @@ export class UserService {
   }
 
   async createUser(userDto: UserDto): Promise<UserDto> {
+    userDto.role = UserRole.USER;
     const newUser = this.userFactoryService.createUser(userDto);
     return this.dataServicesRepositories.users.create(newUser)
       .then(user => this.processUser(user));

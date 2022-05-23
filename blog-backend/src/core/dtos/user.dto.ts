@@ -21,7 +21,7 @@ export class UserDto {
 
   @IsEnum(UserRole)
   @IsNotEmpty()
-  role?: UserRole;
+  role?: string;
 
   @IsNotEmpty()
   @Type(() => IAuthToken)

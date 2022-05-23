@@ -14,6 +14,7 @@ export class UserFactoryService {
     user.username = userDto.username;
     user.email = userDto.email;
     user.password = userDto.password;
+    user.role = userDto.role;
 
     return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
@@ -24,6 +25,7 @@ export class UserFactoryService {
     user.username = userDto.username;
     user.email = userDto.email;
     user.password = userDto.password;
+    user.role = userDto.role;
 
     return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
@@ -35,6 +37,7 @@ export class UserFactoryService {
     userDto.email = newUser.email;
     userDto.username = newUser.username;
     userDto.password = newUser.password;
+    userDto.role = newUser.role;
 
     return userDto;
   }
