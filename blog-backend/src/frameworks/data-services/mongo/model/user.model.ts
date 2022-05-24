@@ -15,6 +15,9 @@ export class User {
 
   @Prop()
   role: string;
+
+  @Prop()
+  createdOn: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

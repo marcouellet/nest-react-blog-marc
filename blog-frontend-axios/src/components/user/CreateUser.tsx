@@ -16,7 +16,7 @@ import { createActionSessionExpired } from '../../reducers/auth';
 const CreateUser = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading, user }, dispatch } = useAuth();
+  const { state: { isLoading }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({

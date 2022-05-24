@@ -9,6 +9,7 @@ export interface IUser {
   password?: string;
   email: string;
   role: string;
+  createdOn?: Date;
 }
 
 export class IAuthToken {

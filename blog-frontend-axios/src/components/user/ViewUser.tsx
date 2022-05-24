@@ -7,6 +7,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
+import { toLocalDateString } from '../../utils/utils';
 
 const ViewUser = () => {
 
@@ -46,6 +47,14 @@ const ViewUser = () => {
                 <div className="main-user">
                   <div className="user-top-area">
                       <div>
+                        { user.createdOn &&
+                          <h5 className="createdOn">
+                            <span>
+                              <b>Created on {toLocalDateString(user.createdOn)}</b>
+                            </span>
+                            <br/> 
+                          </h5>                        
+                        }
                         <br/>
                          <h4 className="username">
                           <span>

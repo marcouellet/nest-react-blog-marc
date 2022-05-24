@@ -10,6 +10,7 @@ import { IErrors } from '../types';
 import DeleteButton from './common/deleteConfirmation'
 import { checkForbidden } from '../utils/response';
 import { createActionSessionExpired } from '../reducers/auth';
+import { toLocalDateString } from '../utils/utils';
 
 const AdminUser = () => {
   
@@ -87,7 +88,14 @@ const AdminUser = () => {
                         <b>{user.username}</b>
                       </span>
                     </h4>
-                  </div>
+                    { user.createdOn &&
+                      <h5 className="createdOn">
+                        <span>
+                          <b>Created on {toLocalDateString(user.createdOn)}</b>
+                        </span>
+                      </h5>
+                    }
+                 </div>
                 </div>
 
                 <ul className="user-footer">
