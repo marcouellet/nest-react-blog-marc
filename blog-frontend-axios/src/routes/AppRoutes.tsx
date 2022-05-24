@@ -8,7 +8,7 @@ import RestrictedRoutes from "./RestrictedRoutes";
 
 export const AppRoutes = () => {
 
-  const { state : { isAuthenticated } } = useAuth()
+  const { state : { isAuthenticated } } = useAuth();
 
   return (
     <Routes>

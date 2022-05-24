@@ -1,4 +1,4 @@
-import API from './APIUtils';
+import API from './APIService';
 
 export enum EnumContentType {
   JSON = "application/json",

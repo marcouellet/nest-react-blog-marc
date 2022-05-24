@@ -47,8 +47,7 @@ const CreateUser = () => {
 
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
-    const UserData = {...data, user}
-    await UserApiService.createUser(UserData)
+    await UserApiService.createUser(data)
     .then(() => { handleSubmitFormSucess(); })
     .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
     dispatch(createActionLoading(false));
@@ -130,7 +129,7 @@ const CreateUser = () => {
 
             <div className="form-group col-md-4 pull-right">
               <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Update User
+                Create
               </button>
               {isLoading &&
                 <span className="fa fa-circle-o-notch fa-spin" />

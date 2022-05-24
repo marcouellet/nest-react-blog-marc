@@ -3,7 +3,7 @@ import { IPost, IUpdatePost } from "../../types";
 
 const POST_ENDPOINT = `/post`;
 
-export class PostApi extends HttpApiService<IPost> {
+class PostApi extends HttpApiService<IPost> {
  
   getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);

@@ -64,7 +64,8 @@ export class UserService {
   }
 
   async createUser(userDto: UserDto): Promise<UserDto> {
-    userDto.role = UserRole.USER;
+    userDto.role = userDto.role ? userDto.role :  UserRole.USER;
+    userDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(userDto);
     return this.dataServicesRepositories.users.create(newUser)
       .then(user => this.processUser(user));
@@ -74,7 +75,7 @@ export class UserService {
     const updatedUser = this.userFactoryService.updateUser(userDto);
     await this.getUserByIdUnrestricted(id)
       .then(user => {
-        updatedUser.password =  this.cryptoService.checkPassword(user.password, updatedUser.password)
+        updatedUser.password =  (!updatedUser.password ||this.cryptoService.checkPassword(user.password, updatedUser.password))
         ? user.password
         : this.cryptoService.hashPassword(updatedUser.password)
       })   

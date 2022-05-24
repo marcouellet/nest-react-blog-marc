@@ -8,7 +8,7 @@ import {
   createActionSessionExpired,
 } from '../reducers/auth';
 import TokenService from '../services/api/TokenService';
-import { isTokenValid } from '../services/api/AuthAPI';
+import { isTokenValid } from '../services/api/AuthApiService';
 
 type AuthContextProps = {
   state: AuthState;

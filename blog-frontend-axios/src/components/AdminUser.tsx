@@ -35,7 +35,7 @@ const AdminUser = () => {
      .catch((apiErrors: IErrors) => handleDeleteUserError(apiErrors))
     dispatch(createActionLoading(false));
     _removeUserFromView(id);
-    navigate('/admin');
+    navigate('/user');
   }
 
   const handleDeleteUserSuccess = () => {
@@ -46,7 +46,7 @@ const AdminUser = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`User delete failed, session expired`);
       dispatch(createActionSessionExpired());
-      navigate('/admin'); 
+      navigate('/user'); 
     } else {
       toast.error(`User delete failed, see error list`);
       setErrors(apiErrors);      
@@ -65,6 +65,15 @@ const AdminUser = () => {
         <section className="blog-area section">
         {errors && <ListErrors errors={errors} />}
         <div className="container">
+          <div>
+            {
+              state.isAuthenticated && !state.isLoading && 
+              (
+                  <Link to={`/user/create`} className="btn btn-sm btn-primary">Create User</Link>
+              )
+            }
+          </div>
+          <br/>
           <div className="row">
             {users && users.map((user: IUser) => (
               <div className="col-lg-4 col-md-6" key={user.id}>
@@ -88,16 +97,6 @@ const AdminUser = () => {
                       <li>
                       {
                         <Link to={`/user/${user.id}`} className="btn btn-sm btn-outline-secondary">View User </Link>
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    state.isAuthenticated && !state.isLoading && 
-                    (
-                      <li>
-                      {
-                        <Link to={`/user/create`} className="btn btn-sm btn-outline-secondary">Create User</Link>
                       }
                       </li>
                     )

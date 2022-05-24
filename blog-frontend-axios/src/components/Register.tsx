@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AUTHAPI from '../services/api/AuthAPI';
+import AUTHAPI from '../services/api/AuthApiService';
 import useAuth from '../contexts/auth';
 import { toast } from "react-toastify";
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';

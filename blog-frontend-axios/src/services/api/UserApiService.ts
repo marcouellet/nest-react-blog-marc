@@ -2,7 +2,7 @@ import HttpApiService from "./HttpApiService";
 import { IUser, IUpdateUser } from "../../types";
 
 const USER_ENDPOINT = `/user`;
-export class UserApi extends HttpApiService<IUser> {
+class UserApi extends HttpApiService<IUser> {
 
   getUserById = (id: string) => {
     return this.get(`${USER_ENDPOINT}/${id}`);
@@ -13,7 +13,7 @@ export class UserApi extends HttpApiService<IUser> {
   };
 
   createUser = (data: any) => {
-    return super.create(`${USER_ENDPOINT}`, data);
+    return super.create(`${USER_ENDPOINT}/create`, data);
   };
 
   updateUser = (id: string, data: IUpdateUser) => {

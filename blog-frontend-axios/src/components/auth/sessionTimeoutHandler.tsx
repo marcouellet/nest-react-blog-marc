@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useAuth from '../../contexts/auth';
 import { useNavigate } from 'react-router-dom';
-import AUTHAPI from '../../services/api/AuthAPI';
+import AUTHAPI from '../../services/api/AuthApiService';
 import { createActionLogout, createActionLoadUser } from '../../reducers/auth';
 import { useConfirmationModalContext } from "../../contexts/modalConfirmationContext";
 import { toast } from "react-toastify";

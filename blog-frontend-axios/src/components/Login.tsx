@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
-import AUTHAPI from '../services/api/AuthAPI';
+import AUTHAPI from '../services/api/AuthApiService';
 import useAuth from '../contexts/auth';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';

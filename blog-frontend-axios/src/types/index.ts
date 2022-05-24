@@ -59,6 +59,9 @@ export interface IUpdateUser {
 
 export function createUserForUpdate(user: IUser): IUpdateUser {
   const updateUser: IUpdateUser = {username:user.username, email: user.email, password: user.password, role: user.role};
+  if (!updateUser.password) {
+    delete updateUser.password;
+  }
   return updateUser;
 }
 export interface IUpdatePost {

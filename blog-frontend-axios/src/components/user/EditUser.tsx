@@ -25,7 +25,6 @@ const EditUser = () => {
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required'),
     email: Yup.string().required('Email is required'),
-    password: Yup.string().required('Password is required'),
     role: Yup.string().required('Role is required'),
   });
 
@@ -36,7 +35,7 @@ const EditUser = () => {
     role: string;
   };
 
-  const defaultValues = {username: user?.username, email: user?.email, password: user?.password, role: user?.role};
+  const defaultValues = {username: user?.username, email: user?.email, password: '', role: user?.role};
 
   const {
     register,
@@ -81,7 +80,7 @@ const EditUser = () => {
 
   const handleSubmitFormSucess = () => {
     toast.success(`User updated successfully...`);
-    navigate('user'); 
+    navigate('/user'); 
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
@@ -139,9 +138,9 @@ const handleCancelEditUser = () => {
               <label htmlFor="password"> Enter Password </label>
               <input 
                 type="text" 
-                placeholder="Enter password" 
+                placeholder="Enter a value to change current password" 
                 {...register('password')}
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
+                className={`form-control`}           
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </div>
@@ -158,7 +157,7 @@ const handleCancelEditUser = () => {
 
             <div className="form-group col-md-4 pull-right">
               <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Update User
+                Update
               </button>
               {isLoading &&
                 <span className="fa fa-circle-o-notch fa-spin" />

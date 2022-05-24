@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
 import { createActionLogout } from '../reducers/auth';
-import AUTHAPI from '../services/api/AuthAPI';
+import AUTHAPI from '../services/api/AuthApiService';
 import { toast } from "react-toastify";
 import { UserRole } from '../types'
 
