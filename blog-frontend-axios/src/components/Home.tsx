@@ -70,17 +70,11 @@ const Home = () => {
               <div className="col-lg-4 col-md-6" key={post.id}>
               <div className="card h-100">
                 <div className="single-post post-style-1">
-
-                  <div className="blog-image">
-                    <img src="https://res.cloudinary.com/yemiwebby-com-ng/image/upload/v1563149789/blog-image_psvipq.jpg" alt="Blog" />
-                  </div>
-
                   <span className="avatar">
-                    <img src="http://res.cloudinary.com/yemiwebby-com-ng/image/upload/v1513770253/WEB_FREAK_50PX-01_yaqxg7.png" alt="Profile" />
                     <span>
                      <h4>User: {post.user!.username} </h4> 
+                    </span>
                   </span>
-                 </span>
 
                   <div className="blog-info">
 
@@ -98,7 +92,9 @@ const Home = () => {
                     (
                       <li>
                       {
-                        <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
+                        <p>
+                          <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View Post</Link>
+                        </p>
                       }
                       </li>
                     )
@@ -108,7 +104,9 @@ const Home = () => {
                     (
                       <li>
                       {
-                        <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
+                        <p>
+                          <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-primary">Edit Post</Link>
+                        </p>
                       }
                       </li>
                     )

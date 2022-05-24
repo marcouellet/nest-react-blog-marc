@@ -96,7 +96,9 @@ const AdminUser = () => {
                     (
                       <li>
                       {
-                        <Link to={`/user/${user.id}`} className="btn btn-sm btn-outline-secondary">View User </Link>
+                        <p>
+                          <Link to={`/user/${user.id}`} className="btn btn-sm btn-info">View User </Link>
+                        </p>
                       }
                       </li>
                     )
@@ -106,7 +108,10 @@ const AdminUser = () => {
                     (
                       <li>
                       {
-                        <Link to={`/user/edit/${user.id}`} className="btn btn-sm btn-outline-secondary">Edit User</Link>
+                        <p>
+                          <Link to={`/user/edit/${user.id}`} className="btn btn-sm btn-primary">Edit User</Link>
+                        </p>
+
                       }
                       </li>
                     )
