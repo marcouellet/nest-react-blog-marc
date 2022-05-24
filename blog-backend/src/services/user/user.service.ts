@@ -72,7 +72,7 @@ export class UserService {
 
   async updateUser(id: string, userDto: UserDto): Promise<UserDto> {
     const updatedUser = this.userFactoryService.updateUser(userDto);
-    await this.getUserById(id)
+    await this.getUserByIdUnrestricted(id)
       .then(user => {
         updatedUser.password =  this.cryptoService.checkPassword(user.password, updatedUser.password)
         ? user.password

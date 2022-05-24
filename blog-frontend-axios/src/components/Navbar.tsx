@@ -44,7 +44,7 @@ const Navbar = () => {
                         <li><Link className={"nav-link"} to={"/register"}> Register </Link></li>
                     )}
                     {!state.isLoading && isAdministrator() && (
-                        <li><Link className={"nav-link"} to={"/admin"}> Admin </Link></li>
+                        <li><Link className={"nav-link"} to={"/user"}> Admin User</Link></li>
                     )}
                     {!state.isLoading && state.user && (
                         <li>

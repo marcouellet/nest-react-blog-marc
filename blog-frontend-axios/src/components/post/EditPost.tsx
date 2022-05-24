@@ -14,7 +14,7 @@ import { IErrors } from '../../types';
 import { checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
-const Edit = () => {
+const EditPost = () => {
 
   const navigate = useNavigate();
   const { state: { isLoading }, dispatch } = useAuth();
@@ -176,4 +176,4 @@ const handleCancelEditPost = () => {
   )
 }
 
-export default Edit;
+export default EditPost;

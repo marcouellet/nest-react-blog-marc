@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../components/Home";
-import Post from "../components/post/Post";
+import ViewPost from "../components/post/ViewPost";
 import useAuth from '../contexts/auth';
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";
@@ -13,7 +13,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={"/"} element={<Home/>} />
-      <Route path={"/post/:postId"} element={<Post/>}/>
+      <Route path={"/post/:postId"} element={<ViewPost/>}/>
       {isAuthenticated ?  PrivateRoutes() : RestrictedRoutes()}
       <Route
           path="*"

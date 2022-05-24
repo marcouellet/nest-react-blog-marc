@@ -8,7 +8,7 @@ export interface IUser {
   username: string;
   password?: string;
   email: string;
-  role: UserRole;
+  role: string;
 }
 
 export class IAuthToken {
@@ -50,6 +50,17 @@ export interface IErrors {
   [key: string]: string[];
 }
 
+export interface IUpdateUser {
+  username: string;
+  email: string;
+  password?: string;
+  role: string;
+}
+
+export function createUserForUpdate(user: IUser): IUpdateUser {
+  const updateUser: IUpdateUser = {username:user.username, email: user.email, password: user.password, role: user.role};
+  return updateUser;
+}
 export interface IUpdatePost {
   title: string;
   description: string;

@@ -7,10 +7,11 @@ import { UserDto } from '../../core/dtos';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(private authService: AuthService) {
-        super();
+        super({ passReqToCallback: true });
+      
     }
 
-    async validate(username: string, password: string): Promise<UserDto> {
+    async validate(req: Request, username: string, password: string): Promise<UserDto> {
         try {
             return this.authService.validateUser({username, password});
         } catch (err) {

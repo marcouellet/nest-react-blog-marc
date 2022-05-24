@@ -1,24 +1,27 @@
 import HttpApiService from "./HttpApiService";
-import { IUser } from "../../types";
+import { IUser, IUpdateUser } from "../../types";
 
 const USER_ENDPOINT = `/user`;
 export class UserApi extends HttpApiService<IUser> {
 
-  getUserById = (id: number) => {
+  getUserById = (id: string) => {
     return this.get(`${USER_ENDPOINT}/${id}`);
   };
 
   getAllUsers = () => {
-    const response = this.get(`${USER_ENDPOINT}`);
-    return response
+    return super.getAll(`${USER_ENDPOINT}`);
   };
 
   createUser = (data: any) => {
     return super.create(`${USER_ENDPOINT}`, data);
   };
 
-  updateUser = (data: IUser) => {
-    return super.update(`${USER_ENDPOINT}`, data);
+  updateUser = (id: string, data: IUpdateUser) => {
+    return super.update(`${USER_ENDPOINT}/update/${id}`, data);
+  };
+
+  deleteUser = (id: string) => {
+    return super.delete(`${USER_ENDPOINT}/delete/${id}`);
   };
 }
 

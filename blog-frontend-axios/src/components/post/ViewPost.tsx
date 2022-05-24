@@ -9,7 +9,7 @@ import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { toLocalDateString } from '../../utils/utils';
 
-const Post = () => {
+const ViewPost = () => {
 
   const { postId } = useParams<{ postId: string }>();
   const { dispatch } = useAuth();
@@ -97,4 +97,4 @@ const Post = () => {
     );
 }
 
-export default Post;
+export default ViewPost;

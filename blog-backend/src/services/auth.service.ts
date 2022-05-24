@@ -5,6 +5,7 @@ import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { JwtPayload, IAuthToken } from '../auth/interfaces/jwt.interface';
 import { CryptographerService } from './cryptographer.service';
+import { UserRole } from 'src/core/enum';
 
 @Injectable()
 export class AuthService {
@@ -84,8 +85,13 @@ export class AuthService {
       .catch(_ => { throw new ForbiddenException('Access Denied'); });
   }
 
-  async validateUser(criterias: {}): Promise<UserDto> {
+  async validateUser(criterias: {}, isAdminRequired: boolean = false): Promise<UserDto> {
     return this.userService.findUser(criterias)
+      .then(user => { 
+        if (isAdminRequired && user.role != UserRole.ADMIN) {
+          throw new ForbiddenException('Access Denied');
+        } else { return user; }
+      })
       .catch(_ => { throw new NotFoundException('User not found'); });
   }
 

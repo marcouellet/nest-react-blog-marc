@@ -13,7 +13,7 @@ import { IErrors } from '../../types';
 import { checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
-const Create = () => {
+const CreatePost = () => {
 
   const navigate = useNavigate();
   const { state: { isLoading, user }, dispatch } = useAuth();
@@ -69,7 +69,7 @@ const Create = () => {
 
   const cancelCreatePostMessage = () => `post creation and loose changes`;
 
-  const handleClearEditPost = () => {
+  const handleClearCreatePost = () => {
     reset(defaultValues, { keepDirty: false});
   }
 
@@ -126,7 +126,7 @@ const Create = () => {
         </div>
   
         <div className="form-group col-md-1 pull-right">
-          <button className="btn btn-secondary"  disabled={!isDirty} onClick={ () => handleClearEditPost() } >
+          <button className="btn btn-secondary"  disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
             Clear
           </button>
           {isLoading &&
@@ -145,4 +145,4 @@ const Create = () => {
   );
 
 }
-export default Create
+export default CreatePost

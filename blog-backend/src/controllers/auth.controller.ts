@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
@@ -14,24 +14,21 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async whoAmI(@Req() req: Request, @Res() res: Response) {
     return this.authService.validateToken(req.headers.authorization)
-      .then(payload => res.status(HttpStatus.OK).json(payload))
-      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
+      .then(payload => res.status(HttpStatus.OK).json(payload));
 }
 
   // Login user
   @Post('/login')
   async login(@Res() res: Response, @Body(new ValidationPipe()) body: LoginDto) {
     return this.authService.login(body)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 
   // Register user
   @Post('/register')
   async register(@Res() res: Response, @Body(new ValidationPipe()) body: RegisterDto) {
     this.authService.register(body)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));
+      .then(user => res.status(HttpStatus.OK).json(user));
   }
 
   // Refresh auth token
@@ -39,6 +36,6 @@ export class AuthController {
  @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Res() res: Response, @Body(new ValidationPipe()) body: RefreshDto) {
     this.authService.refresh(body)
-      .then(user => res.status(HttpStatus.OK).json(user))
-      .catch((error: HttpException) => res.status(error.getStatus()).json(error.message));}
+      .then(user => res.status(HttpStatus.OK).json(user));
+  }
 }
