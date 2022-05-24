@@ -3,7 +3,8 @@ import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request, Response } from 'express';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { AllRoles } from "../core/enum/user-role.enum";
 import { JwtRefreshTokenAuthGuard } from '../auth/guards/jwt-refresh.guard';
 @Controller('auth')
 export class AuthController {
@@ -11,7 +12,7 @@ export class AuthController {
 
   // Get current user
   @Get('/whoami')
-  @UseGuards(JwtAuthGuard)
+  @Auth(AllRoles)
   async whoAmI(@Req() req: Request, @Res() res: Response) {
     return this.authService.validateToken(req.headers.authorization)
       .then(payload => res.status(HttpStatus.OK).json(payload));
