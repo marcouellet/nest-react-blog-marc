@@ -25,6 +25,15 @@ class HttpApiService<T> {
      });
   }
 
+  protected getCount(endpoint: string, conf = {}): Promise<number> {
+    return new Promise(resolve => {
+      API.get<number>(`${endpoint}`, conf)
+        .then(response => {
+          resolve(response.data);
+        });
+     });
+  }
+
   protected create(endpoint: string, data: {}, conf = {}): Promise<T> {
     return this.post(endpoint, data, conf)
   }

@@ -25,6 +25,13 @@ export class PostController {
     .then(post => res.status(HttpStatus.OK).json(post));
   }
 
+  // Get number of posts owned by user
+  @Get('/count/:userId')
+  async getNumberOfPostsForUser(@Res() res: Response, @Param('userId') userId: string) {
+    return this.postService.getNumberOfPostsForUser(userId)
+      .then(count => res.status(HttpStatus.OK).json(count));
+  }
+
   // Submit a new post
   @Post('/create')
   @Auth(AllRoles)

@@ -11,6 +11,7 @@ import DeleteButton from './common/deleteConfirmation'
 import { checkForbidden } from '../utils/response';
 import { createActionSessionExpired } from '../reducers/auth';
 import { toLocalDateString } from '../utils/utils';
+import { PostApiService } from '../services/api/PostApiService';
 
 const AdminUser = () => {
   
@@ -31,12 +32,18 @@ const AdminUser = () => {
 
   const handleDeleteUser = async (id: string) => {
     dispatch(createActionLoading(true));
-    await UserApiService.deleteUser(id)
-     .then(() => handleDeleteUserSuccess())
-     .catch((apiErrors: IErrors) => handleDeleteUserError(apiErrors))
-    dispatch(createActionLoading(false));
-    _removeUserFromView(id);
-    navigate('/user');
+    const postscount = await PostApiService.getNumberOfPostsForUser(id);
+    if (postscount) {
+      toast.error(`User has posts, delete them first`);
+      dispatch(createActionLoading(false));
+    } else {
+      await UserApiService.deleteUser(id)
+      .then(() => handleDeleteUserSuccess())
+      .catch((apiErrors: IErrors) => handleDeleteUserError(apiErrors))
+      dispatch(createActionLoading(false));
+      _removeUserFromView(id);
+      navigate('/user'); 
+    }
   }
 
   const handleDeleteUserSuccess = () => {

@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { IGenericDataServicesRepository } from '../../../core';
 
 export class MongoGenericDataServicesRepository<T> implements IGenericDataServicesRepository<T> {
@@ -35,6 +35,15 @@ export class MongoGenericDataServicesRepository<T> implements IGenericDataServic
     return this.repository.find(criterias).populate(this.populateOnFind).exec() as Promise<T[]>;
   }
 
+  async findManyCount(criterias: {}): Promise<number> {
+    return this.repository.count(criterias).exec();
+  }
+
+  async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
+    const id = new Types.ObjectId(subDocumentId);
+      return this.repository.count({}).where(subDocumentName).equals(id).exec();
+  }
+  
   async create(item: T): Promise<T> {
     return this.repository.create(item) as Promise<T>;
   }

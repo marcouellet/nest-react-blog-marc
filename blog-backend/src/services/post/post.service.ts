@@ -24,6 +24,10 @@ export class PostService {
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
+  async getNumberOfPostsForUser(userId: string): Promise<number> {
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocumentId('user', userId);
+  }
+
   async getPostById(id: string): Promise<PostDto> {
     return this.dataServicesRepositories.posts.get(id)
       .then(post => this.processPost(post));

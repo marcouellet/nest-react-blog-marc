@@ -63,6 +63,10 @@ export class UserService {
       .then(users => users.map(user => this.processUser(user)));
   }
 
+  async findManyUsersCount(criterias: {}): Promise<number> {
+    return this.dataServicesRepositories.users.findManyCount(criterias);
+  }
+
   async createUser(userDto: UserDto): Promise<UserDto> {
     userDto.role = userDto.role ? userDto.role :  UserRole.USER;
     userDto.password = this.cryptoService.hashPassword(userDto.password);

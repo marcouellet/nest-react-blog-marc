@@ -7,6 +7,10 @@ export interface IGenericDataServicesRepository<T> {
 
   findMany(criterias: {}): Promise<T[]>;
 
+  findManyCount(criterias: {}): Promise<number>;
+
+  findManyCountForSubDocumentId(idProperty: string, value: string): Promise<number>;
+
   create(item: T): Promise<T>;
 
   update(id: string, update: {}, populate?: string);
