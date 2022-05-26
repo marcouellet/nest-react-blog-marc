@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IDataRepositories } from '../../core/abstracts';
 import { User } from '../../core/entities';
 import { UserRole } from '../../core/enum'
-import { UserDto } from '../../core/dtos';
+import { UserDto, UpdateUserDto } from '../../core/dtos';
 import { UserFactoryService } from './user-factory.service';
 import { CryptographerService } from '../../services/cryptographer.service';
 
@@ -75,16 +75,17 @@ export class UserService {
       .then(user => this.processUser(user));
   }
 
-  async updateUser(id: string, userDto: UserDto): Promise<UserDto> {
-    const updatedUser = this.userFactoryService.updateUser(userDto);
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
+    const updatedUserCriterias = this.userFactoryService.createUpdateUserCriterias(updateUserDto);
     await this.getUserByIdUnrestricted(id)
       .then(user => {
-        updatedUser.password =  (!updatedUser.password ||this.cryptoService.checkPassword(user.password, updatedUser.password))
+        updatedUserCriterias.password =  (!updatedUserCriterias.password ||
+          this.cryptoService.checkPassword(user.password, updatedUserCriterias.password))
         ? user.password
-        : this.cryptoService.hashPassword(updatedUser.password)
-      })   
-    return this.dataServicesRepositories.users.update(id, updatedUser)
-      .then(user => this.processUser(user));
+        : this.cryptoService.hashPassword(updatedUserCriterias.password);
+      });
+    return this.dataServicesRepositories.users.update(id, updatedUserCriterias)
+      .then((user: User) => this.processUser(user));
    }
 
   async deleteUser(id: string): Promise<UserDto> {

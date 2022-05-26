@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../core/entities';
-import { UserDto } from '../../core/dtos';
+import { UserDto, IUpdateUserCriterias, UpdateUserDto } from '../../core/dtos';
 import { IDataRepositories } from '../../core/abstracts';
 @Injectable()
 export class UserFactoryService {
@@ -27,7 +27,7 @@ export class UserFactoryService {
     user.email = userDto.email;
     user.password = userDto.password;
     user.role = userDto.role;
-    
+
     return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
 
@@ -44,5 +44,11 @@ export class UserFactoryService {
     return userDto;
   }
 
-  removeRestrictedProperties (user: UserDto): UserDto { delete user.password; return user; }
+  // Make sure only desired criterias are selected from the incomming object
+  createUpdateUserCriterias(updateUserDto: UpdateUserDto): IUpdateUserCriterias {
+    const {username, email, password, role} = updateUserDto;
+    return {username, email, password, role} as IUpdateUserCriterias;
+  }
+
+  removeRestrictedProperties(user: UserDto): UserDto { delete user.password; return user; }
 }

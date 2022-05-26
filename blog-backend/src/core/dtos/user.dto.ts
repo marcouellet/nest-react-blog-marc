@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsDate, IsEmail, IsEnum } from '@nestjs/class-validator';
 import { Type } from '@nestjs/class-transformer';
-import { UserRole } from '../enum'
-import { IAuthToken } from '../../auth/interfaces/jwt.interface'
+import { UserRole } from '../enum';
+import { IAuthToken } from '../../auth/interfaces/jwt.interface';
 export class UserDto {
   @IsString()
   @IsNotEmpty()
