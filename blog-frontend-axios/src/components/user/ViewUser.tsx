@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { IUser } from "../../types";
 import { toast } from "react-toastify";
 import { UserApiService } from "../../services/api/UserApiService";
@@ -12,9 +12,11 @@ import { toLocalDateString } from '../../utils/utils';
 const ViewUser = () => {
 
   const { userId } = useParams<{ userId: string }>();
-  const { dispatch } = useAuth();
+  const { state: { isLoading }, dispatch } = useAuth();
   const [user, setUser] = useState<IUser>();
   const [errors, setErrors] = React.useState<IErrors | null>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
@@ -33,6 +35,10 @@ const ViewUser = () => {
   const handleFetchUserError = (apiErrors: IErrors) => {
     toast.error(`User reading failed, see error list`);
     setErrors(apiErrors);
+  }
+
+  const handleReturn = () => {
+    navigate('/user');  
   }
 
     return (
@@ -77,6 +83,14 @@ const ViewUser = () => {
                          </h4>
                         <h5>{user.role}</h5>
                        </div>
+                  </div>
+                  <div className="form-group col-md-1 pull-right">
+                    <button className="btn btn-secondary"  onClick={ () => handleReturn() } >
+                      Return
+                    </button>
+                    {isLoading &&
+                      <span className="fa fa-circle-o-notch fa-spin" />
+                    }
                   </div>
                 </div>   
                 )           
