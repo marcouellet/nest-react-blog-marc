@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from '../../core/entities';
-import { PostDto, UpdatePostCriterias, UpdatePostDto } from '../../core/dtos';
+import { PostDto, IUpdatePostCriterias, UpdatePostDto } from '../../core/dtos';
 import { IDataRepositories } from '../../core/abstracts';
 import { UserFactoryService } from '../user/user-factory.service';
 
@@ -37,9 +37,9 @@ export class PostFactoryService {
   }
 
   // Make sure only desired criterias are selected from the incomming object
-  createUpdatePostCriterias(updatePostDto: UpdatePostDto): UpdatePostCriterias {
+  createUpdatePostCriterias(updatePostDto: UpdatePostDto): IUpdatePostCriterias {
     const populate = {populate: { path: 'user' }};
     const {title, description, body} = updatePostDto;
-    return {title, description, body, populate} as UpdatePostCriterias;
+    return {title, description, body, populate} as IUpdatePostCriterias;
   }
 }

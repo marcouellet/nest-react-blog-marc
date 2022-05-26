@@ -25,20 +25,3 @@ export class PostDto {
   @IsDate()
   publishDate?: Date;
 }
-export class UpdatePostDto {
-  @IsString()
-  @IsNotEmpty()
-  title: string;
-
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  body: string;
-}
-
-export type UpdatePostCriterias = {title: string, description: string, body: string}
-
-
