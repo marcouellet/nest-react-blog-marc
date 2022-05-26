@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../services/api/PostApiService";
-import { IPost } from "../types";
+import { IPost, UserRole } from "../types";
 import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
@@ -25,6 +25,8 @@ const Home = () => {
     const index = posts.findIndex((post: IPost) => post.id! === id);
     posts.splice(index, 1);
   }
+
+  const isAdministrator = () => state.isAuthenticated && state.user?.role === UserRole.ADMIN;
 
   const deletePostMessage = (post: IPost) => `${post.title} post`;
 
@@ -100,7 +102,7 @@ const Home = () => {
                     )
                   }
                   {
-                    state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
+                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) &&
                     (
                       <li>
                       {
@@ -112,7 +114,7 @@ const Home = () => {
                     )
                   }
                   {
-                    state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) && 
+                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) && 
                     (                   
                       <li>
                       {

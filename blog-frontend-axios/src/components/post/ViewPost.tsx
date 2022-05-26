@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { IPost } from "../../types";
 import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
@@ -12,9 +12,11 @@ import { toLocalDateString } from '../../utils/utils';
 const ViewPost = () => {
 
   const { postId } = useParams<{ postId: string }>();
-  const { dispatch } = useAuth();
+  const { state: { isLoading }, dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
   const [errors, setErrors] = React.useState<IErrors | null>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!post) {
@@ -33,6 +35,10 @@ const ViewPost = () => {
   const handleFetchPostError = (apiErrors: IErrors) => {
     toast.error(`Post reading failed, see error list`);
     setErrors(apiErrors);
+  }
+
+  const handleReturn = () => {
+    navigate('/');  
   }
 
   const getDateString = (date: Date): string => {
@@ -87,7 +93,15 @@ const ViewPost = () => {
                         </h4>
                        </div>
                   </div>
-                </div>   
+                  <div className="form-group col-md-1 pull-right">
+                    <button className="btn btn-secondary"  onClick={ () => handleReturn() } >
+                      Return
+                    </button>
+                    {isLoading &&
+                      <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                  </div>
+                </div>               
                 )           
               }
             </div>
