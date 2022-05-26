@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IDataServicesRepositories } from '../../core/abstracts';
+import { IDataRepositories } from '../../core/abstracts';
 import { Post } from '../../core/entities';
 import { PostDto, UpdatePostDto } from '../../core/dtos';
 import { PostFactoryService } from './post-factory.service';
@@ -7,7 +7,7 @@ import { PostFactoryService } from './post-factory.service';
 export class PostService {
 
   constructor(
-    private readonly dataServicesRepositories: IDataServicesRepositories,
+    private readonly dataServicesRepositories: IDataRepositories,
     private readonly postFactoryService: PostFactoryService,
   ) {}
 

@@ -1,4 +1,4 @@
-export interface IGenericDataServicesRepository<T> {
+export interface IGenericDataRepository<T> {
   getAll(): Promise<T[]>;
 
   get(id: string): Promise<T>;

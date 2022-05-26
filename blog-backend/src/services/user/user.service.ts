@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IDataServicesRepositories } from '../../core/abstracts';
+import { IDataRepositories } from '../../core/abstracts';
 import { User } from '../../core/entities';
 import { UserRole } from '../../core/enum'
 import { UserDto } from '../../core/dtos';
@@ -10,7 +10,7 @@ import { CryptographerService } from '../../services/cryptographer.service';
 export class UserService {
 
   constructor(
-    private readonly dataServicesRepositories: IDataServicesRepositories,
+    private readonly dataServicesRepositories: IDataRepositories,
     private readonly userFactoryService: UserFactoryService,
     private readonly cryptoService: CryptographerService,
   ) {}

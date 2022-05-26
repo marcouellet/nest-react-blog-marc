@@ -1,2 +1,2 @@
-export * from './data-services-repositories.abstract';
-export * from './generic-data-services-repository.abstract';
+export * from './data-repositories.abstract';
+export * from './generic-data-repository.abstract';

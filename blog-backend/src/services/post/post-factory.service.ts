@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from '../../core/entities';
 import { PostDto, UpdatePostCriterias, UpdatePostDto } from '../../core/dtos';
-import { IDataServicesRepositories } from '../../core/abstracts';
+import { IDataRepositories } from '../../core/abstracts';
 import { UserFactoryService } from '../user/user-factory.service';
 
 @Injectable()
 export class PostFactoryService {
 
   constructor(
-    private readonly dataServicesRepositories: IDataServicesRepositories,
+    private readonly dataServicesRepositories: IDataRepositories,
     private readonly userFactoryService: UserFactoryService) {}
 
   createPost(postDto: PostDto): Post {

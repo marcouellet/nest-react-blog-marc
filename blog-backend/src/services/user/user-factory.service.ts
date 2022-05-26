@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../core/entities';
 import { UserDto } from '../../core/dtos';
-import { IDataServicesRepositories } from '../../core/abstracts';
+import { IDataRepositories } from '../../core/abstracts';
 @Injectable()
 export class UserFactoryService {
 
   constructor(
-    private readonly dataServicesRepositories: IDataServicesRepositories) {}
+    private readonly dataServicesRepositories: IDataRepositories) {}
 
   createUser(userDto: UserDto): User {
     const user = new User();

@@ -1,13 +1,13 @@
 import { Module, Global, UseFilters } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IDataServicesRepositories } from '../../../core';
+import { IDataRepositories } from '../../../core';
 import { ConfigService } from '../../../services/config.service';
 import {  User, UserSchema } from './model/user.model';
 import {  Post, PostSchema } from './model/post.model';
-import { MongoDataServicesRepositories } from './mongo-data-services-repositories';
-import { MongoDataServicesExceptionFilter } from './mongo-data-services-exception-filter';
+import { MongoDataRepositories } from './mongo-data-repositories';
+import { MongoDataExceptionFilter } from './mongo-data-exception-filter';
 @Global()
-@UseFilters(MongoDataServicesExceptionFilter)
+@UseFilters(MongoDataExceptionFilter)
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -23,10 +23,10 @@ import { MongoDataServicesExceptionFilter } from './mongo-data-services-exceptio
   ],
   providers: [
     {
-      provide: IDataServicesRepositories,
-      useClass: MongoDataServicesRepositories,
+      provide: IDataRepositories,
+      useClass: MongoDataRepositories,
     },
 ],
-  exports: [IDataServicesRepositories],
+  exports: [IDataRepositories],
 })
-export class MongoDataServicesModule {}
+export class MongoDataModule {}

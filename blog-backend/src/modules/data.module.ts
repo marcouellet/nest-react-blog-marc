@@ -1,9 +1,9 @@
-import { Module, DynamicModule, Global } from '@nestjs/common';
-import { IConfig, MONGO_SERVER_NAME } from '../../config/config';
-import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
+import { Module, DynamicModule } from '@nestjs/common';
+import { IConfig, MONGO_SERVER_NAME } from '../config/config';
+import { MongoDataModule } from '../frameworks/data/mongo/mongo-data.module';
 import { NotFoundException } from '@nestjs/common';
 @Module({})
-export class DataServicesModule {
+export class DataModule {
 
   public static register(config: IConfig): DynamicModule {
 
@@ -14,7 +14,7 @@ export class DataServicesModule {
 
     switch (dataServerName) {
       case MONGO_SERVER_NAME:
-        modules.push(MongoDataServicesModule);
+        modules.push(MongoDataModule);
         break;
       default:
         serverFound = false;
@@ -22,7 +22,7 @@ export class DataServicesModule {
 
     if (serverFound) {
       return {
-        module: DataServicesModule,
+        module: DataModule,
         imports: modules,
       };
     } else {
