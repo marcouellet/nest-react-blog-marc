@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -39,7 +40,8 @@ const CreateUser = () => {
     register,
     handleSubmit,
     formState: { errors, isDirty },
-    reset
+    reset,
+    setValue,
   } = useForm<CreateSubmitForm>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
@@ -77,6 +79,10 @@ const CreateUser = () => {
   const handleCancelCreateUser = () => {
     navigate('/user');   
   };
+
+  const handleRoleSelect=(e: any)=>{
+      setValue('role', e);
+  }
 
   return (
     <div>
@@ -117,13 +123,18 @@ const CreateUser = () => {
               <div className="invalid-feedback">{errors.password?.message}</div>
             </div>
 
-            <div className="form-group col-md-12">
-              <label htmlFor="role"> Select Role </label>
-              <input 
-                type="text" 
-                {...register('role')}
-                className={`form-control ${errors.role ? 'is-invalid' : ''}`}           
-              />
+            <div className="form-group ">
+              <div className="row">
+                <DropdownButton title="Select Role" onSelect={handleRoleSelect} className="col-md-1">
+                    <Dropdown.Item eventKey='user'>User</Dropdown.Item>
+                    <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
+                </DropdownButton>
+                <input style={ {float: 'right'} }    
+                  type="text" disabled  
+                  {...register('role')}
+                  className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
+                />
+              </div>
               <div className="invalid-feedback">{errors.role?.message}</div>
             </div>
 
