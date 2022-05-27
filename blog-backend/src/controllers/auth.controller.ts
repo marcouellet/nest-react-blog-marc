@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards, ForbiddenException} from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
@@ -20,7 +20,11 @@ export class AuthController {
 
   // Login user
   @Post('/login')
-  async login(@Res() res: Response, @Body(new ValidationPipe()) body: LoginDto) {
+  async login(@Req() request: Request, @Res() res: Response, @Body(new ValidationPipe()) body: LoginDto) {
+    if (request.user) {
+      // User already logged in
+      throw new ForbiddenException('User already logged in!');
+    }
     return this.authService.login(body)
       .then(user => res.status(HttpStatus.OK).json(user));
   }

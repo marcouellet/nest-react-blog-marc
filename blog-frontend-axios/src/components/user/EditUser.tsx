@@ -157,7 +157,7 @@ const handleRoleSelect=(e: any)=>{
                     <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
                 </DropdownButton>
                 <input style={ {float: 'right'} }    
-                  type="text" disabled  
+                  type="text" disabled  placeholder="no role selected" 
                   {...register('role')}
                   className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
                 />
