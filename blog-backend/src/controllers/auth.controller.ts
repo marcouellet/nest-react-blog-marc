@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Req, Res, Body, HttpStatus, UseGuards, ForbiddenException} from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { LoginDto, RegisterDto, RefreshDto } from 'src/core/dtos';
+import { LoginDto, RegisterDto } from 'src/core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request, Response } from 'express';
 import { Auth } from '../auth/decorators/auth.decorator';

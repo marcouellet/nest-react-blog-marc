@@ -128,9 +128,4 @@ export class AuthService {
         }
       });   
   }
-
-  async refresh(refreshDto: RefreshDto): Promise<UserDto> {
-    return this.getUserFromToken(refreshDto.authtoken.accessToken)
-      .then(user => this.setupUserWithNewTokens(user));
-  }
 }
