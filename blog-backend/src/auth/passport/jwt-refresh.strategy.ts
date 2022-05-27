@@ -27,7 +27,9 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
   async validate(req: Request, payload: JwtPayload): Promise<UserDto> {
     const body = req.body as any;
     return this.authService.validateRefreshToken(body.authrefreshtoken.accessToken)
-      .then(_ => this.authService.getUserFromToken(body.authrefreshtoken.accessToken));
-
+      .then(payload => {
+        const {sub} = payload;
+        return this.authService.validateUser({email: sub});
+      });
   }
 }
