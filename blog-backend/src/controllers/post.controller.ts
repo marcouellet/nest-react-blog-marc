@@ -1,11 +1,10 @@
-import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { AllRoles } from "../core/enum/user-role.enum";
-import { Response } from 'express';
+import { AllRoles } from '../core/enum/user-role.enum';
 @Controller('post')
 export class PostController {
 
@@ -13,49 +12,44 @@ export class PostController {
 
   // Fetch all posts
   @Get()
-  async getAll(@Res() res: Response) {
-    this.postService.getAllPosts()
-    .then(posts => res.status(HttpStatus.OK).json(posts));
+  async getAll(): Promise<PostDto[]> {
+    return this.postService.getAllPosts();
   }
 
   // Fetch a particular post using ID
   @Get(':id')
-  async getPost(@Res() res: Response, @Param('id') id: string) {
-    this.postService.getPostById(id)
-    .then(post => res.status(HttpStatus.OK).json(post));
+  async getPost(@Param('id') id: string): Promise<PostDto> {
+    return this.postService.getPostById(id);
   }
 
   // Get number of posts owned by user
   @Get('/count/:userId')
-  async getNumberOfPostsForUser(@Res() res: Response, @Param('userId') userId: string) {
-    return this.postService.getNumberOfPostsForUser(userId)
-      .then(count => res.status(HttpStatus.OK).json(count));
+  async getNumberOfPostsForUser(@Param('userId') userId: string): Promise<number> {
+    return this.postService.getNumberOfPostsForUser(userId);
   }
 
   // Submit a new post
   @Post('/create')
   @Auth(AllRoles)
-  async createPost(@Res() res: Response, @Body(new ValidationPipe()) postDto: PostDto) {
+  async createPost(@Body(new ValidationPipe()) postDto: PostDto): Promise<PostDto> {
     // Validate userId
     await this.userService.getUserById(postDto.user.id);
     // userId match a User
-    this.postService.createPost(postDto)
-      .then(post => res.status(HttpStatus.OK).json(post));
+    return this.postService.createPost(postDto);
   }
 
   // Update a post
   @Put('/update/:id')
   @Auth(AllRoles)
-  async updatePost(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) updatePostDto: UpdatePostDto) {
-    this.postService.updatePost(id, updatePostDto)
-      .then(post => res.status(HttpStatus.OK).json(post));
+  async updatePost(@Param('id') id: string,
+                   @Body(new ValidationPipe()) updatePostDto: UpdatePostDto): Promise<PostDto> {
+    return this.postService.updatePost(id, updatePostDto);
   }
 
   // Delete a post
   @Delete('/delete/:id')
   @Auth(AllRoles)
-  async deletePost(@Res() res: Response, @Param('id') id: string) {
-    this.postService.deletePost(id)
-      .then(post => res.status(HttpStatus.OK).json(post));
+  async deletePost(@Param('id') id: string): Promise<PostDto> {
+    return this.postService.deletePost(id);
   }
 }

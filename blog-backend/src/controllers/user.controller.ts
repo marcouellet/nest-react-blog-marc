@@ -1,9 +1,8 @@
-import { Controller, Get, Res, HttpStatus, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
 import { UserDto } from '../core/dtos';
 import { UserService } from '../services/user/user.service';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { Response } from 'express';
 import { UserRole } from 'src/core/enum';
 @Controller('user')
 export class UserController {
@@ -11,39 +10,34 @@ export class UserController {
 
   @Get()
   @Auth([UserRole.ADMIN])
-  async getAll(@Res() res: Response) {
-    this.userService.getAllUsers()
-      .then(users => {res.status(HttpStatus.OK).json(users)});
+  async getAll(): Promise<UserDto[]> {
+    return this.userService.getAllUsers();
   }
 
   @Get(':id')
   @Auth([UserRole.ADMIN])
-  async getById(@Res() res: Response, @Param('id') id: string) {
-    this.userService.getUserById(id)
-      .then(user => res.status(HttpStatus.OK).json(user));
+  async getById(@Param('id') id: string): Promise<UserDto> {
+    return this.userService.getUserById(id);
   }
 
   // Submit a new user
   @Post('/create')
   @Auth([UserRole.ADMIN])
-  async createUser(@Res() res: Response, @Body(new ValidationPipe()) userDto: UserDto) {
-    this.userService.createUser(userDto)
-      .then(user => res.status(HttpStatus.OK).json(user));
+  async createUser(@Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
+    return this.userService.createUser(userDto);
   }
 
   // Update a user
   @Put('/update/:id')
   @Auth([UserRole.ADMIN])
-  async updateUser(@Res() res: Response, @Param('id') id: string, @Body(new ValidationPipe()) userDto: UserDto) {
-    this.userService.updateUser(id, userDto)
-      .then(user => res.status(HttpStatus.OK).json(user));
+  async updateUser(@Param('id') id: string, @Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
+    return this.userService.updateUser(id, userDto);
   }
 
   // Delete user using ID
   @Delete('/delete/:id')
   @Auth([UserRole.ADMIN])
-  async deleteUser(@Res() res: Response, @Param('id') id: string) {
-    this.userService.deleteUser(id)
-      .then(user => res.status(HttpStatus.OK).json(user));
+  async deleteUser( @Param('id') id: string): Promise<UserDto> {
+    return this.userService.deleteUser(id);
   }
 }

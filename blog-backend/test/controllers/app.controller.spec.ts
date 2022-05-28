@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from '../services/app.service';
+import { AppController } from '../../src/controllers/app.controller';
+import { AppService } from '../../src/services/app.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -16,7 +16,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Marc Nest Blog API"', () => {
-      expect(appController.getServerInfo());
+      expect(appController.getServerInfo()).toBe('Marc Nest Blog API');
     });
   });
 });

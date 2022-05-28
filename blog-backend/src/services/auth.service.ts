@@ -1,5 +1,5 @@
 import { Injectable, ForbiddenException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
-import { LoginDto, RegisterDto, UserDto, RefreshDto } from '../core/dtos';
+import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
@@ -71,7 +71,7 @@ export class AuthService {
       return this.validateToken(token)
         .then(payload => {
           const {sub} = payload;
-          return this.validateUser({email: sub});           
+          return this.validateUser({email: sub});
         });
   }
 
@@ -87,8 +87,8 @@ export class AuthService {
 
   async validateUser(criterias: {}, isAdminRequired: boolean = false): Promise<UserDto> {
     return this.userService.findUser(criterias)
-      .then(user => { 
-        if (isAdminRequired && user.role != UserRole.ADMIN) {
+      .then(user => {
+        if (isAdminRequired && user.role !== UserRole.ADMIN) {
           throw new ForbiddenException('Access Denied');
         } else { return user; }
       })
