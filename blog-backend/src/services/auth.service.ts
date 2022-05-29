@@ -109,7 +109,7 @@ export class AuthService {
         } else {
           throw new ForbiddenException('Access Denied');
         }
-      })
+      });
     }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
@@ -124,8 +124,8 @@ export class AuthService {
             return await this.userService.createUser(registerDto);
           } catch (_) {
             throw new InternalServerErrorException('Cannot create user!');
-          }  
+          }
         }
-      });   
+      });
   }
 }

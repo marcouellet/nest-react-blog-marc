@@ -16,7 +16,7 @@ export class AuthController {
   @Auth(AllRoles)
   async whoAmI(@Req() req: Request): Promise<JwtPayload> {
     return this.authService.validateToken(req.headers.authorization);
-}
+  }
 
   // Login user
   @Post('/login')

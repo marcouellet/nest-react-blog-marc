@@ -1,7 +1,7 @@
 import { Model, Types } from 'mongoose';
-import { IGenericDataRepository } from '../../../core';
+import { IGenericDataRepository } from '../../../../src/core/abstracts/generic-data-repository.abstract';
 
-export class MockGenericDataRepository<T> implements IGenericDataRepository<T> {
+export class GenericDataRepository<T> implements IGenericDataRepository<T> {
 
   constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}
 
@@ -41,9 +41,9 @@ export class MockGenericDataRepository<T> implements IGenericDataRepository<T> {
 
   async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
     const id = new Types.ObjectId(subDocumentId);
-      return this.repository.count({}).where(subDocumentName).equals(id).exec();
+    return this.repository.count({}).where(subDocumentName).equals(id).exec();
   }
-  
+
   async create(item: T): Promise<T> {
     return this.repository.create(item) as Promise<T>;
   }

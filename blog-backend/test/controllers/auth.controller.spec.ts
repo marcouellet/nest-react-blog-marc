@@ -1,10 +1,10 @@
+import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../../src/controllers/auth.controller';
 import { AuthService } from '../../src/services/auth.service';
-import { JwtPayload } from '../../src/auth/interfaces/jwt.interface';
-import { whoAmITestResponse } from '../data/user.data';
-
-
+import AuthServiceProvider from '../providers/auth.service.provider';
+import { testLoginDto, testRegisterDto, testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';
+import { testUserDto, testRequestWithAuthorizeAndUser} from '../data/user.data';
 
 describe('AuthController', () => {
     let authService: AuthService;
@@ -13,14 +13,7 @@ describe('AuthController', () => {
     beforeEach(async () => {
         const auth: TestingModule = await Test.createTestingModule({
         controllers: [AuthController],
-        providers: [
-          {
-            provide: AuthService,
-            useValue: {
-              validateToken: jest.fn().mockImplementation((token: string) => Promise.resolve(whoAmITestResponse)),
-            },
-          },
-        ],
+        providers: [AuthServiceProvider],
         }).compile();
 
         authController = auth.get<AuthController>(AuthController);
@@ -35,10 +28,27 @@ describe('AuthController', () => {
     expect(authService).toBeDefined();
     });
 
+    describe('whoAmI', () => {
+        it('should return "dummy@gmail.com"', () => {
+          expect(authController.whoAmI(testRequestWithAuthorize)).toBe(testJwtPayload);
+        });
+    });
 
-    // describe('whoAmI', () => {
-    //     it('should return "dummy@gmail.com"', () => {
-    //       expect(authController.whoAmI('token').resolves.toEqual(whoAmITestResponse));
-    //     });
-    // });
+    describe('login', () => {
+      it('should return a user"', () => {
+        expect(authController.login(testRequestWithAuthorize, testLoginDto)).toBe(testUserDto);
+      });
+    });
+
+    describe('login - when already logged in', () => {
+      it('should throw exception', () => {
+        expect(authController.login(testRequestWithAuthorizeAndUser, testLoginDto)).toBeInstanceOf(ForbiddenException);
+      });
+    });
+
+    describe('register', () => {
+      it('should return a user', () => {
+        expect(authController.register(testRegisterDto)).toBe(testUserDto);
+      });
+    });
 });

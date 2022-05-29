@@ -1,7 +1,7 @@
 import { Model, Types } from 'mongoose';
-import { IGenericDataRepository } from '../../../core';
+import { IGenericDataRepository } from '../../../../../src/core';
 
-export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> {
+export class GenericDataRepositoryMock<T> implements IGenericDataRepository<T> {
 
   constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}
 
