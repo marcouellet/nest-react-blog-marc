@@ -1,5 +1,5 @@
 import { User } from '../../src/core/entities/user.entity';
-import { UserDto, IUpdateUserCriterias } from '../../src/core/dtos';
+import { CreateUserDto, UpdateUserDto, UserDto, RegisterDto, IUpdateUserCriterias } from '../../src/core/dtos';
 import { testAuthToken } from './auth.data';
 
 const createdOnDate: Date = new Date();
@@ -42,6 +42,20 @@ export const testUserDtoUnrestricted: UserDto = {
   createdOn: createdOnDate,
 };
 
+export const testCreateUserDto: CreateUserDto = {
+  username: 'dummy',
+  email: 'dummy@gmail.com',
+  password: 'secret',
+  role: 'user',
+};
+
+export const testUpdateUserDto: UpdateUserDto = {
+  username: 'dummy',
+  email: 'dummy@gmail.com',
+  password: 'secret',
+  role: 'user',
+};
+
 export const testRequestWithAuthorizeAndUser: any = {
     headers: {
         authorization: 'token',
@@ -55,3 +69,5 @@ export const testUpdateUserCriterias: IUpdateUserCriterias = {
   password: 'secret',
   role: 'user',
 };
+
+export const testFindUserCriterias = { email: 'dummy@gmail.com' };
