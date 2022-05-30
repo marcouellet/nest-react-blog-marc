@@ -12,7 +12,7 @@ const PostServiceProvider = {
       findManyPosts: jest.fn().mockImplementation((criterias: {}) => Promise.resolve([testPostDto])),
       createPost: jest.fn().mockImplementation((postDto: PostDto) => Promise.resolve(testPostDto)),
       updatePost: jest.fn().mockImplementation((id: string, updatePostDto: UpdatePostDto) => Promise.resolve(testPostDto)),
-      deletePost: jest.fn().mockImplementation((id: string) => Promise.resolve([testPostDto])),
+      deletePost: jest.fn().mockImplementation((id: string) => Promise.resolve(testPostDto)),
     },
 };
 

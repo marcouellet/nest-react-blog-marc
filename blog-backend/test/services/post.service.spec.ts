@@ -1,18 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataModuleMock } from '../mock/modules/data.module.mock';
 import { GetConfigMock } from '../mock/config/config.mock';
 import { PostService } from '../../src/services/post/post.service';
+import DatatServiceProvider from '../providers/data.service.provider';
 import PostFactoryServiceProvider from '../providers/post.factory.service.provider';
 import { testPostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
-
+import UserRepositoryProvider from '../providers/user.repository.provider';
+import PostRepositoryProvider from '../providers/post.repository.provider';
 
 describe('PostService', () => {
   let postService: PostService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DataModuleMock.register(GetConfigMock())],
-      providers: [PostFactoryServiceProvider],
+      providers: [DatatServiceProvider.register(GetConfigMock()), PostService, PostFactoryServiceProvider,
+                  UserRepositoryProvider, PostRepositoryProvider],
     }).compile();
 
     postService = module.get<PostService>(PostService);

@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../../src/services/auth.service';
 import ConfigServiceProvider from '../providers/config.service.provider';
 import UserServiceProvider from '../providers/user.service.provider';
+import JwtServiceProvider from '../providers/jwt.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
-import { JwtService } from '@nestjs/jwt';
 import { testUserDto, testFindUserCriterias, testUserDtoUnrestricted } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testRegisterDto } from '../data/auth.data';
 
@@ -12,7 +12,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConfigServiceProvider, JwtService, UserServiceProvider, CryptographerServiceProvider],
+      providers: [AuthService, ConfigServiceProvider, JwtServiceProvider, UserServiceProvider, CryptographerServiceProvider],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);

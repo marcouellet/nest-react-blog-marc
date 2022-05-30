@@ -3,11 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IDataRepositories, IGenericDataRepository } from '../../../core';
 import { MongoGenericDataRepository } from './mongo-generic-data-repository';
-import {  User, UserDocument } from './model/user.model';
-import {  Post, PostDocument } from './model/post.model';
+import { User, UserDocument } from './model/user.model';
+import { Post, PostDocument } from './model/post.model';
 @Injectable()
-export class MongoDataRepositories extends IDataRepositories implements OnApplicationBootstrap
-{
+export class MongoDataRepositories extends IDataRepositories implements OnApplicationBootstrap {
   override users: IGenericDataRepository<User>;
   override posts: IGenericDataRepository<Post>;
 

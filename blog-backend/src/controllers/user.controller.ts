@@ -3,7 +3,7 @@ import { UserDto } from '../core/dtos';
 import { UserService } from '../services/user/user.service';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { UserRole } from 'src/core/enum';
+import { UserRole } from '../core/enum';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

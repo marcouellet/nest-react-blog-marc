@@ -5,7 +5,7 @@ import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { JwtPayload, IAuthToken } from '../auth/interfaces/jwt.interface';
 import { CryptographerService } from './cryptographer.service';
-import { UserRole } from 'src/core/enum';
+import { UserRole } from '../core/enum';
 
 @Injectable()
 export class AuthService {

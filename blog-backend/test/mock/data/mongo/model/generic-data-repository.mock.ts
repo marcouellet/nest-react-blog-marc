@@ -1,9 +1,8 @@
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { IGenericDataRepository } from '../../../../../src/core';
-
 export class GenericDataRepositoryMock<T> implements IGenericDataRepository<T> {
 
-  constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}
+  constructor(private readonly repository: IGenericDataRepository<T>, private readonly populateOnFind: string[] = []) {}
 
   convertToGenericEntity(obj: any): T {
     const newObj = obj;
@@ -20,47 +19,39 @@ export class GenericDataRepositoryMock<T> implements IGenericDataRepository<T> {
   }
 
   async getAll(): Promise<T[]> {
-    return this.repository.find().populate(this.populateOnFind).exec() as Promise<T[]>;
+    return this.repository.getAll();
   }
 
   async get(id: string): Promise<T> {
-    return this.repository.findById(id).populate(this.populateOnFind).exec() as Promise<T>;
+    return this.repository.get(id);
   }
 
   async findOne(criterias: {}): Promise<T> {
-    return this.repository.findOne(criterias).populate(this.populateOnFind).exec() as Promise<T>;
+    return this.repository.findOne(criterias);
   }
 
   async findMany(criterias: {}): Promise<T[]> {
-    return this.repository.find(criterias).populate(this.populateOnFind).exec() as Promise<T[]>;
+    return this.repository.findMany(criterias);
   }
 
   async findManyCount(criterias: {}): Promise<number> {
-    return this.repository.count(criterias).exec();
+    return this.repository.findManyCount(criterias);
   }
 
   async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
     const id = new Types.ObjectId(subDocumentId);
-    return this.repository.count({}).where(subDocumentName).equals(id).exec();
+    return this.repository.findManyCountForSubDocumentId(subDocumentName, subDocumentId);
   }
 
   async create(item: T): Promise<T> {
-    return this.repository.create(item) as Promise<T>;
+    return this.repository.create(item);
   }
 
   async update(id: string, update: {}, populate?: string) {
-    let populateCriterias: any = null;
-    if (populate) {
-      populateCriterias = {populate: { path: populate }};
-    }
-    return this.repository.findByIdAndUpdate(id, update, populateCriterias).exec();
+    return this.repository.update(id, update, populate);
   }
 
   async delete(id: string, populate?: string): Promise<T> {
-    let populateCriterias: any = null;
-    if (populate) {
-      populateCriterias = {populate: { path: populate }};
-    }
-    return await this.repository.findByIdAndDelete(id, populateCriterias).exec();
+    return await this.repository.delete(id, populate);
   }
 }

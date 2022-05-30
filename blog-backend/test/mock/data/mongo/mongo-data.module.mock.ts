@@ -1,4 +1,4 @@
-import { Module, Global, UseFilters } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IDataRepositories } from '../../../../src/core';
 import { User, UserSchema } from '../../../../src/frameworks/data/mongo/model/user.model';
@@ -6,9 +6,9 @@ import { Post, PostSchema } from '../../../../src/frameworks/data/mongo/model/po
 import { ConfigService } from '../../../../src/services/config.service';
 import { ConfigModuleMock } from '../../modules/config.module.mock';
 import { MongoDataRepositoriesMock } from './mongo-data-repositories.mock';
-import { MongoDataExceptionFilterMock } from './mongo-data-exception-filter.mock';
-@Global()
-@UseFilters(MongoDataExceptionFilterMock)
+import UserRepositoryProvider from '../../../providers/user.repository.provider';
+import PostRepositoryProvider from '../../../providers/post.repository.provider';
+
 @Module({
   imports: [
     ConfigModuleMock,
@@ -25,6 +25,8 @@ import { MongoDataExceptionFilterMock } from './mongo-data-exception-filter.mock
   ],
   providers: [
     ConfigService,
+    UserRepositoryProvider,
+    PostRepositoryProvider,
     {
       provide: IDataRepositories,
       useClass: MongoDataRepositoriesMock,

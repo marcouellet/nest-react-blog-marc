@@ -6,4 +6,3 @@ export class User {
   role: string;
   createdOn: Date;
 }
-

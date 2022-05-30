@@ -15,7 +15,7 @@ const UserServiceProvider = {
       findManyUsersCount: jest.fn().mockImplementation((registerDto: RegisterDto) => Promise.resolve(1)),
       createUser: jest.fn().mockImplementation((userDto: UserDto) => Promise.resolve(testUserDto)),
       updateUser: jest.fn().mockImplementation((id: string, updateUserDto: UpdateUserDto) => Promise.resolve(testUserDto)),
-      deleteUser: jest.fn().mockImplementation((id: string) => Promise.resolve([testUserDto])),
+      deleteUser: jest.fn().mockImplementation((id: string) => Promise.resolve(testUserDto)),
     },
 };
 

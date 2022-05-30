@@ -22,38 +22,38 @@ describe('Post Controller', () => {
   });
 
   describe('getAll', () => {
-    it('should return an array containing one post"', () => {
-      expect(postController.getAll()).toBe([testPostDto]);
+    it('should return an array containing one post"', async () => {
+      expect(await postController.getAll()).toStrictEqual([testPostDto]);
     });
   });
 
   describe('getPost', () => {
-    it('should return a post"', () => {
-      expect(postController.getPost('1')).toBe([testPostDto]);
+    it('should return a post"', async () => {
+      expect(await postController.getPost('1')).toStrictEqual(testPostDto);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
-    it('should return 1"', () => {
-      expect(postController.getNumberOfPostsForUser('1')).toBe(1);
+    it('should return 1"', async () => {
+      expect(await postController.getNumberOfPostsForUser('1')).toStrictEqual(1);
     });
   });
 
   describe('createPost', () => {
-    it('should return a post"', () => {
-      expect(postController.createPost(testCreatePostDto)).toBe(testPostDto);
+    it('should return a post"', async () => {
+      expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testPostDto);
     });
   });
 
   describe('updatePost', () => {
-    it('should return a post"', () => {
-      expect(postController.updatePost('1', testUpdatePostDto)).toBe(1);
+    it('should return a post"', async () => {
+      expect(await postController.updatePost('1', testUpdatePostDto)).toStrictEqual(testPostDto);
     });
   });
 
   describe('deletePost', () => {
-    it('should return a post"', () => {
-      expect(postController.deletePost('1')).toBe(testPostDto);
+    it('should return a post"', async () => {
+      expect(await postController.deletePost('1')).toStrictEqual(testPostDto);
     });
   });
 
