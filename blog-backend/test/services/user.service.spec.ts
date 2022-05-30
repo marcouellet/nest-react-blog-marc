@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataModuleMock } from '../mock/modules/data.module.mock';
 import { GetConfigMock } from '../mock/config/config.mock';
 import { UserService } from '../../src/services/user/user.service';
+import DatatServiceProvider from '../providers/data.service.provider';
 import UserFactoryServiceProvider from '../providers/user.factory.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
+import UserRepositoryProvider from '../providers/user.repository.provider';
+import PostRepositoryProvider from '../providers/post.repository.provider';
 import { testUserDto, testFindUserCriterias, testUserDtoUnrestricted, testCreateUserDto, testUpdateUserDto } from '../data/user.data';
 
 describe('UserService', () => {
@@ -11,8 +13,9 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DataModuleMock.register(GetConfigMock())],
-      providers: [UserFactoryServiceProvider, CryptographerServiceProvider],
+      providers: [DatatServiceProvider.register(GetConfigMock()), UserService,
+                UserFactoryServiceProvider, CryptographerServiceProvider,
+                UserRepositoryProvider, PostRepositoryProvider],
     }).compile();
 
     userService = module.get<UserService>(UserService);
