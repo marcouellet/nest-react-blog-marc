@@ -1,6 +1,6 @@
 import { Post } from '../../src/core/entities/post.entity';
 import { PostDto, UpdatePostDto, IUpdatePostCriterias } from '../../src/core/dtos';
-import { testUser, testUserDto } from './user.data';
+import { testUser, testServiceUser, testUserDto, testServiceUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();
 
@@ -42,6 +42,24 @@ export const testUpdatePostCriterias: IUpdatePostCriterias = {
   title: 'title',
   description: 'description',
   body: 'body',
+};
+
+export const testServicePost: Post = {
+  id: testPostId,
+  title: 'title',
+  description: 'description',
+  body: 'body',
+  user: testServiceUser,
+  publishDate: publishedOnDate,
+};
+
+export const testServicePostDto: PostDto = {
+  id: testPostId,
+  title: 'title',
+  description: 'description',
+  body: 'body',
+  user: testServiceUserDto,
+  publishDate: publishedOnDate,
 };
 
 export const testFindPostCriterias = { title: 'title' };

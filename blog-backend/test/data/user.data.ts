@@ -6,6 +6,7 @@ const createdOnDate: Date = new Date();
 
 export const testUserId = 'abcdefghijkl';
 export const testUserCount = 1;
+export const testUserPostsCount = 1;
 
 export const testUser: User = {
   id: testUserId,
@@ -73,13 +74,36 @@ export const testUpdateUserCriterias: IUpdateUserCriterias = {
   role: 'user',
 };
 
-export const testServiceUser = testUser;
-
-export const testServiceUserDto = {
+export const testServiceUser: User = {
   id: testUserId,
   username: 'dummy',
   email: 'dummy@gmail.com',
   role: 'user',
+  createdOn: createdOnDate,
 };
+
+export const testServiceUserDto: UserDto = {
+  id: testUserId,
+  username: 'dummy',
+  email: 'dummy@gmail.com',
+  role: 'user',
+  authtoken: testAuthToken,
+  authrefreshtoken: testAuthToken,
+  createdOn: createdOnDate,
+};
+
+export const testServiceUserDtoUnrestricted: UserDto  = {
+  id: testUserId,
+  username: 'dummy',
+  email: 'dummy@gmail.com',
+  password: 'secret',
+  role: 'user',
+  authtoken: testAuthToken,
+  authrefreshtoken: testAuthToken,
+  createdOn: createdOnDate,
+};
+
+export const testRepositoryUserUnrestricted = testUserUnrestricted;
+export const testRepositoryUserDtoUnrestricted = testServiceUserDtoUnrestricted;
 
 export const testFindUserCriterias = { email: 'dummy@gmail.com' };
