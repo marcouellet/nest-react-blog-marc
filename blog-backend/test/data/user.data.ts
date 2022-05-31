@@ -4,8 +4,10 @@ import { testAuthToken } from './auth.data';
 
 const createdOnDate: Date = new Date();
 
+export const testUserId = 'abcdefghijkl';
+
 export const testUser: User = {
-  id: '1',
+  id: testUserId,
   username: 'dummy',
   email: 'dummy@gmail.com',
   role: 'user',
@@ -13,7 +15,7 @@ export const testUser: User = {
 };
 
 export const testUserUnrestricted: User = {
-  id: '1',
+  id: testUserId,
   username: 'dummy',
   email: 'dummy@gmail.com',
   password: 'password',
@@ -22,7 +24,7 @@ export const testUserUnrestricted: User = {
 };
 
 export const testUserDto: UserDto = {
-  id: '1',
+  id: testUserId,
   username: 'dummy',
   email: 'dummy@gmail.com',
   role: 'user',
@@ -32,7 +34,7 @@ export const testUserDto: UserDto = {
 };
 
 export const testUserDtoUnrestricted: UserDto = {
-  id: '1',
+  id: testUserId,
   username: 'dummy',
   email: 'dummy@gmail.com',
   password: 'secret',

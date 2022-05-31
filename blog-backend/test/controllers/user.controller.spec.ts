@@ -3,7 +3,7 @@ import { UserController } from '../../src/controllers/user.controller';
 import UserServiceProvider from '../providers/user.service.provider';
 import UserFactoryServiceProvider from '../providers/user.factory.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
-import { testUserDto, testCreateUserDto, testUpdateUserDto } from '../data/user.data';
+import { testUserId, testUserDto, testCreateUserDto, testUpdateUserDto } from '../data/user.data';
 
 describe('User Controller', () => {
   let userController: UserController;
@@ -29,7 +29,7 @@ describe('User Controller', () => {
 
   describe('getById', () => {
     it('should return one user"', async () => {
-      expect(await userController.getById('1')).toStrictEqual(testUserDto);
+      expect(await userController.getById(testUserId)).toStrictEqual(testUserDto);
     });
   });
 
@@ -41,14 +41,13 @@ describe('User Controller', () => {
 
   describe('updateUser', () => {
     it('should return a user"', async () => {
-      expect(await userController.updateUser('1', testUpdateUserDto)).toStrictEqual(testUserDto);
+      expect(await userController.updateUser(testUserId, testUpdateUserDto)).toStrictEqual(testUserDto);
     });
   });
 
   describe('deleteUser', () => {
     it('should return a user"', async () => {
-      expect(await userController.deleteUser('1')).toStrictEqual(testUserDto);
+      expect(await userController.deleteUser(testUserId)).toStrictEqual(testUserDto);
     });
   });
-
 });

@@ -2,8 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from '../../src/controllers/post.controller';
 import UserServiceProvider from '../providers/user.service.provider';
 import PostServiceProvider from '../providers/post.service.provider';
-import PostFactoryServiceProvider from '../providers/post.factory.service.provider';
-import { testPostDto, testCreatePostDto, testUpdatePostDto } from '../data/post.data';
+import { testPostId, testPostDto, testCreatePostDto, testUpdatePostDto } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
@@ -11,7 +10,7 @@ describe('Post Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostController],
-      providers: [PostServiceProvider, PostFactoryServiceProvider, UserServiceProvider],
+      providers: [PostServiceProvider, UserServiceProvider],
     }).compile();
 
     postController = module.get<PostController>(PostController);
@@ -29,13 +28,13 @@ describe('Post Controller', () => {
 
   describe('getPost', () => {
     it('should return a post"', async () => {
-      expect(await postController.getPost('1')).toStrictEqual(testPostDto);
+      expect(await postController.getPost(testPostId)).toStrictEqual(testPostDto);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1"', async () => {
-      expect(await postController.getNumberOfPostsForUser('1')).toStrictEqual(1);
+      expect(await postController.getNumberOfPostsForUser(testPostId)).toStrictEqual(1);
     });
   });
 
@@ -47,14 +46,13 @@ describe('Post Controller', () => {
 
   describe('updatePost', () => {
     it('should return a post"', async () => {
-      expect(await postController.updatePost('1', testUpdatePostDto)).toStrictEqual(testPostDto);
+      expect(await postController.updatePost(testPostId, testUpdatePostDto)).toStrictEqual(testPostDto);
     });
   });
 
   describe('deletePost', () => {
     it('should return a post"', async () => {
-      expect(await postController.deletePost('1')).toStrictEqual(testPostDto);
+      expect(await postController.deletePost(testPostId)).toStrictEqual(testPostDto);
     });
   });
-
 });

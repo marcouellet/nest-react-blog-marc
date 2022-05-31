@@ -1,5 +1,4 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { IDataRepositories, IGenericDataRepository } from '../../../../src/core';
 import { GenericDataRepository } from './generic-data-repository';

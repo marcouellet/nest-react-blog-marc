@@ -4,8 +4,10 @@ import { testUser, testUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();
 
+export const testPostId = 'abcdefghijkl';
+
 export const testPostDto: PostDto = {
-  id: '1',
+  id: testPostId,
   title: 'title',
   description: 'description',
   body: 'body',
@@ -27,7 +29,7 @@ export const testUpdatePostDto: UpdatePostDto = {
 };
 
 export const testPost: Post = {
-  id: '1',
+  id: testPostId,
   title: 'title',
   description: 'description',
   body: 'body',

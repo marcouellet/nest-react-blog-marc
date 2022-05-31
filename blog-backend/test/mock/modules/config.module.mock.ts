@@ -1,8 +1,8 @@
 import { Module, Global } from '@nestjs/common';
-import { ConfigService } from '../../../src/services/config.service';
+import { ConfigServiceMock } from '../config/config.service.mock';
 @Global()
 @Module({
-  providers: [ConfigService],
-  exports: [ConfigService],
+  providers: [ConfigServiceMock],
+  exports: [ConfigServiceMock],
 })
 export class ConfigModuleMock {}

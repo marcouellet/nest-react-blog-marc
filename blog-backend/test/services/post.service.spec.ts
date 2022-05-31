@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetConfigMock } from '../mock/config/config.mock';
 import { PostService } from '../../src/services/post/post.service';
-import DatatServiceProvider from '../providers/data.service.provider';
-import PostFactoryServiceProvider from '../providers/post.factory.service.provider';
-import { testPostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
+import { PostFactoryService } from '../../src/services/post/post-factory.service';
+import { UserFactoryService } from '../../src/services/user/user-factory.service';
+import { DataModuleMock } from '../mock/modules/data.module.mock';
+import { testPostId, testPostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
 
@@ -12,7 +13,8 @@ describe('PostService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [DatatServiceProvider.register(GetConfigMock()), PostService, PostFactoryServiceProvider,
+      imports: [DataModuleMock.register(GetConfigMock())],
+      providers: [PostService, PostFactoryService, UserFactoryService,
                   UserRepositoryProvider, PostRepositoryProvider],
     }).compile();
 
@@ -31,13 +33,13 @@ describe('PostService', () => {
 
   describe('getPostById', () => {
     it('should return a post', () => {
-      expect(postService.getPostById('1')).toBe(testPostDto);
+      expect(postService.getPostById(testPostId)).toBe(testPostDto);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1', () => {
-      expect(postService.getNumberOfPostsForUser('1')).toBe(1);
+      expect(postService.getNumberOfPostsForUser(testPostId)).toBe(1);
     });
   });
 
@@ -61,13 +63,13 @@ describe('PostService', () => {
 
   describe('updatePost', () => {
     it('should return a post', () => {
-      expect(postService.updatePost('1', testUpdatePostDto)).toBe(testPostDto);
+      expect(postService.updatePost(testPostId, testUpdatePostDto)).toBe(testPostDto);
     });
   });
 
   describe('deletePost', () => {
     it('should return a post', () => {
-      expect(postService.deletePost('1')).toBe(testPostDto);
+      expect(postService.deletePost(testPostId)).toBe(testPostDto);
     });
   });
 

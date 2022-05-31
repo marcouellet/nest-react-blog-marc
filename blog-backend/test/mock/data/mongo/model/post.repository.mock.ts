@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericDataRepository } from '../../../../../src/core/abstracts/generic-data-repository.abstract';
-import { Post } from '../../../../../src/frameworks/data/mongo/model/post.model';
+import { Post } from '../../../../../src/core/entities';
+import { testPost } from '../../../../data/post.data';
 
 @Injectable()
 export class PostRepositoriesMock implements IGenericDataRepository<Post> {
@@ -20,33 +21,27 @@ export class PostRepositoriesMock implements IGenericDataRepository<Post> {
       }
 
     async getAll(): Promise<Post[]> {
-        const users: any = undefined;
-        return users as Promise<Post[]>;
-      }
+        return Promise.resolve([testPost]);
+    }
 
     async get(id: string): Promise<Post> {
-        const user: any = undefined;
-        return user as Promise<Post>;
+        return Promise.resolve(testPost);
     }
 
     async findOne(criterias: {}): Promise<Post> {
-        const user: any = undefined;
-        return user as Promise<Post>;
+        return Promise.resolve(testPost);
     }
 
     async findMany(criterias: {}): Promise<Post[]> {
-        const users: any = undefined;
-        return users as Promise<Post[]>;
+        return Promise.resolve([testPost]);
     }
 
     async findManyCount(criterias: {}): Promise<number> {
-        const count: any = undefined;
-        return count as Promise<number>;
+        return Promise.resolve(1);
     }
 
     async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
-        const count: any = undefined;
-        return count as Promise<number>;
+        return Promise.resolve(1);
     }
 
     async create(item: Post): Promise<Post> {
@@ -55,12 +50,10 @@ export class PostRepositoriesMock implements IGenericDataRepository<Post> {
     }
 
     async update(id: string, update: {}, populate?: string) {
-        const user: any = undefined;
-        return user as Promise<Post>;
+        return Promise.resolve(testPost);
     }
 
     async delete(id: string, populate?: string): Promise<Post> {
-        const user: any = undefined;
-        return user as Promise<Post>;
+        return Promise.resolve(testPost);
     }
 }

@@ -40,7 +40,7 @@ export class PostService {
 
   async findManyPosts(criterias: {}): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.findMany(criterias)
-      .then(posts => posts.map(post => this.processPost(post)));   
+      .then(posts => posts.map(post => this.processPost(post)));
   }
 
   async createPost(postDto: PostDto): Promise<PostDto> {

@@ -20,4 +20,3 @@ export const testRegisterDto: RegisterDto = {
     email: 'dummy@gmail.com',
     password: 'password',
 };
-
