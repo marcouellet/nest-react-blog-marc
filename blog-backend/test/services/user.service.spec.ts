@@ -6,7 +6,8 @@ import UserFactoryServiceProvider from '../providers/user.factory.service.provid
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
-import { testUserId, testUserDto, testFindUserCriterias, testUserDtoUnrestricted, testCreateUserDto, testUpdateUserDto } from '../data/user.data';
+import { testUserId, testUserDto, testFindUserCriterias, testUserDtoUnrestricted, testCreateUserDto, 
+          testUpdateUserDto, testUserCount } from '../data/user.data';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -26,69 +27,68 @@ describe('UserService', () => {
   });
 
   describe('getAllUsers', () => {
-    it('should return an array of one user', () => {
-      expect(userService.getAllUsers()).toBe([testUserDto]);
+    it('should return an array of one user', async () => {
+      expect(await userService.getAllUsers()).toEqual([testUserDto]);
     });
   });
 
   describe('getUserById', () => {
-    it('should return a user', () => {
-      expect(userService.getUserById(testUserId)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await userService.getUserById(testUserId)).toEqual(testUserDto);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
-    it('should return a user', () => {
-      expect(userService.getUserByIdUnrestricted(testUserId)).toBe([testUserDtoUnrestricted]);
+    it('should return a user', async () => {
+      expect(await userService.getUserByIdUnrestricted(testUserId)).toEqual([testUserDtoUnrestricted]);
     });
   });
 
   describe('findUser', () => {
-    it('should return a user', () => {
-      expect(userService.findUser(testFindUserCriterias)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await userService.findUser(testFindUserCriterias)).toEqual(testUserDto);
     });
   });
 
   describe('verifyUserExist', () => {
-    it('should return a user', () => {
-      expect(userService.verifyUserExist(testFindUserCriterias)).toBe(true);
+    it('should return a user', async () => {
+      expect(await userService.verifyUserExist(testFindUserCriterias)).toEqual(true);
     });
   });
 
   describe('findUserUnrestricted', () => {
-    it('should return a user with password', () => {
-      expect(userService.findUserUnrestricted(testFindUserCriterias)).toBe(testUserDtoUnrestricted);
+    it('should return a user with password', async () => {
+      expect(await userService.findUserUnrestricted(testFindUserCriterias)).toEqual(testUserDtoUnrestricted);
     });
   });
 
   describe('findManyUsers', () => {
-    it('should return an array of one user', () => {
-      expect(userService.findManyUsers(testFindUserCriterias)).toBe([testUserDto]);
+    it('should return an array of one user', async () => {
+      expect(await userService.findManyUsers(testFindUserCriterias)).toEqual([testUserDto]);
     });
   });
 
   describe('findManyUsersCount', () => {
-    it('should return 1', () => {
-      expect(userService.findManyUsersCount(testFindUserCriterias)).toBe(1);
+    it('should return testUserCount', async () => {
+      expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testUserCount);
     });
   });
 
   describe('createUser', () => {
-    it('should return a user', () => {
-      expect(userService.createUser(testCreateUserDto)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await userService.createUser(testCreateUserDto)).toEqual(testUserDto);
     });
   });
 
   describe('updateUser', () => {
     it('should return a user', () => {
-      expect(userService.updateUser(testUserId, testUpdateUserDto)).toBe(testUserDto);
+      expect(userService.updateUser(testUserId, testUpdateUserDto)).toEqual(testUserDto);
     });
   });
 
   describe('deleteUser', () => {
     it('should return a user', () => {
-      expect(userService.deleteUser(testUserId)).toBe(testUserDto);
+      expect(userService.deleteUser(testUserId)).toEqual(testUserDto);
     });
   });
-
 });

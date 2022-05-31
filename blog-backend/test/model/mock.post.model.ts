@@ -7,4 +7,3 @@ export class Post {
   user: User;
   publishDate: Date;
 }
-

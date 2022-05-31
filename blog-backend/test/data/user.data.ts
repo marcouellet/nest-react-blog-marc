@@ -5,6 +5,7 @@ import { testAuthToken } from './auth.data';
 const createdOnDate: Date = new Date();
 
 export const testUserId = 'abcdefghijkl';
+export const testUserCount = 1;
 
 export const testUser: User = {
   id: testUserId,
@@ -69,6 +70,15 @@ export const testUpdateUserCriterias: IUpdateUserCriterias = {
   username: 'dummy',
   email: 'dummy@gmail.com',
   password: 'secret',
+  role: 'user',
+};
+
+export const testServiceUser = testUser;
+
+export const testServiceUserDto = {
+  id: testUserId,
+  username: 'dummy',
+  email: 'dummy@gmail.com',
   role: 'user',
 };
 

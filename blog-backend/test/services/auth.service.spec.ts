@@ -23,57 +23,56 @@ describe('AuthService', () => {
   });
 
   describe('getUserFromToken', () => {
-    it('should return a user', () => {
-      expect(authService.getUserFromToken('token')).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await authService.getUserFromToken('token')).toEqual(testUserDto);
     });
   });
 
   describe('validateToken', () => {
-    it('should return a payload', () => {
-      expect(authService.getUserFromToken('token')).toBe(testJwtPayload);
+    it('should return a payload', async () => {
+      expect(await authService.getUserFromToken('token')).toEqual(testJwtPayload);
     });
   });
 
   describe('validateRefreshToken', () => {
-    it('should return a payload', () => {
-      expect(authService.getUserFromToken('token')).toBe(testJwtPayload);
+    it('should return a payload', async () => {
+      expect(await authService.getUserFromToken('token')).toEqual(testJwtPayload);
     });
   });
 
   describe('validateUser', () => {
-    it('should return a user', () => {
-      expect(authService.validateUser(testFindUserCriterias)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await authService.validateUser(testFindUserCriterias)).toEqual(testUserDto);
     });
   });
 
   describe('validateUser - admin required', () => {
-    it('should return a user', () => {
-      expect(authService.validateUser(testFindUserCriterias, true)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await authService.validateUser(testFindUserCriterias, true)).toEqual(testUserDto);
     });
   });
 
   describe('validateUser - admin required', () => {
-    it('should return a user', () => {
-      expect(authService.validateUser(testFindUserCriterias, true)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await authService.validateUser(testFindUserCriterias, true)).toEqual(testUserDto);
     });
   });
 
   describe('validateUserUnrestricted', () => {
-    it('should return a user with password', () => {
-      expect(authService.validateUserUnrestricted(testFindUserCriterias)).toBe(testUserDtoUnrestricted);
+    it('should return a user with password', async () => {
+      expect(await authService.validateUserUnrestricted(testFindUserCriterias)).toEqual(testUserDtoUnrestricted);
     });
   });
 
   describe('login', () => {
-    it('should return a user', () => {
-      expect(authService.login(testLoginDto)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await authService.login(testLoginDto)).toEqual(testUserDto);
     });
   });
 
   describe('register', () => {
-    it('should return a user', () => {
-      expect(authService.register(testRegisterDto)).toBe(testUserDto);
+    it('should return a user', async () => {
+      expect(await authService.register(testRegisterDto)).toEqual(testUserDto);
     });
   });
-
 });

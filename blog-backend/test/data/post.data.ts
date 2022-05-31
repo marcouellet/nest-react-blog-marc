@@ -5,6 +5,7 @@ import { testUser, testUserDto } from './user.data';
 const publishedOnDate: Date = new Date();
 
 export const testPostId = 'abcdefghijkl';
+export const testPostCount = 1;
 
 export const testPostDto: PostDto = {
   id: testPostId,

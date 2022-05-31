@@ -1,23 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericDataRepository } from '../../../../../src/core/abstracts/generic-data-repository.abstract';
 import { User } from '../../../../../src/core/entities';
-import { testUser } from '../../../../data/user.data';
+import { testUser, testUserCount } from '../../../../data/user.data';
 
 @Injectable()
 export class UserRepositoriesMock implements IGenericDataRepository<User> {
 
     convertToGenericEntity(obj: any): User {
-        const newObj = obj;
-        newObj.id = obj._id.toString();
-        delete newObj._id;
-        return newObj;
+        return obj;
       }
 
       convertFromGenericEntity(obj: any): User {
-        const newObj = obj;
-        obj._id = obj.id;
-        delete newObj.id;
-        return newObj;
+        return obj;
       }
 
     async getAll(): Promise<User[]> {
@@ -37,11 +31,11 @@ export class UserRepositoriesMock implements IGenericDataRepository<User> {
     }
 
     async findManyCount(criterias: {}): Promise<number> {
-        return Promise.resolve(1);
+        return Promise.resolve(testUserCount);
     }
 
     async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
-        return Promise.resolve(1);
+        return Promise.resolve(testUserCount);
     }
 
     async create(item: User): Promise<User> {

@@ -5,11 +5,11 @@ export class GenericDataRepositoryMock<T> implements IGenericDataRepository<T> {
   constructor(private readonly repository: IGenericDataRepository<T>, private readonly populateOnFind: string[] = []) {}
 
   convertToGenericEntity(obj: any): T {
-    return obj;
+    return this.repository.convertToGenericEntity(obj);
   }
 
   convertFromGenericEntity(obj: any): T {
-    return obj;
+    return this.repository.convertFromGenericEntity(obj);
   }
 
   async getAll(): Promise<T[]> {
