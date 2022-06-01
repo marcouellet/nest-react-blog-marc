@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user/user.service';
@@ -91,13 +91,11 @@ export class AuthService {
         if (isAdminRequired && user.role !== UserRole.ADMIN) {
           throw new ForbiddenException('Access Denied');
         } else { return user; }
-      })
-      .catch(_ => { throw new NotFoundException('User not found'); });
+      });
   }
 
   async validateUserUnrestricted(criterias: {}): Promise<UserDto> {
-    return this.userService.findUserUnrestricted(criterias)
-      .catch(_ => { throw new NotFoundException('User not found'); });
+    return this.userService.findUserUnrestricted(criterias);
   }
 
   async login(loginDto: LoginDto): Promise<UserDto> {

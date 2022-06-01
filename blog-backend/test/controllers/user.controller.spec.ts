@@ -3,7 +3,7 @@ import { UserController } from '../../src/controllers/user.controller';
 import UserServiceProvider from '../providers/user.service.provider';
 import UserFactoryServiceProvider from '../providers/user.factory.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
-import { testUserId, testServiceUserDto, testCreateUserDto, testUpdateUserDto } from '../data/user.data';
+import { testUserId, testServiceUserDto, testCreateNonExistingUserDto, testUpdateUserDto } from '../data/user.data';
 
 describe('User Controller', () => {
   let userController: UserController;
@@ -35,7 +35,7 @@ describe('User Controller', () => {
 
   describe('createUser', () => {
     it('should return a user"', async () => {
-      expect(await userController.createUser(testCreateUserDto)).toStrictEqual(testServiceUserDto);
+      expect(await userController.createUser(testCreateNonExistingUserDto)).toStrictEqual(testServiceUserDto);
     });
   });
 

@@ -1,15 +1,17 @@
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetConfigMock } from '../mock/config/config.mock';
 import { AuthService } from '../../src/services/auth.service';
+import { UserService } from '../../src/services/user/user.service';
+import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import ConfigServiceProvider from '../providers/config.service.provider';
-import UserServiceProvider from '../providers/user.service.provider';
 import JwtServiceProvider from '../providers/jwt.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
 import { DataModuleMock } from '../mock/modules/data.module.mock';
-import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted } from '../data/user.data';
-import { testJwtPayload, testNotLoggedInDto, testAlreadyLoggedInDto, testNotRegisteredDto,
-          testAlreadyRegisteredDto } from '../data/auth.data';
+import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted,
+          testFindUserAdminCriterias, testServiceUserAdminDto } from '../data/user.data';
+import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
+          testRegisterExistingUserDto } from '../data/auth.data';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -17,7 +19,7 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [DataModuleMock.register(GetConfigMock())],
-      providers: [AuthService, UserServiceProvider, JwtServiceProvider, ConfigServiceProvider, CryptographerServiceProvider],
+      providers: [AuthService, UserService, UserFactoryService, JwtServiceProvider, ConfigServiceProvider, CryptographerServiceProvider],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
@@ -35,13 +37,13 @@ describe('AuthService', () => {
 
   describe('validateToken', () => {
     it('should return a payload', async () => {
-      expect(await authService.getUserFromToken('token')).toEqual(testJwtPayload);
+      expect(await authService.validateToken('token')).toEqual(testJwtPayload);
     });
   });
 
   describe('validateRefreshToken', () => {
     it('should return a payload', async () => {
-      expect(await authService.getUserFromToken('token')).toEqual(testJwtPayload);
+      expect(await authService.validateRefreshToken('token')).toEqual(testJwtPayload);
     });
   });
 
@@ -51,9 +53,19 @@ describe('AuthService', () => {
     });
   });
 
-  describe('validateUser - admin required', () => {
-    it('should return a user', async () => {
-      expect(await authService.validateUser(testFindUserCriterias, true)).toEqual(testServiceUserDto);
+  describe('validateUser - admin required with admin user supplied', () => {
+    it('should return a user admin', async () => {
+      expect(await authService.validateUser(testFindUserAdminCriterias, true)).toEqual(testServiceUserAdminDto);
+    });
+  });
+
+  describe('validateUser - admin required with non admin user supplied', () => {
+    it('should throw an exception', async () => {
+      try {
+        await authService.validateUser(testFindUserCriterias, true);
+      } catch (error) {
+        expect(error).toBeInstanceOf(ForbiddenException);
+      }
     });
   });
 
@@ -65,7 +77,7 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('should return a user', async () => {
-      expect(await authService.login(testNotLoggedInDto)).toEqual(testUserDto);
+      expect(await authService.login(testLoginDto)).toEqual(testUserDto);
     });
   });
 
@@ -79,16 +91,26 @@ describe('AuthService', () => {
     });
   });
 
+  describe('login - when user is unknown', () => {
+    it('should throw exception', async () => {
+      try {
+        await authService.login(testLoginUnknownUserDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+      }
+    });
+  });
+
   describe('register', () => {
     it('should return a user', async () => {
-      expect(await authService.register(testNotRegisteredDto)).toEqual(testServiceUserDto);
+      expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDto);
     });
   });
 
   describe('register', () => {
     it('should throw an exception - user already defined', async () => {
       try {
-        await authService.register(testAlreadyRegisteredDto);
+        await authService.register(testRegisterExistingUserDto);
       } catch (error) {
         expect(error).toBeInstanceOf(ForbiddenException);
       }

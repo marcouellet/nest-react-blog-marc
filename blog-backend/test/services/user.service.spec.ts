@@ -1,3 +1,4 @@
+import { ForbiddenException} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetConfigMock } from '../mock/config/config.mock';
 import { UserService } from '../../src/services/user/user.service';
@@ -6,7 +7,7 @@ import { DataModuleMock } from '../mock/modules/data.module.mock';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
-import { testUserId, testServiceUserDto, testFindUserCriterias, testCreateUserDto,
+import { testUserId, testServiceUserDto, testFindUserCriterias, testCreateNonExistingUserDto, testCreateExistingUserDto,
           testUpdateUserDto, testUserPostsCount, testServiceUserDtoUnrestricted } from '../data/user.data';
 
 describe('UserService', () => {
@@ -77,7 +78,17 @@ describe('UserService', () => {
 
   describe('createUser', () => {
     it('should return a user', async () => {
-      expect(await userService.createUser(testCreateUserDto)).toEqual(testServiceUserDto);
+      expect(await userService.createUser(testCreateNonExistingUserDto)).toEqual(testServiceUserDto);
+    });
+  });
+
+  describe('createUser - user with same email already exist', () => {
+    it('should throw an axception', async () => {
+      try {
+        await userService.createUser(testCreateExistingUserDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(ForbiddenException);
+      }
     });
   });
 

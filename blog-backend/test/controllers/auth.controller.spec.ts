@@ -1,10 +1,8 @@
-import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../../src/controllers/auth.controller';
 import AuthServiceProvider from '../providers/auth.service.provider';
-import { testNotLoggedInDto, testAlreadyLoggedInDto, testNotRegisteredDto, testAlreadyRegisteredDto,
-        testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';
-import { testUserDto, testRequestWithAuthorizeAndUser} from '../data/user.data';
+import { testNotLoggedInDto, testRegisterUnknownUserDto, testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';
+import { testUserDto, testUserUnknownDto} from '../data/user.data';
 
 describe('AuthController', () => {
 
@@ -37,7 +35,7 @@ describe('AuthController', () => {
 
     describe('register', () => {
       it('should return a user', async () => {
-        expect(await authController.register(testNotRegisteredDto)).toStrictEqual(testUserDto);
+        expect(await authController.register(testRegisterUnknownUserDto)).toStrictEqual(testUserUnknownDto);
       });
     });
 });

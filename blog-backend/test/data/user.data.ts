@@ -25,6 +25,15 @@ export const testUserUnrestricted: User = {
   createdOn: createdOnDate,
 };
 
+export const testUserAdminUnrestricted: User = {
+  id: testUserId,
+  username: 'admin',
+  email: 'admin@gmail.com',
+  password: 'secret',
+  role: 'admin',
+  createdOn: createdOnDate,
+};
+
 export const testUserDto: UserDto = {
   id: testUserId,
   username: 'dummy',
@@ -32,6 +41,24 @@ export const testUserDto: UserDto = {
   role: 'user',
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
+  createdOn: createdOnDate,
+};
+
+export const testUserUnknownDto: UserDto = {
+  id: testUserId,
+  username: 'unknown',
+  email: 'unknown@gmail.com',
+  role: 'user',
+  authtoken: testAuthToken,
+  authrefreshtoken: testAuthToken,
+  createdOn: createdOnDate,
+};
+
+export const testUserAdminDto: UserDto = {
+  id: testUserId,
+  username: 'admin',
+  email: 'admin@gmail.com',
+  role: 'admin',
   createdOn: createdOnDate,
 };
 
@@ -46,10 +73,17 @@ export const testUserDtoUnrestricted: UserDto = {
   createdOn: createdOnDate,
 };
 
-export const testCreateUserDto: CreateUserDto = {
+export const testCreateExistingUserDto: CreateUserDto = {
   username: 'dummy',
   email: 'dummy@gmail.com',
-  password: 'secret',
+  password: 'password',
+  role: 'user',
+};
+
+export const testCreateNonExistingUserDto: CreateUserDto = {
+  username: 'dummy',
+  email: 'unknown@gmail.com',
+  password: 'password',
   role: 'user',
 };
 
@@ -90,6 +124,14 @@ export const testServiceUserDto: UserDto = {
   createdOn: createdOnDate,
 };
 
+export const testServiceUserAdminDto: UserDto = {
+  id: testUserId,
+  username: 'admin',
+  email: 'admin@gmail.com',
+  role: 'admin',
+  createdOn: createdOnDate,
+};
+
 export const testServiceUserDtoUnrestricted: UserDto  = {
   id: testUserId,
   username: 'dummy',
@@ -102,4 +144,5 @@ export const testServiceUserDtoUnrestricted: UserDto  = {
 export const testRepositoryUserUnrestricted = testUserUnrestricted;
 export const testRepositoryUserDtoUnrestricted = testServiceUserDtoUnrestricted;
 
-export const testFindUserCriterias = { email: 'dummy@gmail.com' };
+export const testFindUserCriterias = { email: 'dummy@gmail.com', role: 'user' };
+export const testFindUserAdminCriterias = { email: 'admin@gmail.com', role: 'admin' };

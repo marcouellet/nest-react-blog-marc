@@ -3,12 +3,17 @@ import { LoginDto, RegisterDto } from '../../src/core/dtos';
 import { testSignResult } from './token.data';
 
 export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com'};
-export const testAuthToken: IAuthToken =  { accessToken: testSignResult};
+export const testAuthToken: IAuthToken =  { accessToken: 'token.signed'};
 
 export const testRequestWithAuthorize: any = {
     headers: {
         authorization: 'token',
     },
+};
+
+export const testLoginDto: LoginDto = {
+    email: 'dummy@gmail.com',
+    password: 'password',
 };
 
 export const testNotLoggedInDto: LoginDto = {
@@ -21,13 +26,18 @@ export const testAlreadyLoggedInDto: LoginDto = {
     password: 'password',
 };
 
-export const testNotRegisteredDto: RegisterDto = {
-    username: 'dummy',
-    email: 'not-dummy@gmail.com',
+export const testLoginUnknownUserDto: LoginDto = {
+    email: 'unknown@gmail.com',
     password: 'password',
 };
 
-export const testAlreadyRegisteredDto: RegisterDto = {
+export const testRegisterUnknownUserDto: RegisterDto = {
+    username: 'dummy',
+    email: 'unknown@gmail.com',
+    password: 'password',
+};
+
+export const testRegisterExistingUserDto: RegisterDto = {
     username: 'dummy',
     email: 'dummy@gmail.com',
     password: 'password',
