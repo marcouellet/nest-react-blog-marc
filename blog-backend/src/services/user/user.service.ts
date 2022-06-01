@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { IDataRepositories } from '../../core/abstracts';
 import { User } from '../../core/entities';
 import { UserRole } from '../../core/enum'
@@ -68,6 +68,10 @@ export class UserService {
   }
 
   async createUser(userDto: UserDto): Promise<UserDto> {
+    const { email } = userDto;
+    if ( await this.verifyUserExist({ email })) {
+      throw new ForbiddenException('User with same email already exist!');
+    }
     userDto.role = userDto.role ? userDto.role :  UserRole.USER;
     userDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(userDto);
@@ -89,7 +93,8 @@ export class UserService {
    }
 
   async deleteUser(id: string): Promise<UserDto> {
-    return this.dataServicesRepositories.users.delete(id)
+    return this.getUserById(id)
+      .then(_ =>  this.dataServicesRepositories.users.delete(id))
       .then(user => this.processUser(user));
   }
 }

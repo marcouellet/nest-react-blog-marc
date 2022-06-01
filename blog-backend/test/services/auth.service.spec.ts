@@ -1,10 +1,12 @@
 import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { GetConfigMock } from '../mock/config/config.mock';
 import { AuthService } from '../../src/services/auth.service';
 import ConfigServiceProvider from '../providers/config.service.provider';
 import UserServiceProvider from '../providers/user.service.provider';
 import JwtServiceProvider from '../providers/jwt.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
+import { DataModuleMock } from '../mock/modules/data.module.mock';
 import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted } from '../data/user.data';
 import { testJwtPayload, testNotLoggedInDto, testAlreadyLoggedInDto, testNotRegisteredDto,
           testAlreadyRegisteredDto } from '../data/auth.data';
@@ -14,6 +16,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [DataModuleMock.register(GetConfigMock())],
       providers: [AuthService, UserServiceProvider, JwtServiceProvider, ConfigServiceProvider, CryptographerServiceProvider],
     }).compile();
 
@@ -68,7 +71,11 @@ describe('AuthService', () => {
 
   describe('login - when already logged in', () => {
     it('should throw exception', async () => {
-      expect(await authService.login(testAlreadyLoggedInDto)).toThrow(ForbiddenException);
+      try {
+        await authService.login(testAlreadyLoggedInDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(ForbiddenException);
+      }
     });
   });
 
@@ -80,7 +87,11 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should throw an exception - user already defined', async () => {
-      expect(await authService.register(testAlreadyRegisteredDto)).toThrow(ForbiddenException);
+      try {
+        await authService.register(testAlreadyRegisteredDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(ForbiddenException);
+      }
     });
   });
 });

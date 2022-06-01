@@ -35,22 +35,9 @@ describe('AuthController', () => {
       });
     });
 
-    describe('login - when already logged in', () => {
-      it('should throw exception', async () => {
-        expect(await authController.login(testRequestWithAuthorizeAndUser, testAlreadyLoggedInDto)).toThrow(ForbiddenException);
-      });
-    });
-
     describe('register', () => {
       it('should return a user', async () => {
         expect(await authController.register(testNotRegisteredDto)).toStrictEqual(testUserDto);
       });
     });
-
-    describe('register - when already registered', () => {
-      it('should throw exception', async () => {
-        expect(await authController.register(testAlreadyRegisteredDto)).toStrictEqual(testUserDto);
-      });
-    });
-
 });

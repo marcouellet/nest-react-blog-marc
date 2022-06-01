@@ -113,19 +113,7 @@ export class AuthService {
     }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
-    const { email } = registerDto;
-    return this.userService.verifyUserExist({ email })
-      .then(async exist => {
-        if (exist) {
-          throw new ForbiddenException('User with same email already exist!');;
-        } else {
-          registerDto.password = this.cryptoService.hashPassword(registerDto.password);
-          try {
-            return await this.userService.createUser(registerDto);
-          } catch (_) {
-            throw new InternalServerErrorException('Cannot create user!');
-          }
-        }
-      });
+    registerDto.password = this.cryptoService.hashPassword(registerDto.password);
+    return this.userService.createUser(registerDto);
   }
 }
