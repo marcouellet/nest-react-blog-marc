@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from '../../src/controllers/post.controller';
 import UserServiceProvider from '../providers/user.service.provider';
 import PostServiceProvider from '../providers/post.service.provider';
-import { testPostId, testPostDto, testCreatePostDto, testUpdatePostDto } from '../data/post.data';
+import { testPostId, testServicePostDto, testCreatePostDto, testUpdatePostDto } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
@@ -22,13 +22,13 @@ describe('Post Controller', () => {
 
   describe('getAll', () => {
     it('should return an array containing one post"', async () => {
-      expect(await postController.getAll()).toStrictEqual([testPostDto]);
+      expect(await postController.getAll()).toStrictEqual([testServicePostDto]);
     });
   });
 
   describe('getPost', () => {
     it('should return a post"', async () => {
-      expect(await postController.getPost(testPostId)).toStrictEqual(testPostDto);
+      expect(await postController.getPost(testPostId)).toStrictEqual(testServicePostDto);
     });
   });
 
@@ -40,19 +40,19 @@ describe('Post Controller', () => {
 
   describe('createPost', () => {
     it('should return a post"', async () => {
-      expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testPostDto);
+      expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testServicePostDto);
     });
   });
 
   describe('updatePost', () => {
     it('should return a post"', async () => {
-      expect(await postController.updatePost(testPostId, testUpdatePostDto)).toStrictEqual(testPostDto);
+      expect(await postController.updatePost(testPostId, testUpdatePostDto)).toStrictEqual(testServicePostDto);
     });
   });
 
   describe('deletePost', () => {
     it('should return a post"', async () => {
-      expect(await postController.deletePost(testPostId)).toStrictEqual(testPostDto);
+      expect(await postController.deletePost(testPostId)).toStrictEqual(testServicePostDto);
     });
   });
 });

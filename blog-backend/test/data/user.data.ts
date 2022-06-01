@@ -20,7 +20,7 @@ export const testUserUnrestricted: User = {
   id: testUserId,
   username: 'dummy',
   email: 'dummy@gmail.com',
-  password: 'password',
+  password: 'secret',
   role: 'user',
   createdOn: createdOnDate,
 };
@@ -87,8 +87,6 @@ export const testServiceUserDto: UserDto = {
   username: 'dummy',
   email: 'dummy@gmail.com',
   role: 'user',
-  authtoken: testAuthToken,
-  authrefreshtoken: testAuthToken,
   createdOn: createdOnDate,
 };
 
@@ -98,8 +96,6 @@ export const testServiceUserDtoUnrestricted: UserDto  = {
   email: 'dummy@gmail.com',
   password: 'secret',
   role: 'user',
-  authtoken: testAuthToken,
-  authrefreshtoken: testAuthToken,
   createdOn: createdOnDate,
 };
 

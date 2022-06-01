@@ -2,7 +2,8 @@ import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../../src/controllers/auth.controller';
 import AuthServiceProvider from '../providers/auth.service.provider';
-import { testLoginDto, testRegisterDto, testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';
+import { testNotLoggedInDto, testAlreadyLoggedInDto, testNotRegisteredDto, testAlreadyRegisteredDto,
+        testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';
 import { testUserDto, testRequestWithAuthorizeAndUser} from '../data/user.data';
 
 describe('AuthController', () => {
@@ -30,19 +31,26 @@ describe('AuthController', () => {
 
     describe('login', () => {
       it('should return a user"', async () => {
-        expect(await authController.login(testRequestWithAuthorize, testLoginDto)).toStrictEqual(testUserDto);
+        expect(await authController.login(testRequestWithAuthorize, testNotLoggedInDto)).toStrictEqual(testUserDto);
       });
     });
 
     describe('login - when already logged in', () => {
       it('should throw exception', async () => {
-        expect(await authController.login(testRequestWithAuthorizeAndUser, testLoginDto)).toThrow(ForbiddenException);
+        expect(await authController.login(testRequestWithAuthorizeAndUser, testAlreadyLoggedInDto)).toThrow(ForbiddenException);
       });
     });
 
     describe('register', () => {
       it('should return a user', async () => {
-        expect(await authController.register(testRegisterDto)).toStrictEqual(testUserDto);
+        expect(await authController.register(testNotRegisteredDto)).toStrictEqual(testUserDto);
       });
     });
+
+    describe('register - when already registered', () => {
+      it('should throw exception', async () => {
+        expect(await authController.register(testAlreadyRegisteredDto)).toStrictEqual(testUserDto);
+      });
+    });
+
 });

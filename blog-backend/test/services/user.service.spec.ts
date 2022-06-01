@@ -82,14 +82,14 @@ describe('UserService', () => {
   });
 
   describe('updateUser', () => {
-    it('should return a user', () => {
-      expect(userService.updateUser(testUserId, testUpdateUserDto)).toEqual(testServiceUserDto);
+    it('should return a user', async () => {
+      expect(await userService.updateUser(testUserId, testUpdateUserDto)).toEqual(testServiceUserDto);
     });
   });
 
   describe('deleteUser', () => {
-    it('should return a user', () => {
-      expect(userService.deleteUser(testUserId)).toEqual(testServiceUserDto);
+    it('should return a user', async () => {
+      expect(await userService.deleteUser(testUserId)).toEqual(testServiceUserDto);
     });
   });
 });

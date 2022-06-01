@@ -11,12 +11,23 @@ export const testRequestWithAuthorize: any = {
     },
 };
 
-export const testLoginDto: LoginDto = {
+export const testNotLoggedInDto: LoginDto = {
+    email: 'not-dummy@gmail.com',
+    password: 'password',
+};
+
+export const testAlreadyLoggedInDto: LoginDto = {
     email: 'dummy@gmail.com',
     password: 'password',
 };
 
-export const testRegisterDto: RegisterDto = {
+export const testNotRegisteredDto: RegisterDto = {
+    username: 'dummy',
+    email: 'not-dummy@gmail.com',
+    password: 'password',
+};
+
+export const testAlreadyRegisteredDto: RegisterDto = {
     username: 'dummy',
     email: 'dummy@gmail.com',
     password: 'password',

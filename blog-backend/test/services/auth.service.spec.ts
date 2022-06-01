@@ -1,11 +1,13 @@
+import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../../src/services/auth.service';
 import ConfigServiceProvider from '../providers/config.service.provider';
 import UserServiceProvider from '../providers/user.service.provider';
 import JwtServiceProvider from '../providers/jwt.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
-import { testUserDto, testFindUserCriterias, testUserDtoUnrestricted } from '../data/user.data';
-import { testJwtPayload, testLoginDto, testRegisterDto } from '../data/auth.data';
+import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted } from '../data/user.data';
+import { testJwtPayload, testNotLoggedInDto, testAlreadyLoggedInDto, testNotRegisteredDto,
+          testAlreadyRegisteredDto } from '../data/auth.data';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -24,7 +26,7 @@ describe('AuthService', () => {
 
   describe('getUserFromToken', () => {
     it('should return a user', async () => {
-      expect(await authService.getUserFromToken('token')).toEqual(testUserDto);
+      expect(await authService.getUserFromToken('token')).toEqual(testServiceUserDto);
     });
   });
 
@@ -42,37 +44,43 @@ describe('AuthService', () => {
 
   describe('validateUser', () => {
     it('should return a user', async () => {
-      expect(await authService.validateUser(testFindUserCriterias)).toEqual(testUserDto);
+      expect(await authService.validateUser(testFindUserCriterias)).toEqual(testServiceUserDto);
     });
   });
 
   describe('validateUser - admin required', () => {
     it('should return a user', async () => {
-      expect(await authService.validateUser(testFindUserCriterias, true)).toEqual(testUserDto);
-    });
-  });
-
-  describe('validateUser - admin required', () => {
-    it('should return a user', async () => {
-      expect(await authService.validateUser(testFindUserCriterias, true)).toEqual(testUserDto);
+      expect(await authService.validateUser(testFindUserCriterias, true)).toEqual(testServiceUserDto);
     });
   });
 
   describe('validateUserUnrestricted', () => {
     it('should return a user with password', async () => {
-      expect(await authService.validateUserUnrestricted(testFindUserCriterias)).toEqual(testUserDtoUnrestricted);
+      expect(await authService.validateUserUnrestricted(testFindUserCriterias)).toEqual(testServiceUserDtoUnrestricted);
     });
   });
 
   describe('login', () => {
     it('should return a user', async () => {
-      expect(await authService.login(testLoginDto)).toEqual(testUserDto);
+      expect(await authService.login(testNotLoggedInDto)).toEqual(testUserDto);
+    });
+  });
+
+  describe('login - when already logged in', () => {
+    it('should throw exception', async () => {
+      expect(await authService.login(testAlreadyLoggedInDto)).toThrow(ForbiddenException);
     });
   });
 
   describe('register', () => {
     it('should return a user', async () => {
-      expect(await authService.register(testRegisterDto)).toEqual(testUserDto);
+      expect(await authService.register(testNotRegisteredDto)).toEqual(testServiceUserDto);
+    });
+  });
+
+  describe('register', () => {
+    it('should throw an exception - user already defined', async () => {
+      expect(await authService.register(testAlreadyRegisteredDto)).toThrow(ForbiddenException);
     });
   });
 });
