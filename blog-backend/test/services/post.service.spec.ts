@@ -46,6 +46,12 @@ describe('PostService', () => {
     });
   });
 
+  describe('findManyCount', () => {
+    it('should return testPostCount', async () => {
+      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
+    });
+  });
+
   describe('findPost', () => {
     it('should return a post', async () => {
       expect(await postService.findPost(testFindPostCriterias)).toEqual(testServicePostDto);
@@ -55,6 +61,12 @@ describe('PostService', () => {
   describe('findManyPosts', () => {
     it('should return an array of one post', async () => {
       expect(await postService.findManyPosts(testFindPostCriterias)).toEqual([testServicePostDto]);
+    });
+  });
+
+  describe('findManPostsCount', () => {
+    it('should return testPostCount', async () => {
+      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
     });
   });
 

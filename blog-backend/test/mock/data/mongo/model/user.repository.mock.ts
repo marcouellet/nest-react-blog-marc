@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRole } from '../../../../../src/core';
 import { IGenericDataRepository } from '../../../../../src/core/abstracts/generic-data-repository.abstract';
 import { User } from '../../../../../src/core/entities';
+import { UserCriterias } from '../../../../../src/core/find-criterias/user.criterias';
 import { testUserUnrestricted, testUserAdminUnrestricted, testUserCount, testUserPostsCount } from '../../../../data/user.data';
 
 @Injectable()
@@ -29,7 +30,7 @@ export class UserRepositoriesMock implements IGenericDataRepository<User> {
         return Promise.resolve(testUserUnrestricted);
     }
 
-    async findOne(criterias: {}): Promise<User> {
+    async findOne(criterias: UserCriterias): Promise<User> {
         let user: User;
         if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@gmail.com'){
             user = testUserUnrestricted;
@@ -40,11 +41,11 @@ export class UserRepositoriesMock implements IGenericDataRepository<User> {
        return Promise.resolve(user);
     }
 
-    async findMany(criterias: {}): Promise<User[]> {
+    async findMany(criterias: UserCriterias): Promise<User[]> {
         return Promise.resolve([testUserUnrestricted]);
     }
 
-    async findManyCount(criterias: {}): Promise<number> {
+    async findManyCount(criterias: UserCriterias): Promise<number> {
         return Promise.resolve(testUserCount);
     }
 

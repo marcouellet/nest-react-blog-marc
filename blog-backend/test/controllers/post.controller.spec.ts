@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from '../../src/controllers/post.controller';
 import UserServiceProvider from '../providers/user.service.provider';
 import PostServiceProvider from '../providers/post.service.provider';
-import { testPostId, testServicePostDto, testCreatePostDto, testUpdatePostDto } from '../data/post.data';
+import { testPostId, testServicePostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
@@ -41,6 +41,18 @@ describe('Post Controller', () => {
   describe('createPost', () => {
     it('should return a post"', async () => {
       expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testServicePostDto);
+    });
+  });
+
+  describe('finPost', () => {
+    it('should return a post"', async () => {
+      expect(await postController.finPost(testFindPostCriterias)).toStrictEqual(testServicePostDto);
+    });
+  });
+
+  describe('finManyUsers', () => {
+    it('should return an array of one user"', async () => {
+      expect(await postController.finManyPosts(testFindPostCriterias)).toStrictEqual([testServicePostDto]);
     });
   });
 

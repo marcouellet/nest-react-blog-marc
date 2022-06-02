@@ -8,7 +8,7 @@ import CryptographerServiceProvider from '../providers/cryptographer.service.pro
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
 import { testUserId, testServiceUserDto, testFindUserCriterias, testCreateNonExistingUserDto, testCreateExistingUserDto,
-          testUpdateUserDto, testUserPostsCount, testServiceUserDtoUnrestricted } from '../data/user.data';
+          testUpdateUserDto, testUserCount, testServiceUserDtoUnrestricted } from '../data/user.data';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -72,7 +72,7 @@ describe('UserService', () => {
 
   describe('findManyUsersCount', () => {
     it('should return testUserCount', async () => {
-      expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testUserPostsCount);
+      expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testUserCount);
     });
   });
 

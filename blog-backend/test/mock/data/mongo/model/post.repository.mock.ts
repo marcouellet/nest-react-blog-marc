@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericDataRepository } from '../../../../../src/core/abstracts/generic-data-repository.abstract';
 import { Post } from '../../../../../src/core/entities';
+import { PostCriterias } from '../../../../../src/core/find-criterias/post.criterias';
 import { testPost, testPostCount } from '../../../../data/post.data';
-
 @Injectable()
 export class PostRepositoriesMock implements IGenericDataRepository<Post> {
 
@@ -22,15 +22,15 @@ export class PostRepositoriesMock implements IGenericDataRepository<Post> {
         return Promise.resolve(testPost);
     }
 
-    async findOne(criterias: {}): Promise<Post> {
+    async findOne(criterias: PostCriterias): Promise<Post> {
         return Promise.resolve(testPost);
     }
 
-    async findMany(criterias: {}): Promise<Post[]> {
+    async findMany(criterias: PostCriterias): Promise<Post[]> {
         return Promise.resolve([testPost]);
     }
 
-    async findManyCount(criterias: {}): Promise<number> {
+    async findManyCount(criterias: PostCriterias): Promise<number> {
         return Promise.resolve(testPostCount);
     }
 

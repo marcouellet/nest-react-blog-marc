@@ -2,6 +2,7 @@ import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common'
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
+import { PostCriterias } from '../core/find-criterias/post.criterias';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { AllRoles } from '../core/enum/user-role.enum';
@@ -44,6 +45,24 @@ export class PostController {
   async updatePost(@Param('id') id: string,
                    @Body(new ValidationPipe()) updatePostDto: UpdatePostDto): Promise<PostDto> {
     return this.postService.updatePost(id, updatePostDto);
+  }
+
+  // Fetch a post based on criterias
+  @Put('/find')
+  async finPost(@Body(new ValidationPipe()) postCriterias: PostCriterias): Promise<PostDto> {
+    return this.postService.findPost(postCriterias);
+  }
+
+  // Fetch posts based on criterias
+  @Put('/findAll')
+  async finManyPosts(@Body(new ValidationPipe()) postCriterias: PostCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPosts(postCriterias);
+  }
+
+  // Get count of posts meating criterias 
+  @Put('/findManyCount')
+  async findManyPostsCount(@Body(new ValidationPipe()) userCriterias: PostCriterias): Promise<number> {
+    return this.postService.findManyPostsCount(userCriterias);
   }
 
   // Delete a post

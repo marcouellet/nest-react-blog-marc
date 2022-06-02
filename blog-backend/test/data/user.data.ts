@@ -1,11 +1,13 @@
 import { User } from '../../src/core/entities/user.entity';
 import { CreateUserDto, UpdateUserDto, UserDto, RegisterDto, IUpdateUserCriterias } from '../../src/core/dtos';
+import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
 import { testAuthToken } from './auth.data';
 
 const createdOnDate: Date = new Date();
 
 export const testUserId = 'abcdefghijkl';
 export const testUserCount = 1;
+export const testServiceUserCount = 1;
 export const testUserPostsCount = 1;
 
 export const testUser: User = {
