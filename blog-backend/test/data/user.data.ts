@@ -6,6 +6,7 @@ import { testAuthToken } from './auth.data';
 const createdOnDate: Date = new Date();
 
 export const testUserId = 'abcdefghijkl';
+export const testServiceUserId = testUserId;
 export const testUserCount = 1;
 export const testServiceUserCount = 1;
 export const testUserPostsCount = 1;

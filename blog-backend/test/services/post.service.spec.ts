@@ -4,8 +4,8 @@ import { PostService } from '../../src/services/post/post.service';
 import { PostFactoryService } from '../../src/services/post/post-factory.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { DataModuleMock } from '../mock/modules/data.module.mock';
-import { testPostId, testServicePostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias,
-          testPostCount } from '../data/post.data';
+import { testServicePostId, testServicePostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias,
+          testServicePostCount } from '../data/post.data';
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
 
@@ -36,19 +36,19 @@ describe('PostService', () => {
 
   describe('getPostById', () => {
     it('should return a post', async () => {
-      expect(await postService.getPostById(testPostId)).toEqual(testServicePostDto);
+      expect(await postService.getPostById(testServicePostId)).toEqual(testServicePostDto);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1', async () => {
-      expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testPostCount);
+      expect(await postService.getNumberOfPostsForUser(testServicePostId)).toEqual(testServicePostCount);
     });
   });
 
   describe('findManyCount', () => {
-    it('should return testPostCount', async () => {
-      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
+    it('should return testServicePostCount', async () => {
+      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testServicePostCount);
     });
   });
 
@@ -66,7 +66,7 @@ describe('PostService', () => {
 
   describe('findManPostsCount', () => {
     it('should return testPostCount', async () => {
-      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
+      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testServicePostCount);
     });
   });
 
@@ -78,13 +78,13 @@ describe('PostService', () => {
 
   describe('updatePost', () => {
     it('should return a post', async () => {
-      expect(await postService.updatePost(testPostId, testUpdatePostDto)).toEqual(testServicePostDto);
+      expect(await postService.updatePost(testServicePostId, testUpdatePostDto)).toEqual(testServicePostDto);
     });
   });
 
   describe('deletePost', () => {
     it('should return a post', async () => {
-      expect(await postService.deletePost(testPostId)).toEqual(testServicePostDto);
+      expect(await postService.deletePost(testServicePostId)).toEqual(testServicePostDto);
     });
   });
 });

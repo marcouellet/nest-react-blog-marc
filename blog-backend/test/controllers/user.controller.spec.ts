@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from '../../src/controllers/user.controller';
 import UserServiceProvider from '../providers/user.service.provider';
-import { testUserId, testServiceUserDto, testCreateNonExistingUserDto, testUpdateUserDto, testFindUserCriterias } from '../data/user.data';
+import { testUserId, testServiceUserDto, testCreateNonExistingUserDto, testUpdateUserDto, testFindUserCriterias,
+          testServiceUserCount } from '../data/user.data';
 
 describe('User Controller', () => {
   let userController: UserController;
@@ -46,6 +47,12 @@ describe('User Controller', () => {
   describe('finManyUsers', () => {
     it('should return an array of one user"', async () => {
       expect(await userController.finManyUsers(testFindUserCriterias)).toStrictEqual([testServiceUserDto]);
+    });
+  });
+
+  describe('finManyUsersCount', () => {
+    it('should return an array of one user"', async () => {
+      expect(await userController.findManyUsersCount(testFindUserCriterias)).toStrictEqual(testServiceUserCount);
     });
   });
 

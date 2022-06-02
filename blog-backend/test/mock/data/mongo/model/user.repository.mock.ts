@@ -8,13 +8,7 @@ import { testUserUnrestricted, testUserAdminUnrestricted, testUserCount, testUse
 @Injectable()
 export class UserRepositoriesMock implements IGenericDataRepository<User> {
 
-    private assignProperty(objSrc: Object, objDest: Object, propertyName: string) {
-        if (objSrc.hasOwnProperty(propertyName) && objDest.hasOwnProperty(propertyName)) {
-            objDest[propertyName] = objSrc[propertyName];
-        }
-    }
-
-    convertToGenericEntity(obj: any): User {
+     convertToGenericEntity(obj: any): User {
         return obj;
     }
 

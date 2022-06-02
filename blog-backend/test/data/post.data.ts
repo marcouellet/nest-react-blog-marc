@@ -5,6 +5,7 @@ import { testUser, testServiceUser, testUserDto, testServiceUserDto } from './us
 const publishedOnDate: Date = new Date();
 
 export const testPostId = 'abcdefghijkl';
+export const testServicePostId = testPostId;
 export const testPostCount = 1;
 export const testServicePostCount = 1;
 

@@ -8,10 +8,7 @@ const UserServiceProvider = {
     useValue: {
       getAllUsers: jest.fn().mockImplementation(() => Promise.resolve([testServiceUserDto])),
       getUserById: jest.fn().mockImplementation((id: string) => Promise.resolve(testServiceUserDto)),
-      getUserByIdUnrestricted: jest.fn().mockImplementation((id: string) => Promise.resolve(testServiceUserDtoUnrestricted)),
       findUser: jest.fn().mockImplementation((criterias: UserCriterias) => Promise.resolve(testServiceUserDto)),
-      verifyUserExist: jest.fn().mockImplementation((criterias: UserCriterias) => Promise.resolve(testServiceUserDto)),
-      findUserUnrestricted: jest.fn().mockImplementation((loginDto: LoginDto) => Promise.resolve(testServiceUserDtoUnrestricted)),
       findManyUsers: jest.fn().mockImplementation((registerDto: RegisterDto) => Promise.resolve([testServiceUserDto])),
       findManyUsersCount: jest.fn().mockImplementation((registerDto: RegisterDto) => Promise.resolve(testServiceUserCount)),
       createUser: jest.fn().mockImplementation((userDto: UserDto) => Promise.resolve(testServiceUserDto)),

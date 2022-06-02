@@ -7,8 +7,8 @@ import { DataModuleMock } from '../mock/modules/data.module.mock';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
-import { testUserId, testServiceUserDto, testFindUserCriterias, testCreateNonExistingUserDto, testCreateExistingUserDto,
-          testUpdateUserDto, testUserCount, testServiceUserDtoUnrestricted } from '../data/user.data';
+import { testServiceUserId, testServiceUserDto, testFindUserCriterias, testCreateNonExistingUserDto, testCreateExistingUserDto,
+          testUpdateUserDto, testServiceUserCount, testServiceUserDtoUnrestricted } from '../data/user.data';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -35,14 +35,14 @@ describe('UserService', () => {
 
   describe('getUserById', () => {
     it('should return a user', async () => {
-      expect(await userService.getUserById(testUserId)).toEqual(testServiceUserDto);
+      expect(await userService.getUserById(testServiceUserId)).toEqual(testServiceUserDto);
     });
   });
 
   describe('getUserByIdUnrestricted', () => {
     it('should return a user', async () => {
-      const received = await userService.getUserByIdUnrestricted(testUserId);
-      expect(await userService.getUserByIdUnrestricted(testUserId)).toEqual(testServiceUserDtoUnrestricted);
+      const received = await userService.getUserByIdUnrestricted(testServiceUserId);
+      expect(await userService.getUserByIdUnrestricted(testServiceUserId)).toEqual(testServiceUserDtoUnrestricted);
     });
   });
 
@@ -71,8 +71,8 @@ describe('UserService', () => {
   });
 
   describe('findManyUsersCount', () => {
-    it('should return testUserCount', async () => {
-      expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testUserCount);
+    it('should return testServiceUserCount', async () => {
+      expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testServiceUserCount);
     });
   });
 
@@ -94,13 +94,13 @@ describe('UserService', () => {
 
   describe('updateUser', () => {
     it('should return a user', async () => {
-      expect(await userService.updateUser(testUserId, testUpdateUserDto)).toEqual(testServiceUserDto);
+      expect(await userService.updateUser(testServiceUserId, testUpdateUserDto)).toEqual(testServiceUserDto);
     });
   });
 
   describe('deleteUser', () => {
     it('should return a user', async () => {
-      expect(await userService.deleteUser(testUserId)).toEqual(testServiceUserDto);
+      expect(await userService.deleteUser(testServiceUserId)).toEqual(testServiceUserDto);
     });
   });
 });
