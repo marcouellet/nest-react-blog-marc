@@ -3,22 +3,22 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IDataRepositories } from '../../../../src/core';
 import { User, UserSchema } from '../../../../src/frameworks/data/mongo/model/user.model';
 import { Post, PostSchema } from '../../../../src/frameworks/data/mongo/model/post.model';
-import { ConfigService } from '../../../../src/services/config.service';
-import { ConfigServiceMock } from '../../config/config.service.mock';
-import { ConfigModuleMock } from '../../modules/config.module.mock';
+import { IConfigService } from '../../../../src/config/interfaces/config.interface';
+import { ConfigModule } from '../../../../src/modules/config.module';
 import { MongoDataRepositoriesMock } from './mongo-data-repositories.mock';
 import UserRepositoryProvider from '../../../providers/user.repository.provider';
 import PostRepositoryProvider from '../../../providers/post.repository.provider';
+import { GLOBAL_TEST_CONFIG_SERVICE } from '../../../config/config.global';
 
 @Global()
 @Module({
   imports: [
-    ConfigModuleMock,
+    ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
     MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (configService: IConfigService) => ({
         uri: configService.getConfig().connectionString,
       }),
-      inject: [ConfigServiceMock],
+      inject: [IConfigService],
     }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
@@ -26,7 +26,6 @@ import PostRepositoryProvider from '../../../providers/post.repository.provider'
     ]),
   ],
   providers: [
-    ConfigServiceMock,
     UserRepositoryProvider,
     PostRepositoryProvider,
     {

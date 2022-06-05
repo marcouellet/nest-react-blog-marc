@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetConfigMock } from '../mock/config/config.mock';
 import { PostService } from '../../src/services/post/post.service';
 import { PostFactoryService } from '../../src/services/post/post-factory.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
@@ -8,13 +7,18 @@ import { testServicePostId, testServicePostDto, testCreatePostDto, testUpdatePos
           testServicePostCount } from '../data/post.data';
 import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
+import { ConfigModule } from '../../src/modules/config.module';
+import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('PostService', () => {
   let postService: PostService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DataModuleMock.register(GetConfigMock())],
+      imports: [
+        ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
+        DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE),
+      ],
       providers: [PostService, PostFactoryService, UserFactoryService,
                   UserRepositoryProvider, PostRepositoryProvider],
     }).compile();

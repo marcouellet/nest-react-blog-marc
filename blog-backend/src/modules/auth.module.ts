@@ -9,18 +9,15 @@ import { CryptographerService } from '../services/cryptographer.service';
 import { UserModule } from './user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigModule } from '../modules/config.module';
-import { ConfigService } from '../services/config.service';
-
-import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/config';
+import { IConfigService } from '../config/interfaces/config.interface';
+import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/config.constants';
 
 @Global()
 @Module({
   imports: [
     UserModule,
     PassportModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => {
+      useFactory: async (configService: IConfigService) => {
         const authStrategyName = configService.getConfig().authStrategyName;
         switch (authStrategyName) {
           case JWT_AUTH_STRATEGY_NAME:
@@ -37,12 +34,12 @@ import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/conf
             };
         }
       },
-      inject: [ConfigService],
+      inject: [IConfigService],
     }),
     JwtModule.register({}),
   ],
   controllers: [AuthController],
-  providers: [AuthService, CryptographerService, JwtStrategy, JwtRefreshTokenStrategy, LocalStrategy, RoleGuard],
-  exports: [AuthService, PassportModule],
+  providers: [AuthService, IConfigService, CryptographerService, JwtStrategy, JwtRefreshTokenStrategy, LocalStrategy, RoleGuard],
+  exports: [AuthService],
 })
 export class AuthModule {}

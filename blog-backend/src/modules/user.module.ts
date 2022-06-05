@@ -4,8 +4,7 @@ import { UserService } from '../services/user/user.service';
 import { CryptographerService } from '../services/cryptographer.service';
 import { UserFactoryService } from '../services/user/user-factory.service';
 @Module({
-  imports: [UserModule],
-  controllers: [UserController, ],
+  controllers: [UserController],
   providers: [UserFactoryService, UserService, CryptographerService],
   exports: [UserFactoryService, UserService],
 })

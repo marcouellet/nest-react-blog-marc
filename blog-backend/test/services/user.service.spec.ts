@@ -1,6 +1,5 @@
 import { ForbiddenException} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetConfigMock } from '../mock/config/config.mock';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { DataModuleMock } from '../mock/modules/data.module.mock';
@@ -9,13 +8,18 @@ import UserRepositoryProvider from '../providers/user.repository.provider';
 import PostRepositoryProvider from '../providers/post.repository.provider';
 import { testServiceUserId, testServiceUserDto, testFindUserCriterias, testCreateNonExistingUserDto, testCreateExistingUserDto,
           testUpdateUserDto, testServiceUserCount, testServiceUserDtoUnrestricted } from '../data/user.data';
+import { ConfigModule } from '../../src/modules/config.module';
+import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('UserService', () => {
   let userService: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DataModuleMock.register(GetConfigMock())],
+      imports: [
+        ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
+        DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE),
+      ],
       providers: [UserService, UserFactoryService, CryptographerServiceProvider,
                   UserRepositoryProvider, PostRepositoryProvider],
     }).compile();

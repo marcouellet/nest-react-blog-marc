@@ -1,6 +1,5 @@
 import { AuthService } from '../../src/services/auth.service';
 import { LoginDto, RegisterDto } from '../../src/core/dtos';
-import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
 import { testJwtPayload } from '../data/auth.data';
 import { testUserDto, testUserUnknownDto} from '../data/user.data';
 

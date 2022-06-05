@@ -1,5 +1,5 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ConfigService } from '../../services/config.service';
+import { IConfigService } from '../../config/interfaces/config.interface';
 import { AuthService } from '../../services/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
@@ -14,7 +14,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
 ) {
   constructor(
     private readonly authService: AuthService,
-    private readonly configService: ConfigService,
+    private readonly configService: IConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -27,8 +27,8 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
   async validate(req: Request, payload: JwtPayload): Promise<UserDto> {
     const body = req.body as any;
     return this.authService.validateRefreshToken(body.authrefreshtoken.accessToken)
-      .then(payload => {
-        const {sub} = payload;
+      .then(_ => {
+        const {sub} = _;
         return this.authService.validateUser({email: sub});
       });
   }

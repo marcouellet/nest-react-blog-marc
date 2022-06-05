@@ -1,6 +1,6 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
-import { ConfigService } from '../services/config.service';
+import { IConfigService } from '../config/interfaces/config.interface';
 import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 import { JwtPayload, IAuthToken } from '../auth/interfaces/jwt.interface';
@@ -14,7 +14,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly configService: IConfigService,
     private readonly cryptoService: CryptographerService,
   ) {}
 

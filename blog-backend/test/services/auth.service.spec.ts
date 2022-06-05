@@ -1,10 +1,8 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetConfigMock } from '../mock/config/config.mock';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
-import ConfigServiceProvider from '../providers/config.service.provider';
 import JwtServiceProvider from '../providers/jwt.service.provider';
 import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
 import { DataModuleMock } from '../mock/modules/data.module.mock';
@@ -12,14 +10,19 @@ import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUser
           testFindUserAdminCriterias, testServiceUserAdminDto } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
+import { ConfigModule } from '../../src/modules/config.module';
+import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthService', () => {
   let authService: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DataModuleMock.register(GetConfigMock())],
-      providers: [AuthService, UserService, UserFactoryService, JwtServiceProvider, ConfigServiceProvider, CryptographerServiceProvider],
+      imports: [
+        ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
+        DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE),
+      ],
+      providers: [AuthService, UserService, UserFactoryService, JwtServiceProvider, CryptographerServiceProvider],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);

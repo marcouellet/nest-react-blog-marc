@@ -32,7 +32,7 @@ export class UserRepositoriesMock implements IGenericDataRepository<User> {
                 user = testUserAdminUnrestricted;
             }
         }
-       return Promise.resolve(user);
+        return Promise.resolve(user);
     }
 
     async findMany(criterias: UserCriterias): Promise<User[]> {
@@ -43,6 +43,7 @@ export class UserRepositoriesMock implements IGenericDataRepository<User> {
         return Promise.resolve(testUserCount);
     }
 
+    /* istanbul ignore next */
     async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
         return Promise.resolve(testUserPostsCount);
     }

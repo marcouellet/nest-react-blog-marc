@@ -1,20 +1,25 @@
-import { Module, Global, UseFilters } from '@nestjs/common';
+import { Global, Module, UseFilters } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IDataRepositories } from '../../../core';
-import { ConfigService } from '../../../services/config.service';
+import { IConfigService } from '../../../config/interfaces/config.interface';
 import { User, UserSchema } from './model/user.model';
 import { Post, PostSchema } from './model/post.model';
 import { MongoDataRepositories } from './mongo-data-repositories';
 import { MongoDataExceptionFilter } from './mongo-data-exception-filter';
-@Global()
+
 @UseFilters(MongoDataExceptionFilter)
+@Global()
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (configService: IConfigService) => ({
         uri: configService.getConfig().connectionString,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
       }),
-      inject: [ConfigService],
+      inject: [IConfigService],
     }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
@@ -26,7 +31,7 @@ import { MongoDataExceptionFilter } from './mongo-data-exception-filter';
       provide: IDataRepositories,
       useClass: MongoDataRepositories,
     },
-],
+  ] ,
   exports: [IDataRepositories],
 })
 export class MongoDataModule {}

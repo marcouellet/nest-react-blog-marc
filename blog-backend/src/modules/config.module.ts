@@ -1,8 +1,20 @@
-import { Module, Global } from '@nestjs/common';
-import { ConfigService } from '../services/config.service';
+import { Module, DynamicModule, Global } from '@nestjs/common';
+import { IConfigService } from '../config/interfaces/config.interface';
+
 @Global()
-@Module({
-  providers: [ConfigService],
-  exports: [ConfigService],
-})
-export class ConfigModule {}
+@Module({})
+export class ConfigModule {
+
+  public static register(configService: IConfigService): DynamicModule {
+    return {
+      module: ConfigModule,
+      providers: [
+        {
+          provide: IConfigService,
+          useValue: configService,
+        },
+      ],
+      exports: [IConfigService],
+    };
+  }
+}

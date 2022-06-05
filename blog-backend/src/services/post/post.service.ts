@@ -8,9 +8,9 @@ import { PostFactoryService } from './post-factory.service';
 export class PostService {
 
   constructor(
-    private readonly dataServicesRepositories: IDataRepositories,
-    private readonly postFactoryService: PostFactoryService,
-  ) {}
+      private readonly dataServicesRepositories: IDataRepositories,
+      private readonly postFactoryService: PostFactoryService,
+    ) {}
 
   private processPost(post: Post): PostDto {
     if (post) {
@@ -18,7 +18,7 @@ export class PostService {
     } else {
       throw new NotFoundException('Post not found');
     }
-   }
+  }
 
   async getAllPosts(): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.getAll()
