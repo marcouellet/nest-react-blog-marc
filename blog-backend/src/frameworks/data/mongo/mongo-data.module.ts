@@ -15,9 +15,6 @@ import { MongoDataExceptionFilter } from './mongo-data-exception-filter';
       useFactory: async (configService: IConfigService) => ({
         uri: configService.getConfig().connectionString,
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
       }),
       inject: [IConfigService],
     }),

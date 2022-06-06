@@ -39,7 +39,7 @@ import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/conf
     JwtModule.register({}),
   ],
   controllers: [AuthController],
-  providers: [AuthService, IConfigService, CryptographerService, JwtStrategy, JwtRefreshTokenStrategy, LocalStrategy, RoleGuard],
+  providers: [AuthService, CryptographerService, JwtStrategy, JwtRefreshTokenStrategy, LocalStrategy, RoleGuard],
   exports: [AuthService],
 })
 export class AuthModule {}
