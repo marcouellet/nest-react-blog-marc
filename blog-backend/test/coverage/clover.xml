@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1654513279463" clover="3.2.0">
-  <project timestamp="1654513279463" name="All files">
-    <metrics statements="205" coveredstatements="205" conditionals="8" coveredconditionals="8" methods="60" coveredmethods="60" elements="273" coveredelements="273" complexity="0" loc="205" ncloc="205" packages="6" files="20" classes="20"/>
+<coverage generated="1654519371891" clover="3.2.0">
+  <project timestamp="1654519371891" name="All files">
+    <metrics statements="171" coveredstatements="171" conditionals="7" coveredconditionals="7" methods="46" coveredmethods="46" elements="224" coveredelements="224" complexity="0" loc="171" ncloc="171" packages="6" files="18" classes="18"/>
     <package name="config">
       <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="config.constants.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\config\config.constants.ts">
@@ -101,58 +101,18 @@
       </file>
     </package>
     <package name="mock.data.mongo">
-      <metrics statements="24" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-      <file name="mongo-data-repositories.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mock\data\mongo\mongo-data-repositories.mock.ts">
-        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="8" count="4" type="stmt"/>
-        <line num="15" count="37" type="stmt"/>
-        <line num="17" count="37" type="stmt"/>
-        <line num="19" count="37" type="stmt"/>
-        <line num="20" count="37" type="stmt"/>
-        <line num="21" count="37" type="stmt"/>
-      </file>
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="mongo-data.module.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mock\data\mongo\mongo-data.module.mock.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="4" type="stmt"/>
         <line num="2" count="4" type="stmt"/>
         <line num="3" count="4" type="stmt"/>
         <line num="4" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="6" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
-        <line num="8" count="4" type="stmt"/>
-        <line num="9" count="4" type="stmt"/>
-        <line num="10" count="4" type="stmt"/>
-        <line num="11" count="4" type="stmt"/>
-        <line num="18" count="37" type="stmt"/>
-        <line num="38" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
       </file>
     </package>
     <package name="mock.data.mongo.model">
-      <metrics statements="47" coveredstatements="47" conditionals="7" coveredconditionals="7" methods="33" coveredmethods="33"/>
-      <file name="generic-data-repository.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mock\data\mongo\model\generic-data-repository.mock.ts">
-        <metrics statements="15" coveredstatements="15" conditionals="1" coveredconditionals="1" methods="12" coveredmethods="12"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="5" count="74" type="cond" truecount="1" falsecount="0"/>
-        <line num="8" count="36" type="stmt"/>
-        <line num="12" count="4" type="stmt"/>
-        <line num="16" count="3" type="stmt"/>
-        <line num="20" count="6" type="stmt"/>
-        <line num="24" count="16" type="stmt"/>
-        <line num="28" count="2" type="stmt"/>
-        <line num="32" count="3" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="41" count="3" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
-        <line num="49" count="2" type="stmt"/>
-      </file>
+      <metrics statements="32" coveredstatements="32" conditionals="6" coveredconditionals="6" methods="21" coveredmethods="21"/>
       <file name="post.repository.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mock\data\mongo\model\post.repository.mock.ts">
         <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="11" coveredmethods="11"/>
         <line num="1" count="4" type="stmt"/>
