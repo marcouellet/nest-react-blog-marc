@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ModuleMetadata, NotFoundException } from '@nestjs/common';
-import { ConfigModule } from '../../src/modules/config.module';
 import { DataModule } from '../../src/modules/data.module';
 import { DataModuleMock } from '../mock/modules/data.module.mock';
 import { MongoDataModule } from '../../src/frameworks/data/mongo/mongo-data.module';
@@ -11,11 +10,7 @@ describe('DataModule', () => {
   let dataModuleMetadata: ModuleMetadata;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      imports: [
-          ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
-      ],
-    }).compile();
+    const app: TestingModule = await Test.createTestingModule({}).compile();
   });
 
   dataModuleMetadata = DataModule.register(GLOBAL_TEST_CONFIG_SERVICE);
@@ -56,11 +51,7 @@ describe('DataModuleMock', () => {
   let dataModuleMetadata: ModuleMetadata;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      imports: [
-          ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
-      ],
-    }).compile();
+    const app: TestingModule = await Test.createTestingModule({}).compile();
   });
 
   dataModuleMetadata = DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE);

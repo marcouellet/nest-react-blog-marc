@@ -1,6 +1,5 @@
 import { User } from '../../src/core/entities/user.entity';
 import { CreateUserDto, UpdateUserDto, UserDto, RegisterDto, IUpdateUserCriterias } from '../../src/core/dtos';
-import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
 import { testAuthToken } from './auth.data';
 
 const createdOnDate: Date = new Date();
