@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericDataRepository } from '../../../../../src/core/abstracts/generic-data-repository.abstract';
+import { IGenericDataRepository } from '../../../../../src/core/repositories';
 import { Post } from '../../../../../src/core/entities';
 import { PostCriterias } from '../../../../../src/core/find-criterias/post.criterias';
 import { testPost, testPostCount } from '../../../../data/post.data';

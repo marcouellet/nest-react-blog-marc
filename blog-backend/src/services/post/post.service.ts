@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IDataRepositories } from '../../core/abstracts';
+import { IDataRepositories } from '../../core/repositories';
 import { Post } from '../../core/entities';
 import { PostDto, UpdatePostDto } from '../../core/dtos';
 import { PostCriterias } from '../../core/find-criterias/post.criterias';

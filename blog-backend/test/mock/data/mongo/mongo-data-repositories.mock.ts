@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IDataRepositories, IGenericDataRepository } from '../../../../src/core';
-import { GenericDataRepositoryMock } from './model/generic-data-repository.mock';
+import { IDataRepositories, IGenericDataRepository, GenericDataRepository } from '../../../../src/core/repositories';
 import { User } from '../../../../src/frameworks/data/mongo/model/user.model';
 import { Post } from '../../../../src/frameworks/data/mongo/model/post.model';
 
@@ -17,7 +16,7 @@ export class MongoDataRepositoriesMock extends IDataRepositories {
     private readonly PostRepository: IGenericDataRepository<Post>,
   ) {
     super();
-    this.users = new GenericDataRepositoryMock<User>(this.UserRepository);
-    this.posts = new GenericDataRepositoryMock<Post>(this.PostRepository, ['user']);
+    this.users = new GenericDataRepository<User>(this.UserRepository);
+    this.posts = new GenericDataRepository<Post>(this.PostRepository, ['user']);
   }
 }

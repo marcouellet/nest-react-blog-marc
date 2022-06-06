@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRole } from '../../../../../src/core';
-import { IGenericDataRepository } from '../../../../../src/core/abstracts/generic-data-repository.abstract';
+import { IGenericDataRepository } from '../../../../../src/core/repositories';
 import { User } from '../../../../../src/core/entities';
 import { UserCriterias } from '../../../../../src/core/find-criterias/user.criterias';
 import { testUserUnrestricted, testUserAdminUnrestricted, testUserCount, testUserPostsCount } from '../../../../data/user.data';

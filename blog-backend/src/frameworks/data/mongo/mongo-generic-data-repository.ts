@@ -1,5 +1,5 @@
 import { Model, Types } from 'mongoose';
-import { IGenericDataRepository } from '../../../core';
+import { IGenericDataRepository } from '../../../core/repositories';
 
 export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> {
 

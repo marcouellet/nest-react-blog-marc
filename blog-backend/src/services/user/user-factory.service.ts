@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../core/entities';
 import { UserDto, IUpdateUserCriterias, UpdateUserDto } from '../../core/dtos';
-import { IDataRepositories } from '../../core/abstracts';
+import { IDataRepositories } from '../../core/repositories';
 @Injectable()
 export class UserFactoryService {
 

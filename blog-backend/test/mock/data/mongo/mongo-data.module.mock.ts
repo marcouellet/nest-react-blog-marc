@@ -1,6 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IDataRepositories } from '../../../../src/core';
+import { IDataRepositories } from '../../../../src/core/repositories';
 import { User, UserSchema } from '../../../../src/frameworks/data/mongo/model/user.model';
 import { Post, PostSchema } from '../../../../src/frameworks/data/mongo/model/post.model';
 import { IConfigService } from '../../../../src/config/interfaces/config.interface';
