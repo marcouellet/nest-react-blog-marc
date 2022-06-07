@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from '../../src/controllers/user.controller';
 import { UserService } from '../../src/services/user/user.service';
-import UserServiceProvider from '../providers/user.service.provider';
+import UserServiceMock from '../mock/user.service.mock';
 import { testUserId, testServiceUserDto, testCreateNonExistingUserDto, testUpdateUserDto, testFindUserCriterias,
           testServiceUserCount } from '../data/user.data';
 
@@ -12,7 +12,7 @@ describe('User Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [ UserServiceProvider ],
+      providers: [ UserServiceMock ],
     }).compile();
 
     userController = module.get<UserController>(UserController);

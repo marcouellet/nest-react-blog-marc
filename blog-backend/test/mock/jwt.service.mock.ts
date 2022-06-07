@@ -1,7 +1,7 @@
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { testSignResult, testVerifyResult } from '../data/token.data';
 
-const JwtServiceProvider = {
+const JwtServiceMock = {
     provide: JwtService,
     useValue: {
         sign: jest.fn().mockImplementation((payload: string, options?: JwtSignOptions): string => testSignResult),
@@ -9,4 +9,4 @@ const JwtServiceProvider = {
      },
 };
 
-export default JwtServiceProvider;
+export default JwtServiceMock;

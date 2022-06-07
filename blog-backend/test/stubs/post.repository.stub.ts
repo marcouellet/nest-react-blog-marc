@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericDataRepository } from '../../../../../src/core/repositories';
-import { Post } from '../../../../../src/core/entities';
-import { PostCriterias } from '../../../../../src/core/find-criterias/post.criterias';
-import { testPost, testPostCount } from '../../../../data/post.data';
+import { IGenericDataRepository } from '../../src/core/repositories';
+import { Post } from '../../src/core/entities';
+import { PostCriterias } from '../../src/core/find-criterias/post.criterias';
+import { testPost, testPostCount } from '../data/post.data';
 @Injectable()
-export class PostRepositoriesMock implements IGenericDataRepository<Post> {
+export class PostRepositoryStub implements IGenericDataRepository<Post> {
 
     convertToGenericEntity(obj: any): Post {
         return obj;

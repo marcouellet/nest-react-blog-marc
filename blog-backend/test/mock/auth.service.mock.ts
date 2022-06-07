@@ -3,7 +3,7 @@ import { LoginDto, RegisterDto } from '../../src/core/dtos';
 import { testJwtPayload } from '../data/auth.data';
 import { testUserDto, testUserUnknownDto} from '../data/user.data';
 
-const AuthServiceProvider = {
+const AuthServiceMock = {
     provide: AuthService,
     useValue: {
       validateToken: jest.fn().mockImplementation((token: string) => Promise.resolve(testJwtPayload)),
@@ -12,4 +12,4 @@ const AuthServiceProvider = {
     },
 };
 
-export default AuthServiceProvider;
+export default AuthServiceMock;

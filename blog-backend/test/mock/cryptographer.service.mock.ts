@@ -2,7 +2,7 @@ import { CryptographerService } from '../../src/services/cryptographer.service';
 
 export const passwordHashed = 'password.hashed';
 
-const CryptographerServiceProvider = {
+const CryptographerServiceMock = {
     provide: CryptographerService,
     useValue: {
         hashPassword: jest.fn().mockImplementation((password: string) => passwordHashed),
@@ -10,4 +10,4 @@ const CryptographerServiceProvider = {
     },
 };
 
-export default CryptographerServiceProvider;
+export default CryptographerServiceMock;

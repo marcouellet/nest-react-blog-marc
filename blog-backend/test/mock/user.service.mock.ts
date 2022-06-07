@@ -3,7 +3,7 @@ import { UserDto, UpdateUserDto } from '../../src/core/dtos';
 import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
 import { testServiceUserCount, testServiceUserDto, testServiceUserDtoUnrestricted} from '../data/user.data';
 
-const UserServiceProvider = {
+const UserServiceMock = {
     provide: UserService,
     useValue: {
       getAllUsers: jest.fn().mockImplementation(() => Promise.resolve([testServiceUserDto])),
@@ -17,4 +17,4 @@ const UserServiceProvider = {
     },
 };
 
-export default UserServiceProvider;
+export default UserServiceMock;

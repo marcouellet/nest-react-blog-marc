@@ -3,7 +3,7 @@ import { PostDto, UpdatePostDto } from '../../src/core/dtos';
 import { PostCriterias } from '../../src/core/find-criterias/post.criterias';
 import { testServicePostDto, testServicePostCount } from '../data/post.data';
 
-const PostServiceProvider = {
+const PostServiceMock = {
     provide: PostService,
     useValue: {
       getAllPosts: jest.fn().mockImplementation(() => Promise.resolve([testServicePostDto])),
@@ -18,4 +18,4 @@ const PostServiceProvider = {
     },
 };
 
-export default PostServiceProvider;
+export default PostServiceMock;

@@ -1,11 +1,11 @@
 import { AppService } from '../../src/services/app.service';
 import { testServerInfo } from '../data/app.data';
 
-const AppServiceProvider = {
+const AppServiceMock = {
     provide: AppService,
     useValue: {
       getServerInfo: jest.fn().mockImplementation(() => testServerInfo),
      },
 };
 
-export default AppServiceProvider;
+export default AppServiceMock;

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { UserRole } from '../../../../../src/core';
-import { IGenericDataRepository } from '../../../../../src/core/repositories';
-import { User } from '../../../../../src/core/entities';
-import { UserCriterias } from '../../../../../src/core/find-criterias/user.criterias';
-import { testUserUnrestricted, testUserAdminUnrestricted, testUserCount, testUserPostsCount } from '../../../../data/user.data';
+import { UserRole } from '../../src/core';
+import { IGenericDataRepository } from '../../src/core/repositories';
+import { User } from '../../src/core/entities';
+import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
+import { testUserUnrestricted, testUserAdminUnrestricted, testUserCount, testUserPostsCount } from '../data/user.data';
 
 @Injectable()
-export class UserRepositoriesMock implements IGenericDataRepository<User> {
+export class UserRepositoryStub implements IGenericDataRepository<User> {
 
      convertToGenericEntity(obj: any): User {
         return obj;

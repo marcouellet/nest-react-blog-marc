@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for providers/auth.service.provider.ts</title>
+    <title>Code coverage report for mock/user.service.mock.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">providers</a> auth.service.provider.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">mock</a> user.service.mock.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -78,36 +78,51 @@
 <a name='L13'></a><a href='#L13'>13</a>
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
-<a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { AuthService } from '../../src/services/auth.service';
-import { LoginDto, RegisterDto } from '../../src/core/dtos';
-import { testJwtPayload } from '../data/auth.data';
-import { testUserDto, testUserUnknownDto} from '../data/user.data';
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { UserService } from '../../src/services/user/user.service';
+import { UserDto, UpdateUserDto } from '../../src/core/dtos';
+import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
+import { testServiceUserCount, testServiceUserDto, testServiceUserDtoUnrestricted} from '../data/user.data';
 &nbsp;
-const AuthServiceProvider = {
-    provide: AuthService,
+const UserServiceMock = {
+    provide: UserService,
     useValue: {
-      validateToken: jest.fn().mockImplementation((token: string) =&gt; Promise.resolve(testJwtPayload)),
-      login: jest.fn().mockImplementation((loginDto: LoginDto) =&gt; Promise.resolve(testUserDto)),
-      register: jest.fn().mockImplementation((registerDto: RegisterDto) =&gt; Promise.resolve(testUserUnknownDto)),
+      getAllUsers: jest.fn().mockImplementation(() =&gt; Promise.resolve([testServiceUserDto])),
+      getUserById: jest.fn().mockImplementation((id: string) =&gt; Promise.resolve(testServiceUserDto)),
+      findUser: jest.fn().mockImplementation((criterias: UserCriterias) =&gt; Promise.resolve(testServiceUserDto)),
+      findManyUsers: jest.fn().mockImplementation((criterias: UserCriterias) =&gt; Promise.resolve([testServiceUserDto])),
+      findManyUsersCount: jest.fn().mockImplementation((criterias: UserCriterias) =&gt; Promise.resolve(testServiceUserCount)),
+      createUser: jest.fn().mockImplementation((userDto: UserDto) =&gt; Promise.resolve(testServiceUserDto)),
+      updateUser: jest.fn().mockImplementation((id: string, updateUserDto: UpdateUserDto) =&gt; Promise.resolve(testServiceUserDto)),
+      deleteUser: jest.fn().mockImplementation((id: string) =&gt; Promise.resolve(testServiceUserDto)),
     },
 };
 &nbsp;
-export default AuthServiceProvider;
+export default UserServiceMock;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -115,7 +130,7 @@ export default AuthServiceProvider;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Jun 07 2022 09:32:24 GMT-0400 (Eastern Daylight Saving Time)
+                at Tue Jun 07 2022 16:48:35 GMT-0400 (Eastern Daylight Saving Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostService } from '../../src/services/post/post.service';
 import { PostFactoryService } from '../../src/services/post/post-factory.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
-import { DataModuleMock } from '../mock/modules/data.module.mock';
+import { DataModuleStub } from '../stubs/data.module.stub';
 import { testServicePostId, testServicePostDto, testCreatePostDto, testUpdatePostDto, testFindPostCriterias,
           testServicePostCount } from '../data/post.data';
-import UserRepositoryProvider from '../providers/user.repository.provider';
-import PostRepositoryProvider from '../providers/post.repository.provider';
+import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
+import PostRepositoryStubProvider from '../providers/post.repository.stub.provider';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -17,10 +17,10 @@ describe('PostService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
-        DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE),
+        DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
       providers: [PostService, PostFactoryService, UserFactoryService,
-                  UserRepositoryProvider, PostRepositoryProvider],
+                  UserRepositoryStubProvider, PostRepositoryStubProvider],
     }).compile();
 
     postService = module.get<PostService>(PostService);

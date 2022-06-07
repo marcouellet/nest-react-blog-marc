@@ -2,10 +2,10 @@ import { ForbiddenException} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
-import { DataModuleMock } from '../mock/modules/data.module.mock';
-import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
-import UserRepositoryProvider from '../providers/user.repository.provider';
-import PostRepositoryProvider from '../providers/post.repository.provider';
+import { DataModuleStub } from '../stubs/data.module.stub';
+import CryptographerServiceMock from '../mock/cryptographer.service.mock';
+import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
+import PostRepositoryStubProvider from '../providers/post.repository.stub.provider';
 import { testServiceUserId, testServiceUserDto, testFindUserCriterias, testCreateNonExistingUserDto, testCreateExistingUserDto,
           testUpdateUserDto, testServiceUserCount, testServiceUserDtoUnrestricted } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
@@ -18,10 +18,10 @@ describe('UserService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
-        DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE),
+        DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
-      providers: [UserService, UserFactoryService, CryptographerServiceProvider,
-                  UserRepositoryProvider, PostRepositoryProvider],
+      providers: [UserService, UserFactoryService, CryptographerServiceMock,
+                  UserRepositoryStubProvider, PostRepositoryStubProvider],
     }).compile();
 
     userService = module.get<UserService>(UserService);

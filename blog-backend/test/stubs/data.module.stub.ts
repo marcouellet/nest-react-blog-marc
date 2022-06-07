@@ -1,9 +1,9 @@
 import { Module, DynamicModule } from '@nestjs/common';
-import { IConfigService } from '../../../src/config/interfaces/config.interface';
-import { MONGO_SERVER_NAME } from '../../../src/config/config.constants';
-import { MongoDataModuleMock } from '../data/mongo/mongo-data.module.mock';
+import { IConfigService } from '../../src/config/interfaces/config.interface';
+import { MONGO_SERVER_NAME } from '../../src/config/config.constants';
+import { MongoDataModuleStub } from './mongo-data.module.stub';
 @Module({})
-export class DataModuleMock {
+export class DataModuleStub {
 
   public static register(configService: IConfigService): DynamicModule {
 
@@ -14,12 +14,12 @@ export class DataModuleMock {
 
     switch (dataServerName) {
       case MONGO_SERVER_NAME:
-        modules.push(MongoDataModuleMock);
+        modules.push(MongoDataModuleStub);
         break;
      }
 
     return {
-        module: DataModuleMock,
+        module: DataModuleStub,
         imports: modules,
       };
   }

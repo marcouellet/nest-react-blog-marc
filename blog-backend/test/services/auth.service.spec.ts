@@ -3,9 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
-import JwtServiceProvider from '../providers/jwt.service.provider';
-import CryptographerServiceProvider from '../providers/cryptographer.service.provider';
-import { DataModuleMock } from '../mock/modules/data.module.mock';
+import { CryptographerService } from '../../src/services/cryptographer.service';
+import { JwtService } from '@nestjs/jwt';
+import JwtServiceMock from '../mock/jwt.service.mock';
+import CryptographerServiceMock from '../mock/cryptographer.service.mock';
+import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
+import { DataModuleStub } from '../stubs/data.module.stub';
 import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted,
           testFindUserAdminCriterias, testServiceUserAdminDto } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
@@ -15,21 +18,33 @@ import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthService', () => {
   let authService: AuthService;
+  let jwtService: JwtService;
+  let cryptoService: CryptographerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
-        DataModuleMock.register(GLOBAL_TEST_CONFIG_SERVICE),
+        DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
-      providers: [AuthService, UserService, UserFactoryService, JwtServiceProvider, CryptographerServiceProvider],
+      providers: [AuthService, UserService, UserFactoryService, UserRepositoryStubProvider, JwtServiceMock, CryptographerServiceMock],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
+    jwtService = module.get<JwtService>(JwtService);
+    cryptoService = module.get<CryptographerService>(CryptographerService);
   });
 
   it('authService should be defined', () => {
     expect(authService).toBeDefined();
+  });
+
+  it('jwtService should be defined', () => {
+    expect(jwtService).toBeDefined();
+  });
+
+  it('cryptoService should be defined', () => {
+    expect(cryptoService).toBeDefined();
   });
 
   describe('getUserFromToken', () => {
@@ -41,12 +56,14 @@ describe('AuthService', () => {
   describe('validateToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateToken('token')).toEqual(testJwtPayload);
+      expect(jwtService.verifyAsync).toHaveBeenCalled();
     });
   });
 
   describe('validateRefreshToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateRefreshToken('token')).toEqual(testJwtPayload);
+      expect(jwtService.verifyAsync).toHaveBeenCalled();
     });
   });
 
@@ -56,6 +73,7 @@ describe('AuthService', () => {
     });
   });
 
+  // Fail because finduser in userService mock return a non admin user 
   describe('validateUser - admin required with admin user supplied', () => {
     it('should return a user admin', async () => {
       expect(await authService.validateUser(testFindUserAdminCriterias, true)).toEqual(testServiceUserAdminDto);
@@ -81,6 +99,7 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should return a user', async () => {
       expect(await authService.login(testLoginDto)).toEqual(testUserDto);
+      expect(cryptoService.checkPassword).toHaveBeenCalled();
     });
   });
 
@@ -107,6 +126,7 @@ describe('AuthService', () => {
   describe('register', () => {
     it('should return a user', async () => {
       expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDto);
+      expect(cryptoService.hashPassword).toHaveBeenCalled();
     });
   });
 

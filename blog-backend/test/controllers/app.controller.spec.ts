@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from '../../src/controllers/app.controller';
 import { AppService } from '../../src/services/app.service';
-import AppServiceProvider from '../providers/app.service.provider';
+import AppServiceMock from '../mock/app.service.mock';
 import { testServerInfo } from '../data/app.data';
 
 describe('AppController', () => {
@@ -11,7 +11,7 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppServiceProvider],
+      providers: [AppServiceMock],
     }).compile();
 
     appController = app.get<AppController>(AppController);
@@ -27,7 +27,7 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Marc Nest Blog API"', () => {
+    it('should return testServerInfo', () => {
       expect(appController.getServerInfo()).toStrictEqual(testServerInfo);
       expect(appService.getServerInfo).toHaveBeenCalled();
     });

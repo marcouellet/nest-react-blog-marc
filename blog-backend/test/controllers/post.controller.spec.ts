@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from '../../src/controllers/post.controller';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
-import UserServiceProvider from '../providers/user.service.provider';
-import PostServiceProvider from '../providers/post.service.provider';
+import UserServiceMock from '../mock/user.service.mock';
+import PostServiceMock from '../mock/post.service.mock';
 import { testPostId, testServicePostDto, testServicePostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 
 describe('Post Controller', () => {
@@ -14,7 +14,7 @@ describe('Post Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostController],
-      providers: [PostServiceProvider, UserServiceProvider],
+      providers: [PostServiceMock, UserServiceMock],
     }).compile();
 
     postController = module.get<PostController>(PostController);

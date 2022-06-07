@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../../src/controllers/auth.controller';
 import { AuthService } from '../../src/services/auth.service';
-import AuthServiceProvider from '../providers/auth.service.provider';
+import AuthServiceMock from '../mock/auth.service.mock';
 import { testNotLoggedInDto, testRegisterUnknownUserDto, testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';
 import { testUserDto, testUserUnknownDto} from '../data/user.data';
 
@@ -13,7 +13,7 @@ describe('AuthController', () => {
     beforeEach(async () => {
         const auth: TestingModule = await Test.createTestingModule({
         controllers: [AuthController],
-        providers: [AuthServiceProvider],
+        providers: [AuthServiceMock],
         }).compile();
 
         authController = auth.get<AuthController>(AuthController);
