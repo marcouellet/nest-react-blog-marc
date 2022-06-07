@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for config/config.global.ts</title>
+    <title>Code coverage report for providers/app.service.provider.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">config</a> config.global.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">providers</a> app.service.provider.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -39,7 +39,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
@@ -70,20 +70,32 @@
 <a name='L5'></a><a href='#L5'>5</a>
 <a name='L6'></a><a href='#L6'>6</a>
 <a name='L7'></a><a href='#L7'>7</a>
-<a name='L8'></a><a href='#L8'>8</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ENV_TEST_DIRECTORY, ENV_TEST_CONFIG_FILE_OK, ENV_TEST_CONFIG_FILE_WITH_WRONG_DATA } from './config.constants';
-import { ConfigOptions } from '../../src/config/config.options';
-import { ConfigService } from '../../src/services/config.service';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { AppService } from '../../src/services/app.service';
+import { testServerInfo } from '../data/app.data';
 &nbsp;
-export const GLOBAL_TEST_CONFIG_SERVICE =  new ConfigService(new ConfigOptions(ENV_TEST_DIRECTORY, ENV_TEST_CONFIG_FILE_OK));
-export const GLOBAL_TEST_CONFIG_SERVICE_WITH_WRONG_OPTIONS =  new ConfigService(
-        new ConfigOptions(ENV_TEST_DIRECTORY, ENV_TEST_CONFIG_FILE_WITH_WRONG_DATA));
+const AppServiceProvider = {
+    provide: AppService,
+    useValue: {
+      getServerInfo: jest.fn().mockImplementation(() =&gt; testServerInfo),
+     },
+};
+&nbsp;
+export default AppServiceProvider;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
