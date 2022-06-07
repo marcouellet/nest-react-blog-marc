@@ -18,8 +18,8 @@ import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthService', () => {
   let authService: AuthService;
-  let jwtService: JwtService;
-  let cryptoService: CryptographerService;
+  let jwtServiceMock: JwtService;
+  let cryptoServiceMock: CryptographerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,20 +31,20 @@ describe('AuthService', () => {
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
-    jwtService = module.get<JwtService>(JwtService);
-    cryptoService = module.get<CryptographerService>(CryptographerService);
+    jwtServiceMock = module.get<JwtService>(JwtService);
+    cryptoServiceMock = module.get<CryptographerService>(CryptographerService);
   });
 
   it('authService should be defined', () => {
     expect(authService).toBeDefined();
   });
 
-  it('jwtService should be defined', () => {
-    expect(jwtService).toBeDefined();
+  it('jwtServiceMock should be defined', () => {
+    expect(jwtServiceMock).toBeDefined();
   });
 
-  it('cryptoService should be defined', () => {
-    expect(cryptoService).toBeDefined();
+  it('cryptoServiceMock should be defined', () => {
+    expect(cryptoServiceMock).toBeDefined();
   });
 
   describe('getUserFromToken', () => {
@@ -56,14 +56,14 @@ describe('AuthService', () => {
   describe('validateToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateToken('token')).toEqual(testJwtPayload);
-      expect(jwtService.verifyAsync).toHaveBeenCalled();
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalled();
     });
   });
 
   describe('validateRefreshToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateRefreshToken('token')).toEqual(testJwtPayload);
-      expect(jwtService.verifyAsync).toHaveBeenCalled();
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalled();
     });
   });
 
@@ -99,7 +99,7 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should return a user', async () => {
       expect(await authService.login(testLoginDto)).toEqual(testUserDto);
-      expect(cryptoService.checkPassword).toHaveBeenCalled();
+      expect(cryptoServiceMock.checkPassword).toHaveBeenCalled();
     });
   });
 
@@ -126,7 +126,7 @@ describe('AuthService', () => {
   describe('register', () => {
     it('should return a user', async () => {
       expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDto);
-      expect(cryptoService.hashPassword).toHaveBeenCalled();
+      expect(cryptoServiceMock.hashPassword).toHaveBeenCalled();
     });
   });
 

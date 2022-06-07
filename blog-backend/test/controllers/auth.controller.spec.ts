@@ -8,7 +8,7 @@ import { testUserDto, testUserUnknownDto} from '../data/user.data';
 describe('AuthController', () => {
 
     let authController: AuthController;
-    let authService: AuthService;
+    let authServiceMock: AuthService;
 
     beforeEach(async () => {
         const auth: TestingModule = await Test.createTestingModule({
@@ -17,7 +17,7 @@ describe('AuthController', () => {
         }).compile();
 
         authController = auth.get<AuthController>(AuthController);
-        authService = auth.get<AuthService>(AuthService);
+        authServiceMock = auth.get<AuthService>(AuthService);
     });
 
     it('authController should be defined', () => {
@@ -25,27 +25,27 @@ describe('AuthController', () => {
     });
 
     it('authService should be defined', () => {
-        expect(authService).toBeDefined();
+        expect(authServiceMock).toBeDefined();
     });
 
     describe('whoAmI', () => {
         it('should return "dummy@gmail.com"', async () => {
           expect(await authController.whoAmI(testRequestWithAuthorize)).toStrictEqual(testJwtPayload);
-          expect(authService.validateToken).toHaveBeenCalled();
+          expect(authServiceMock.validateToken).toHaveBeenCalled();
         });
     });
 
     describe('login', () => {
       it('should return a user"', async () => {
         expect(await authController.login(testRequestWithAuthorize, testNotLoggedInDto)).toStrictEqual(testUserDto);
-        expect(authService.login).toHaveBeenCalled();
+        expect(authServiceMock.login).toHaveBeenCalled();
       });
     });
 
     describe('register', () => {
       it('should return a user', async () => {
         expect(await authController.register(testRegisterUnknownUserDto)).toStrictEqual(testUserUnknownDto);
-        expect(authService.register).toHaveBeenCalled();
+        expect(authServiceMock.register).toHaveBeenCalled();
       });
     });
 });

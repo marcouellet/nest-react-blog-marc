@@ -6,7 +6,7 @@ import { testServerInfo } from '../data/app.data';
 
 describe('AppController', () => {
   let appController: AppController;
-  let appService: AppService;
+  let appServiceMock: AppService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -15,7 +15,7 @@ describe('AppController', () => {
     }).compile();
 
     appController = app.get<AppController>(AppController);
-    appService = app.get<AppService>(AppService);
+    appServiceMock = app.get<AppService>(AppService);
   });
 
   it('appController should be defined', () => {
@@ -23,13 +23,13 @@ describe('AppController', () => {
   });
 
   it('appService should be defined', () => {
-      expect(appService).toBeDefined();
+      expect(appServiceMock).toBeDefined();
   });
 
   describe('root', () => {
     it('should return testServerInfo', () => {
       expect(appController.getServerInfo()).toStrictEqual(testServerInfo);
-      expect(appService.getServerInfo).toHaveBeenCalled();
+      expect(appServiceMock.getServerInfo).toHaveBeenCalled();
     });
   });
 });

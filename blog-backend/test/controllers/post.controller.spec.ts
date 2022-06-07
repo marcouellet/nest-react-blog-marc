@@ -8,8 +8,8 @@ import { testPostId, testServicePostDto, testServicePostCount, testCreatePostDto
 
 describe('Post Controller', () => {
   let postController: PostController;
-  let userService: UserService;
-  let postService: PostService;
+  let userServiceMock: UserService;
+  let postServiceMock: PostService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,8 +18,8 @@ describe('Post Controller', () => {
     }).compile();
 
     postController = module.get<PostController>(PostController);
-    userService = module.get<UserService>(UserService);
-    postService = module.get<PostService>(PostService);
+    userServiceMock = module.get<UserService>(UserService);
+    postServiceMock = module.get<PostService>(PostService);
   });
 
   it('postController should be defined', () => {
@@ -27,74 +27,74 @@ describe('Post Controller', () => {
   });
 
   it('userService should be defined', () => {
-    expect(userService).toBeDefined();
+    expect(userServiceMock).toBeDefined();
   });
 
   it('postService should be defined', () => {
-    expect(postService).toBeDefined();
+    expect(postServiceMock).toBeDefined();
   });
 
   describe('getAll', () => {
     it('should return an array containing one post"', async () => {
       expect(await postController.getAll()).toStrictEqual([testServicePostDto]);
-      expect(postService.getAllPosts).toHaveBeenCalled();
+      expect(postServiceMock.getAllPosts).toHaveBeenCalled();
     });
   });
 
   describe('getPost', () => {
     it('should return a post"', async () => {
       expect(await postController.getPost(testPostId)).toStrictEqual(testServicePostDto);
-      expect(postService.getPostById).toHaveBeenCalled();
+      expect(postServiceMock.getPostById).toHaveBeenCalled();
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return testServicePostCount"', async () => {
       expect(await postController.getNumberOfPostsForUser(testPostId)).toStrictEqual(testServicePostCount);
-      expect(postService.getNumberOfPostsForUser).toHaveBeenCalled();
+      expect(postServiceMock.getNumberOfPostsForUser).toHaveBeenCalled();
     });
   });
 
   describe('createPost', () => {
     it('should return a post"', async () => {
       expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testServicePostDto);
-      expect(userService.getUserById).toHaveBeenCalled();
-      expect(postService.createPost).toHaveBeenCalled();
+      expect(userServiceMock.getUserById).toHaveBeenCalled();
+      expect(postServiceMock.createPost).toHaveBeenCalled();
     });
   });
 
   describe('finPost', () => {
     it('should return a post"', async () => {
       expect(await postController.finPost(testFindPostCriterias)).toStrictEqual(testServicePostDto);
-      expect(postService.findPost).toHaveBeenCalled();
+      expect(postServiceMock.findPost).toHaveBeenCalled();
     });
   });
 
   describe('finManyPosts', () => {
     it('should return an array of one post"', async () => {
       expect(await postController.finManyPosts(testFindPostCriterias)).toStrictEqual([testServicePostDto]);
-      expect(postService.findManyPosts).toHaveBeenCalled();
+      expect(postServiceMock.findManyPosts).toHaveBeenCalled();
     });
   });
 
   describe('finManyPostsCount', () => {
     it('should return testServicePostCount"', async () => {
       expect(await postController.findManyPostsCount(testFindPostCriterias)).toStrictEqual(testServicePostCount);
-      expect(postService.findManyPostsCount).toHaveBeenCalled();
+      expect(postServiceMock.findManyPostsCount).toHaveBeenCalled();
     });
   });
 
   describe('updatePost', () => {
     it('should return a post"', async () => {
       expect(await postController.updatePost(testPostId, testUpdatePostDto)).toStrictEqual(testServicePostDto);
-      expect(postService.updatePost).toHaveBeenCalled();
+      expect(postServiceMock.updatePost).toHaveBeenCalled();
     });
   });
 
   describe('deletePost', () => {
     it('should return a post"', async () => {
       expect(await postController.deletePost(testPostId)).toStrictEqual(testServicePostDto);
-      expect(postService.deletePost).toHaveBeenCalled();
+      expect(postServiceMock.deletePost).toHaveBeenCalled();
     });
   });
 });

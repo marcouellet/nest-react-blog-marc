@@ -2,6 +2,7 @@ import { ForbiddenException} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
+import { CryptographerService } from '../../src/services/cryptographer.service';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import CryptographerServiceMock from '../mock/cryptographer.service.mock';
 import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
@@ -13,6 +14,7 @@ import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('UserService', () => {
   let userService: UserService;
+  let cryptoServiceMock: CryptographerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,10 +27,15 @@ describe('UserService', () => {
     }).compile();
 
     userService = module.get<UserService>(UserService);
+    cryptoServiceMock = module.get<CryptographerService>(CryptographerService);
   });
 
   it('userService should be defined', () => {
     expect(userService).toBeDefined();
+  });
+
+  it('cryptoServiceMock should be defined', () => {
+    expect(cryptoServiceMock).toBeDefined();
   });
 
   describe('getAllUsers', () => {
@@ -83,6 +90,7 @@ describe('UserService', () => {
   describe('createUser', () => {
     it('should return a user', async () => {
       expect(await userService.createUser(testCreateNonExistingUserDto)).toEqual(testServiceUserDto);
+      expect(cryptoServiceMock.hashPassword).toHaveBeenCalled();
     });
   });
 
