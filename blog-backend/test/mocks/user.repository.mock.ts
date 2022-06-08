@@ -1,7 +1,7 @@
 import { User } from '../../src/core/entities';
 import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
 import { UserRole } from '../../src/core';
-import { testUser, testUserCount, testUserUnrestricted, testUserAdminUnrestricted, testUserPostsCount } from '../data/user.data';
+import { testUserCount, testUserUnrestricted, testUserAdminUnrestricted } from '../data/user.data';
 
 const UserRepositoryMock = {
     provide: User.name,
