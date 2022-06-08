@@ -3,7 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { CryptographerService } from '../../src/services/cryptographer.service';
+import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
+import { User } from '../../src/core/entities/user.entity';
+import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import UserRepositoryMock from '../mocks/user.repository.mock';
 import PostRepositoryMock from '../mocks/post.repository.mock';
@@ -14,7 +17,9 @@ import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('UserService', () => {
   let userService: UserService;
+  let dataServiceRepositories: DataServiceRepositories;
   let cryptoServiceMock: CryptographerService;
+  let userRepositoryMock: IGenericDataRepository<User>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,12 +27,14 @@ describe('UserService', () => {
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
         DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
-      providers: [UserService, UserFactoryService, CryptographerServiceMock,
-                  UserRepositoryMock, PostRepositoryMock],
+      providers: [UserService, UserFactoryService, DataServiceRepositories, CryptographerServiceMock],
     }).compile();
 
     userService = module.get<UserService>(UserService);
     cryptoServiceMock = module.get<CryptographerService>(CryptographerService);
+    dataServiceRepositories = module.get<DataServiceRepositories>(DataServiceRepositories);
+    const repositories: any = dataServiceRepositories.repositories();
+    userRepositoryMock = repositories.UserRepository; // UserRepository dymamically added by jest
   });
 
   it('userService should be defined', () => {
@@ -38,51 +45,67 @@ describe('UserService', () => {
     expect(cryptoServiceMock).toBeDefined();
   });
 
+  it('dataServiceRepositories should be defined', () => {
+    expect(dataServiceRepositories).toBeDefined();
+  });
+
+  it('userRepositoryMock should be defined', () => {
+    expect(userRepositoryMock).toBeDefined();
+  });
+
   describe('getAllUsers', () => {
     it('should return an array of one user', async () => {
       expect(await userService.getAllUsers()).toEqual([testServiceUserDto]);
+      expect(userRepositoryMock.getAll).toHaveBeenCalled();
     });
   });
 
   describe('getUserById', () => {
     it('should return a user', async () => {
       expect(await userService.getUserById(testUserId)).toEqual(testServiceUserDto);
+      expect(userRepositoryMock.get).toHaveBeenCalled();
     });
   });
 
   describe('getUserByIdUnrestricted', () => {
     it('should return a user', async () => {
       expect(await userService.getUserByIdUnrestricted(testUserId)).toEqual(testServiceUserDtoUnrestricted);
+      expect(userRepositoryMock.get).toHaveBeenCalled();
     });
   });
 
   describe('findUser', () => {
     it('should return a user', async () => {
       expect(await userService.findUser(testFindUserCriterias)).toEqual(testServiceUserDto);
+      expect(userRepositoryMock.findOne).toHaveBeenCalled();
     });
   });
 
   describe('verifyUserExist', () => {
     it('should return a user', async () => {
       expect(await userService.verifyUserExist(testFindUserCriterias)).toEqual(true);
+      expect(userRepositoryMock.findOne).toHaveBeenCalled();
     });
   });
 
   describe('findUserUnrestricted', () => {
     it('should return a user with password', async () => {
       expect(await userService.findUserUnrestricted(testFindUserCriterias)).toEqual(testServiceUserDtoUnrestricted);
+      expect(userRepositoryMock.findOne).toHaveBeenCalled();
     });
   });
 
   describe('findManyUsers', () => {
     it('should return an array of one user', async () => {
       expect(await userService.findManyUsers(testFindUserCriterias)).toEqual([testServiceUserDto]);
+      expect(userRepositoryMock.findMany).toHaveBeenCalled();
     });
   });
 
   describe('findManyUsersCount', () => {
     it('should return testUserCount', async () => {
       expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testUserCount);
+      expect(userRepositoryMock.findManyCount).toHaveBeenCalled();
     });
   });
 
@@ -90,6 +113,7 @@ describe('UserService', () => {
     it('should return a user', async () => {
       expect(await userService.createUser(testCreateNonExistingUserDto)).toEqual(testServiceUserDto);
       expect(cryptoServiceMock.hashPassword).toHaveBeenCalled();
+      expect(userRepositoryMock.create).toHaveBeenCalled();
     });
   });
 
@@ -106,12 +130,14 @@ describe('UserService', () => {
   describe('updateUser', () => {
     it('should return a user', async () => {
       expect(await userService.updateUser(testUserId, testUpdateUserDto)).toEqual(testServiceUserDto);
+      expect(userRepositoryMock.update).toHaveBeenCalled();
     });
   });
 
   describe('deleteUser', () => {
     it('should return a user', async () => {
       expect(await userService.deleteUser(testUserId)).toEqual(testServiceUserDto);
+      expect(userRepositoryMock.delete).toHaveBeenCalled();
     });
   });
 });
