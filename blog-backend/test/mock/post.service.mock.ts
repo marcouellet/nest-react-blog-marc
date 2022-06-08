@@ -1,20 +1,20 @@
 import { PostService } from '../../src/services/post/post.service';
 import { PostDto, UpdatePostDto } from '../../src/core/dtos';
 import { PostCriterias } from '../../src/core/find-criterias/post.criterias';
-import { testServicePostDto, testServicePostCount } from '../data/post.data';
+import { testPost, testPostCount } from '../data/post.data';
 
 const PostServiceMock = {
     provide: PostService,
     useValue: {
-      getAllPosts: jest.fn().mockImplementation(() => Promise.resolve([testServicePostDto])),
-      getPostById: jest.fn().mockImplementation((id: string) => Promise.resolve(testServicePostDto)),
-      getNumberOfPostsForUser: jest.fn().mockImplementation((userId: string) => Promise.resolve(1)),
-      findPost: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve(testServicePostDto)),
-      findManyPosts: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve([testServicePostDto])),
-      findManyPostsCount: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve(testServicePostCount)),
-      createPost: jest.fn().mockImplementation((postDto: PostDto) => Promise.resolve(testServicePostDto)),
-      updatePost: jest.fn().mockImplementation((id: string, updatePostDto: UpdatePostDto) => Promise.resolve(testServicePostDto)),
-      deletePost: jest.fn().mockImplementation((id: string) => Promise.resolve(testServicePostDto)),
+      getAllPosts: jest.fn().mockImplementation(() => Promise.resolve([testPost])),
+      getPostById: jest.fn().mockImplementation((id: string) => Promise.resolve(testPost)),
+      getNumberOfPostsForUser: jest.fn().mockImplementation((userId: string) => Promise.resolve(testPostCount)),
+      findPost: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve(testPost)),
+      findManyPosts: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve([testPost])),
+      findManyPostsCount: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve(testPostCount)),
+      createPost: jest.fn().mockImplementation((postDto: PostDto) => Promise.resolve(testPost)),
+      updatePost: jest.fn().mockImplementation((id: string, updatePostDto: UpdatePostDto) => Promise.resolve(testPost)),
+      deletePost: jest.fn().mockImplementation((id: string) => Promise.resolve(testPost)),
     },
 };
 

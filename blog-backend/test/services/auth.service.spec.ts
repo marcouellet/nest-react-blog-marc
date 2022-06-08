@@ -9,8 +9,8 @@ import JwtServiceMock from '../mock/jwt.service.mock';
 import CryptographerServiceMock from '../mock/cryptographer.service.mock';
 import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
 import { DataModuleStub } from '../stubs/data.module.stub';
-import { testUserDto, testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted,
-          testFindUserAdminCriterias, testServiceUserAdminDto } from '../data/user.data';
+import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias, 
+          testUserAdminDto, testUserDto, testUserDtoUnrestricted } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
 import { ConfigModule } from '../../src/modules/config.module';
@@ -76,7 +76,7 @@ describe('AuthService', () => {
   // Fail because finduser in userService mock return a non admin user 
   describe('validateUser - admin required with admin user supplied', () => {
     it('should return a user admin', async () => {
-      expect(await authService.validateUser(testFindUserAdminCriterias, true)).toEqual(testServiceUserAdminDto);
+      expect(await authService.validateUser(testFindUserAdminCriterias, true)).toEqual(testUserAdminDto);
     });
   });
 
