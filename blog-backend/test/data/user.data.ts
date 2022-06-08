@@ -5,9 +5,7 @@ import { testAuthToken } from './auth.data';
 const createdOnDate: Date = new Date();
 
 export const testUserId = 'abcdefghijkl';
-export const testServiceUserId = testUserId;
 export const testUserCount = 1;
-export const testServiceUserCount = 1;
 export const testUserPostsCount = 1;
 
 export const testUser: User = {
@@ -126,14 +124,6 @@ export const testServiceUserDto: UserDto = {
   createdOn: createdOnDate,
 };
 
-export const testServiceUserAdminDto: UserDto = {
-  id: testUserId,
-  username: 'admin',
-  email: 'admin@gmail.com',
-  role: 'admin',
-  createdOn: createdOnDate,
-};
-
 export const testServiceUserDtoUnrestricted: UserDto  = {
   id: testUserId,
   username: 'dummy',
@@ -142,9 +132,6 @@ export const testServiceUserDtoUnrestricted: UserDto  = {
   role: 'user',
   createdOn: createdOnDate,
 };
-
-export const testRepositoryUserUnrestricted = testUserUnrestricted;
-export const testRepositoryUserDtoUnrestricted = testServiceUserDtoUnrestricted;
 
 export const testFindUserCriterias = { email: 'dummy@gmail.com', role: 'user' };
 export const testFindUserAdminCriterias = { email: 'admin@gmail.com', role: 'admin' };

@@ -40,21 +40,6 @@ export const testPost: Post = {
   publishDate: publishedOnDate,
 };
 
-export const testUpdatePostCriterias: IUpdatePostCriterias = {
-  title: 'title',
-  description: 'description',
-  body: 'body',
-};
-
-export const testServicePost: Post = {
-  id: testPostId,
-  title: 'title',
-  description: 'description',
-  body: 'body',
-  user: testServiceUser,
-  publishDate: publishedOnDate,
-};
-
 export const testServicePostDto: PostDto = {
   id: testPostId,
   title: 'title',
