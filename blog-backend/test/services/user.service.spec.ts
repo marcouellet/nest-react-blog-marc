@@ -8,8 +8,6 @@ import { DataModuleStub } from '../stubs/data.module.stub';
 import { User } from '../../src/core/entities/user.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
-import UserRepositoryMock from '../mocks/user.repository.mock';
-import PostRepositoryMock from '../mocks/post.repository.mock';
 import { testServiceUserDto, testServiceUserDtoUnrestricted, testUserId, testFindUserCriterias, testUserCount,
           testCreateNonExistingUserDto, testCreateExistingUserDto, testUpdateUserDto } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';

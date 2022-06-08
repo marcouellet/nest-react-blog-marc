@@ -91,7 +91,6 @@ describe('AuthService', () => {
     });
   });
 
-  // Fail because finduser in userService mock return a non admin user 
   describe('validateUser - admin required with admin user supplied', () => {
     it('should return a user admin', async () => {
       expect(await authService.validateUser(testFindUserAdminCriterias, true)).toEqual(testUserAdminDto);
