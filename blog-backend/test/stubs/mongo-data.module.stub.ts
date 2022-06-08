@@ -1,12 +1,12 @@
 import { Module, Global } from '@nestjs/common';
 import { IDataRepositories, DataRepositories } from '../../src/core/repositories';
-import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
-import PostRepositoryStubProvider from '../providers/post.repository.stub.provider';
+import UserRepositoryMock from '../mocks/user.repository.mock';
+import PostRepositoryMock from '../mocks/post.repository.mock';
 @Global()
 @Module({
   providers: [
-    UserRepositoryStubProvider,
-    PostRepositoryStubProvider,
+    UserRepositoryMock,
+    PostRepositoryMock,
     {
       provide: IDataRepositories,
       useClass: DataRepositories,

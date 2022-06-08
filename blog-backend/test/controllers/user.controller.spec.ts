@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from '../../src/controllers/user.controller';
 import { UserService } from '../../src/services/user/user.service';
-import UserServiceMock from '../mock/user.service.mock';
+import UserServiceMock from '../mocks/user.service.mock';
 import { testUserId, testServiceUserDtoUnrestricted, testCreateNonExistingUserDto, testUpdateUserDto, testFindUserCriterias,
           testUserCount } from '../data/user.data';
 

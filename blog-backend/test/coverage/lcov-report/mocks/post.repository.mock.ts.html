@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for stubs/data.module.stub.ts</title>
+    <title>Code coverage report for mocks/post.repository.mock.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">stubs</a> data.module.stub.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">mocks</a> post.repository.mock.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -86,61 +86,52 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">42x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">42x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Module, DynamicModule } from '@nestjs/common';
-import { IConfigService } from '../../src/config/interfaces/config.interface';
-import { MONGO_SERVER_NAME } from '../../src/config/config.constants';
-import { MongoDataModuleStub } from './mongo-data.module.stub';
-@Module({})
-export class DataModuleStub {
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Post } from '../../src/core/entities';
+import { PostCriterias } from '../../src/core/find-criterias/post.criterias';
+import { testPost, testPostCount } from '../data/post.data';
 &nbsp;
-  public static register(configService: IConfigService): DynamicModule {
+const PostRepositoryMock = {
+    provide: Post.name,
+    useValue: {
+        convertToGenericEntity: jest.fn().mockImplementation((obj) =&gt; obj),
+        convertFromGenericEntity: jest.fn().mockImplementation((obj) =&gt; obj),
+        getAll: jest.fn().mockImplementation(() =&gt; Promise.resolve([testPost])),
+        get: jest.fn().mockImplementation((id: string) =&gt; Promise.resolve(testPost)),
+        findOne: jest.fn().mockImplementation((criterias: PostCriterias) =&gt; Promise.resolve(testPost)),
+        findMany: jest.fn().mockImplementation((criterias: PostCriterias) =&gt; Promise.resolve([testPost])),
+        findManyCount: jest.fn().mockImplementation((criterias: PostCriterias) =&gt; Promise.resolve(testPostCount)),
+        findManyCountForSubDocumentId: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) =&gt; 
+            Promise.resolve(testPostCount)),
+        create: jest.fn().mockImplementation((post: Post) =&gt; Promise.resolve(testPost)),
+        update: jest.fn().mockImplementation((id: string, update: {}, populate?: string) =&gt; Promise.resolve(testPost)),
+        delete: jest.fn().mockImplementation((id: string, populate?: string) =&gt; Promise.resolve(testPost)),
+    },
+};
 &nbsp;
-    const modules: any[] = [];
-&nbsp;
-    // getConfig() throw an exception if dataServerName has an invalid server name
-    const dataServerName = configService.getConfig().dataServerName;
-&nbsp;
-    switch (dataServerName) {
-      case MONGO_SERVER_NAME:
-        modules.push(MongoDataModuleStub);
-        break;
-     }
-&nbsp;
-    return {
-        module: DataModuleStub,
-        imports: modules,
-      };
-  }
-}
+export default PostRepositoryMock;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

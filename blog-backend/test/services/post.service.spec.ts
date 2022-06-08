@@ -5,8 +5,8 @@ import { UserFactoryService } from '../../src/services/user/user-factory.service
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, 
           testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
-import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
-import PostRepositoryStubProvider from '../providers/post.repository.stub.provider';
+import UserRepositoryMock from '../mocks/user.repository.mock';
+import PostRepositoryMock from '../mocks/post.repository.mock';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -20,7 +20,7 @@ describe('PostService', () => {
         DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
       providers: [PostService, PostFactoryService, UserFactoryService,
-                  UserRepositoryStubProvider, PostRepositoryStubProvider],
+                  UserRepositoryMock, PostRepositoryMock],
     }).compile();
 
     postService = module.get<PostService>(PostService);

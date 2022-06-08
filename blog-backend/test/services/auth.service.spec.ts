@@ -5,9 +5,9 @@ import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { CryptographerService } from '../../src/services/cryptographer.service';
 import { JwtService } from '@nestjs/jwt';
-import JwtServiceMock from '../mock/jwt.service.mock';
-import CryptographerServiceMock from '../mock/cryptographer.service.mock';
-import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
+import JwtServiceMock from '../mocks/jwt.service.mock';
+import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
+import UserRepositoryMock from '../mocks/user.repository.mock';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias, 
           testUserAdminDto, testUserDto, testUserDtoUnrestricted } from '../data/user.data';
@@ -27,7 +27,7 @@ describe('AuthService', () => {
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
         DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
-      providers: [AuthService, UserService, UserFactoryService, UserRepositoryStubProvider, JwtServiceMock, CryptographerServiceMock],
+      providers: [AuthService, UserService, UserFactoryService, UserRepositoryMock, JwtServiceMock, CryptographerServiceMock],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);

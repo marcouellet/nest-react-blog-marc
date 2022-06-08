@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for stubs/data.module.stub.ts</title>
+    <title>Code coverage report for mocks/user.repository.mock.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">stubs</a> data.module.stub.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">mocks</a> user.repository.mock.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -89,7 +89,12 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -97,50 +102,60 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">42x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">42x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41x</span>
-<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Module, DynamicModule } from '@nestjs/common';
-import { IConfigService } from '../../src/config/interfaces/config.interface';
-import { MONGO_SERVER_NAME } from '../../src/config/config.constants';
-import { MongoDataModuleStub } from './mongo-data.module.stub';
-@Module({})
-export class DataModuleStub {
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { User } from '../../src/core/entities';
+import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
+import { UserRole } from '../../src/core';
+import { testUser, testUserCount, testUserUnrestricted, testUserAdminUnrestricted, testUserPostsCount } from '../data/user.data';
 &nbsp;
-  public static register(configService: IConfigService): DynamicModule {
+const UserRepositoryMock = {
+    provide: User.name,
+    useValue: {
+        convertToGenericEntity: jest.fn().mockImplementation((obj) =&gt; obj),
+        convertFromGenericEntity: jest.fn().mockImplementation((obj) =&gt; obj),
+        getAll: jest.fn().mockImplementation(() =&gt; Promise.resolve([testUserUnrestricted])),
+        get: jest.fn().mockImplementation((id: string) =&gt; Promise.resolve(testUserUnrestricted)),
+        findOne: jest.fn().mockImplementation((criterias: UserCriterias) =&gt; {
+            let user: User;
+            if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@gmail.com'){
+                user = testUserUnrestricted;
+                if (criterias.hasOwnProperty('role') &amp;&amp; criterias['role'] == UserRole.ADMIN) {
+                    user = testUserAdminUnrestricted;
+                }
+            }
+            return Promise.resolve(user);
+        }),
+        findMany: jest.fn().mockImplementation((criterias: UserCriterias) =&gt; Promise.resolve([testUserUnrestricted])),
+        findManyCount: jest.fn().mockImplementation((criterias: UserCriterias) =&gt; Promise.resolve(testUserCount)),
+        create: jest.fn().mockImplementation((post: User) =&gt; Promise.resolve(testUserUnrestricted)),
+        update: jest.fn().mockImplementation((id: string, update: {}, populate?: string) =&gt; Promise.resolve(testUserUnrestricted)),
+        delete: jest.fn().mockImplementation((id: string, populate?: string) =&gt; Promise.resolve(testUserUnrestricted)),
+    },
+};
 &nbsp;
-    const modules: any[] = [];
-&nbsp;
-    // getConfig() throw an exception if dataServerName has an invalid server name
-    const dataServerName = configService.getConfig().dataServerName;
-&nbsp;
-    switch (dataServerName) {
-      case MONGO_SERVER_NAME:
-        modules.push(MongoDataModuleStub);
-        break;
-     }
-&nbsp;
-    return {
-        module: DataModuleStub,
-        imports: modules,
-      };
-  }
-}
+export default UserRepositoryMock;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

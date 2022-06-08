@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from '../../src/controllers/post.controller';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
-import UserServiceMock from '../mock/user.service.mock';
-import PostServiceMock from '../mock/post.service.mock';
+import UserServiceMock from '../mocks/user.service.mock';
+import PostServiceMock from '../mocks/post.service.mock';
 import { testPostId, testServicePostDto, testServicePostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 
 describe('Post Controller', () => {

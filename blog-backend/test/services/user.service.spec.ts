@@ -4,9 +4,9 @@ import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { CryptographerService } from '../../src/services/cryptographer.service';
 import { DataModuleStub } from '../stubs/data.module.stub';
-import CryptographerServiceMock from '../mock/cryptographer.service.mock';
-import UserRepositoryStubProvider from '../providers/user.repository.stub.provider';
-import PostRepositoryStubProvider from '../providers/post.repository.stub.provider';
+import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
+import UserRepositoryMock from '../mocks/user.repository.mock';
+import PostRepositoryMock from '../mocks/post.repository.mock';
 import { testServiceUserDto, testServiceUserDtoUnrestricted, testUserId, testFindUserCriterias, testUserCount,
           testCreateNonExistingUserDto, testCreateExistingUserDto, testUpdateUserDto } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
@@ -23,7 +23,7 @@ describe('UserService', () => {
         DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
       providers: [UserService, UserFactoryService, CryptographerServiceMock,
-                  UserRepositoryStubProvider, PostRepositoryStubProvider],
+                  UserRepositoryMock, PostRepositoryMock],
     }).compile();
 
     userService = module.get<UserService>(UserService);
