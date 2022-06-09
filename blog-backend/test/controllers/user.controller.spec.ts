@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from '../../src/controllers/user.controller';
 import { UserService } from '../../src/services/user/user.service';
 import UserServiceMock from '../mocks/user.service.mock';
-import { testUserId, testServiceUserDtoUnrestricted, testCreateNonExistingUserDto, testUpdateUserDto, testFindUserCriterias,
+import { testUserId, testServiceUserDtoUnrestricted, testCreateUnknownUserDto, testUpdateUserDto, testFindUserCriterias,
           testUserCount } from '../data/user.data';
 
 describe('User Controller', () => {
@@ -43,7 +43,7 @@ describe('User Controller', () => {
 
   describe('createUser', () => {
     it('should return a user"', async () => {
-      expect(await userController.createUser(testCreateNonExistingUserDto)).toStrictEqual(testServiceUserDtoUnrestricted);
+      expect(await userController.createUser(testCreateUnknownUserDto)).toStrictEqual(testServiceUserDtoUnrestricted);
       expect(userServiceMock.createUser).toHaveBeenCalled();
     });
   });

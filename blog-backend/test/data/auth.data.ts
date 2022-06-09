@@ -42,5 +42,3 @@ export const testRegisterExistingUserDto: RegisterDto = {
     password: 'password',
 };
 
-export const testFindUserWithDummyUserEmailCriterias = { email: 'dummy@email.com' };
-export const testFindUserWithUnknownUserEmailCriterias = { email: 'dummy@email.com' };

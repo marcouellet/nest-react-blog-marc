@@ -12,11 +12,11 @@ import { DataModuleStub } from '../stubs/data.module.stub';
 import { User } from '../../src/core/entities/user.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias, 
-          testUserAdminDto, testUserDto } from '../data/user.data';
+          testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias, 
+          testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
-          testRegisterExistingUserDto, testFindUserWithDummyUserEmailCriterias, 
-            testFindUserWithUnknownUserEmailCriterias } from '../data/auth.data';
-import { testToken, testVerifyResult } from '../data/token.data';
+          testRegisterExistingUserDto } from '../data/auth.data';
+import { testToken } from '../data/token.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 

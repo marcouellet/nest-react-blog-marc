@@ -53,42 +53,42 @@ describe('PostService', () => {
   describe('getPostById', () => {
     it('should return a post', async () => {
       expect(await postService.getPostById(testPostId)).toEqual(testServicePostDto);
-      expect(postRepositoryMock.get).toHaveBeenCalled();
+      expect(postRepositoryMock.get).toHaveBeenCalledWith(testPostId);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1', async () => {
       expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testPostCount);
-      expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalled();
+      expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('user', testPostId);
     });
   });
 
   describe('findManyCount', () => {
     it('should return testServicePostCount', async () => {
       expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
-      expect(postRepositoryMock.findManyCount).toHaveBeenCalled();
+      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testFindPostCriterias);
     });
   });
 
   describe('findPost', () => {
     it('should return a post', async () => {
       expect(await postService.findPost(testFindPostCriterias)).toEqual(testServicePostDto);
-      expect(postRepositoryMock.findOne).toHaveBeenCalled();
+      expect(postRepositoryMock.findOne).toHaveBeenCalledWith(testFindPostCriterias);
     });
   });
 
   describe('findManyPosts', () => {
     it('should return an array of one post', async () => {
       expect(await postService.findManyPosts(testFindPostCriterias)).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findMany).toHaveBeenCalled();
+      expect(postRepositoryMock.findMany).toHaveBeenCalledWith(testFindPostCriterias);
     });
   });
 
   describe('findManPostsCount', () => {
     it('should return testPostCount', async () => {
       expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
-      expect(postRepositoryMock.findManyCount).toHaveBeenCalled();
+      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testFindPostCriterias);
     });
   });
 
@@ -109,7 +109,7 @@ describe('PostService', () => {
   describe('deletePost', () => {
     it('should return a post', async () => {
       expect(await postService.deletePost(testPostId)).toEqual(testServicePostDto);
-      expect(postRepositoryMock.delete).toHaveBeenCalled();
+      expect(postRepositoryMock.delete).toHaveBeenCalledWith(testPostId, 'user');
     });
   });
 });

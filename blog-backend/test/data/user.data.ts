@@ -80,7 +80,7 @@ export const testCreateExistingUserDto: CreateUserDto = {
   role: 'user',
 };
 
-export const testCreateNonExistingUserDto: CreateUserDto = {
+export const testCreateUnknownUserDto: CreateUserDto = {
   username: 'dummy',
   email: 'unknown@email.com',
   password: 'password',
@@ -135,3 +135,6 @@ export const testServiceUserDtoUnrestricted: UserDto  = {
 
 export const testFindUserCriterias = { email: 'dummy@email.com', role: 'user' };
 export const testFindUserAdminCriterias = { email: 'admin@email.com', role: 'admin' };
+
+export const testFindUserWithDummyUserEmailCriterias = { email: 'dummy@email.com' };
+export const testFindUserWithUnknownUserEmailCriterias = { email: 'unknown@email.com' };

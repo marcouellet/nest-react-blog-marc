@@ -9,7 +9,8 @@ import { User } from '../../src/core/entities/user.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import { testServiceUserDto, testServiceUserDtoUnrestricted, testUserId, testFindUserCriterias, testUserCount,
-          testCreateNonExistingUserDto, testCreateExistingUserDto, testUpdateUserDto } from '../data/user.data';
+          testCreateUnknownUserDto, testCreateExistingUserDto, testUpdateUserDto, 
+          testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -61,56 +62,57 @@ describe('UserService', () => {
   describe('getUserById', () => {
     it('should return a user', async () => {
       expect(await userService.getUserById(testUserId)).toEqual(testServiceUserDto);
-      expect(userRepositoryMock.get).toHaveBeenCalled();
+      expect(userRepositoryMock.get).toHaveBeenCalledWith(testUserId);
     });
   });
 
   describe('getUserByIdUnrestricted', () => {
     it('should return a user', async () => {
       expect(await userService.getUserByIdUnrestricted(testUserId)).toEqual(testServiceUserDtoUnrestricted);
-      expect(userRepositoryMock.get).toHaveBeenCalled();
+      expect(userRepositoryMock.get).toHaveBeenCalledWith(testUserId);
     });
   });
 
   describe('findUser', () => {
     it('should return a user', async () => {
       expect(await userService.findUser(testFindUserCriterias)).toEqual(testServiceUserDto);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('verifyUserExist', () => {
     it('should return a user', async () => {
       expect(await userService.verifyUserExist(testFindUserCriterias)).toEqual(true);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('findUserUnrestricted', () => {
     it('should return a user with password', async () => {
       expect(await userService.findUserUnrestricted(testFindUserCriterias)).toEqual(testServiceUserDtoUnrestricted);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('findManyUsers', () => {
     it('should return an array of one user', async () => {
       expect(await userService.findManyUsers(testFindUserCriterias)).toEqual([testServiceUserDto]);
-      expect(userRepositoryMock.findMany).toHaveBeenCalled();
+      expect(userRepositoryMock.findMany).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('findManyUsersCount', () => {
     it('should return testUserCount', async () => {
       expect(await userService.findManyUsersCount(testFindUserCriterias)).toEqual(testUserCount);
-      expect(userRepositoryMock.findManyCount).toHaveBeenCalled();
+      expect(userRepositoryMock.findManyCount).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('createUser', () => {
     it('should return a user', async () => {
-      expect(await userService.createUser(testCreateNonExistingUserDto)).toEqual(testServiceUserDto);
-      expect(cryptoServiceMock.hashPassword).toHaveBeenCalled();
+      expect(await userService.createUser(testCreateUnknownUserDto)).toEqual(testServiceUserDto);
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias);
+     // expect(cryptoServiceMock.hashPassword).toHaveBeenCalledWith(testCreateUnknownUserDto.password);
       expect(userRepositoryMock.create).toHaveBeenCalled();
     });
   });
@@ -135,7 +137,8 @@ describe('UserService', () => {
   describe('deleteUser', () => {
     it('should return a user', async () => {
       expect(await userService.deleteUser(testUserId)).toEqual(testServiceUserDto);
-      expect(userRepositoryMock.delete).toHaveBeenCalled();
+      expect(userRepositoryMock.get).toHaveBeenCalledWith(testUserId); // check if user exist
+      // expect(userRepositoryMock.delete).toHaveBeenCalledWith(testUserId);
     });
   });
 });
