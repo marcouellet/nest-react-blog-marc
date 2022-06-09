@@ -11,33 +11,36 @@ export const testRequestWithAuthorize: any = {
 };
 
 export const testLoginDto: LoginDto = {
-    email: 'dummy@gmail.com',
+    email: 'dummy@email.com',
     password: 'password',
 };
 
 export const testNotLoggedInDto: LoginDto = {
-    email: 'not-dummy@gmail.com',
+    email: 'not-dummy@email.com',
     password: 'password',
 };
 
 export const testAlreadyLoggedInDto: LoginDto = {
-    email: 'dummy@gmail.com',
+    email: 'dummy@email.com',
     password: 'password',
 };
 
 export const testLoginUnknownUserDto: LoginDto = {
-    email: 'unknown@gmail.com',
+    email: 'unknown@email.com',
     password: 'password',
 };
 
 export const testRegisterUnknownUserDto: RegisterDto = {
     username: 'dummy',
-    email: 'unknown@gmail.com',
+    email: 'unknown@email.com',
     password: 'password',
 };
 
 export const testRegisterExistingUserDto: RegisterDto = {
     username: 'dummy',
-    email: 'dummy@gmail.com',
+    email: 'dummy@email.com',
     password: 'password',
 };
+
+export const testFindUserWithDummyUserEmailCriterias = { email: 'dummy@email.com' };
+export const testFindUserWithUnknownUserEmailCriterias = { email: 'dummy@email.com' };

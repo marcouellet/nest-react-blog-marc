@@ -11,7 +11,7 @@ export const testUserPostsCount = 1;
 export const testUser: User = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   role: 'user',
   createdOn: createdOnDate,
 };
@@ -19,7 +19,7 @@ export const testUser: User = {
 export const testUserUnrestricted: User = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   password: 'secret',
   role: 'user',
   createdOn: createdOnDate,
@@ -28,7 +28,7 @@ export const testUserUnrestricted: User = {
 export const testUserAdminUnrestricted: User = {
   id: testUserId,
   username: 'admin',
-  email: 'admin@gmail.com',
+  email: 'admin@email.com',
   password: 'secret',
   role: 'admin',
   createdOn: createdOnDate,
@@ -37,7 +37,7 @@ export const testUserAdminUnrestricted: User = {
 export const testUserDto: UserDto = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   role: 'user',
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
@@ -47,7 +47,7 @@ export const testUserDto: UserDto = {
 export const testUserUnknownDto: UserDto = {
   id: testUserId,
   username: 'unknown',
-  email: 'unknown@gmail.com',
+  email: 'unknown@email.com',
   role: 'user',
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
@@ -57,7 +57,7 @@ export const testUserUnknownDto: UserDto = {
 export const testUserAdminDto: UserDto = {
   id: testUserId,
   username: 'admin',
-  email: 'admin@gmail.com',
+  email: 'admin@email.com',
   role: 'admin',
   createdOn: createdOnDate,
 };
@@ -65,7 +65,7 @@ export const testUserAdminDto: UserDto = {
 export const testUserDtoUnrestricted: UserDto = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   password: 'secret',
   role: 'user',
   authtoken: testAuthToken,
@@ -75,21 +75,21 @@ export const testUserDtoUnrestricted: UserDto = {
 
 export const testCreateExistingUserDto: CreateUserDto = {
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   password: 'password',
   role: 'user',
 };
 
 export const testCreateNonExistingUserDto: CreateUserDto = {
   username: 'dummy',
-  email: 'unknown@gmail.com',
+  email: 'unknown@email.com',
   password: 'password',
   role: 'user',
 };
 
 export const testUpdateUserDto: UpdateUserDto = {
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   password: 'secret',
   role: 'user',
 };
@@ -103,7 +103,7 @@ export const testRequestWithAuthorizeAndUser: any = {
 
 export const testUpdateUserCriterias: IUpdateUserCriterias = {
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   password: 'secret',
   role: 'user',
 };
@@ -111,7 +111,7 @@ export const testUpdateUserCriterias: IUpdateUserCriterias = {
 export const testServiceUser: User = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   role: 'user',
   createdOn: createdOnDate,
 };
@@ -119,7 +119,7 @@ export const testServiceUser: User = {
 export const testServiceUserDto: UserDto = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   role: 'user',
   createdOn: createdOnDate,
 };
@@ -127,11 +127,11 @@ export const testServiceUserDto: UserDto = {
 export const testServiceUserDtoUnrestricted: UserDto  = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@gmail.com',
+  email: 'dummy@email.com',
   password: 'secret',
   role: 'user',
   createdOn: createdOnDate,
 };
 
-export const testFindUserCriterias = { email: 'dummy@gmail.com', role: 'user' };
-export const testFindUserAdminCriterias = { email: 'admin@gmail.com', role: 'admin' };
+export const testFindUserCriterias = { email: 'dummy@email.com', role: 'user' };
+export const testFindUserAdminCriterias = { email: 'admin@email.com', role: 'admin' };

@@ -14,7 +14,9 @@ import { IGenericDataRepository } from '../../src/core/repositories/generic-data
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias, 
           testUserAdminDto, testUserDto } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
-          testRegisterExistingUserDto } from '../data/auth.data';
+          testRegisterExistingUserDto, testFindUserWithDummyUserEmailCriterias, 
+            testFindUserWithUnknownUserEmailCriterias } from '../data/auth.data';
+import { testToken, testVerifyResult } from '../data/token.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -64,37 +66,37 @@ describe('AuthService', () => {
 
   describe('getUserFromToken', () => {
     it('should return a user', async () => {
-      expect(await authService.getUserFromToken('token')).toEqual(testServiceUserDto);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalled();
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(await authService.getUserFromToken(testToken)).toEqual(testServiceUserDto);
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken); 
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithDummyUserEmailCriterias);
     });
   });
 
   describe('validateToken', () => {
     it('should return a payload', async () => {
-      expect(await authService.validateToken('token')).toEqual(testJwtPayload);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalled();
+      expect(await authService.validateToken(testToken)).toEqual(testJwtPayload);
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken); 
     });
   });
 
   describe('validateRefreshToken', () => {
     it('should return a payload', async () => {
-      expect(await authService.validateRefreshToken('token')).toEqual(testJwtPayload);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalled();
+      expect(await authService.validateRefreshToken(testToken)).toEqual(testJwtPayload);
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken); 
     });
   });
 
   describe('validateUser', () => {
     it('should return a user', async () => {
       expect(await authService.validateUser(testFindUserCriterias)).toEqual(testServiceUserDto);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('validateUser - admin required with admin user supplied', () => {
     it('should return a user admin', async () => {
       expect(await authService.validateUser(testFindUserAdminCriterias, true)).toEqual(testUserAdminDto);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserAdminCriterias);
     });
   });
 
@@ -111,14 +113,14 @@ describe('AuthService', () => {
   describe('validateUserUnrestricted', () => {
     it('should return a user with password', async () => {
       expect(await authService.validateUserUnrestricted(testFindUserCriterias)).toEqual(testServiceUserDtoUnrestricted);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserCriterias);
     });
   });
 
   describe('login', () => {
     it('should return a user', async () => {
       expect(await authService.login(testLoginDto)).toEqual(testUserDto);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithDummyUserEmailCriterias);
       expect(cryptoServiceMock.checkPassword).toHaveBeenCalled();
     });
   });
@@ -146,8 +148,8 @@ describe('AuthService', () => {
   describe('register', () => {
     it('should return a user', async () => {
       expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDto);
-      expect(userRepositoryMock.findOne).toHaveBeenCalled(); //check if user exist
-      expect(cryptoServiceMock.hashPassword).toHaveBeenCalled();
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias); //check if user exist
+      expect(cryptoServiceMock.hashPassword).toHaveBeenCalledWith(testRegisterUnknownUserDto.password);
       expect(userRepositoryMock.create).toHaveBeenCalled();
     });
   });

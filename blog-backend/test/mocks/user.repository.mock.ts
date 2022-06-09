@@ -12,7 +12,7 @@ const UserRepositoryMock = {
         get: jest.fn().mockImplementation((id: string) => Promise.resolve(testUserUnrestricted)),
         findOne: jest.fn().mockImplementation((criterias: UserCriterias) => {
             let user: User;
-            if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@gmail.com'){
+            if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@email.com'){
                 user = testUserUnrestricted;
                 if (criterias.hasOwnProperty('role') && criterias['role'] == UserRole.ADMIN) {
                     user = testUserAdminUnrestricted;

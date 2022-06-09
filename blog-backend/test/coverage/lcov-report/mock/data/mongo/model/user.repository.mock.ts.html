@@ -215,7 +215,7 @@ export class UserRepositoriesMock implements IGenericDataRepository&lt;User&gt; 
 &nbsp;
     async findOne(criterias: UserCriterias): Promise&lt;User&gt; {
         let user: User;
-        if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@gmail.com'){
+        if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@email.com'){
             user = testUserUnrestricted;
             <span class="missing-if-branch" title="if path not taken" >I</span>if (criterias.hasOwnProperty('role') &amp;&amp; criterias['role'] == UserRole.ADMIN) {
 <span class="cstat-no" title="statement not covered" >                user = testUserAdminUnrestricted;</span>

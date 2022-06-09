@@ -29,7 +29,7 @@ describe('AuthController', () => {
     });
 
     describe('whoAmI', () => {
-        it('should return "dummy@gmail.com"', async () => {
+        it('should return "dummy@email.com"', async () => {
           expect(await authController.whoAmI(testRequestWithAuthorize)).toStrictEqual(testJwtPayload);
           expect(authServiceMock.validateToken).toHaveBeenCalled();
         });
