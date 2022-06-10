@@ -1,44 +1,44 @@
 import { User } from '../../src/core/entities/user.entity';
-import { CreateUserDto, UpdateUserDto, UserDto, RegisterDto, IUpdateUserCriterias } from '../../src/core/dtos';
-import { testAuthToken } from './auth.data';
+import { CreateUserDto, UpdateUserDto, UserDto, IUpdateUserCriterias } from '../../src/core/dtos';
+import { testAuthToken, testPassword, testSecretPassword, testNewPassword, testDummyEmail, testAdminEmail, testUnknownEmail,
+          testRoleUser, testRoleAdmin } from './auth.data';
 
 const createdOnDate: Date = new Date();
 
 export const testUserId = 'abcdefghijkl';
 export const testUserCount = 1;
-export const testUserPostsCount = 1;
 
 export const testUser: User = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  role: 'user',
+  email: testDummyEmail,
+  role: testRoleUser,
   createdOn: createdOnDate,
 };
 
 export const testUserUnrestricted: User = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  password: 'secret',
-  role: 'user',
+  email: testDummyEmail,
+  password: testSecretPassword,
+  role: testRoleUser,
   createdOn: createdOnDate,
 };
 
 export const testUserAdminUnrestricted: User = {
   id: testUserId,
   username: 'admin',
-  email: 'admin@email.com',
-  password: 'secret',
-  role: 'admin',
+  email: testAdminEmail,
+  password: testSecretPassword,
+  role: testRoleAdmin,
   createdOn: createdOnDate,
 };
 
 export const testUserDto: UserDto = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  role: 'user',
+  email: testDummyEmail,
+  role: testRoleUser,
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
   createdOn: createdOnDate,
@@ -47,8 +47,8 @@ export const testUserDto: UserDto = {
 export const testUserUnknownDto: UserDto = {
   id: testUserId,
   username: 'unknown',
-  email: 'unknown@email.com',
-  role: 'user',
+  email: testUnknownEmail,
+  role: testRoleUser,
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
   createdOn: createdOnDate,
@@ -57,17 +57,17 @@ export const testUserUnknownDto: UserDto = {
 export const testUserAdminDto: UserDto = {
   id: testUserId,
   username: 'admin',
-  email: 'admin@email.com',
-  role: 'admin',
+  email: testAdminEmail,
+  role: testRoleAdmin,
   createdOn: createdOnDate,
 };
 
 export const testUserDtoUnrestricted: UserDto = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  password: 'secret',
-  role: 'user',
+  email: testDummyEmail,
+  password: testSecretPassword,
+  role: testRoleUser,
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
   createdOn: createdOnDate,
@@ -75,24 +75,45 @@ export const testUserDtoUnrestricted: UserDto = {
 
 export const testCreateExistingUserDto: CreateUserDto = {
   username: 'dummy',
-  email: 'dummy@email.com',
-  password: 'password',
-  role: 'user',
+  email: testDummyEmail,
+  password: testPassword,
+  role: testRoleUser,
 };
 
 export const testCreateUnknownUserDto: CreateUserDto = {
   username: 'dummy',
-  email: 'unknown@email.com',
-  password: 'password',
-  role: 'user',
+  email: testUnknownEmail,
+  password: testPassword,
+  role: testRoleUser,
 };
 
 export const testUpdateUserDto: UpdateUserDto = {
   username: 'dummy',
-  email: 'dummy@email.com',
-  password: 'secret',
-  role: 'user',
+  email: testDummyEmail,
+  password: testSecretPassword,
+  role: testRoleUser,
 };
+
+export const testUpdateUserNoPasswordSuppliedDto: UpdateUserDto = {
+  username: 'dummy',
+  email: testDummyEmail,
+  role: testRoleUser,
+};
+
+export const testUpdateUserSamePasswordSuppliedDto: UpdateUserDto = {
+  username: 'dummy',
+  email: testDummyEmail,
+  password: testPassword,
+  role: testRoleUser,
+};
+
+export const testUpdateUserNewPasswordSuppliedDto: UpdateUserDto = {
+  username: 'dummy',
+  email: testDummyEmail,
+  password: testNewPassword,
+  role: testRoleUser,
+};
+
 
 export const testRequestWithAuthorizeAndUser: any = {
     headers: {
@@ -103,38 +124,38 @@ export const testRequestWithAuthorizeAndUser: any = {
 
 export const testUpdateUserCriterias: IUpdateUserCriterias = {
   username: 'dummy',
-  email: 'dummy@email.com',
-  password: 'secret',
-  role: 'user',
+  email: testDummyEmail,
+  password: testSecretPassword,
+  role: testRoleUser,
 };
 
 export const testServiceUser: User = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  role: 'user',
+  email: testDummyEmail,
+  role: testRoleUser,
   createdOn: createdOnDate,
 };
 
 export const testServiceUserDto: UserDto = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  role: 'user',
+  email: testDummyEmail,
+  role: testRoleUser,
   createdOn: createdOnDate,
 };
 
 export const testServiceUserDtoUnrestricted: UserDto  = {
   id: testUserId,
   username: 'dummy',
-  email: 'dummy@email.com',
-  password: 'secret',
-  role: 'user',
+  email: testDummyEmail,
+  password: testSecretPassword,
+  role: testRoleUser,
   createdOn: createdOnDate,
 };
 
-export const testFindUserCriterias = { email: 'dummy@email.com', role: 'user' };
-export const testFindUserAdminCriterias = { email: 'admin@email.com', role: 'admin' };
+export const testFindUserCriterias = { email: testDummyEmail, role: testRoleUser };
+export const testFindUserAdminCriterias = { email: testAdminEmail, role: testRoleAdmin };
 
-export const testFindUserWithDummyUserEmailCriterias = { email: 'dummy@email.com' };
-export const testFindUserWithUnknownUserEmailCriterias = { email: 'unknown@email.com' };
+export const testFindUserWithDummyUserEmailCriterias = { email: testDummyEmail };
+export const testFindUserWithUnknownUserEmailCriterias = { email: testUnknownEmail };

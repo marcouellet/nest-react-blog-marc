@@ -4,12 +4,12 @@ import { AppService } from '../../src/services/app.service';
 describe('AppService', () => {
   let appService: AppService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AppService]
+      providers: [AppService],
       }).compile();
 
-      appService = module.get<AppService>(AppService);
+    appService = module.get<AppService>(AppService);
   });
 
   it('appService should be defined', () => {

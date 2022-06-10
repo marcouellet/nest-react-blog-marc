@@ -6,7 +6,6 @@ import { UserDto, UpdateUserDto } from '../../core/dtos';
 import { UserCriterias } from '../../core/find-criterias/user.criterias';
 import { UserFactoryService } from './user-factory.service';
 import { CryptographerService } from '../../services/cryptographer.service';
-
 @Injectable()
 export class UserService {
 
@@ -69,15 +68,16 @@ export class UserService {
   }
 
   async createUser(userDto: UserDto): Promise<UserDto> {
-    const { email } = userDto;
+    const createUserDto = { ... userDto };
+    const { email } = createUserDto;
     if ( await this.verifyUserExist({ email })) {
       throw new ForbiddenException('User with same email already exist!');
     }
-    userDto.role = userDto.role ? userDto.role :  UserRole.USER;
-    userDto.password = this.cryptoService.hashPassword(userDto.password);
-    const newUser = this.userFactoryService.createUser(userDto);
+    createUserDto.role = userDto.role ? userDto.role :  UserRole.USER;
+    createUserDto.password = this.cryptoService.hashPassword(userDto.password);
+    const newUser = this.userFactoryService.createUser(createUserDto);
     return this.dataServicesRepositories.users.create(newUser)
-      .then(user => this.processUser(user));
+      .then(user => this.processUserUnrestricted(user));
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
@@ -90,7 +90,7 @@ export class UserService {
         : this.cryptoService.hashPassword(updatedUserCriterias.password);
       });
     return this.dataServicesRepositories.users.update(id, updatedUserCriterias)
-      .then((user: User) => this.processUser(user));
+      .then((user: User) => this.processUserUnrestricted(user));
    }
 
   async deleteUser(id: string): Promise<UserDto> {

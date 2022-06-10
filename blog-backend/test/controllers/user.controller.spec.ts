@@ -9,7 +9,7 @@ describe('User Controller', () => {
   let userController: UserController;
   let userServiceMock: UserService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [ UserServiceMock ],

@@ -1,13 +1,12 @@
 import { Post } from '../../src/core/entities/post.entity';
-import { PostDto, UpdatePostDto, IUpdatePostCriterias } from '../../src/core/dtos';
-import { testUser, testServiceUser, testUserDto, testServiceUserDto } from './user.data';
+import { PostDto, UpdatePostDto } from '../../src/core/dtos';
+import { testUser, testUserDto, testServiceUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();
 
 export const testPostId = 'abcdefghijkl';
-export const testServicePostId = testPostId;
 export const testPostCount = 1;
-export const testServicePostCount = 1;
+export const testUserPostsCount = 1;
 
 export const testPostDto: PostDto = {
   id: testPostId,

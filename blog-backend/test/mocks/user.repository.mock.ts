@@ -2,6 +2,7 @@ import { User } from '../../src/core/entities';
 import { UserCriterias } from '../../src/core/find-criterias/user.criterias';
 import { UserRole } from '../../src/core';
 import { testUserCount, testUserUnrestricted, testUserAdminUnrestricted } from '../data/user.data';
+import { testUnknownEmail } from '../data/auth.data';
 
 const UserRepositoryMock = {
     provide: User.name,
@@ -12,9 +13,9 @@ const UserRepositoryMock = {
         get: jest.fn().mockImplementation((id: string) => Promise.resolve(testUserUnrestricted)),
         findOne: jest.fn().mockImplementation((criterias: UserCriterias) => {
             let user: User;
-            if (!criterias.hasOwnProperty('email') || criterias['email'] !== 'unknown@email.com'){
+            if (!criterias.hasOwnProperty('email') || criterias.email !== testUnknownEmail){
                 user = testUserUnrestricted;
-                if (criterias.hasOwnProperty('role') && criterias['role'] == UserRole.ADMIN) {
+                if (criterias.hasOwnProperty('role') && criterias.role === UserRole.ADMIN) {
                     user = testUserAdminUnrestricted;
                 }
             }

@@ -6,7 +6,7 @@ import { DataServiceRepositories } from '../../src/services/data.service.reposit
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
-import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, 
+import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, 
           testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
@@ -16,7 +16,7 @@ describe('PostService', () => {
   let dataServiceRepositories: DataServiceRepositories;
   let postRepositoryMock: IGenericDataRepository<Post>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
@@ -59,7 +59,7 @@ describe('PostService', () => {
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1', async () => {
-      expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testPostCount);
+      expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testUserPostsCount);
       expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('user', testPostId);
     });
   });

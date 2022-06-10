@@ -7,7 +7,7 @@ import { testOkConfigOptions, testUnknownDataServerNameConfigOptions, testUnknow
 describe('ConfigService - ok.env', () => {
   let configService: IConfigService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {

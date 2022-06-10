@@ -8,7 +8,7 @@ describe('AppController', () => {
   let appController: AppController;
   let appServiceMock: AppService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppServiceMock],

@@ -4,14 +4,14 @@ import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import UserServiceMock from '../mocks/user.service.mock';
 import PostServiceMock from '../mocks/post.service.mock';
-import { testPostId, testServicePostDto, testServicePostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
+import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
   let userServiceMock: UserService;
   let postServiceMock: PostService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostController],
       providers: [PostServiceMock, UserServiceMock],
@@ -50,7 +50,7 @@ describe('Post Controller', () => {
 
   describe('getNumberOfPostsForUser', () => {
     it('should return testServicePostCount"', async () => {
-      expect(await postController.getNumberOfPostsForUser(testPostId)).toStrictEqual(testServicePostCount);
+      expect(await postController.getNumberOfPostsForUser(testPostId)).toStrictEqual(testPostCount);
       expect(postServiceMock.getNumberOfPostsForUser).toHaveBeenCalled();
     });
   });
@@ -79,7 +79,7 @@ describe('Post Controller', () => {
 
   describe('finManyPostsCount', () => {
     it('should return testServicePostCount"', async () => {
-      expect(await postController.findManyPostsCount(testFindPostCriterias)).toStrictEqual(testServicePostCount);
+      expect(await postController.findManyPostsCount(testFindPostCriterias)).toStrictEqual(testPostCount);
       expect(postServiceMock.findManyPostsCount).toHaveBeenCalled();
     });
   });

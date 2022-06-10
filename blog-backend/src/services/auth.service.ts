@@ -112,7 +112,6 @@ export class AuthService {
     }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
-    registerDto.password = this.cryptoService.hashPassword(registerDto.password);
     return this.userService.createUser(registerDto);
   }
 }

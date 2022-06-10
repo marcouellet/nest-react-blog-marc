@@ -11,8 +11,8 @@ import { DataServiceRepositories } from '../../src/services/data.service.reposit
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { User } from '../../src/core/entities/user.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
-import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias, 
-          testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias, 
+import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias,
+          testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
           testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
@@ -27,7 +27,7 @@ describe('AuthService', () => {
   let dataServiceRepositories: DataServiceRepositories;
   let userRepositoryMock: IGenericDataRepository<User>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
@@ -67,7 +67,7 @@ describe('AuthService', () => {
   describe('getUserFromToken', () => {
     it('should return a user', async () => {
       expect(await authService.getUserFromToken(testToken)).toEqual(testServiceUserDto);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken); 
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken);
       expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithDummyUserEmailCriterias);
     });
   });
@@ -75,14 +75,14 @@ describe('AuthService', () => {
   describe('validateToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateToken(testToken)).toEqual(testJwtPayload);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken); 
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken);
     });
   });
 
   describe('validateRefreshToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateRefreshToken(testToken)).toEqual(testJwtPayload);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken); 
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken);
     });
   });
 
@@ -147,8 +147,8 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should return a user', async () => {
-      expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDto);
-      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias); //check if user exist
+      expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDtoUnrestricted);
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias); // check if user exist
       expect(cryptoServiceMock.hashPassword).toHaveBeenCalledWith(testRegisterUnknownUserDto.password);
       expect(userRepositoryMock.create).toHaveBeenCalled();
     });
