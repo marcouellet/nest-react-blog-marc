@@ -75,3 +75,11 @@ export function createPostForUpdate(post: IPost): IUpdatePost {
   const updatePost: IUpdatePost = {title:post.title, description: post.description, body: post.body};
   return updatePost;
 }
+
+export const minimumPasswordLength = 3;
+export const minimumEmailLength = 10;
+export const minimumUserNameLength = 2;
+
+export const minimumTitleLength = 3;
+export const minimumDescriptionLength = 10;
+export const minimumBodyLength = 10;

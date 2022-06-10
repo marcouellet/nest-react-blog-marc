@@ -6,3 +6,9 @@ export class User {
   role?: string;
   createdOn: Date;
   }
+
+export const minimumUserNameLength = 2;
+export const minimumEmailLength = 10;
+export const minimumPasswordLength = 3;
+
+

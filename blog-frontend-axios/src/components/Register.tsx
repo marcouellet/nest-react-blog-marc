@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../services/api/AuthApiService';
 import useAuth from '../contexts/auth';
 import { toast } from "react-toastify";
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import { checkForbidden } from '../utils/response';
 import ListErrors from './common/ListErrors';
-import { IErrors, User } from '../types';
+import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../types";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -15,11 +18,34 @@ const Register = () => {
     password: '',
   });
 
-  const [errors, setErrors] = useState<IErrors | null>(null);
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const {
     state: { isLoading },
     dispatch,
   } = useAuth();
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('User name is required')
+    .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
+    email: Yup.string().required('Email is required')
+      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+    password: Yup.string().required('Password is required')
+      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+  });
+
+  type RegisterSubmitForm = {
+    username: string;
+    email: string;
+    password: string;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<RegisterSubmitForm>({
+    resolver: yupResolver(validationSchema)
+  });
 
   const navigate = useNavigate();
 
@@ -35,14 +61,13 @@ const Register = () => {
       toast.error(`Registration failed, email already used!`);
     } else {
       toast.error(`User registration failed, see error list`);
-      setErrors(apiErrors);
+      setErrorList(apiErrors);
       }
   }
 
-  const handleSubmit = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onSubmit = async (data: RegisterSubmitForm) => {
     dispatch(createActionLoading(true));
-    const { username, email, password } = form;
+    const { username, email, password } = data;
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
@@ -64,38 +89,35 @@ const Register = () => {
             <p className="text-xs-center">
               <Link to="/login">Have an account?</Link>
             </p>
-            {errors && <ListErrors errors={errors} />}
-            <form onSubmit={handleSubmit}>
+            {errorList && <ListErrors errors={errorList} />}
+            <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset className="form-group">
                 <input
-                  name="username"
-                  className="form-control form-control-lg"
-                  type="text"
-                  value={form.username}
-                  placeholder="Your Name"
-                  onChange={handleChange}
+                      type="username"
+                      placeholder="Your Name"
+                      {...register('username')}
+                      className={`form-control ${errors.username ? 'is-invalid' : ''}`} 
                 />
+                <div className="invalid-feedback">{errors.username?.message}</div>
               </fieldset>
               <fieldset className="form-group">
                 <input
-                  name="email"
-                  className="form-control form-control-lg"
                   type="email"
-                  value={form.email}
                   placeholder="Email"
-                  onChange={handleChange}
+                  {...register('email')}
+                  className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
                 />
+                <div className="invalid-feedback">{errors.email?.message}</div>
               </fieldset>
               <fieldset className="form-group">
                 <input
-                  name="password"
-                  className="form-control form-control-lg"
-                  type="password"
-                  value={form.password}
-                  placeholder="Password"
-                  onChange={handleChange}
-                />
-              </fieldset>
+                    type="password"
+                    placeholder="Password"
+                    {...register('password')}
+                    className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
+                  />
+                <div className="invalid-feedback">{errors.password?.message}</div>
+             </fieldset>
               <button
                 className="btn btn-lg btn-primary pull-xs-right"
                 type="submit"

@@ -6,7 +6,8 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
-import { IUser, IUpdateUser, createUserForUpdate } from "../../types";
+import { IUser, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
+        minimumUserNameLength } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
@@ -24,8 +25,12 @@ const EditUser = () => {
   const [user, setUser] = useState<IUser>();
  
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required('User name is required'),
-    email: Yup.string().required('Email is required'),
+    username: Yup.string().required('User name is required')
+      .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
+    email: Yup.string().required('Email is required')
+      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+    password: Yup.string().required('Password is required')
+      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
     role: Yup.string().required('Role is required'),
   });
 

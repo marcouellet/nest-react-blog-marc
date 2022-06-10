@@ -9,7 +9,7 @@ import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
+import { IErrors, minimumTitleLength, minimumDescriptionLength,  minimumBodyLength } from '../../types';
 import { checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
@@ -20,9 +20,12 @@ const CreatePost = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required('Title is required'),
-    description: Yup.string().required('Description is required'),
-    body: Yup.string().required('Body is required'),
+    title: Yup.string().required('Title is required')
+      .min(minimumTitleLength, `Title must be at least ${minimumTitleLength} characters long`),
+    description: Yup.string().required('Description is required')
+      .min(minimumDescriptionLength, `Description must be at least ${minimumDescriptionLength} characters long`),
+    body: Yup.string().required('Content is required')
+      .min(minimumBodyLength, `Content must be at least ${minimumBodyLength} characters long`),
   });
 
   type CreateSubmitForm = {

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
-import { IErrors } from '../types';
+import { IErrors, minimumPasswordLength, minimumEmailLength } from "../types";
 import { checkForbidden, checkNotFound } from '../utils/response';
 
 const Login = () => {
@@ -17,8 +17,10 @@ const Login = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required'),
+    email: Yup.string().required('Email is required')
+      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
     password: Yup.string().required('Password is required')
+      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
   });
 
   type LoginSubmitForm = {
