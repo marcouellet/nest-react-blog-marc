@@ -2,4 +2,8 @@ export * from './post.dto';
 export * from './user.dto';
 export * from './login.dto';
 export * from './register.dto';
-
+export * from './refresh.dto';
+export * from './create-post.dto';
+export * from './create-user.dto';
+export * from './update-post.dto';
+export * from './update-user.dto';

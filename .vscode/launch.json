@@ -44,6 +44,20 @@
             "sourceMaps": true,
             "envFile": "${workspaceFolder}\\blog-frontend-axios\\src\\.env",
             "console": "integratedTerminal",
-        }
+        },
+        {
+            "name": "Debug Backend Jest Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+              "--inspect-brk",
+              "${workspaceRoot}/blog-backend/node_modules/jest/bin/jest.js",
+              "--runInBand"
+            ],
+            "cwd": "${workspaceFolder}\\blog-backend",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "port": 9229
+          }
     ]
 }

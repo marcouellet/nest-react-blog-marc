@@ -1,49 +1,69 @@
-import { Injectable } from '@nestjs/common';
-import { IDataServicesRepositories } from '../../core/abstracts';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { IDataRepositories } from '../../core/repositories';
+import { Post } from '../../core/entities';
 import { PostDto, UpdatePostDto } from '../../core/dtos';
+import { PostCriterias } from '../../core/find-criterias/post.criterias';
 import { PostFactoryService } from './post-factory.service';
 @Injectable()
 export class PostService {
 
   constructor(
-    private dataServicesRepositories: IDataServicesRepositories,
-    private postFactoryService: PostFactoryService,
-  ) {}
+      private readonly dataServicesRepositories: IDataRepositories,
+      private readonly postFactoryService: PostFactoryService,
+    ) {}
 
-  getAllPosts(): Promise<PostDto[]> {
+  private processPost(post: Post): PostDto {
+    if (post) {
+      return this.postFactoryService.createPostDto(post);
+    } else {
+      throw new NotFoundException('Post not found');
+    }
+  }
+
+  async getAllPosts(): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.getAll()
-      .then(posts => posts.map(post => this.postFactoryService.createPostDto(post)));
+      .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  getPostById(id: any): Promise<PostDto> {
+  async getNumberOfPostsForUser(userId: string): Promise<number> {
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocumentId('user', userId);
+  }
+
+  async getPostById(id: string): Promise<PostDto> {
     return this.dataServicesRepositories.posts.get(id)
-      .then(post => this.postFactoryService.createPostDto(post));
+      .then(post => this.processPost(post));
   }
 
-  findPost(criterias: any): Promise<PostDto> {
+  async findPost(criterias: PostCriterias): Promise<PostDto> {
     return this.dataServicesRepositories.posts.findOne(criterias)
-      .then(post => this.postFactoryService.createPostDto(post));
+      .then(post => this.processPost(post));
   }
 
-  findManyPosts(criterias: any): Promise<PostDto[]> {
+  async findManyPosts(criterias: PostCriterias): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.findMany(criterias)
-      .then(posts => posts.map(post => this.postFactoryService.createPostDto(post)));
+      .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  createPost(postDto: PostDto): Promise<PostDto> {
+  async findManyPostsCount(criterias: PostCriterias): Promise<number> {
+    return this.dataServicesRepositories.posts.findManyCount(criterias);
+  }
+
+  async createPost(postDto: PostDto): Promise<PostDto> {
     const newPost = this.postFactoryService.createPost(postDto);
     return this.dataServicesRepositories.posts.create(newPost)
-      .then(post => this.postFactoryService.createPostDto(post));
+      .then(post => this.processPost(post));
   }
 
-  updatePost(id:string, updatePostDto: UpdatePostDto): Promise<PostDto> {
-    const populate: string = 'user';
-    return this.dataServicesRepositories.posts.update(id, updatePostDto, populate)
-      .then(post => this.postFactoryService.createPostDto(post));
+  async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<PostDto> {
+    const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
+    return this.getPostById(id)
+      .then(_ => this.dataServicesRepositories.posts.update(id, updatedPostCriterias, 'user'))
+      .then(post => this.processPost(post));
   }
 
-  deletePost(id: any): Promise<PostDto> {
-    return this.dataServicesRepositories.posts.delete(id)
-      .then(post => this.postFactoryService.createPostDto(post));
+  async deletePost(id: string): Promise<PostDto> {
+    return this.getPostById(id)
+      .then(_ =>  this.dataServicesRepositories.posts.delete(id, 'user'))
+      .then(post => this.processPost(post));
   }
 }

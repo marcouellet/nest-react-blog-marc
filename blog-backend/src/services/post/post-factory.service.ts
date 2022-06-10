@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Post } from '../../core/entities';
-import { PostDto } from '../../core/dtos';
-import { IDataServicesRepositories } from '../../core/abstracts';
+import { PostDto, IUpdatePostCriterias, UpdatePostDto } from '../../core/dtos';
+import { IDataRepositories } from '../../core/repositories';
 import { UserFactoryService } from '../user/user-factory.service';
 
 @Injectable()
 export class PostFactoryService {
 
   constructor(
-    private dataServicesRepositories: IDataServicesRepositories,
-    private userFactoryService: UserFactoryService) {}
+    private readonly dataServicesRepositories: IDataRepositories,
+    private readonly userFactoryService: UserFactoryService) {}
 
   createPost(postDto: PostDto): Post {
     const post = new Post();
@@ -18,19 +18,7 @@ export class PostFactoryService {
     post.description = postDto.description;
     post.body = postDto.body;
     post.user = this.userFactoryService.createUser(postDto.user);
-    post.publishDate = postDto.publishDate;
-
-    return this.dataServicesRepositories.posts.convertFromGenericEntity(post);
-  }
-
-  updatePost(postDto: PostDto): Post {
-    const post = new Post();
-    post.id = postDto.id;
-    post.title = postDto.title;
-    post.description = postDto.description;
-    post.body = postDto.body;
-    post.user = this.userFactoryService.createUser(postDto.user);
-    post.publishDate = postDto.publishDate;
+    post.publishDate = new Date();
 
     return this.dataServicesRepositories.posts.convertFromGenericEntity(post);
   }
@@ -42,9 +30,16 @@ export class PostFactoryService {
     postDto.title = newPost.title;
     postDto.description = newPost.description;
     postDto.body = newPost.body;
-    postDto.user = this.userFactoryService.createUserDto(newPost.user);
+    postDto.user = this.userFactoryService.removeRestrictedProperties(this.userFactoryService.createUserDto(newPost.user));
     postDto.publishDate = newPost.publishDate;
 
     return postDto;
+  }
+
+  // Make sure only desired criterias are selected from the incomming object
+  createUpdatePostCriterias(updatePostDto: UpdatePostDto): IUpdatePostCriterias {
+    const populate = {populate: { path: 'user' }};
+    const {title, description, body} = updatePostDto;
+    return {title, description, body, populate} as IUpdatePostCriterias;
   }
 }

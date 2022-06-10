@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../services/api/PostApiService";
-import { IPost } from "../types";
+import { IPost, UserRole } from "../types";
 import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
+import DeleteButton from './common/deleteConfirmation'
+import { checkForbidden } from '../utils/response';
+import { createActionSessionExpired } from '../reducers/auth';
 
 const Home = () => {
   
@@ -23,6 +26,10 @@ const Home = () => {
     posts.splice(index, 1);
   }
 
+  const isAdministrator = () => state.isAuthenticated && state.user?.role === UserRole.ADMIN;
+
+  const deletePostMessage = (post: IPost) => `${post.title} post`;
+
   const handleDeletePost = async (id: string) => {
     dispatch(createActionLoading(true));
     await PostApiService.deletePost(id)
@@ -38,8 +45,14 @@ const Home = () => {
   }
 
   const handleDeletePostError = (apiErrors: IErrors) => {
-    toast.error(`Post delete failed, see error list`);
-    setErrors(apiErrors);
+    if (checkForbidden(apiErrors)) {
+      toast.error(`Post delete failed, session expired`);
+      dispatch(createActionSessionExpired());
+      navigate('/'); 
+    } else {
+      toast.error(`Post delete failed, see error list`);
+      setErrors(apiErrors);      
+    }
   }
 
   useEffect(() => {
@@ -59,13 +72,10 @@ const Home = () => {
               <div className="col-lg-4 col-md-6" key={post.id}>
               <div className="card h-100">
                 <div className="single-post post-style-1">
-
-                  <div className="blog-image">
-                    <img src="https://res.cloudinary.com/yemiwebby-com-ng/image/upload/v1563149789/blog-image_psvipq.jpg" alt="Blog" />
-                  </div>
-
                   <span className="avatar">
-                    <img src="http://res.cloudinary.com/yemiwebby-com-ng/image/upload/v1513770253/WEB_FREAK_50PX-01_yaqxg7.png" alt="Profile" />
+                    <span>
+                     <h4>User: {post.user!.username} </h4> 
+                    </span>
                   </span>
 
                   <div className="blog-info">
@@ -79,23 +89,40 @@ const Home = () => {
                 </div>
 
                 <ul className="post-footer">
-                  <li>
-                    {
-                      !state.isLoading && <Link to={`/post/${post.id}`} className="btn btn-sm btn-outline-secondary">View Post </Link>
-                    }
-                  </li>
-                  <li>
-                    {
-                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
-                      <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-outline-secondary">Edit Post </Link>
-                    }
-                  </li>
-                  <li>
-                    {
-                      state.isAuthenticated && !state.isLoading && (state.user!.email === post.user!.email) &&
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => handleDeletePost(post.id!)}>Delete Post</button>
-                    }
-                  </li>
+                  {
+                    !state.isLoading &&
+                    (
+                      <li>
+                      {
+                        <p>
+                          <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View Post</Link>
+                        </p>
+                      }
+                      </li>
+                    )
+                  }
+                  {
+                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) &&
+                    (
+                      <li>
+                      {
+                        <p>
+                          <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-primary">Edit Post</Link>
+                        </p>
+                      }
+                      </li>
+                    )
+                  }
+                  {
+                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) && 
+                    (                   
+                      <li>
+                      {
+                        <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
+                      }
+                      </li>
+                    )
+                  }
                 </ul>
               </div>
             </div>

@@ -4,11 +4,11 @@ import {
   initialState,
   AuthAction,
   AuthState,
-  createActionLogout
+  createActionLoadUser,
+  createActionSessionExpired,
 } from '../reducers/auth';
-import { getLocalStorageValue } from '../utils/utils';
-import { TOKEN_KEY, setToken, isTokenValid } from '../services/api/APIUtils';
-import AUTHAPI from '../services/api/AuthAPI';
+import TokenService from '../services/api/TokenService';
+import { isTokenValid } from '../services/api/AuthApiService';
 
 type AuthContextProps = {
   state: AuthState;
@@ -23,15 +23,14 @@ const AuthContext = React.createContext<AuthContextProps>({
 export function AuthProvider(props: React.PropsWithChildren<{}>) {
   const [state, dispatch] = React.useReducer(authReducer, initialState);
   React.useEffect(() => {
-    const token = getLocalStorageValue(TOKEN_KEY);
+    const user = TokenService.getUser();
 
-    if (!token) return;
+    if (!user) return;
 
-    if (isTokenValid(token)) {
-      setToken(token);
-    } else {
-      dispatch(createActionLogout());
-      AUTHAPI.logout();
+    dispatch(createActionLoadUser(user));
+
+    if (user.authtoken && !isTokenValid(user.authtoken!.accessToken)) {
+      dispatch(createActionSessionExpired());
     }
   }, []);
 

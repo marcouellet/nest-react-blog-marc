@@ -3,15 +3,18 @@ import { IPost, IUpdatePost } from "../../types";
 
 const POST_ENDPOINT = `/post`;
 
-export class PostApi extends HttpApiService<IPost> {
+class PostApi extends HttpApiService<IPost> {
  
   getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);
-;
   };
 
   getAllPosts = () => {
     return super.getAll(`${POST_ENDPOINT}`);
+  };
+
+  getNumberOfPostsForUser = (userId: string) => {
+    return super.getCount(`${POST_ENDPOINT}/count/${userId}`);
   };
 
   createPost = (data: any) => {

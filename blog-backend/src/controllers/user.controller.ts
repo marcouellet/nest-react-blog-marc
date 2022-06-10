@@ -1,47 +1,62 @@
-import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
 import { UserDto } from '../core/dtos';
+import { UserCriterias } from '../core/find-criterias/user.criterias';
 import { UserService } from '../services/user/user.service';
-import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
-
+import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { UserRole } from '../core/enum';
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAll(@Res() res) {
-    this.userService.getAllUsers()
-      .then((users) => {res.status(HttpStatus.OK).json(users)})
-       .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth([UserRole.ADMIN])
+  async getAll(): Promise<UserDto[]> {
+    return this.userService.getAllUsers();
   }
 
   @Get(':id')
-  async getById(@Res() res, @Param('id', new ValidateObjectId()) id: any) {
-    this.userService.getUserById(id)
-      .then((user) => res.status(HttpStatus.OK).json(user))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth([UserRole.ADMIN])
+  async getById(@Param('id') id: string): Promise<UserDto> {
+    return this.userService.getUserById(id);
   }
 
   // Submit a new user
   @Post('/create')
-  async createUser(@Res() res, @Body() userDto: UserDto) {
-    this.userService.createUser(userDto)
-      .then((user) => res.status(HttpStatus.OK).json(user))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth([UserRole.ADMIN])
+  async createUser(@Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
+    return this.userService.createUser(userDto);
+  }
+
+  // Fetch a user based on criterias
+  @Put('/find')
+  async finUser(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto> {
+    return this.userService.findUser(userCriterias);
+  }
+
+  // Fetch users based on criterias
+  @Put('/findAll')
+  async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto[]> {
+    return this.userService.findManyUsers(userCriterias);
+  }
+
+  // Get count of users meating criterias 
+  @Put('/findManyCount')
+  async findManyUsersCount(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<number> {
+    return this.userService.findManyUsersCount(userCriterias);
   }
 
   // Update a user
   @Put('/update/:id')
-  async updateUser(@Res() res, @Param('id', new ValidateObjectId()) id, @Body() userDto: UserDto) {
-    this.userService.updateUser(userDto)
-      .then((user) => res.status(HttpStatus.OK).json(user))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth([UserRole.ADMIN])
+  async updateUser(@Param('id') id: string, @Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
+    return this.userService.updateUser(id, userDto);
   }
 
   // Delete user using ID
   @Delete('/delete/:id')
-  async deleteUser(@Res() res, @Param('id', new ValidateObjectId()) id) {
-    const deletedUser = await this.userService.deleteUser(id)
-      .then((user) => res.status(HttpStatus.OK))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth([UserRole.ADMIN])
+  async deleteUser( @Param('id') id: string): Promise<UserDto> {
+    return this.userService.deleteUser(id);
   }
 }

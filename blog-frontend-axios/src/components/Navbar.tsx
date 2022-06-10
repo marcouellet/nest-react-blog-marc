@@ -2,17 +2,24 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
 import { createActionLogout } from '../reducers/auth';
-import AUTHAPI from '../services/api/AuthAPI';
+import AUTHAPI from '../services/api/AuthApiService';
+import { toast } from "react-toastify";
+import { UserRole } from '../types'
 
 const Navbar = () => {
     const { state, dispatch } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+     const handleLogout = () => {
         dispatch(createActionLogout());
         AUTHAPI.logout();
-        navigate('/');
+        toast.info(`${state.user!.username} is logged out`);
+        setTimeout(() => {
+            navigate('/');
+          }, 1500);
       };
+
+    const isAdministrator = () => state.isAuthenticated && state.user?.role === UserRole.ADMIN;
 
       return (
         <header>
@@ -20,17 +27,24 @@ const Navbar = () => {
                 <div className="menu-nav-icon" data-nav-menu="#main-menu">
                     <i className="ion-navicon" />
                 </div>
-
+                { state.user && (
+                    <div>
+                        <h5>User:&nbsp;{state.user.username}&nbsp;{isAdministrator() && '(admin)'}</h5>
+                    </div>
+                )}
                 <ul className="main-menu visible-on-click" id="main-menu">
                     <li><Link className={"nav-link"} to={"/"}> Home </Link></li>
                     {!state.isLoading && state.isAuthenticated && (
-                        <li><Link className={"nav-link"} to={"/post/create"}> Create </Link></li>
+                        <li><Link className={"nav-link"} to={"/post/create"}> Create Post</Link></li>
                     )}
                     {!state.isLoading && !state.isAuthenticated && (
                         <li><Link className={"nav-link"} to={"/login"}> Log In </Link></li>
                     )}
                     {!state.isLoading && !state.isAuthenticated && (
                         <li><Link className={"nav-link"} to={"/register"}> Register </Link></li>
+                    )}
+                    {!state.isLoading && isAdministrator() && (
+                        <li><Link className={"nav-link"} to={"/user"}> Admin User</Link></li>
                     )}
                     {!state.isLoading && state.user && (
                         <li>

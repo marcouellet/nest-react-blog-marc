@@ -1,55 +1,74 @@
-import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
 import { PostService } from '../services/post/post.service';
 import { UserService } from '../services/user/user.service';
 import { PostDto, UpdatePostDto } from '../core/dtos';
-import { ValidateObjectId } from '../common/pipes/validate-object-id.pipes';
-
+import { PostCriterias } from '../core/find-criterias/post.criterias';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { AllRoles } from '../core/enum/user-role.enum';
 @Controller('post')
 export class PostController {
 
-  constructor(private postService: PostService, private userService: UserService) { }
+  constructor(private readonly postService: PostService, private readonly userService: UserService) { }
 
   // Fetch all posts
   @Get()
-  async getAll(@Res() res) {
-    this.postService.getAllPosts()
-    .then((posts) => res.status(HttpStatus.OK).json(posts))
-    .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  async getAll(): Promise<PostDto[]> {
+    return this.postService.getAllPosts();
   }
 
   // Fetch a particular post using ID
   @Get(':id')
-  async getPost(@Res() res, @Param('id', new ValidateObjectId()) id) {
-    this.postService.getPostById(id)
-    .then((post) => res.status(HttpStatus.OK).json(post))
-    .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  async getPost(@Param('id') id: string): Promise<PostDto> {
+    return this.postService.getPostById(id);
+  }
+
+  // Get number of posts owned by user
+  @Get('/count/:userId')
+  async getNumberOfPostsForUser(@Param('userId') userId: string): Promise<number> {
+    return this.postService.getNumberOfPostsForUser(userId);
   }
 
   // Submit a new post
   @Post('/create')
-  async createPost(@Res() res, @Body() postDto: PostDto) {
+  @Auth(AllRoles)
+  async createPost(@Body(new ValidationPipe()) postDto: PostDto): Promise<PostDto> {
     // Validate userId
-    await this.userService.getUserById(postDto.user.id)
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+    await this.userService.getUserById(postDto.user.id);
     // userId match a User
-    this.postService.createPost(postDto)
-      .then((post) => res.status(HttpStatus.OK).json(post))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+    return this.postService.createPost(postDto);
   }
 
   // Update a post
   @Put('/update/:id')
-  async updatePost(@Res() res, @Param('id', new ValidateObjectId()) id, @Body() updatePostDto: UpdatePostDto) {
-    this.postService.updatePost(id, updatePostDto)
-      .then((post) => res.status(HttpStatus.OK).json(post))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth(AllRoles)
+  async updatePost(@Param('id') id: string,
+                   @Body(new ValidationPipe()) updatePostDto: UpdatePostDto): Promise<PostDto> {
+    return this.postService.updatePost(id, updatePostDto);
+  }
+
+  // Fetch a post based on criterias
+  @Put('/find')
+  async finPost(@Body(new ValidationPipe()) postCriterias: PostCriterias): Promise<PostDto> {
+    return this.postService.findPost(postCriterias);
+  }
+
+  // Fetch posts based on criterias
+  @Put('/findAll')
+  async finManyPosts(@Body(new ValidationPipe()) postCriterias: PostCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPosts(postCriterias);
+  }
+
+  // Get count of posts meating criterias 
+  @Put('/findManyCount')
+  async findManyPostsCount(@Body(new ValidationPipe()) userCriterias: PostCriterias): Promise<number> {
+    return this.postService.findManyPostsCount(userCriterias);
   }
 
   // Delete a post
   @Delete('/delete/:id')
-  async deletePost(@Res() res, @Param('id', new ValidateObjectId()) id) {
-    this.postService.deletePost(id)
-      .then((post) => res.status(HttpStatus.OK).json(post))
-      .catch((error) => res.status(HttpStatus.INTERNAL_SERVER_ERROR));
+  @Auth(AllRoles)
+  async deletePost(@Param('id') id: string): Promise<PostDto> {
+    return this.postService.deletePost(id);
   }
 }

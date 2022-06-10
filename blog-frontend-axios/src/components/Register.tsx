@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AUTHAPI from '../services/api/AuthAPI';
+import AUTHAPI from '../services/api/AuthApiService';
 import useAuth from '../contexts/auth';
 import { toast } from "react-toastify";
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
+import { checkForbidden } from '../utils/response';
 import ListErrors from './common/ListErrors';
 import { IErrors, User } from '../types';
 
@@ -29,22 +30,28 @@ const Register = () => {
     });
   };
 
+  const handleSubmitFormError = (apiErrors: IErrors) => {
+    if (checkForbidden(apiErrors)) {
+      toast.error(`Registration failed, email already used!`);
+    } else {
+      toast.error(`User registration failed, see error list`);
+      setErrors(apiErrors);
+      }
+  }
+
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     dispatch(createActionLoading(true));
     const { username, email, password } = form;
-
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
+          toast.success(`${user.username} is registered`);
           dispatch(createActionLoadUser(user));
-          navigate('/');    
+          navigate('/login');    
         }
       )
-      .catch((apiErrors: IErrors) => {
-        toast.error(`User registration failed, see error list`);
-        setErrors(apiErrors);  
-      });
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); }); 
     dispatch(createActionLoading(false));
  } 
 

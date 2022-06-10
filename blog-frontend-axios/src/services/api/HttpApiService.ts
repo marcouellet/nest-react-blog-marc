@@ -1,4 +1,4 @@
-import API from './APIUtils';
+import API from './APIService';
 
 export enum EnumContentType {
   JSON = "application/json",
@@ -8,27 +8,30 @@ export enum EnumContentType {
 class HttpApiService<T> {
 
   protected getAll(endpoint: string, conf = {}): Promise<T[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.get<T[]>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
-    });
+     });
   }
 
   protected get(endpoint: string, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.get<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
-    });
+     });
+  }
+
+  protected getCount(endpoint: string, conf = {}): Promise<number> {
+    return new Promise(resolve => {
+      API.get<number>(`${endpoint}`, conf)
+        .then(response => {
+          resolve(response.data);
+        });
+     });
   }
 
   protected create(endpoint: string, data: {}, conf = {}): Promise<T> {
@@ -36,37 +39,28 @@ class HttpApiService<T> {
   }
 
   protected post(endpoint: string, data: {}, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.post<T>(`${endpoint}`, data, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
     });
   }
 
   protected update(endpoint: string, data: T, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.put<T>(`${endpoint}`, data, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
-    });
+     });
   }
 
   protected delete(endpoint: string, conf = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       API.delete<T>(`${endpoint}`, conf)
         .then(response => {
           resolve(response.data);
-        })
-        .catch(error => {
-          reject(error);
         });
     });
   }
