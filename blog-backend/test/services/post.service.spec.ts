@@ -102,6 +102,7 @@ describe('PostService', () => {
   describe('updatePost', () => {
     it('should return a post', async () => {
       expect(await postService.updatePost(testPostId, testUpdatePostDto)).toEqual(testServicePostDto);
+      expect(postRepositoryMock.get).toHaveBeenCalledWith(testPostId); // check if post exist
       expect(postRepositoryMock.update).toHaveBeenCalled();
     });
   });
@@ -109,6 +110,7 @@ describe('PostService', () => {
   describe('deletePost', () => {
     it('should return a post', async () => {
       expect(await postService.deletePost(testPostId)).toEqual(testServicePostDto);
+      expect(postRepositoryMock.get).toHaveBeenCalledWith(testPostId); // check if post exist
       expect(postRepositoryMock.delete).toHaveBeenCalledWith(testPostId, 'user');
     });
   });

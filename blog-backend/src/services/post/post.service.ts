@@ -56,12 +56,14 @@ export class PostService {
 
   async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<PostDto> {
     const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
-    return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, 'user')
+    return this.getPostById(id)
+      .then(_ => this.dataServicesRepositories.posts.update(id, updatedPostCriterias, 'user'))
       .then(post => this.processPost(post));
   }
 
   async deletePost(id: string): Promise<PostDto> {
-    return this.dataServicesRepositories.posts.delete(id, 'user')
+    return this.getPostById(id)
+      .then(_ =>  this.dataServicesRepositories.posts.delete(id, 'user'))
       .then(post => this.processPost(post));
   }
 }
