@@ -148,7 +148,8 @@ describe('AuthService', () => {
   describe('register', () => {
     it('should return a user', async () => {
       expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDtoUnrestricted);
-      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias); // check if user exist
+      // check if a user exist with same email
+      expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias);
       expect(cryptoServiceMock.hashPassword).toHaveBeenCalledWith(testRegisterUnknownUserDto.password);
       expect(userRepositoryMock.create).toHaveBeenCalled();
     });
