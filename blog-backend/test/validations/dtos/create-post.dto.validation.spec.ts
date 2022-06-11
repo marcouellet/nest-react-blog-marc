@@ -11,14 +11,14 @@ describe('CreatePostDto Validation', () => {
       }).compile();
   });
 
-it('should complain for title length too short', async () => {
-    let postDto = buildCreatePostDto(testCreatePostDto);
-    postDto.title = '_'.repeat(minimumTitleLength ? minimumTitleLength-1 : 0);
-    const errors = await validate(postDto, { skipMissingProperties: true });
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.property === 'title');
-});
+  it('should complain for title length too short', async () => {
+      let postDto = buildCreatePostDto(testCreatePostDto);
+      postDto.title = '_'.repeat(minimumTitleLength ? minimumTitleLength-1 : 0);
+      const errors = await validate(postDto, { skipMissingProperties: true });
+      expect(errors.length).toEqual(1);
+      const error = errors[0];
+      expect(error.property === 'title');
+  });
 
   it('should complain for description length too short', async () => {
     let postDto = buildCreatePostDto(testCreatePostDto);
