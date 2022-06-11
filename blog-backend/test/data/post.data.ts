@@ -12,7 +12,7 @@ export const testPostDto: PostDto = {
   id: testPostId,
   title: 'title',
   description: 'description',
-  body: 'body',
+  body: 'content of the post',
   user: testUserDto,
   publishDate: publishedOnDate,
 };
@@ -20,21 +20,21 @@ export const testPostDto: PostDto = {
 export const testCreatePostDto: PostDto = {
   title: 'title',
   description: 'description',
-  body: 'body',
+  body: 'content of the post',
   user: testUserDto,
 };
 
 export const testUpdatePostDto: UpdatePostDto = {
   title: 'title',
   description: 'description',
-  body: 'body',
+  body: 'content of the post',
 };
 
 export const testPost: Post = {
   id: testPostId,
   title: 'title',
   description: 'description',
-  body: 'body',
+  body: 'content of the post',
   user: testUser,
   publishDate: publishedOnDate,
 };
@@ -43,7 +43,7 @@ export const testServicePostDto: PostDto = {
   id: testPostId,
   title: 'title',
   description: 'description',
-  body: 'body',
+  body: 'content of the post',
   user: testServiceUserDto,
   publishDate: publishedOnDate,
 };
