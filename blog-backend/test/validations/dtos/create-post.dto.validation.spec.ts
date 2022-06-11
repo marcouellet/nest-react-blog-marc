@@ -1,15 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import "reflect-metadata"; // to fix TypeError: Reflect.getMetadata is not a function
 import { validate } from '@nestjs/class-validator';
 import { testCreatePostDto } from '../../data/post.data';
 import { buildCreatePostDto  } from './builders/post.dtos.builders';
 import { minimumTitleLength, minimumDescriptionLength, minimumBodyLength } from '../../../src/core/entities/post.entity';
 
 describe('CreatePostDto Validation', () => {
-
-  beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      }).compile();
-  });
 
   it('should complain for title length too short', async () => {
       let postDto = buildCreatePostDto(testCreatePostDto);

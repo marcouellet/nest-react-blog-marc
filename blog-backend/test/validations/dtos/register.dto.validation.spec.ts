@@ -1,15 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from '@nestjs/class-validator';
 import { testRegisterUnknownUserDto } from '../../data/auth.data';
 import { buildRegisterDto  } from './builders/auth.dtos.builders';
 import { minimumUserNameLength, minimumEmailLength, minimumPasswordLength } from '../../../src/core/entities/user.entity';
 
 describe('RegisterDto Validation', () => {
-
-  beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      }).compile();
-  });
 
   it('should complain for email length too short', async () => {
     let registerDto = buildRegisterDto(testRegisterUnknownUserDto);

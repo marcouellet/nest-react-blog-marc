@@ -1,4 +1,3 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from '@nestjs/class-validator';
 import { testCreateUnknownUserDto } from '../../data/user.data';
 import { buildCreateUserDto  } from './builders/user.dtos.builder';
@@ -6,11 +5,6 @@ import { minimumUserNameLength, minimumEmailLength, minimumPasswordLength } from
 import { UserRole } from '../../../src/core/enum/user-role.enum';
 
 describe('CreateUserDto Validation', () => {
-
-  beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      }).compile();
-  });
 
   it('should complain for username length too short', async () => {
     let createUserDto = buildCreateUserDto(testCreateUnknownUserDto);
