@@ -9,12 +9,14 @@ import { UserRole } from '../core/enum';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+    // Fetch all users
   @Get()
   @Auth([UserRole.ADMIN])
   async getAll(): Promise<UserDto[]> {
     return this.userService.getAllUsers();
   }
 
+    // Fetch a particular user using ID
   @Get(':id')
   @Auth([UserRole.ADMIN])
   async getById(@Param('id') id: string): Promise<UserDto> {
@@ -29,19 +31,19 @@ export class UserController {
   }
 
   // Fetch a user based on criterias
-  @Put('/find')
+  @Get('/find')
   async finUser(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto> {
     return this.userService.findUser(userCriterias);
   }
 
   // Fetch users based on criterias
-  @Put('/findAll')
+  @Get('/findAll')
   async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto[]> {
     return this.userService.findManyUsers(userCriterias);
   }
 
   // Get count of users meating criterias 
-  @Put('/findManyCount')
+  @Get('/findManyCount')
   async findManyUsersCount(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<number> {
     return this.userService.findManyUsersCount(userCriterias);
   }

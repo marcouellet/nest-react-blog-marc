@@ -54,10 +54,32 @@
               "${workspaceRoot}/blog-backend/node_modules/jest/bin/jest.js",
               "--runInBand"
             ],
+            "args": [
+                "-c",
+                "./test/jest.json",
+            ],
             "cwd": "${workspaceFolder}\\blog-backend",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "port": 9229
-          }
+        },
+        {
+            "name": "Debug Backend Jest E2E Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+              "--inspect-brk",
+              "${workspaceRoot}/blog-backend/node_modules/jest/bin/jest.js",
+              "--runInBand"
+            ],
+            "args": [
+                "-c",
+                "./test-e2e/jest-e2e.json",
+            ],
+            "cwd": "${workspaceFolder}\\blog-backend",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "port": 9229
+        }
     ]
 }
