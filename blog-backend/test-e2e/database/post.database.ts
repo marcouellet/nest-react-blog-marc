@@ -1,13 +1,34 @@
+import { Logger } from '@nestjs/common';
+import { UserDto } from '../../src/core/dtos';
 import { PostDto } from '../../src/core/dtos';
+import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import { PostCriterias } from '../../src/core';
 import { buildCreatePostDto, buildUpdatePostDto } from '../../test/validations/dtos/builders/post.dtos.builders';
 
 export class PostDatabaseBuilder {
-  constructor(private readonly postService: PostService) {}
+  constructor(private readonly userService: UserService, private readonly postService: PostService) {}
 
   async findPost(postCriterias: PostCriterias): Promise<PostDto> {
     return this.postService.findPost(postCriterias); 
+  }
+
+  async deleteAllE2EUsers() {
+    try {
+      const users: UserDto[] = await this.userService.getAllUsers();
+
+      users.forEach(user => {
+        try {
+          if (user.username.startsWith('e2e.post.')) {
+            this.userService.deleteUser(user.id);
+          }
+        } catch (error) {
+          Logger.error(error);
+        }
+      });
+    } catch (error) {
+      Logger.error(error);
+    }
   }
 
   async deleteAllPostsForE2EUsers() {
@@ -16,15 +37,15 @@ export class PostDatabaseBuilder {
 
       posts.forEach(post => {
         try {
-          if (post.user.username.startsWith('e2e')) {
+          if (post.user.username.startsWith('e2e.post.')) {
             this.postService.deletePost(post.id);
           }
         } catch (error) {
-          console.log(error);
+          Logger.error(error);
         }
       });
     } catch (error) {
-      console.log(error);
+      Logger.error(error);
     }
   }
 

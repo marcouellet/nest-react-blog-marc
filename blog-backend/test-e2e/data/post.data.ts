@@ -1,28 +1,46 @@
 import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { CreateUserDto, UpdateUserDto, UserDto, IUpdateUserCriterias } from '../../src/core/dtos';
-import { testE2ERoleUser, testE2ERoleAdmin, testE2EDummyUserEmail, testE2EAdminUserEmail, testE2EDummyUserPassword, 
-    testE2EAdminUserPassword, testE2EDummyUserName, testE2EAdminUserName } from './auth.data';
-import { testE2ECreateUnknownUserDto } from '../data/user.data';
 import { PostCriterias } from '../../src/core';
 
 const publishedOnDate: Date = new Date();
 
-export const testE2EUnknownUserPostTitle = 'unknown title';
-export const testE2EUnknownUserPostUpdatedTitle = 'unknown updated title';
+export const testE2ENonExistingPostId_Post= 'twelvelong12'; // required by MongoDB
+export const testE2EDummyUserPostTitle_Post = 'dummy title';
+export const testE2EDummyUserPostUpdatedTitle_Post = 'dummy updated title';
+export const testE2ENonExistingUserPostTitle_Post = 'non existing title'
 
-export const testE2EUnknownUserFindPostCriterias: PostCriterias = { title: testE2EUnknownUserPostTitle };
-export const testE2EUnknownUserFindUpdatedPostCriterias: PostCriterias = { title: testE2EUnknownUserPostUpdatedTitle };
+export const testE2EDummyUserEmail_Post = 'e2e.post.dummy.post@email.com';
+export const testE2EAdminUserEmail_Post = 'e2e.post.admin.post@email.com';
+export const testE2EDummyUserPassword_Post = 'e2e.post.dummy-password-post';
+export const testE2EAdminUserPassword_Post = 'e2e.post.admin-password-post';
+export const testE2EDummyUserName_Post = 'e2e.post.dummy.post';
+export const testE2EAdminUserName_Post = 'e2e.post.admin.post';
 
-export const testE2EUnknownUserCreatePostDto: PostDto = {
-    title: testE2EUnknownUserPostTitle,
+export const testE2ENonExistingUserFindPostCriterias_Post: PostCriterias = { title: testE2ENonExistingUserPostTitle_Post };
+export const testE2EDummyUserFindUpdatedPostCriterias_Post: PostCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
+
+export const testE2ERegisterDummyUser_Post = {
+  username: testE2EDummyUserName_Post,
+  email: testE2EDummyUserEmail_Post,
+  password: testE2EDummyUserPassword_Post,
+};
+
+export const testE2ERegisterAdminUser_Post = {
+  username: testE2EAdminUserName_Post,
+  email: testE2EAdminUserEmail_Post,
+  password: testE2EAdminUserPassword_Post,
+};
+
+
+export const testE2EDummyUserCreatePostDto_Post: PostDto = {
+    title: testE2EDummyUserPostTitle_Post,
     description: 'description',
     body: 'content of the post',
-    user: testE2ECreateUnknownUserDto,
+    user: undefined,
     publishDate: publishedOnDate,
   };
 
-  export const testE2EUnknownUserUpdatePostDto: UpdatePostDto = {
-    title: testE2EUnknownUserPostUpdatedTitle,
+  export const testE2EDummyUserUpdatePostDto_Post: UpdatePostDto = {
+    title: testE2EDummyUserPostUpdatedTitle_Post,
     description: 'updated description',
     body: 'updated content of the post',
   };
