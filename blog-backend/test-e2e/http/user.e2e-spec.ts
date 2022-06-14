@@ -100,7 +100,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDto) { 
     return request(app.getHttpServer())
       .put('/user/find')
-      .send(JSON.stringify(buildFindUserCriterias(testE2EFindDummyUserCriterias_User)))
+      .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.NOT_FOUND);
     } else {
       Logger.error('(PUT) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed');    
@@ -111,9 +111,8 @@ describe('UserController (e2e)', () => {
     if (dummyUserDto) { 
     return request(app.getHttpServer())
       .put('/user/findAll')
-      .send(JSON.stringify(buildFindUserCriterias(testE2EFindDummyUserCriterias_User)))
-      .expect(StatusCodes.OK)
-      .expect(body => body === null);
+      .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
+      .expect(StatusCodes.NOT_FOUND);
     } else {
       Logger.error('(PUT) /findAll - Fetch users based on criterias - cannot test since dummy user creation failed');       
     }
@@ -123,9 +122,8 @@ describe('UserController (e2e)', () => {
     if (dummyUserDto) {
     return request(app.getHttpServer())
       .put('/user/findManyCount')
-      .send(JSON.stringify(buildFindUserCriterias(testE2EFindDummyUserCriterias_User)))
-      .expect(StatusCodes.OK)
-      .expect(body => body === null);
+      .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
+      .expect(StatusCodes.NOT_FOUND);
     } else {
       Logger.error('(PUT) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');  
     }
@@ -134,14 +132,14 @@ describe('UserController (e2e)', () => {
   it('(POST) /user/create - Submit a new user (not logged in)', () => {
     return request(app.getHttpServer())
       .post('/user/create')
-      .send(JSON.stringify(buildCreateUserDto(testE2ECreateUnknownUserDto_User)))
+      .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
   it('(PUT) /user/update/:postId - Update a user with :userId (not logged in)', () => {
     return request(app.getHttpServer())
       .put(`/user/update/${testE2ENonExistingUserId_User}`)
-      .send(JSON.stringify(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User)))
+      .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -155,7 +153,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDto) {
       return request(app.getHttpServer())
       .put('/auth/login')
-      .send(JSON.stringify(buildLoginDto(testE2ELoginDummyUser_User)))
+      .send(buildLoginDto(testE2ELoginDummyUser_User))
       .expect(StatusCodes.OK)
       .then(response => dummyUserDtoWithTokens = response.body);
     } else {
@@ -167,7 +165,7 @@ describe('UserController (e2e)', () => {
     if (adminUserDto) {
       return request(app.getHttpServer())
       .put('/auth/login')
-      .send(JSON.stringify(buildLoginDto(testE2ELoginAdminUser_User)))
+      .send(buildLoginDto(testE2ELoginAdminUser_User))
       .expect(StatusCodes.OK)
       .then(response => adminUserDtoWithTokens = response.body);
     } else {
@@ -229,7 +227,7 @@ describe('UserController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/user/create')
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildCreateUserDto(testE2ECreateUnknownUserDto_User)))
+      .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('(POST) /user/create - Submit a new user (dummy logged in) - cannot test since dummy user creation failed');
@@ -241,7 +239,7 @@ describe('UserController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/user/create')
       .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildCreateUserDto(testE2ECreateUnknownUserDto_User)))
+      .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDto = response.body);
     } else {
@@ -254,7 +252,7 @@ describe('UserController (e2e)', () => {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User)))
+      .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('(PUT) /user/update/:postId - Update a user name - cannot test since unknown user or dummy user creation failed')
@@ -266,7 +264,7 @@ describe('UserController (e2e)', () => {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
       .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User)))
+      .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body);
     } else {
@@ -279,7 +277,7 @@ describe('UserController (e2e)', () => {
       return request(app.getHttpServer())
       .put('/user/find')
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildFindUserCriterias(testE2EFindUnknownUserNameCriterias_User)))
+      .send(buildFindUserCriterias(testE2EFindUnknownUserNameCriterias_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body);
     } else {
@@ -292,7 +290,7 @@ describe('UserController (e2e)', () => {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
       .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildUpdateUserDto(testE2EUpdateUnknownUserPasswordDto_User)))
+      .send(buildUpdateUserDto(testE2EUpdateUnknownUserPasswordDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoPasswordUpdated = response.body);
     } else {

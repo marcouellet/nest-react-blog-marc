@@ -9,7 +9,7 @@ import { UserService } from '../../src/services/user/user.service';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.builders';
 import { testE2ELoginAdminUser_Auth, testE2ELoginDummyUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
-          testE2ERegisterUnknownUser_Auth, testE2EDummyUserJwtPayload_Auth } from '../data/auth.data';
+          testE2ERegisterUnknownUser_Auth, testE2EDummyUserJwtPayload_Auth, testE2ELoginUnknownUser_Auth } from '../data/auth.data';
 import { UserDto } from '../../src/core';
 
 describe('AuthController (e2e)', () => {
@@ -77,7 +77,7 @@ describe('AuthController (e2e)', () => {
     if (adminUserDto) {
     return request(app.getHttpServer())
       .put('/auth/login')
-      .send(JSON.stringify(buildLoginDto(testE2ELoginAdminUser_Auth)))
+      .send(buildLoginDto(testE2ELoginAdminUser_Auth))
       .expect(StatusCodes.OK);
     } else {
       Logger.error('(PUT) /auth/login admin user (not logged in) - cannot test since admin user creation failed'); 
@@ -88,7 +88,7 @@ describe('AuthController (e2e)', () => {
     if (dummyUserDto) {
     return request(app.getHttpServer())
       .put('/auth/login')
-      .send(JSON.stringify(buildLoginDto(testE2ELoginDummyUser_Auth)))
+      .send(buildLoginDto(testE2ELoginDummyUser_Auth))
       .expect(StatusCodes.OK)
       .then(response => dummyUserDtoWithTokens = response.body);
     } else {
@@ -100,8 +100,8 @@ describe('AuthController (e2e)', () => {
     if (adminUserDto) {
     return request(app.getHttpServer())
       .post('/auth/register')
-      .send(JSON.stringify(buildRegisterDto(testE2ERegisterAdminUser_Auth)))
-      .expect(StatusCodes.UNAUTHORIZED);
+      .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
+      .expect(StatusCodes.FORBIDDEN);
     } else {
       Logger.error('(PUT) /auth/login admin user (not logged in) - cannot test since admin user creation failed');        
     }
@@ -110,8 +110,8 @@ describe('AuthController (e2e)', () => {
   it('(POST) /auth/register unknown user (not logged in)', () => {
     return request(app.getHttpServer())
       .post('/auth/register')
-      .send(JSON.stringify(buildRegisterDto(testE2ERegisterUnknownUser_Auth)))
-      .expect(StatusCodes.OK)
+      .send(buildRegisterDto(testE2ERegisterUnknownUser_Auth))
+      .expect(StatusCodes.CREATED)
       .then(response => unknownUserDtoWithTokens = response.body);
   });
 

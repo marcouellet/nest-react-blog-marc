@@ -104,15 +104,14 @@ describe('PostController (e2e)', () => {
   it('(PUT) /post/find - Fetch a post based on criterias with no match (not logged in)', () => {
     return request(app.getHttpServer())
       .put('/post/find')
-      .send(JSON.stringify(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post)))
-      .expect(StatusCodes.OK)
-      .expect(body => body === null);
+      .send(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post))
+      .expect(StatusCodes.NOT_FOUND);
   });
 
   it('(PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)', () => {
     return request(app.getHttpServer())
       .put('/post/findAll')
-      .send(JSON.stringify(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post)))
+      .send(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post))
       .expect(StatusCodes.OK)
       .expect(body => body === null);
   });
@@ -120,7 +119,7 @@ describe('PostController (e2e)', () => {
   it('(PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)', () => {
     return request(app.getHttpServer())
       .put('/post/findManyCount')
-      .send(JSON.stringify(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post)))
+      .send(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post))
       .expect(StatusCodes.OK)
       .expect(body => body === null);
   });
@@ -128,14 +127,14 @@ describe('PostController (e2e)', () => {
   it('(POST) /post/create - Submit a new post (not logged in)', () => {
     return request(app.getHttpServer())
       .post('/post/create')
-      .send(JSON.stringify(buildCreatePostDto(testE2EDummyUserCreatePostDto_Post)))
+      .send(buildCreatePostDto(testE2EDummyUserCreatePostDto_Post))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
   it('(PUT) /post/update/:postId - Update a post (not logged in)', () => {
     return request(app.getHttpServer())
       .put(`/post/update/${testE2ENonExistingPostId_Post}`)
-      .send(JSON.stringify(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post)))
+      .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -149,7 +148,7 @@ describe('PostController (e2e)', () => {
     if (dummyUserDto) {
       return request(app.getHttpServer())
       .put('/auth/login')
-      .send(JSON.stringify(buildLoginDto(testE2ELoginDummyUser_Post)))
+      .send(buildLoginDto(testE2ELoginDummyUser_Post))
       .expect(StatusCodes.OK)
       .then(response => dummyUserDtoWithTokens = response.body);
     } else {
@@ -168,7 +167,7 @@ describe('PostController (e2e)', () => {
       return request(app.getHttpServer())
         .post('/post/create')
         .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-        .send(JSON.stringify(post))
+        .send(post)
         .expect(StatusCodes.OK)
         .then(response => dummyUserPostDto = response.body);
     } else {
@@ -191,9 +190,9 @@ describe('PostController (e2e)', () => {
   it('(PUT) /post/update/:postId - Update a post (dummy logged in)', () => {
     if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
-        .put(`/post/update/${dummyUserPostDto.id}`)
+        .put(`/post/update/${dummyUserDtoWithTokens.id}`)
         .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-        .send(JSON.stringify(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post)))
+        .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
         .expect(StatusCodes.OK)
         .then(response => response && (dummyUserUpdatedPostDto = response.body));
     } else {
@@ -206,7 +205,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .put('/post/find')
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(buildFindPostCriterias(testE2EDummyUserFindUpdatedPostCriterias_Post)))
+      .send(buildFindPostCriterias(testE2EDummyUserFindUpdatedPostCriterias_Post))
       .expect(StatusCodes.OK);
     } else {
       Logger.error('(PUT) /post/find - Fetch a post based on criterias - cannot test since dummy user creation failed');
@@ -216,7 +215,7 @@ describe('PostController (e2e)', () => {
   it('(DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .delete(`/post/delete/${dummyUserPostDto.id}`)
+      .delete(`/post/delete/${dummyUserDtoWithTokens.id}`)
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK)
       .expect(dummyUserUpdatedPostDto);

@@ -28,6 +28,11 @@ export const testE2ELoginAdminUser_Auth = {
     password: testE2EAdminUserPassword_Auth,
 };
 
+export const testE2ELoginUnknownUser_Auth = {
+    email: testE2EUnknownUserEmail_Auth,
+    password: testE2EUnknownUserPassword_Auth,
+};
+
 export const testE2ERegisterDummyUser_Auth = {
     username: testE2EDummyUserName_Auth,
     email: testE2EDummyUserEmail_Auth,
