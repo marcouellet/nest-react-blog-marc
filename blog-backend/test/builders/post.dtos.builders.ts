@@ -1,5 +1,13 @@
-import { CreatePostDto } from '../../../../src/core/dtos/create-post.dto';
-import { UpdatePostDto } from '../../../../src/core/dtos/update-post.dto';
+import { CreatePostDto } from '../../src/core/dtos/create-post.dto';
+import { UpdatePostDto } from '../../src/core/dtos/update-post.dto';
+import { PostCriterias } from '../../src/core/find-criterias';
+
+export function buildFindPostCriterias(fields: any ): PostCriterias {
+  const findPostCriterias = new PostCriterias();
+  findPostCriterias.title = fields.title;
+  findPostCriterias.description = fields.description;
+  return findPostCriterias;
+}
 
 export function buildCreatePostDto(fields: any ): CreatePostDto {
     const createPostDto = new CreatePostDto();

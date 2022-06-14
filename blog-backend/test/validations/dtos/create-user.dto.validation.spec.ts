@@ -1,6 +1,6 @@
 import { validate } from '@nestjs/class-validator';
 import { testCreateUnknownUserDto } from '../../data/user.data';
-import { buildCreateUserDto  } from './builders/user.dtos.builders';
+import { buildCreateUserDto  } from '../../builders/user.dtos.builders';
 import { minimumUserNameLength, minimumEmailLength, minimumPasswordLength } from '../../../src/core/entities/user.entity';
 import { UserRole } from '../../../src/core/enum/user-role.enum';
 

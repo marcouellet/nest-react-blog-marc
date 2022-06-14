@@ -1,6 +1,6 @@
 import { validate } from '@nestjs/class-validator';
 import { testRegisterUnknownUserDto } from '../../data/auth.data';
-import { buildRegisterDto  } from './builders/auth.dtos.builders';
+import { buildRegisterDto  } from '../../builders/auth.dtos.builders';
 import { minimumUserNameLength, minimumEmailLength, minimumPasswordLength } from '../../../src/core/entities/user.entity';
 
 describe('RegisterDto Validation', () => {

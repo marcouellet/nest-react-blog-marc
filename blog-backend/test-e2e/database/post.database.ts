@@ -4,7 +4,7 @@ import { PostDto } from '../../src/core/dtos';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import { PostCriterias } from '../../src/core';
-import { buildCreatePostDto, buildUpdatePostDto } from '../../test/validations/dtos/builders/post.dtos.builders';
+import { buildCreatePostDto, buildUpdatePostDto } from '../../test/builders/post.dtos.builders';
 
 export class PostDatabaseBuilder {
   constructor(private readonly userService: UserService, private readonly postService: PostService) {}

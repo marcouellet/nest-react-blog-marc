@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { UserDto } from '../../src/core/dtos';
-import { buildLoginDto, buildRegisterDto  } from '../../test/validations/dtos/builders/auth.dtos.builders';
+import { buildLoginDto, buildRegisterDto  } from '../../test/builders/auth.dtos.builders';
 import { UserService } from '../../src/services/user/user.service';
 import { AuthService } from '../../src/services/auth.service';
 
@@ -23,11 +23,6 @@ export class AuthDatabaseBuilder {
     } catch (error) {
       Logger.error(error);
     }
-  }
-
-  async loginUser(loginData: any): Promise<UserDto> {
-    const loginrDto = buildLoginDto(loginData);
-    return this.authService.login(loginrDto);
   }
 
   async registerUser(registerData: any): Promise<UserDto> {

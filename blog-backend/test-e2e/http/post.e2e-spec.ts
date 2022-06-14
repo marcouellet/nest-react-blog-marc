@@ -9,6 +9,8 @@ import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { PostDatabaseBuilder } from '../database/post.database';
+import { buildLoginDto } from '../../test/builders/auth.dtos.builders';
+import { buildCreatePostDto, buildUpdatePostDto, buildFindPostCriterias } from '../../test/builders/post.dtos.builders';
 import { testE2ERegisterAdminUser_Post, testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
         testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdatePostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post } from '../data/post.data';
@@ -92,7 +94,8 @@ describe('PostController (e2e)', () => {
     if (dummyUserDto) {
     return request(app.getHttpServer())
       .get(`/post/count/${dummyUserDto.id}`)
-      .expect(StatusCodes.OK);
+      .expect(StatusCodes.OK)
+      .expect(body => body === null); // No post created yet
     } else {
       Logger.error('(GET) /post/count/:userId - cannot test since dummy user creation failed');      
     }
@@ -101,35 +104,38 @@ describe('PostController (e2e)', () => {
   it('(PUT) /post/find - Fetch a post based on criterias with no match (not logged in)', () => {
     return request(app.getHttpServer())
       .put('/post/find')
-      .send(JSON.stringify(testE2ENonExistingUserFindPostCriterias_Post))
-      .expect(StatusCodes.OK);
+      .send(JSON.stringify(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post)))
+      .expect(StatusCodes.OK)
+      .expect(body => body === null);
   });
 
   it('(PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)', () => {
     return request(app.getHttpServer())
       .put('/post/findAll')
-      .send(JSON.stringify(testE2ENonExistingUserFindPostCriterias_Post))
-      .expect(StatusCodes.OK);
+      .send(JSON.stringify(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post)))
+      .expect(StatusCodes.OK)
+      .expect(body => body === null);
   });
 
-  it('(PUT) /post/findManyCount - Get count of posts meating criterias no patch (not logged in)', () => {
+  it('(PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)', () => {
     return request(app.getHttpServer())
       .put('/post/findManyCount')
-      .send(JSON.stringify(testE2ENonExistingUserFindPostCriterias_Post))
-      .expect(StatusCodes.OK);
+      .send(JSON.stringify(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post)))
+      .expect(StatusCodes.OK)
+      .expect(body => body === null);
   });
 
   it('(POST) /post/create - Submit a new post (not logged in)', () => {
     return request(app.getHttpServer())
       .post('/post/create')
-      .send(JSON.stringify(testE2EDummyUserCreatePostDto_Post))
+      .send(JSON.stringify(buildCreatePostDto(testE2EDummyUserCreatePostDto_Post)))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
   it('(PUT) /post/update/:postId - Update a post (not logged in)', () => {
     return request(app.getHttpServer())
       .put(`/post/update/${testE2ENonExistingPostId_Post}`)
-      .send(JSON.stringify(testE2EDummyUserUpdatePostDto_Post))
+      .send(JSON.stringify(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post)))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -143,7 +149,7 @@ describe('PostController (e2e)', () => {
     if (dummyUserDto) {
       return request(app.getHttpServer())
       .put('/auth/login')
-      .send(JSON.stringify(testE2ELoginDummyUser_Post))
+      .send(JSON.stringify(buildLoginDto(testE2ELoginDummyUser_Post)))
       .expect(StatusCodes.OK)
       .then(response => dummyUserDtoWithTokens = response.body);
     } else {
@@ -157,7 +163,7 @@ describe('PostController (e2e)', () => {
 
   it('(POST) /post/create - Submit a new post (dummy logged in)', () => {
     if (dummyUserDtoWithTokens) {
-      let post = { ... testE2EDummyUserCreatePostDto_Post };
+      let post = buildCreatePostDto(testE2EDummyUserCreatePostDto_Post);
       post.user = dummyUserDto;
       return request(app.getHttpServer())
         .post('/post/create')
@@ -170,14 +176,26 @@ describe('PostController (e2e)', () => {
     }
   });
 
+  it('(GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required)', () => {
+    if (dummyUserDto) {
+    return request(app.getHttpServer())
+      .get(`/post/count/${dummyUserDto.id}`)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === '1'); // No post created yet
+    } else {
+      Logger.error('(GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required) - '
+       + 'cannot test since dummy user creation failed');      
+    }
+  });
+
   it('(PUT) /post/update/:postId - Update a post (dummy logged in)', () => {
     if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
         .put(`/post/update/${dummyUserPostDto.id}`)
         .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-        .send(JSON.stringify(testE2EDummyUserUpdatePostDto_Post))
+        .send(JSON.stringify(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post)))
         .expect(StatusCodes.OK)
-        .then(response => dummyUserUpdatedPostDto = response.body);
+        .then(response => response && (dummyUserUpdatedPostDto = response.body));
     } else {
       Logger.error('(PUT) /post/update/:postId - Update a post - cannot test since dummy user creation failed');
     }
@@ -188,7 +206,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .put('/post/find')
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
-      .send(JSON.stringify(testE2EDummyUserFindUpdatedPostCriterias_Post))
+      .send(JSON.stringify(buildFindPostCriterias(testE2EDummyUserFindUpdatedPostCriterias_Post)))
       .expect(StatusCodes.OK);
     } else {
       Logger.error('(PUT) /post/find - Fetch a post based on criterias - cannot test since dummy user creation failed');

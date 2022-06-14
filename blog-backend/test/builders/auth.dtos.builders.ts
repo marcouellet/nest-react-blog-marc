@@ -1,5 +1,5 @@
-import { LoginDto } from '../../../../src/core/dtos/login.dto';
-import { RegisterDto } from '../../../../src/core/dtos/register.dto';
+import { LoginDto } from '../../src/core/dtos/login.dto';
+import { RegisterDto } from '../../src/core/dtos/register.dto';
 
 export function buildLoginDto(fields: any ): LoginDto {
     const logintDto = new LoginDto();
