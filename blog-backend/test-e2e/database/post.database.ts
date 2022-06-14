@@ -19,7 +19,7 @@ export class PostDatabaseBuilder {
 
       users.forEach(user => {
         try {
-          if (user.username.startsWith('e2e.post.')) {
+          if (user.email.startsWith('e2e.post.')) {
             this.userService.deleteUser(user.id);
           }
         } catch (error) {
@@ -37,7 +37,7 @@ export class PostDatabaseBuilder {
 
       posts.forEach(post => {
         try {
-          if (post.user.username.startsWith('e2e.post.')) {
+          if (post.user.email.startsWith('e2e.post.')) {
             this.postService.deletePost(post.id);
           }
         } catch (error) {

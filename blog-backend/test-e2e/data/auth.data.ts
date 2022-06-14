@@ -1,20 +1,20 @@
 import { JwtPayload } from '../../src/auth/interfaces/jwt.interface';
 import { UserRole } from '../../src/core/enum';
 
-export const testE2EDummyUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.dummy.auth@email.com'};
-export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin.auth@email.com'};
+export const testE2EDummyUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.dummy@email.com'};
+export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin@email.com'};
 
 export const testE2ERoleUser = UserRole.USER.toString();
 export const testE2ERoleAdmin = UserRole.ADMIN.toString();
-export const testE2EDummyUserEmail_Auth = 'e2e.auth.dummy.auth@email.com';
-export const testE2EAdminUserEmail_Auth = 'e2e.auth.admin.auth@email.com';
-export const testE2EUnknownUserEmail_Auth = 'e2e.auth.unknown.auth@email.com';
-export const testE2EDummyUserPassword_Auth = 'e2e.auth.dummy-password-auth';
-export const testE2EAdminUserPassword_Auth = 'e2e.auth.admin-password-auth';
-export const testE2EUnknownUserPassword_Auth = 'e2e.auth.unknown-password-auth';
-export const testE2EDummyUserName_Auth = 'e2e.auth.dummy.auth';
-export const testE2EAdminUserName_Auth = 'e2e.auth.admin.auth';
-export const testE2EUnknownUserName_Auth = 'e2e.auth.unknown.auth';
+export const testE2EDummyUserEmail_Auth = 'e2e.auth.dummy@email.com';
+export const testE2EAdminUserEmail_Auth = 'e2e.auth.admin@email.com';
+export const testE2EUnknownUserEmail_Auth = 'e2e.auth.unknown@email.com';
+export const testE2EDummyUserPassword_Auth = 'e2e.auth.dummy.password';
+export const testE2EAdminUserPassword_Auth = 'e2e.auth.admin.password';
+export const testE2EUnknownUserPassword_Auth = 'e2e.auth.unknown.password';
+export const testE2EDummyUserName_Auth = 'e2e.auth.dummy.name';
+export const testE2EAdminUserName_Auth = 'e2e.auth.admin.name';
+export const testE2EUnknownUserName_Auth = 'e2e.auth.unknown.name';
 export const testE2EDummyUserAuthToken = '';
 export const testE2EAdminUserAuthToken = '';
 

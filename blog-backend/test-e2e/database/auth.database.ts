@@ -13,7 +13,7 @@ export class AuthDatabaseBuilder {
 
       users.forEach(user => {
         try {
-          if (user.username.startsWith('e2e.auth.')) {
+          if (user.email.startsWith('e2e.auth.')) {
             this.userService.deleteUser(user.id);
           }
         } catch (error) {
@@ -25,12 +25,12 @@ export class AuthDatabaseBuilder {
     }
   }
 
-  async loginUser(loginData: any): Promise<UserDto> | null {
+  async loginUser(loginData: any): Promise<UserDto> {
     const loginrDto = buildLoginDto(loginData);
     return this.authService.login(loginrDto);
   }
 
-  async registerUser(registerData: any): Promise<UserDto> | null {
+  async registerUser(registerData: any): Promise<UserDto> {
     const registerDto = buildRegisterDto(registerData);
     return this.authService.register(registerDto);
   }

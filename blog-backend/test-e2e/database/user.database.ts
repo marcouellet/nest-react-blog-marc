@@ -15,7 +15,7 @@ export class UserDatabaseBuilder {
 
       users.forEach(user => {
         try {
-          if (user.username.startsWith('e2e.user.')) {
+          if (user.email.startsWith('e2e.user.')) {
             this.userService.deleteUser(user.id);
           }
         } catch (error) {
@@ -33,7 +33,7 @@ export class UserDatabaseBuilder {
 
       posts.forEach(post => {
         try {
-          if (post.user.username.startsWith('e2e.user.')) {
+          if (post.user.email.startsWith('e2e.user.')) {
             this.postService.deletePost(post.id);
           }
         } catch (error) {
@@ -45,7 +45,7 @@ export class UserDatabaseBuilder {
     }
   }
 
-  async findUser(userCriterias: UserCriterias): Promise<UserDto> | null {
+  async findUser(userCriterias: UserCriterias): Promise<UserDto> {
     return this.userService.findUser(userCriterias); 
   }
 

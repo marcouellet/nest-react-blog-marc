@@ -12,7 +12,8 @@ import { UserDatabaseBuilder } from '../database/user.database';
 import {} from '../data/auth.data';
 import { testE2ERegisterDummyUser_User, testE2ERegisterAdminUser_User, testE2EFindDummyUserCriterias_User,
         testE2ECreateUnknownUserDto_User, testE2EUpdateUnknownUserNameDto_User, testE2EFindUnknownUserNameCriterias_User,
-        testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User } from '../data/user.data';
+        testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User, testE2ELoginDummyUser_User,
+        testE2ELoginAdminUser_User } from '../data/user.data';
 import { UserDto } from '../../src/core';
 
 describe('UserController (e2e)', () => {
@@ -23,55 +24,55 @@ describe('UserController (e2e)', () => {
   let authDatabaseBuilder: AuthDatabaseBuilder;
   let userDatabaseBuilder: UserDatabaseBuilder;
   let dummyUserDto: UserDto;
+  let dummyUserDtoWithTokens: UserDto;
   let adminUserDto: UserDto;
+  let adminUserDtoWithTokens: UserDto;
   let unknownUserDto: UserDto;
   let unknownUserDtoNameUpdated: UserDto;
   let unknownUserDtoPasswordUpdated: UserDto;
+
+  jest.setTimeout(60000); // 1 minute
 
   beforeAll(async () => {
     const appModule: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    authService = appModule.get<AuthService>(AuthService);
-    userService = appModule.get<UserService>(UserService);
-    postService = appModule.get<PostService>(PostService);
+    app = appModule.createNestApplication();
+    await app.init();
 
-    it('authService should be defined', () => {
-      expect(authService).toBeDefined();
-    });
-  
-    it('userService should be defined', () => {
-      expect(userService).toBeDefined();
-    });
-  
-    it('postService should be defined', () => {
-      expect(postService).toBeDefined();
-    });
+    if (!(authService = appModule.get<AuthService>(AuthService))) {
+      Logger.error('authService not found');
+    };
+
+    if (!(userService = appModule.get<UserService>(UserService))) {
+      Logger.error('userService not found');
+    };
+
+    if (!(postService = appModule.get<PostService>(PostService))) {
+      Logger.error('postService not found');
+    };
 
     authDatabaseBuilder = new AuthDatabaseBuilder(userService, authService);
     userDatabaseBuilder = new UserDatabaseBuilder(userService, postService);
 
     // Remove test data in database
 
-     userDatabaseBuilder.deleteAllE2EUsers();
+     await userDatabaseBuilder.deleteAllE2EUsers();
 
     // Create test data in database
 
     try {
-    adminUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_User);
+      adminUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_User);
     } catch (error) {
       Logger.error(error);
     }
 
     try {
-    dummyUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_User);
+      dummyUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_User);
     } catch (error) {
       Logger.error(error);
     }
-
-    app = appModule.createNestApplication();
-    await app.init();
   });
 
   //
@@ -95,24 +96,36 @@ describe('UserController (e2e)', () => {
   });
 
   it('(PUT) /user/find - Fetch a user based on criterias (not logged in)', () => {
+    if (dummyUserDto) { 
     return request(app.getHttpServer())
       .put('/user/find')
       .send(JSON.stringify(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.OK);
+    } else {
+      Logger.error('(PUT) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed');    
+    }
   });
 
   it('(PUT) /findAll - Fetch users based on criterias (not logged in)', () => {
+    if (dummyUserDto) { 
     return request(app.getHttpServer())
       .put('/user/findAll')
       .send(JSON.stringify(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.OK);
+    } else {
+      Logger.error('(PUT) /findAll - Fetch users based on criterias - cannot test since dummy user creation failed');       
+    }
   });
 
   it('(PUT) /user/findManyCount - Get count of users meating criterias (not logged in)', () => {
+    if (dummyUserDto) {
     return request(app.getHttpServer())
       .put('/user/findManyCount')
       .send(JSON.stringify(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.OK);
+    } else {
+      Logger.error('(PUT) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');  
+    }
   });
 
   it('(POST) /user/create - Submit a new user (not logged in)', () => {
@@ -135,15 +148,39 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
+  it('(PUT) /auth/login dummy user (not logged in)', () => {
+    if (dummyUserDto) {
+      return request(app.getHttpServer())
+      .put('/auth/login')
+      .send(JSON.stringify(testE2ELoginDummyUser_User))
+      .expect(StatusCodes.OK)
+      .then(response => dummyUserDtoWithTokens = response.body);
+    } else {
+      Logger.error('(PUT) /auth/login dummy user (not logged in) - cannot test since dummy user creation failed');
+    }
+  });
+
+  it('(PUT) /auth/login admin user (not logged in)', () => {
+    if (adminUserDto) {
+      return request(app.getHttpServer())
+      .put('/auth/login')
+      .send(JSON.stringify(testE2ELoginAdminUser_User))
+      .expect(StatusCodes.OK)
+      .then(response => adminUserDtoWithTokens = response.body);
+    } else {
+      Logger.error('(PUT) /auth/login admin user (not logged in) - cannot test since admin user creation failed');
+    }
+  });
+
   //
   // Test when user is logged in (authorization token provided)
   //
 
   it('(GET) /user - Fetch all users (admin logged in)', () => {
-    if (adminUserDto) {
+    if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/user')
-      .set("authorization", adminUserDto.authtoken.accessToken)
+      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK);
     } else {
       Logger.error('(GET) /user - Fetch all users (admin logged in) - cannot test since admin user creation failed');
@@ -151,10 +188,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(GET) /user - Fetch all users (dummy logged in)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/user')
-      .set("authorization", dummyUserDto.authtoken.accessToken)
+      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('(GET) /user - Fetch all users (dummy logged in) - cannot test since dummy user creation failed');
@@ -162,10 +199,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(GET) /user/:userId - Fetch a particular user with admin userId (admin logged in)', () => {
-    if (adminUserDto) { 
+    if (adminUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .get(`/user/${adminUserDto.id}`)
-      .set("authorization", adminUserDto.authtoken.accessToken)
+      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK)
       .expect(adminUserDto);
     } else {
@@ -174,10 +211,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(GET) /user/:userId - Fetch a particular user with dummy userId (dummy logged in)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get(`/user/${dummyUserDto.id}`)
-      .set("authorization", dummyUserDto.authtoken.accessToken)
+      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('(GET) /user/:userId - Fetch a particular user with dummy userId - cannot test since dummy user creation failed');
@@ -185,10 +222,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(POST) /user/create - Submit a new user (dummy logged in)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .post('/user/create')
-      .set("authorization", dummyUserDto.authtoken.accessToken)
+      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .send(JSON.stringify(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
@@ -197,10 +234,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(POST) /user/create - Submit a new user (admin logged in)', () => {
-    if (adminUserDto) { 
+    if (adminUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .post('/user/create')
-      .set("authorization", adminUserDto.authtoken.accessToken)
+      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .send(JSON.stringify(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDto = response.body);
@@ -210,10 +247,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (dummy logged in)', () => {
-    if (unknownUserDto && dummyUserDto) {
+    if (unknownUserDto && dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
-      .set("authorization", dummyUserDto.authtoken.accessToken)
+      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .send(JSON.stringify(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
@@ -222,10 +259,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in)', () => {
-    if (adminUserDto && unknownUserDto) {
+    if (unknownUserDto && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
-      .set("authorization", adminUserDto.authtoken.accessToken)
+      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .send(JSON.stringify(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body);
@@ -235,22 +272,23 @@ describe('UserController (e2e)', () => {
   });
 
   it('(PUT) /user/find - Fetch a user based on username criteria (dummy logged in)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put('/user/find')
-      .set("authorization", dummyUserDto.authtoken.accessToken)
+      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .send(JSON.stringify(testE2EFindUnknownUserNameCriterias_User))
-      .expect(StatusCodes.OK);
+      .expect(StatusCodes.OK)
+      .then(response => unknownUserDtoNameUpdated = response.body);
     } else {
       Logger.error('(PUT) /user/find - Fetch a user based on username criteria - cannot test since dummy user creation failed')
     }
   });
 
   it('(PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in)', () => {
-    if (unknownUserDto && adminUserDto) {
+    if (unknownUserDto && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
-      .set("authorization", adminUserDto.authtoken.accessToken)
+      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .send(JSON.stringify(testE2EUpdateUnknownUserPasswordDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoPasswordUpdated = response.body);
@@ -260,10 +298,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(DELETE) /user/delete/:postId -  Delete a user with unknown userid (dummy logged in)', () => {
-    if (unknownUserDto && dummyUserDto) {
+    if (unknownUserDto && dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .delete(`/user/delete/${unknownUserDto.id}`)
-      .set("authorization", dummyUserDto.authtoken.accessToken)
+      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('(DELETE) /user/delete/:postId - cannot test since unknown user or dummy user creation failed')
@@ -271,10 +309,10 @@ describe('UserController (e2e)', () => {
   });
 
   it('(DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in)', () => {
-    if (unknownUserDto && adminUserDto) {
+    if (unknownUserDto && adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .delete(`/user/delete/${unknownUserDto.id}`)
-      .set("authorization", adminUserDto.authtoken.accessToken)
+      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK)
       .expect(unknownUserDtoPasswordUpdated);
     } else {
