@@ -40,16 +40,21 @@ describe('UserController (e2e)', () => {
     app = appModule.createNestApplication();
     await app.init();
 
+    app.useLogger(['error', 'warn', 'debug']);
+
     if (!(authService = appModule.get<AuthService>(AuthService))) {
       Logger.error('USER: authService not found');
+      Logger.flush();
     };
 
     if (!(userService = appModule.get<UserService>(UserService))) {
       Logger.error('USER: userService not found');
+      Logger.flush();
     };
 
     if (!(postService = appModule.get<PostService>(PostService))) {
       Logger.error('USER: postService not found');
+      Logger.flush();
     };
 
     authDatabaseBuilder = new AuthDatabaseBuilder(userService, authService);
@@ -64,15 +69,17 @@ describe('UserController (e2e)', () => {
     try {
       adminUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_User);
     } catch (error) {
-      Logger.warn('USER: admin user registration failed, see following error message:')
+      Logger.error('USER: admin user registration failed, see following error message:')
       Logger.error(error);
+      Logger.flush();
     }
 
     try {
       dummyUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_User);
     } catch (error) {
-      Logger.warn('USER: dummy user registration failed, see following error message:')
+      Logger.error('USER: dummy user registration failed, see following error message:')
       Logger.error(error);
+      Logger.flush();
     }
   });
 
@@ -80,74 +87,95 @@ describe('UserController (e2e)', () => {
   // Tests when user is not logged in (authorization token not provided)
   // 
 
-  it('(GET) /user - Fetch all users (not logged in)', () => {
+  it('USER(1): (GET) /user - Fetch all users (not logged in)', () => {
+    Logger.error('USER(1): (GET) /user - Fetch all users (not logged in)');
+    Logger.flush();
     return request(app.getHttpServer())
       .get('/user')
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
-  it('(GET) /user/:userId - Fetch a particular user with :userId (not logged in)', () => {
+  it('USER(2): (GET) /user/:userId - Fetch a particular user with :userId (not logged in)', () => {
+    Logger.error('USER(2): (GET) /user/:userId - Fetch a particular user with :userId (not logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get(`/user/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
-      Logger.error('USER: (GET) /user/:userId - cannot test since dummy user creation failed');
+      Logger.error('USER(2): (GET) /user/:userId - cannot test since dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /user/find - Fetch a user based on criterias (not logged in)', () => {
+  it('USER(3): (PUT) /user/find - Fetch a user based on criterias (not logged in)', () => {
+    Logger.error('USER(3): (PUT) /user/find - Fetch a user based on criterias (not logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .put('/user/find')
       .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.NOT_FOUND);
     } else {
-      Logger.error('USER: (PUT) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed');    
+      Logger.error('USER(3): (PUT) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed'); 
+      Logger.flush();   
     }
   });
 
-  it('(PUT) /findAll - Fetch users based on criterias (not logged in)', () => {
+  it('USER(4): (PUT) /findAll - Fetch users based on criterias (not logged in)', () => {
+    Logger.error('USER(4): (PUT) /findAll - Fetch users based on criterias (not logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .put('/user/findAll')
       .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.NOT_FOUND);
     } else {
-      Logger.error('USER: (PUT) /findAll - Fetch users based on criterias - cannot test since dummy user creation failed');       
+      Logger.error('USER(4): (PUT) /findAll - Fetch users based on criterias - cannot test since dummy user creation failed'); 
+      Logger.flush();      
     }
   });
 
-  it('(PUT) /user/findManyCount - Get count of users meating criterias (not logged in)', () => {
+  it('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias (not logged in)', () => {
+    Logger.error('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias (not logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .put('/user/findManyCount')
       .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
       .expect(StatusCodes.NOT_FOUND);
     } else {
-      Logger.error('USER: (PUT) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');  
+      Logger.error('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');
+      Logger.flush();  
     }
   });
 
-  it('(POST) /user/create - Submit a new user (not logged in)', () => {
+  it('USER(6): (POST) /user/create - Submit a new user (not logged in)', () => {
+    Logger.error('USER(6): (POST) /user/create - Submit a new user (not logged in)');
+    Logger.flush();
     return request(app.getHttpServer())
       .post('/user/create')
       .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.UNAUTHORIZED)
       .catch(error => {
-        Logger.warn('USER: (POST) /user/create - Submit a new user (not logged in) failed, see following error message:');
+        Logger.warn('USER(6): (POST) /user/create - Submit a new user (not logged in) failed, see following error message:');
         Logger.error(error);
+        Logger.flush();
       });
   });
 
-  it('(PUT) /user/update/:postId - Update a user with :userId (not logged in)', () => {
+  it('USER(7): (PUT) /user/update/:postId - Update a user with :userId (not logged in)', () => {
+    Logger.error('USER(7): (PUT) /user/update/:postId - Update a user with :userId (not logged in)');
+    Logger.flush();
     return request(app.getHttpServer())
       .put(`/user/update/${testE2ENonExistingUserId_User}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
-  it('(DELETE) /user/delete/:postId - Delete a user (not logged in)', () => {
+  it('USER(8): (DELETE) /user/delete/:postId - Delete a user (not logged in)', () => {
+    Logger.error('USER(8): (DELETE) /user/delete/:postId - Delete a user (not logged in)');
+    Logger.flush();
     return request(app.getHttpServer())
       .delete(`/user/delete/${testE2ENonExistingUserId_User}`)
       .expect(StatusCodes.UNAUTHORIZED);
@@ -157,29 +185,37 @@ describe('UserController (e2e)', () => {
   // Test when user is logged in (authorization token provided)
   //
 
-  it('(GET) /user - Fetch all users (admin logged in)', () => {
+  it('USER(9): (GET) /user - Fetch all users (admin logged in)', () => {
+    Logger.error('USER(9): (GET) /user - Fetch all users (admin logged in)');
+    Logger.flush();
     if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/user')
       .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK);
     } else {
-      Logger.error('USER: (GET) /user - Fetch all users (admin logged in) - cannot test since admin user creation failed');
+      Logger.error('USER(9): (GET) /user - Fetch all users (admin logged in) - cannot test since admin user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(GET) /user - Fetch all users (dummy logged in)', () => {
+  it('USER(10): (GET) /user - Fetch all users (dummy logged in)', () => {
+    Logger.error('USER(10): (GET) /user - Fetch all users (dummy logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/user')
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
-      Logger.error('USER: (GET) /user - Fetch all users (dummy logged in) - cannot test since dummy user creation failed');
+      Logger.error('USER(10): (GET) /user - Fetch all users (dummy logged in) - cannot test since dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(GET) /user/:userId - Fetch a particular user with admin userId (admin logged in)', () => {
+  it('USER(11): (GET) /user/:userId - Fetch a particular user with admin userId (admin logged in)', () => {
+    Logger.error('USER(11): (GET) /user/:userId - Fetch a particular user with admin userId (admin logged in)');
+    Logger.flush();
     if (adminUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .get(`/user/${adminUserDtoWithTokens.id}`)
@@ -187,22 +223,28 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(adminUserDtoWithTokens);
     } else {
-      Logger.error('USER: (GET) /user/:userId - Fetch a particular user with admin userId - cannot test since admin user creation failed');
+      Logger.error('USER(11): (GET) /user/:userId - Fetch a particular user with admin userId - cannot test since admin user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(GET) /user/:userId - Fetch a particular user with dummy userId (dummy logged in)', () => {
+  it('USER(12): (GET) /user/:userId - Fetch a particular user with dummy userId (dummy logged in)', () => {
+    Logger.error('USER(12): (GET) /user/:userId - Fetch a particular user with dummy userId (dummy logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get(`/user/${dummyUserDtoWithTokens.id}`)
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
-      Logger.error('USER: (GET) /user/:userId - Fetch a particular user with dummy userId - cannot test since dummy user creation failed');
+      Logger.error('USER(12): (GET) /user/:userId - Fetch a particular user with dummy userId - cannot test since dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(POST) /user/create - Submit a new user (dummy logged in)', () => {
+  it('USER(13): (POST) /user/create - Submit a new user (dummy logged in)', () => {
+    Logger.error('USER(13): (POST) /user/create - Submit a new user (dummy logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .post('/user/create')
@@ -210,15 +252,19 @@ describe('UserController (e2e)', () => {
       .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.UNAUTHORIZED)
       .catch(error => {
-        Logger.warn('USER: (POST) /user/create - Submit a new user (dummy logged in) failed, see following error message:');
+        Logger.warn('USER(13): (POST) /user/create - Submit a new user (dummy logged in) failed, see following error message:');
         Logger.error(error);
+        Logger.flush();
       });
     } else {
-      Logger.error('USER: (POST) /user/create - Submit a new user (dummy logged in) - cannot test since dummy user creation failed');
+      Logger.error('USER(13): (POST) /user/create - Submit a new user (dummy logged in) - cannot test since dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(POST) /user/create - Submit a new user (admin logged in)', () => {
+  it('USER(14): (POST) /user/create - Submit a new user (admin logged in)', () => {
+    Logger.error('USER(14): (POST) /user/create - Submit a new user (admin logged in)');
+    Logger.flush();
     if (adminUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .post('/user/create')
@@ -227,15 +273,19 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .then(response => unknownUserDto = response.body)
       .catch(error => {
-        Logger.warn('USER: (POST) /user/create - Submit a new user (admin logged in) failed, see following error message:');
+        Logger.warn('USER(14): (POST) /user/create - Submit a new user (admin logged in) failed, see following error message:');
         Logger.error(error);
+        Logger.flush();
       });
     } else {
-      Logger.error('USER: (POST) /user/create - Submit a new user (admin logged in) - cannot test since admin user creation failed')
+      Logger.error('USER(14): (POST) /user/create - Submit a new user (admin logged in) - cannot test since admin user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /auth/login unknown user (not logged in)', () => {
+  it('USER(15): (PUT) /auth/login unknown user (not logged in)', () => {
+    Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in)');
+    Logger.flush();
     if (unknownUserDto) {
       return request(app.getHttpServer())
       .put('/auth/login')
@@ -243,11 +293,14 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoWithTokens = response.body);
     } else {
-      Logger.error('USER: (PUT) /auth/login unknown user (not logged in) - cannot test since unknown user creation failed');
+      Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in) - cannot test since unknown user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (dummy logged in)', () => {
+  it('USER(16): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (dummy logged in)', () => {
+    Logger.error('USER(16): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (dummy logged in)');
+    Logger.flush();
     if (unknownUserDto && dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
@@ -255,11 +308,14 @@ describe('UserController (e2e)', () => {
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
-      Logger.error('USER: (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or dummy user creation failed')
+      Logger.error('USER(16): (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in)', () => {
+  it('USER(17): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in)', () => {
+    Logger.error('USER(17): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in)');
+    Logger.flush();
     if (unknownUserDto && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
@@ -268,11 +324,14 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body);
     } else {
-      Logger.error('USER: (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or admin user creation failed')
+      Logger.error('USER(17): (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or admin user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (unknown logged in)', () => {
+  it('USER(18): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (unknown logged in)', () => {
+    Logger.error('USER(18): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (unknown logged in)');
+    Logger.flush();
     if (unknownUserDtoWithTokens && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDtoWithTokens.id}`)
@@ -281,11 +340,14 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body);
     } else {
-      Logger.error('USER: (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or admin user creation failed')
+      Logger.error('USER(18): (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or admin user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /user/find - Fetch a user based on username criteria (dummy logged in)', () => {
+  it('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in)', () => {
+    Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in)');
+    Logger.flush();
     if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put('/user/find')
@@ -294,11 +356,14 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body);
     } else {
-      Logger.error('USER: (PUT) /user/find - Fetch a user based on username criteria - cannot test since dummy user creation failed')
+      Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria - cannot test since dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in)', () => {
+  it('USER(20): (PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in)', () => {
+    Logger.error('USER(20): (PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in)');
+    Logger.flush();
     if (unknownUserDto && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
@@ -307,29 +372,36 @@ describe('UserController (e2e)', () => {
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoPasswordUpdated = response.body);
     } else {
-      Logger.error('USER: (PUT) /user/update/:postId - Update a user password - cannot test since unknown user or admin user creation failed')
+      Logger.error('USER(20): (PUT) /user/update/:postId - Update a user password - cannot test since unknown user or admin user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(DELETE) /user/delete/:postId -  Delete a user with unknown userid (dummy logged in)', () => {
+  it('USER(21): (DELETE) /user/delete/:postId -  Delete a user with unknown userid (dummy logged in)', () => {
+    Logger.error('USER(21): (DELETE) /user/delete/:postId -  Delete a user with unknown userid (dummy logged in)');
+    Logger.flush();
     if (unknownUserDto && dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .delete(`/user/delete/${unknownUserDto.id}`)
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
-      Logger.error('USER: (DELETE) /user/delete/:postId - cannot test since unknown user or dummy user creation failed')
+      Logger.error('USER(21): (DELETE) /user/delete/:postId - cannot test since unknown user or dummy user creation failed');
+      Logger.flush();
     }
   });
 
-  it('(DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in)', () => {
+  it('USER(22): (DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in)', () => {
+    Logger.error('USER(22): (DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in)');
+    Logger.flush();
     if (unknownUserDto && adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .delete(`/user/delete/${unknownUserDto.id}`)
       .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK);
     } else {
-      Logger.error('USER: (DELETE) /user/delete/:postId - cannot test since unknown user or admin user creation failed')
+      Logger.error('USER(22): (DELETE) /user/delete/:postId - cannot test since unknown user or admin user creation failed');
+      Logger.flush();
     }
   });
 });
