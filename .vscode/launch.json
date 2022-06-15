@@ -57,6 +57,7 @@
             "args": [
                 "-c",
                 "./test/jest.json",
+                "--runInBand"
             ],
             "cwd": "${workspaceFolder}\\blog-backend",
             "console": "integratedTerminal",
@@ -75,6 +76,7 @@
             "args": [
                 "-c",
                 "./test-e2e/jest-e2e.json",
+                "--runInBand"
             ],
             "cwd": "${workspaceFolder}\\blog-backend",
             "console": "integratedTerminal",

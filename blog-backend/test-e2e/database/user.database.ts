@@ -19,10 +19,12 @@ export class UserDatabaseBuilder {
             this.userService.deleteUser(user.id);
           }
         } catch (error) {
+          Logger.warn('USER: deleteAllE2EUsers delete failed, see following error message:')
           Logger.error(error);
         }
       });
     } catch (error) {
+      Logger.warn('USER: deleteAllE2EUsers getAllUsers failed, see following error message:')
       Logger.error(error);
     }
   }
@@ -37,10 +39,12 @@ export class UserDatabaseBuilder {
             this.postService.deletePost(post.id);
           }
         } catch (error) {
+          Logger.warn('USER: deleteAllPostsForE2EUsers deletePost failed, see following error message:')
           Logger.error(error);
         }
       });
     } catch (error) {
+      Logger.warn('USER: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:')
       Logger.error(error);
     }
   }

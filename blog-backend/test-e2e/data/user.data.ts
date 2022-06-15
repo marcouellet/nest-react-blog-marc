@@ -32,6 +32,11 @@ export const testE2ELoginAdminUser_User = {
     password: testE2EAdminUserPassword_User,
 };
 
+export const testE2ELoginUnknownUser_User = {
+    email: testE2EUnknownUserEmail_User,
+    password: testE2EUnknownUserPassword_User,
+};
+
 export const testE2ERegisterDummyUser_User = {
     username: testE2EDummyUserName_User,
     email: testE2EDummyUserEmail_User,
@@ -70,5 +75,6 @@ export const testE2EUpdateUnknownUserPasswordDto_User: UpdateUserDto = {
     password: testE2EUnknownUserPasswordUpdated_User,
     role: testE2ERoleUser
 };
+
 
     

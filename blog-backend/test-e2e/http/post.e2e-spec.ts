@@ -23,9 +23,7 @@ describe('PostController (e2e)', () => {
   let postService: PostService;
   let authDatabaseBuilder: AuthDatabaseBuilder;
   let postDatabaseBuilder: PostDatabaseBuilder;
-  let dummyUserDto: UserDto;
   let dummyUserDtoWithTokens: UserDto;
-  let adminUserDto: UserDto;
   let dummyUserPostDto: PostDto;
   let dummyUserUpdatedPostDto: PostDto;
  
@@ -40,15 +38,15 @@ describe('PostController (e2e)', () => {
     await app.init();
 
     if (!(authService = appModule.get<AuthService>(AuthService))) {
-      Logger.error('authService not found');
+      Logger.error('POST: authService not found');
     };
 
     if (!(userService = appModule.get<UserService>(UserService))) {
-      Logger.error('userService not found');
+      Logger.error('POST: userService not found');
     };
 
     if (!(postService = appModule.get<PostService>(PostService))) {
-      Logger.error('postService not found');
+      Logger.error('POST: postService not found');
     };
 
     authDatabaseBuilder = new AuthDatabaseBuilder(userService, authService);
@@ -62,14 +60,9 @@ describe('PostController (e2e)', () => {
     // Create test data in database
 
     try {
-      adminUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_Post);
+      dummyUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_Post);
     } catch (error) {
-      Logger.error(error);
-    }
-
-    try {
-      dummyUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_Post);
-    } catch (error) {
+      Logger.warn('POST: dummy user registration failed, see following error message:')
       Logger.error(error);
     }
   });
@@ -91,13 +84,13 @@ describe('PostController (e2e)', () => {
   });
 
   it('(GET) /post/count/:userId - Get number of posts owned by user with dummy userId (not logged in)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .get(`/post/count/${dummyUserDto.id}`)
+      .get(`/post/count/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.OK)
       .expect(body => body === null); // No post created yet
     } else {
-      Logger.error('(GET) /post/count/:userId - cannot test since dummy user creation failed');      
+      Logger.error('POST: (GET) /post/count/:userId - cannot test since dummy user creation failed');      
     }
   });
 
@@ -128,7 +121,11 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/post/create')
       .send(buildCreatePostDto(testE2EDummyUserCreatePostDto_Post))
-      .expect(StatusCodes.UNAUTHORIZED);
+      .expect(StatusCodes.UNAUTHORIZED)
+      .catch(error => {
+        Logger.warn('POST: (POST) /post/create - Submit a new post (not logged in) failed, see following error message:');
+        Logger.error(error);
+      });
   });
 
   it('(PUT) /post/update/:postId - Update a post (not logged in)', () => {
@@ -145,14 +142,14 @@ describe('PostController (e2e)', () => {
   });
 
   it('(PUT) /auth/login dummy user (not logged in)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put('/auth/login')
       .send(buildLoginDto(testE2ELoginDummyUser_Post))
       .expect(StatusCodes.OK)
       .then(response => dummyUserDtoWithTokens = response.body);
     } else {
-      Logger.error('(PUT) /auth/login dummy user (not logged in) - cannot test since dummy user creation failed');      
+      Logger.error('POST: (PUT) /auth/login dummy user (not logged in) - cannot test since dummy user creation failed');      
     }
   });
 
@@ -163,26 +160,30 @@ describe('PostController (e2e)', () => {
   it('(POST) /post/create - Submit a new post (dummy logged in)', () => {
     if (dummyUserDtoWithTokens) {
       let post = buildCreatePostDto(testE2EDummyUserCreatePostDto_Post);
-      post.user = dummyUserDto;
+      post.user = dummyUserDtoWithTokens;
       return request(app.getHttpServer())
         .post('/post/create')
         .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
         .send(post)
         .expect(StatusCodes.OK)
-        .then(response => dummyUserPostDto = response.body);
+        .then(response => dummyUserPostDto = response.body)
+        .catch(error => {
+          Logger.warn('POST: (POST) /post/create - Submit a new post failed, see following error message:');
+          Logger.error(error);
+        });
     } else {
-      Logger.error('(POST) /post/create - Submit a new post - cannot test since dummy user creation failed');
+      Logger.error('POST: (POST) /post/create - Submit a new post - cannot test since dummy user creation failed');
     }
   });
 
   it('(GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required)', () => {
-    if (dummyUserDto) {
+    if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .get(`/post/count/${dummyUserDto.id}`)
+      .get(`/post/count/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === '1'); // No post created yet
     } else {
-      Logger.error('(GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required) - '
+      Logger.error('POST: (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required) - '
        + 'cannot test since dummy user creation failed');      
     }
   });
@@ -196,7 +197,7 @@ describe('PostController (e2e)', () => {
         .expect(StatusCodes.OK)
         .then(response => response && (dummyUserUpdatedPostDto = response.body));
     } else {
-      Logger.error('(PUT) /post/update/:postId - Update a post - cannot test since dummy user creation failed');
+      Logger.error('POST: (PUT) /post/update/:postId - Update a post - cannot test since dummy user creation failed');
     }
   });
 
@@ -208,7 +209,7 @@ describe('PostController (e2e)', () => {
       .send(buildFindPostCriterias(testE2EDummyUserFindUpdatedPostCriterias_Post))
       .expect(StatusCodes.OK);
     } else {
-      Logger.error('(PUT) /post/find - Fetch a post based on criterias - cannot test since dummy user creation failed');
+      Logger.error('POST: (PUT) /post/find - Fetch a post based on criterias - cannot test since dummy user creation failed');
     }
   });
 
@@ -220,7 +221,7 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(dummyUserUpdatedPostDto);
     } else {
-      Logger.error('(DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed');
+      Logger.error('POST: (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed');
     }
   });
 });

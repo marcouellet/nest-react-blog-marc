@@ -17,10 +17,12 @@ export class AuthDatabaseBuilder {
             this.userService.deleteUser(user.id);
           }
         } catch (error) {
+          Logger.warn('AUTH: deleteAllE2EUsers delete failed, see following error message:')
           Logger.error(error);
         }
       });
     } catch (error) {
+      Logger.warn('AUTH: deleteAllE2EUsers getAllUsers failed, see following error message:')
       Logger.error(error);
     }
   }

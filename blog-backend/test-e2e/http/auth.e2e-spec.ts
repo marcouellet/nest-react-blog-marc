@@ -18,10 +18,8 @@ describe('AuthController (e2e)', () => {
   let userService: UserService;
   let authDatabaseBuilder: AuthDatabaseBuilder;
 
-  let dummyUserDto: UserDto;
-  let adminUserDto: UserDto;
-  let unknownUserDto: UserDto;
   let dummyUserDtoWithTokens: UserDto;
+  let adminUserDtoWithTokens: UserDto;
   let unknownUserDtoWithTokens: UserDto;
 
   jest.setTimeout(60000); // 1 minute
@@ -35,11 +33,11 @@ describe('AuthController (e2e)', () => {
     await app.init();
 
     if (!(authService = appModule.get<AuthService>(AuthService))) {
-      Logger.error('authService not found');
+      Logger.error('AUTH: authService not found');
     };
 
     if (!(userService = appModule.get<UserService>(UserService))) {
-      Logger.error('userService not found');
+      Logger.error('AUTH: userService not found');
     };
   
     authDatabaseBuilder = new AuthDatabaseBuilder(userService, authService);
@@ -51,14 +49,16 @@ describe('AuthController (e2e)', () => {
     // Create test data in database
 
     try {
-      adminUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_Auth);
+      adminUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_Auth);
     } catch (error) {
+      Logger.warn('AUTH: admin user registration failed, see following error message:')
       Logger.error(error);
     }
 
     try {
-      dummyUserDto = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_Auth);
+      dummyUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_Auth);
     } catch (error) {
+      Logger.warn('AUTH: dummy user registration failed, see following error message:')
       Logger.error(error);
     }
   });
@@ -73,37 +73,14 @@ describe('AuthController (e2e)', () => {
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
-  it('(PUT) /auth/login admin user (not logged in)', () => {
-    if (adminUserDto) {
-    return request(app.getHttpServer())
-      .put('/auth/login')
-      .send(buildLoginDto(testE2ELoginAdminUser_Auth))
-      .expect(StatusCodes.OK);
-    } else {
-      Logger.error('(PUT) /auth/login admin user (not logged in) - cannot test since admin user creation failed'); 
-    }
-  });
-
-  it('(PUT) /auth/login dummy user (not logged in)', () => {
-    if (dummyUserDto) {
-    return request(app.getHttpServer())
-      .put('/auth/login')
-      .send(buildLoginDto(testE2ELoginDummyUser_Auth))
-      .expect(StatusCodes.OK)
-      .then(response => dummyUserDtoWithTokens = response.body);
-    } else {
-      Logger.error('(PUT) /auth/login admin user (not logged in) - cannot test since dummy user creation failed');      
-    }
-  });
-
   it('(POST) /auth/register existing user (admin) (not logged in)', () => {
-    if (adminUserDto) {
+    if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .post('/auth/register')
       .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
       .expect(StatusCodes.FORBIDDEN);
     } else {
-      Logger.error('(PUT) /auth/login admin user (not logged in) - cannot test since admin user creation failed');        
+      Logger.error('AUTH: (PUT) /auth/login admin user (not logged in) - cannot test since admin user registration failed');        
     }
   });
 
@@ -125,7 +102,7 @@ describe('AuthController (e2e)', () => {
   // Test when user is logged in (authorization token provided)
   //
 
-  it('(GET) /auth/whoami unknown user (logged in)', () => {
+  it('(GET) /auth/whoami unknown user (unknown logged in)', () => {
     if (unknownUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/auth/whoami')
@@ -133,18 +110,40 @@ describe('AuthController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(testE2EDummyUserJwtPayload_Auth);
     } else {
-      Logger.error('(GET) /auth/whoami dummy user (logged in) - cannot test since unknown user creation failed');
+      Logger.error('AUTH: (GET) /auth/whoami dummy user (unknown logged in) - cannot test since unknown user registration failed');
     }
   });
 
-  it('(PUT) /auth/refresh unknown user (logged in)', () => {
+  it('(POST) /auth/register existing user (admin) (admin logged in)', () => {
+    if (adminUserDtoWithTokens) {
+    return request(app.getHttpServer())
+      .post('/auth/register')
+      .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
+      .expect(StatusCodes.FORBIDDEN);
+    } else {
+      Logger.error('AUTH: (PUT) /auth/login admin user (admin logged in) - cannot test since admin user registration failed');        
+    }
+  });
+
+  it('(PUT) /auth/login admin user (admin logged in)', () => {
+    if (adminUserDtoWithTokens) {
+    return request(app.getHttpServer())
+      .put('/auth/login')
+      .send(buildLoginDto(testE2ELoginAdminUser_Auth))
+      .expect(StatusCodes.FORBIDDEN);
+    } else {
+      Logger.error('AUTH: (PUT) /auth/login admin user (admin logged in) - cannot test since admin user registration failed'); 
+    }
+  });
+
+  it('(PUT) /auth/refresh unknown user (unknown logged in)', () => {
     if (unknownUserDtoWithTokens) {
     return request(app.getHttpServer())
       .put('/auth/refresh')
       .set("authorization", unknownUserDtoWithTokens.authtoken.accessToken)
       .expect(StatusCodes.OK);
     } else {
-      Logger.error('(PUT) /auth/refresh unknown user (logged in) - cannot test since unknown user registration failed')      
+      Logger.error('AUTH: (PUT) /auth/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed')      
     }
   });
 });

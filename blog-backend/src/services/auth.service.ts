@@ -112,6 +112,7 @@ export class AuthService {
     }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
-    return this.userService.createUser(registerDto);
+    return this.userService.createUser(registerDto)
+    .then(user => this.setupUserWithNewTokens(user));
   }
 }
