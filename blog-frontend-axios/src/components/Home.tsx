@@ -8,7 +8,7 @@ import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 import DeleteButton from './common/deleteConfirmation'
-import { checkForbidden } from '../utils/response';
+import { checkUnauthorized, checkForbidden } from '../utils/response';
 import { createActionSessionExpired } from '../reducers/auth';
 
 const Home = () => {
@@ -49,6 +49,8 @@ const Home = () => {
       toast.error(`Post delete failed, session expired`);
       dispatch(createActionSessionExpired());
       navigate('/'); 
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
     } else {
       toast.error(`Post delete failed, see error list`);
       setErrors(apiErrors);      

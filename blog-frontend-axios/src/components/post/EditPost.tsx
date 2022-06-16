@@ -12,7 +12,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const EditPost = () => {
@@ -91,6 +91,8 @@ const EditPost = () => {
       toast.error(`Post update failed, session expired`);
       dispatch(createActionSessionExpired());
       navigate('/'); 
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
     } else {
       toast.error(`Post update failed, see error list`);
       setErrorList(apiErrors);      

@@ -6,6 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
+import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.builders';
 import { testE2ELoginAdminUser_Auth, testE2ELoginDummyUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
@@ -76,7 +77,12 @@ describe('AuthController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .get('/auth/whoami')
-      .expect(StatusCodes.UNAUTHORIZED);
+      .expect(StatusCodes.UNAUTHORIZED)
+      .catch(error => {
+        Logger.error('AUTH(1): (GET) /auth/whoami (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
   });
 
   it('AUTH(2): (POST) /auth/register existing user (admin) (not logged in)', () => {
@@ -100,7 +106,12 @@ describe('AuthController (e2e)', () => {
       .post('/auth/register')
       .send(buildRegisterDto(testE2ERegisterUnknownUser_Auth))
       .expect(StatusCodes.CREATED)
-      .then(response => unknownUserDtoWithTokens = response.body);
+      .then(response => unknownUserDtoWithTokens = response.body)
+      .catch(error => {
+        Logger.error('AUTH(3): (POST) /auth/register unknown user (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
   });
 
   it('AUTH(4): (PUT) /auth/refresh (not logged in)', () => {
@@ -121,9 +132,14 @@ describe('AuthController (e2e)', () => {
     if (unknownUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/auth/whoami')
-      .set("authorization", unknownUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
-      .expect(testE2EDummyUserJwtPayload_Auth);
+      .expect(testE2EDummyUserJwtPayload_Auth)
+      .catch(error => {
+        Logger.error('AUTH(5): (GET) /auth/whoami unknown user (unknown logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('AUTH(5): (GET) /auth/whoami dummy user (unknown logged in) - cannot test since unknown user registration failed');
       Logger.flush();
@@ -150,6 +166,7 @@ describe('AuthController (e2e)', () => {
     if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .put('/auth/login')
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildLoginDto(testE2ELoginAdminUser_Auth))
       .expect(StatusCodes.FORBIDDEN);
     } else {
@@ -162,10 +179,19 @@ describe('AuthController (e2e)', () => {
     Logger.error('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in)');
     Logger.flush();
     if (unknownUserDtoWithTokens) {
-    return request(app.getHttpServer())
-      .put('/auth/refresh')
-      .set("authorization", unknownUserDtoWithTokens.authtoken.accessToken)
-      .expect(StatusCodes.OK);
+      const authtoken = unknownUserDtoWithTokens.authtoken;
+      const authrefreshtoken = unknownUserDtoWithTokens.authrefreshtoken;
+      const refreshParms: IRefresh = { authtoken, authrefreshtoken };
+      return request(app.getHttpServer())
+        .put('/auth/refresh')
+        .set("Authorization", `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
+        .send(refreshParms)
+        .expect(StatusCodes.OK)
+        .catch(error => {
+          Logger.error('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in) failed, see following error message:');
+          Logger.error(error);
+          Logger.flush();
+        });
     } else {
       Logger.error('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed');
       Logger.flush();      

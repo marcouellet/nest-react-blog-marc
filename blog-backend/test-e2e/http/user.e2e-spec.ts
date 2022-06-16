@@ -191,8 +191,13 @@ describe('UserController (e2e)', () => {
     if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/user')
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
-      .expect(StatusCodes.OK);
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
+      .expect(StatusCodes.OK)
+      .catch(error => {
+        Logger.error('USER(9): (GET) /user - Fetch all users (admin logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(9): (GET) /user - Fetch all users (admin logged in) - cannot test since admin user creation failed');
       Logger.flush();
@@ -205,7 +210,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/user')
-      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('USER(10): (GET) /user - Fetch all users (dummy logged in) - cannot test since dummy user creation failed');
@@ -219,9 +224,14 @@ describe('UserController (e2e)', () => {
     if (adminUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .get(`/user/${adminUserDtoWithTokens.id}`)
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
-      .expect(adminUserDtoWithTokens);
+      .expect(adminUserDtoWithTokens)
+      .catch(error => {
+        Logger.error('USER(11): (GET) /user/:userId - Fetch a particular user with admin userId (admin logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(11): (GET) /user/:userId - Fetch a particular user with admin userId - cannot test since admin user creation failed');
       Logger.flush();
@@ -234,7 +244,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get(`/user/${dummyUserDtoWithTokens.id}`)
-      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('USER(12): (GET) /user/:userId - Fetch a particular user with dummy userId - cannot test since dummy user creation failed');
@@ -268,7 +278,7 @@ describe('UserController (e2e)', () => {
     if (adminUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .post('/user/create')
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDto = response.body)
@@ -291,7 +301,12 @@ describe('UserController (e2e)', () => {
       .put('/auth/login')
       .send(buildLoginDto(testE2ELoginUnknownUser_User))
       .expect(StatusCodes.OK)
-      .then(response => unknownUserDtoWithTokens = response.body);
+      .then(response => unknownUserDtoWithTokens = response.body)
+      .catch(error => {
+        Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in) - cannot test since unknown user creation failed');
       Logger.flush();
@@ -304,7 +319,7 @@ describe('UserController (e2e)', () => {
     if (unknownUserDto && dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
-      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
@@ -319,10 +334,15 @@ describe('UserController (e2e)', () => {
     if (unknownUserDto && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.OK)
-      .then(response => unknownUserDtoNameUpdated = response.body);
+      .then(response => unknownUserDtoNameUpdated = response.body)
+      .catch(error => {
+        Logger.error('USER(17): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(17): (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or admin user creation failed');
       Logger.flush();
@@ -335,10 +355,15 @@ describe('UserController (e2e)', () => {
     if (unknownUserDtoWithTokens && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDtoWithTokens.id}`)
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.OK)
-      .then(response => unknownUserDtoNameUpdated = response.body);
+      .then(response => unknownUserDtoNameUpdated = response.body)
+      .catch(error => {
+        Logger.error('USER(18): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (unknown logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(18): (PUT) /user/update/:postId - Update a user name - cannot test since unknown user or admin user creation failed');
       Logger.flush();
@@ -351,10 +376,15 @@ describe('UserController (e2e)', () => {
     if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put('/user/find')
-      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildFindUserCriterias(testE2EFindUnknownUserNameCriterias_User))
       .expect(StatusCodes.OK)
-      .then(response => unknownUserDtoNameUpdated = response.body);
+      .then(response => unknownUserDtoNameUpdated = response.body)
+      .catch(error => {
+        Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria - cannot test since dummy user creation failed');
       Logger.flush();
@@ -367,10 +397,15 @@ describe('UserController (e2e)', () => {
     if (unknownUserDto && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDto.id}`)
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserPasswordDto_User))
       .expect(StatusCodes.OK)
-      .then(response => unknownUserDtoPasswordUpdated = response.body);
+      .then(response => unknownUserDtoPasswordUpdated = response.body)
+      .catch(error => {
+        Logger.error('USER(20): (PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(20): (PUT) /user/update/:postId - Update a user password - cannot test since unknown user or admin user creation failed');
       Logger.flush();
@@ -383,7 +418,7 @@ describe('UserController (e2e)', () => {
     if (unknownUserDto && dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .delete(`/user/delete/${unknownUserDto.id}`)
-      .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
+      .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('USER(21): (DELETE) /user/delete/:postId - cannot test since unknown user or dummy user creation failed');
@@ -397,8 +432,13 @@ describe('UserController (e2e)', () => {
     if (unknownUserDto && adminUserDtoWithTokens) {
     return request(app.getHttpServer())
       .delete(`/user/delete/${unknownUserDto.id}`)
-      .set("authorization", adminUserDtoWithTokens.authtoken.accessToken)
-      .expect(StatusCodes.OK);
+      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
+      .expect(StatusCodes.OK)
+      .catch(error => {
+        Logger.error('USER(22): (DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
     } else {
       Logger.error('USER(22): (DELETE) /user/delete/:postId - cannot test since unknown user or admin user creation failed');
       Logger.flush();

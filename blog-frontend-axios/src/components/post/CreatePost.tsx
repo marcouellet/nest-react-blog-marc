@@ -10,7 +10,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumTitleLength, minimumDescriptionLength,  minimumBodyLength } from '../../types';
-import { checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const CreatePost = () => {
@@ -64,6 +64,8 @@ const CreatePost = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`Post creation failed, session expired`);
       dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
     } else {
       toast.error(`Post creation failed, see error list`);
       setErrorList(apiErrors);      

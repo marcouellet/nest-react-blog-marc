@@ -11,7 +11,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength } from '../../types';
-import { checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const CreateUser = () => {
@@ -67,6 +67,8 @@ const CreateUser = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`User creation failed, session expired`);
       dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`User already exist or access denied`);
     } else {
       toast.error(`User creation failed, see error list`);
       setErrorList(apiErrors);      

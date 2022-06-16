@@ -1,4 +1,4 @@
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { UnauthorizedException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
@@ -105,7 +105,7 @@ describe('AuthService', () => {
       try {
         await authService.validateUser(testFindUserCriterias, true);
       } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenException);
+        expect(error).toBeInstanceOf(UnauthorizedException);
       }
     });
   });

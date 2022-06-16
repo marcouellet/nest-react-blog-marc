@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength } from "../types";
-import { checkForbidden, checkNotFound } from '../utils/response';
+import { checkUnauthorized,checkForbidden, checkNotFound } from '../utils/response';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Login = () => {
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkNotFound(apiErrors)) {
       toast.error(`User not found`);    
-    } else if (checkForbidden(apiErrors)) {
+    } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Invalid credentials`);
     } else {
       toast.error(`Login failed, see error list`);

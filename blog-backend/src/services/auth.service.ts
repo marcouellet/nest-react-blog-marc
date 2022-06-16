@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { IConfigService } from '../config/interfaces/config.interface';
 import { UserService } from '../services/user/user.service';
@@ -78,19 +78,19 @@ export class AuthService {
 
   async validateToken(token: string): Promise<JwtPayload> {
     return this.jwtService.verifyAsync<JwtPayload>(token)
-      .catch(_ => { throw new ForbiddenException('Access Denied'); });
+      .catch(_ => { throw new UnauthorizedException('Access Denied'); });
   }
 
   async validateRefreshToken(token: string): Promise<JwtPayload> {
     return this.jwtService.verifyAsync<JwtPayload>(token, this.getRefreshTokenVerifyOptions())
-      .catch(_ => { throw new ForbiddenException('Access Denied'); });
+      .catch(_ => { throw new UnauthorizedException('Access Denied'); });
   }
 
   async validateUser(criterias: UserCriterias, isAdminRequired: boolean = false): Promise<UserDto> {
     return this.userService.findUser(criterias)
       .then(user => {
         if (isAdminRequired && user.role !== UserRole.ADMIN) {
-          throw new ForbiddenException('Access Denied');
+          throw new UnauthorizedException('Access Denied');
         } else { return user; }
       });
   }
@@ -106,7 +106,7 @@ export class AuthService {
         if (this.cryptoService.checkPassword(user.password, password)) {
           return this.setupUserWithNewTokens(user);
         } else {
-          throw new ForbiddenException('Access Denied');
+          throw new UnauthorizedException('Access Denied');
         }
       });
     }

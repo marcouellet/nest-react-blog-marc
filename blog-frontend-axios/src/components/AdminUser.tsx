@@ -8,7 +8,7 @@ import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { IErrors } from '../types';
 import DeleteButton from './common/deleteConfirmation'
-import { checkForbidden } from '../utils/response';
+import { checkUnauthorized, checkForbidden } from '../utils/response';
 import { createActionSessionExpired } from '../reducers/auth';
 import { toLocalDateString } from '../utils/utils';
 import { PostApiService } from '../services/api/PostApiService';
@@ -51,7 +51,7 @@ const AdminUser = () => {
   }
 
   const handleDeleteUserError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
+    if (checkUnauthorized(apiErrors)) {
       toast.error(`User delete failed, session expired`);
       dispatch(createActionSessionExpired());
       navigate('/user'); 

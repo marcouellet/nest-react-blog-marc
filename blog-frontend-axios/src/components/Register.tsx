@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../reducers/auth';
-import { checkForbidden } from '../utils/response';
+import { checkUnauthorized, checkForbidden } from '../utils/response';
 import ListErrors from './common/ListErrors';
 import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../types";
 
@@ -59,6 +59,8 @@ const Register = () => {
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkForbidden(apiErrors)) {
       toast.error(`Registration failed, email already used!`);
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
     } else {
       toast.error(`User registration failed, see error list`);
       setErrorList(apiErrors);
