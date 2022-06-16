@@ -77,7 +77,7 @@ export class UserService {
     } catch (error) {}
 
     if (user) {
-      throw new ForbiddenException('User with same email already exist!');
+      throw new ForbiddenException(`User with email "${email}" already exist!`);
     }
     
     // if ( await this.verifyUserExist({ email })) {

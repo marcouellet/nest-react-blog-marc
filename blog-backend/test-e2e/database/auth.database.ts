@@ -14,7 +14,7 @@ export class AuthDatabaseBuilder {
       users.forEach(async user => {
         try {
           if (user.email.startsWith('e2e.auth.')) {
-            Logger.error(`AUTH: deleting user ${user.username}`)
+            Logger.error(`AUTH: deleting user with email "${user.email}"`)
             Logger.flush();
             await this.userService.deleteUser(user.id);
           }

@@ -20,7 +20,7 @@ export class PostDatabaseBuilder {
       users.forEach(async user => {
         try {
           if (user.email.startsWith('e2e.post.')) {
-            Logger.error(`POST: deleting user ${user.username}`)
+            Logger.error(`POST: deleting user with email "${user.email}"`)
             Logger.flush();
             await this.userService.deleteUser(user.id);
           }
@@ -44,7 +44,7 @@ export class PostDatabaseBuilder {
       posts.forEach(async post => {
         try {
           if (post.user.email.startsWith('e2e.post.')) {
-            Logger.error(`POST: deleting post ${post.title} for user ${post.user.username}`)
+            Logger.error(`POST: deleting post ${post.title} for user with email "${post.user.email}"`)
             Logger.flush();
             await this.postService.deletePost(post.id);
           }

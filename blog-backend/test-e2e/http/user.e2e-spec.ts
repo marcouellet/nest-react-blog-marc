@@ -26,7 +26,6 @@ describe('UserController (e2e)', () => {
   let dummyUserDtoWithTokens: UserDto;
   let adminUserDtoWithTokens: UserDto;
   let unknownUserDtoWithTokens: UserDto;
-  let unknownUserDto: UserDto;
   let unknownUserDtoNameUpdated: UserDto;
   let unknownUserDtoPasswordUpdated: UserDto;
 
@@ -276,7 +275,7 @@ describe('UserController (e2e)', () => {
       .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
       .expect(StatusCodes.OK)
-      .then(response => unknownUserDto = response.body)
+      .then(response => unknownUserDtoWithTokens = response.body)
       .catch(error => {
         Logger.warn('USER(14): (POST) /user/create - Submit a new user (admin logged in) failed, see following error message:');
         Logger.error(error);
@@ -291,7 +290,7 @@ describe('UserController (e2e)', () => {
   it('USER(15): (PUT) /auth/login unknown user (not logged in)', () => {
     Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in)');
     Logger.flush();
-    if (unknownUserDto) {
+    if (unknownUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put('/auth/login')
       .send(buildLoginDto(testE2ELoginUnknownUser_User))
@@ -305,9 +304,9 @@ describe('UserController (e2e)', () => {
   it('USER(16): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (dummy logged in)', () => {
     Logger.error('USER(16): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (dummy logged in)');
     Logger.flush();
-    if (unknownUserDto && dummyUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens && dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
-      .put(`/user/update/${unknownUserDto.id}`)
+      .put(`/user/update/${unknownUserDtoWithTokens.id}`)
       .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.UNAUTHORIZED);
@@ -320,9 +319,9 @@ describe('UserController (e2e)', () => {
   it('USER(17): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in)', () => {
     Logger.error('USER(17): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (admin logged in)');
     Logger.flush();
-    if (unknownUserDto && adminUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
-      .put(`/user/update/${unknownUserDto.id}`)
+      .put(`/user/update/${unknownUserDtoWithTokens.id}`)
       .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.OK)
@@ -383,9 +382,9 @@ describe('UserController (e2e)', () => {
   it('USER(20): (PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in)', () => {
     Logger.error('USER(20): (PUT) /user/update/:postId - Update a user password with unknown userId (admin logged in)');
     Logger.flush();
-    if (unknownUserDto && adminUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens && adminUserDtoWithTokens) {
       return request(app.getHttpServer())
-      .put(`/user/update/${unknownUserDto.id}`)
+      .put(`/user/update/${unknownUserDtoWithTokens.id}`)
       .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserPasswordDto_User))
       .expect(StatusCodes.OK)
@@ -404,9 +403,9 @@ describe('UserController (e2e)', () => {
   it('USER(21): (DELETE) /user/delete/:postId -  Delete a user with unknown userid (dummy logged in)', () => {
     Logger.error('USER(21): (DELETE) /user/delete/:postId -  Delete a user with unknown userid (dummy logged in)');
     Logger.flush();
-    if (unknownUserDto && dummyUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens && dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .delete(`/user/delete/${unknownUserDto.id}`)
+      .delete(`/user/delete/${unknownUserDtoWithTokens.id}`)
       .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.UNAUTHORIZED);
     } else {
@@ -418,9 +417,9 @@ describe('UserController (e2e)', () => {
   it('USER(22): (DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in)', () => {
     Logger.error('USER(22): (DELETE) /user/delete/:postId - Delete a user with unknown userid (admin logged in)');
     Logger.flush();
-    if (unknownUserDto && adminUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens && adminUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .delete(`/user/delete/${unknownUserDto.id}`)
+      .delete(`/user/delete/${unknownUserDtoWithTokens.id}`)
       .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
       .catch(error => {
