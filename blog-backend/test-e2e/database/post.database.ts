@@ -20,16 +20,20 @@ export class PostDatabaseBuilder {
       users.forEach(async user => {
         try {
           if (user.email.startsWith('e2e.post.')) {
+            Logger.error(`POST: deleting user ${user.username}`)
+            Logger.flush();
             await this.userService.deleteUser(user.id);
           }
         } catch (error) {
-          Logger.warn('POST: deleteAllE2EUsers delete failed, see following error message:')
+          Logger.error('POST: deleteAllE2EUsers delete failed, see following error message:')
           Logger.error(error);
+          Logger.flush();
         }
       });
     } catch (error) {
-      Logger.warn('POST: deleteAllE2EUsers getAllUsers failed, see following error message:')
+      Logger.error('POST: deleteAllE2EUsers getAllUsers failed, see following error message:')
       Logger.error(error);
+      Logger.flush();
     }
   }
 
@@ -40,16 +44,20 @@ export class PostDatabaseBuilder {
       posts.forEach(async post => {
         try {
           if (post.user.email.startsWith('e2e.post.')) {
+            Logger.error(`POST: deleting post ${post.title} for user ${post.user.username}`)
+            Logger.flush();
             await this.postService.deletePost(post.id);
           }
         } catch (error) {
-          Logger.warn('POST: deleteAllPostsForE2EUsers deletePost failed, see following error message:')
+          Logger.error('POST: deleteAllPostsForE2EUsers deletePost failed, see following error message:')
           Logger.error(error);
+          Logger.flush();
         }
       });
     } catch (error) {
-      Logger.warn('POST: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:')
+      Logger.error('POST: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:')
       Logger.error(error);
+      Logger.flush();
     }
   }
 

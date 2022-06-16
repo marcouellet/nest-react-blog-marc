@@ -341,10 +341,10 @@ describe('UserController (e2e)', () => {
   it('USER(18): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (unknown logged in)', () => {
     Logger.error('USER(18): (PUT) /user/update/:postId - Update a user name (unknown) with unknown userId (unknown logged in)');
     Logger.flush();
-    if (unknownUserDtoWithTokens && adminUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put(`/user/update/${unknownUserDtoWithTokens.id}`)
-      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
+      .set("Authorization", `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
       .send(buildUpdateUserDto(testE2EUpdateUnknownUserNameDto_User))
       .expect(StatusCodes.OK)
       .then(response => unknownUserDtoNameUpdated = response.body)
@@ -362,7 +362,7 @@ describe('UserController (e2e)', () => {
   it('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in)', () => {
     Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in)');
     Logger.flush();
-    if (dummyUserDtoWithTokens) {
+    if (unknownUserDtoWithTokens && dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
       .put('/user/find')
       .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
