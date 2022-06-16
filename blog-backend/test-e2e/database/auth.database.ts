@@ -11,10 +11,10 @@ export class AuthDatabaseBuilder {
     try {
       const users: UserDto[] = await this.userService.getAllUsers();
 
-      users.forEach(user => {
+      users.forEach(async user => {
         try {
           if (user.email.startsWith('e2e.auth.')) {
-            this.userService.deleteUser(user.id);
+            await this.userService.deleteUser(user.id);
           }
         } catch (error) {
           Logger.warn('AUTH: deleteAllE2EUsers delete failed, see following error message:')

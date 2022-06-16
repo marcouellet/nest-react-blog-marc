@@ -71,9 +71,14 @@ export class UserService {
   async createUser(userDto: UserDto): Promise<UserDto> {
     const createUserDto = { ... userDto };
     const { email } = createUserDto;
-    if ( await this.verifyUserExist({ email })) {
-      throw new ForbiddenException('User with same email already exist!');
-    }
+    try {
+      await this.findUser({ email });
+      throw new ForbiddenException('User with same email already exist!'); 
+    } catch (error) {}
+
+    // if ( await this.verifyUserExist({ email })) {
+    //   throw new ForbiddenException('User with same email already exist!');
+    // }
     createUserDto.role = userDto.role ? userDto.role :  UserRole.USER;
     createUserDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(createUserDto);

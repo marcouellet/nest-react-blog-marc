@@ -9,7 +9,7 @@ import { UserService } from '../../src/services/user/user.service';
 import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.builders';
-import { testE2ELoginAdminUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
+import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
           testE2ERegisterUnknownUser_Auth, testE2EDummyUserJwtPayload_Auth } from '../data/auth.data';
 import { UserDto } from '../../src/core';
 
@@ -85,8 +85,22 @@ describe('AuthController (e2e)', () => {
       });
   });
 
-  it('AUTH(2): (POST) /auth/register existing user (admin) (not logged in)', () => {
-    Logger.error('AUTH(2): (POST) /auth/register existing user (admin) (not logged in)');
+  it('AUTH(2): (PUT) /auth/login non existing user (not logged in)', () => {
+    Logger.error('AUTH(2): (PUT) /auth/login non existing user (not logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+    .put('/auth/login')
+    .send(buildLoginDto(testE2ELoginNonExistingUser_Auth))
+    .expect(StatusCodes.NOT_FOUND)
+    .catch(error => {
+      Logger.error('AUTH(2): (PUT) /auth/login non existing user (not logged in) failed, see following error message:');
+      Logger.error(error);
+      Logger.flush();
+    });
+  });
+
+  it('AUTH(3): (POST) /auth/register existing user (admin) (not logged in)', () => {
+    Logger.error('AUTH(3): (POST) /auth/register existing user (admin) (not logged in)');
     Logger.flush();
     if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -94,13 +108,13 @@ describe('AuthController (e2e)', () => {
       .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
       .expect(StatusCodes.FORBIDDEN);
     } else {
-      Logger.error('AUTH(2): (PUT) /auth/login admin user (not logged in) - cannot test since admin user registration failed'); 
+      Logger.error('AUTH(3): (POST) /auth/register existing user (admin) (not logged in) - cannot test since admin user registration failed'); 
       Logger.flush();       
     }
   });
 
-  it('AUTH(3): (POST) /auth/register unknown user (not logged in)', () => {
-    Logger.error('AUTH(3): (POST) /auth/register unknown user (not logged in)');
+  it('AUTH(4): (POST) /auth/register unknown user (not logged in)', () => {
+    Logger.error('AUTH(4): (POST) /auth/register unknown user (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .post('/auth/register')
@@ -108,14 +122,14 @@ describe('AuthController (e2e)', () => {
       .expect(StatusCodes.CREATED)
       .then(response => unknownUserDtoWithTokens = response.body)
       .catch(error => {
-        Logger.error('AUTH(3): (POST) /auth/register unknown user (not logged in) failed, see following error message:');
+        Logger.error('AUTH(4): (POST) /auth/register unknown user (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('AUTH(4): (PUT) /auth/refresh (not logged in)', () => {
-    Logger.error('AUTH(4): (PUT) /auth/refresh (not logged in)');
+  it('AUTH(5): (PUT) /auth/refresh (not logged in)', () => {
+    Logger.error('AUTH(5): (PUT) /auth/refresh (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/auth/refresh')
@@ -126,8 +140,8 @@ describe('AuthController (e2e)', () => {
   // Test when user is logged in (authorization token provided)
   //
 
-  it('AUTH(5): (GET) /auth/whoami unknown user (unknown logged in)', () => {
-    Logger.error('AUTH(5): (GET) /auth/whoami unknown user (unknown logged in)');
+  it('AUTH(6): (GET) /auth/whoami unknown user (unknown logged in)', () => {
+    Logger.error('AUTH(6): (GET) /auth/whoami unknown user (unknown logged in)');
     Logger.flush();
     if (unknownUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -136,18 +150,18 @@ describe('AuthController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(testE2EDummyUserJwtPayload_Auth)
       .catch(error => {
-        Logger.error('AUTH(5): (GET) /auth/whoami unknown user (unknown logged in) failed, see following error message:');
+        Logger.error('AUTH(6): (GET) /auth/whoami unknown user (unknown logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-      Logger.error('AUTH(5): (GET) /auth/whoami dummy user (unknown logged in) - cannot test since unknown user registration failed');
+      Logger.error('AUTH(6): (GET) /auth/whoami dummy user (unknown logged in) - cannot test since unknown user registration failed');
       Logger.flush();
     }
   });
 
-  it('AUTH(6): (POST) /auth/register existing user (admin) (admin logged in)', () => {
-    Logger.error('AUTH(6): (POST) /auth/register existing user (admin) (admin logged in)');
+  it('AUTH(7): (POST) /auth/register existing user (admin) (admin logged in)', () => {
+    Logger.error('AUTH(7): (POST) /auth/register existing user (admin) (admin logged in)');
     Logger.flush();
     if (adminUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -155,7 +169,7 @@ describe('AuthController (e2e)', () => {
       .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
       .expect(StatusCodes.FORBIDDEN);
     } else {
-      Logger.error('AUTH(6): (PUT) /auth/login admin user (admin logged in) - cannot test since admin user registration failed'); 
+      Logger.error('AUTH(7): (POST) /auth/register existing user (admin) (admin logged in) - cannot test since admin user registration failed'); 
       Logger.flush();       
     }
   });

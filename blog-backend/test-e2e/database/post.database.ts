@@ -17,10 +17,10 @@ export class PostDatabaseBuilder {
     try {
       const users: UserDto[] = await this.userService.getAllUsers();
 
-      users.forEach(user => {
+      users.forEach(async user => {
         try {
           if (user.email.startsWith('e2e.post.')) {
-            this.userService.deleteUser(user.id);
+            await this.userService.deleteUser(user.id);
           }
         } catch (error) {
           Logger.warn('POST: deleteAllE2EUsers delete failed, see following error message:')
@@ -37,10 +37,10 @@ export class PostDatabaseBuilder {
     try {
       const posts: PostDto[] = await this.postService.getAllPosts();
 
-      posts.forEach(post => {
+      posts.forEach(async post => {
         try {
           if (post.user.email.startsWith('e2e.post.')) {
-            this.postService.deletePost(post.id);
+            await this.postService.deletePost(post.id);
           }
         } catch (error) {
           Logger.warn('POST: deleteAllPostsForE2EUsers deletePost failed, see following error message:')

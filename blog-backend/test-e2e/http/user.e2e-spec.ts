@@ -260,12 +260,7 @@ describe('UserController (e2e)', () => {
       .post('/user/create')
       .set("authorization", dummyUserDtoWithTokens.authtoken.accessToken)
       .send(buildCreateUserDto(testE2ECreateUnknownUserDto_User))
-      .expect(StatusCodes.UNAUTHORIZED)
-      .catch(error => {
-        Logger.warn('USER(13): (POST) /user/create - Submit a new user (dummy logged in) failed, see following error message:');
-        Logger.error(error);
-        Logger.flush();
-      });
+      .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('USER(13): (POST) /user/create - Submit a new user (dummy logged in) - cannot test since dummy user creation failed');
       Logger.flush();
@@ -300,13 +295,7 @@ describe('UserController (e2e)', () => {
       return request(app.getHttpServer())
       .put('/auth/login')
       .send(buildLoginDto(testE2ELoginUnknownUser_User))
-      .expect(StatusCodes.OK)
-      .then(response => unknownUserDtoWithTokens = response.body)
-      .catch(error => {
-        Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in) failed, see following error message:');
-        Logger.error(error);
-        Logger.flush();
-      });
+      .expect(StatusCodes.UNAUTHORIZED);
     } else {
       Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in) - cannot test since unknown user creation failed');
       Logger.flush();
