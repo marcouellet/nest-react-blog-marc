@@ -68,6 +68,10 @@ describe('AuthController (e2e)', () => {
     }
   });
 
+  afterAll(async () => {
+    app.close();
+  });
+
   //
   // Tests when user is not logged in (authorization token not provided)
   // 
