@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post, Req, Body, UseGuards, ForbiddenException} from '@nestjs/common';
+import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
@@ -14,8 +14,9 @@ export class AuthController {
   // Get current user
   @Get('/whoami')
   @Auth(AllRoles)
-  async whoAmI(@Req() req: Request): Promise<JwtPayload> {
-    return this.authService.validateToken(req.headers.authorization);
+  async whoAmI(@Headers('Authorization') auth: string): Promise<JwtPayload> {
+    const jwt = auth.replace('Bearer ', '');
+    return this.authService.validateToken(jwt);
   }
 
   // Login user

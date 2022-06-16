@@ -61,6 +61,13 @@ export class AuthService {
     return options;
   }
 
+  private getTokenVerifyOptions() {
+    const options: JwtVerifyOptions = {
+      secret: this.configService.getConfig().authSecretKey,
+    };
+    return options;
+  }
+
   private getRefreshTokenVerifyOptions() {
     const options: JwtVerifyOptions = {
       secret: this.configService.getConfig().authRefreshTokenSecretKey,
@@ -77,7 +84,11 @@ export class AuthService {
   }
 
   async validateToken(token: string): Promise<JwtPayload> {
-    return this.jwtService.verifyAsync<JwtPayload>(token)
+    return this.jwtService.verifyAsync<JwtPayload>(token, this.getTokenVerifyOptions())
+    .then (result => {
+      let { sub } = result;
+      return { sub };
+    })
       .catch(_ => { throw new UnauthorizedException('Access Denied'); });
   }
 

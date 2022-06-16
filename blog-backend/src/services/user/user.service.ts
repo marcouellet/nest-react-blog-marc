@@ -71,11 +71,15 @@ export class UserService {
   async createUser(userDto: UserDto): Promise<UserDto> {
     const createUserDto = { ... userDto };
     const { email } = createUserDto;
+    let user: UserDto;
     try {
-      await this.findUser({ email });
-      throw new ForbiddenException('User with same email already exist!'); 
+      user = await this.findUser({ email });
     } catch (error) {}
 
+    if (user) {
+      throw new ForbiddenException('User with same email already exist!');
+    }
+    
     // if ( await this.verifyUserExist({ email })) {
     //   throw new ForbiddenException('User with same email already exist!');
     // }

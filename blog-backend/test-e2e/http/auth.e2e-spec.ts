@@ -10,7 +10,7 @@ import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.builders';
 import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
-          testE2ERegisterUnknownUser_Auth, testE2EDummyUserJwtPayload_Auth } from '../data/auth.data';
+          testE2ERegisterUnknownUser_Auth, testE2EUnknownUserJwtPayload_Auth } from '../data/auth.data';
 import { UserDto } from '../../src/core';
 
 describe('AuthController (e2e)', () => {
@@ -148,7 +148,7 @@ describe('AuthController (e2e)', () => {
       .get('/auth/whoami')
       .set("Authorization", `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
-      .expect(testE2EDummyUserJwtPayload_Auth)
+      .expect(testE2EUnknownUserJwtPayload_Auth)
       .catch(error => {
         Logger.error('AUTH(6): (GET) /auth/whoami unknown user (unknown logged in) failed, see following error message:');
         Logger.error(error);
