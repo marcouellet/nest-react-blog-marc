@@ -21,10 +21,6 @@ export class AuthController {
   // Login user
   @Put('/login')
   async login(@Req() request: Request, @Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {
-    if (request.user) {
-      // User already logged in
-      throw new ForbiddenException('User already logged in!');
-    }
     return this.authService.login(body);
   }
 

@@ -9,8 +9,8 @@ import { UserService } from '../../src/services/user/user.service';
 import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.builders';
-import { testE2ELoginAdminUser_Auth, testE2ELoginDummyUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
-          testE2ERegisterUnknownUser_Auth, testE2EDummyUserJwtPayload_Auth, testE2ELoginUnknownUser_Auth } from '../data/auth.data';
+import { testE2ELoginAdminUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
+          testE2ERegisterUnknownUser_Auth, testE2EDummyUserJwtPayload_Auth } from '../data/auth.data';
 import { UserDto } from '../../src/core';
 
 describe('AuthController (e2e)', () => {
@@ -157,21 +157,6 @@ describe('AuthController (e2e)', () => {
     } else {
       Logger.error('AUTH(6): (PUT) /auth/login admin user (admin logged in) - cannot test since admin user registration failed'); 
       Logger.flush();       
-    }
-  });
-
-  it('AUTH(7): (PUT) /auth/login admin user (admin logged in)', () => {
-    Logger.error('AUTH(7): (PUT) /auth/login admin user (admin logged in)');
-    Logger.flush();
-    if (adminUserDtoWithTokens) {
-    return request(app.getHttpServer())
-      .put('/auth/login')
-      .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
-      .send(buildLoginDto(testE2ELoginAdminUser_Auth))
-      .expect(StatusCodes.FORBIDDEN);
-    } else {
-      Logger.error('AUTH(7): (PUT) /auth/login admin user (admin logged in) - cannot test since admin user registration failed');
-      Logger.flush(); 
     }
   });
 

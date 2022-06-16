@@ -11,7 +11,7 @@ import { AuthDatabaseBuilder } from '../database/auth.database';
 import { PostDatabaseBuilder } from '../database/post.database';
 import { buildLoginDto } from '../../test/builders/auth.dtos.builders';
 import { buildCreatePostDto, buildUpdatePostDto, buildFindPostCriterias } from '../../test/builders/post.dtos.builders';
-import { testE2ERegisterAdminUser_Post, testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
+import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
         testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdatePostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post } from '../data/post.data';
 import { PostDto, UserDto } from '../../src/core';
