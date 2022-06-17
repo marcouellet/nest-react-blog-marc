@@ -21,7 +21,7 @@ export class AuthController {
 
   // Login user
   @Put('/login')
-  async login(@Req() request: Request, @Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {
+  async login(@Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {
     return this.authService.login(body);
   }
 

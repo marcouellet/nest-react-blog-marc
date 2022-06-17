@@ -33,11 +33,7 @@ export class UserController {
   // Fetch a user based on criterias
   @Put('/find')
   async finUser(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto> {
-    try {
-      return this.userService.findUser(userCriterias);
-    } catch (error) {
-      throw new Error(error);
-    }
+    return this.userService.findUser(userCriterias);
   }
 
   // Fetch users based on criterias

@@ -15,11 +15,7 @@ export const testUnknownEmail = 'unknown@email.com';
 export const testRoleUser = 'user';
 export const testRoleAdmin = 'admin';
 
-export const testRequestWithAuthorize: any = {
-    headers: {
-        authorization: 'token',
-    },
-};
+export const testRequestWithAuthorize = 'Bearer token';
 
 export const testLoginDto: LoginDto = {
     email: testDummyEmail,

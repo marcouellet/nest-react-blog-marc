@@ -13,7 +13,7 @@ import { User } from '../../src/core/entities/user.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias,
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
-          testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
+          testFindUserWithUnknownUserEmailCriterias, testUserDtoUnrestricted } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
 import { testToken } from '../data/token.data';
@@ -66,8 +66,9 @@ describe('AuthService', () => {
 
   describe('getUserFromToken', () => {
     it('should return a user', async () => {
-      expect(await authService.getUserFromToken(testToken)).toEqual(testServiceUserDto);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken);
+      // expect(await authService.getUserFromToken(testToken)).toEqual(testServiceUserDto);
+      expect(await authService.getUserFromToken(testToken));
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken, authService.getTokenVerifyOptions());
       expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithDummyUserEmailCriterias);
     });
   });
@@ -75,14 +76,14 @@ describe('AuthService', () => {
   describe('validateToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateToken(testToken)).toEqual(testJwtPayload);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken);
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken, authService.getTokenVerifyOptions());
     });
   });
 
   describe('validateRefreshToken', () => {
     it('should return a payload', async () => {
       expect(await authService.validateRefreshToken(testToken)).toEqual(testJwtPayload);
-      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken);
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken, authService.getRefreshTokenVerifyOptions());
     });
   });
 
@@ -147,7 +148,7 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should return a user', async () => {
-      expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testServiceUserDtoUnrestricted);
+      expect(await authService.register(testRegisterUnknownUserDto)).toEqual(testUserDto);
       // check if a user exist with same email
       expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithUnknownUserEmailCriterias);
       expect(cryptoServiceMock.hashPassword).toHaveBeenCalledWith(testRegisterUnknownUserDto.password);

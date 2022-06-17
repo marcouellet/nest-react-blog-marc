@@ -61,14 +61,14 @@ export class AuthService {
     return options;
   }
 
-  private getTokenVerifyOptions() {
+  public getTokenVerifyOptions() {
     const options: JwtVerifyOptions = {
       secret: this.configService.getConfig().authSecretKey,
     };
     return options;
   }
 
-  private getRefreshTokenVerifyOptions() {
+  public getRefreshTokenVerifyOptions() {
     const options: JwtVerifyOptions = {
       secret: this.configService.getConfig().authRefreshTokenSecretKey,
     };
