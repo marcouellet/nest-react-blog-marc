@@ -29,30 +29,30 @@ export const testE2ELoginDummyUser_User = {
 
 export const testE2ELoginAdminUser_User = {
     email: testE2EAdminUserEmail_User,
-    password: testE2EAdminUserPassword_User,
+    password: testE2EAdminUserPassword_User
 };
 
 export const testE2ELoginUnknownUser_User = {
     email: testE2EUnknownUserEmail_User,
-    password: testE2EUnknownUserPassword_User,
+    password: testE2EUnknownUserPassword_User
 };
 
 export const testE2ERegisterDummyUser_User = {
     username: testE2EDummyUserName_User,
     email: testE2EDummyUserEmail_User,
-    password: testE2EDummyUserPassword_User,
+    password: testE2EDummyUserPassword_User
 };
 
 export const testE2ERegisterUnknownUser_User = {
     username: testE2EUnknownUserName_User,
     email: testE2EUnknownUserEmail_User,
-    password: testE2EUnknownUserPassword_User,
+    password: testE2EUnknownUserPassword_User
 };
 
 export const testE2ERegisterAdminUser_User = {
     username: testE2EAdminUserName_User,
     email: testE2EAdminUserEmail_User,
-    password: testE2EAdminUserPassword_User,
+    password: testE2EAdminUserPassword_User
 };
 
 export const testE2ECreateUnknownUserDto_User: CreateUserDto = {

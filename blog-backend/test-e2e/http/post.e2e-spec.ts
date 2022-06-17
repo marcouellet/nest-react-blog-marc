@@ -261,9 +261,9 @@ describe('PostController (e2e)', () => {
   it('POST(13): (PUT) /post/update/:postId - Update a post (dummy logged in)', () => {
     Logger.error('POST(13): (PUT) /post/update/:postId - Update a post (dummy logged in)');
     Logger.flush();
-    if (dummyUserDtoWithTokens) {
+    if (dummyUserDtoWithTokens && dummyUserPostDto) {
       return request(app.getHttpServer())
-        .put(`/post/update/${dummyUserDtoWithTokens.id}`)
+        .put(`/post/update/${dummyUserPostDto.id}`)
         .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
         .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
         .expect(StatusCodes.OK)
@@ -302,9 +302,9 @@ describe('PostController (e2e)', () => {
   it('POST(15): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
     Logger.error('POST(15): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
     Logger.flush();
-    if (dummyUserDtoWithTokens) {
+    if (dummyUserDtoWithTokens && dummyUserUpdatedPostDto) {
     return request(app.getHttpServer())
-      .delete(`/post/delete/${dummyUserDtoWithTokens.id}`)
+      .delete(`/post/delete/${dummyUserUpdatedPostDto.id}`)
       .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
       .expect(dummyUserUpdatedPostDto)
@@ -314,7 +314,7 @@ describe('PostController (e2e)', () => {
         Logger.flush();
       });
     } else {
-      Logger.error('POST(15): (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed');
+      Logger.error('POST(15): (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed or post update failed');
       Logger.flush();
     }
   });
