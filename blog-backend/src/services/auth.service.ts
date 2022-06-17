@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
+import { CreateUserDto, LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { IConfigService } from '../config/interfaces/config.interface';
 import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
@@ -124,6 +124,14 @@ export class AuthService {
 
   async register(registerDto: RegisterDto): Promise<UserDto> {
     return this.userService.createUser(registerDto)
+    .then(user => this.setupUserWithNewTokens(user));
+  }
+
+  async registerAsAdmin(registerDto: RegisterDto): Promise<UserDto> {
+    const {username, email, password} = registerDto;
+    const role = UserRole.ADMIN;
+    let createUserDto: CreateUserDto = {username, email, password, role};
+    return this.userService.createUser(createUserDto)
     .then(user => this.setupUserWithNewTokens(user));
   }
 }

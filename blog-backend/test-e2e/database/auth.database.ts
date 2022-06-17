@@ -35,4 +35,16 @@ export class AuthDatabaseBuilder {
     const registerDto = buildRegisterDto(registerData);
     return this.authService.register(registerDto);
   }
+
+  async registerUserAsAdmin(registerData: any): Promise<UserDto> {
+    const registerDto = buildRegisterDto(registerData);
+    return this.authService.registerAsAdmin(registerDto);
+  }
+
+  removeTokensFromUserDto(userDto: UserDto): UserDto {
+    let dto = { ... userDto };
+    delete dto.authtoken;
+    delete dto.authrefreshtoken;
+    return dto;
+  }
 }

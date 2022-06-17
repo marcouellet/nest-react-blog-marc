@@ -52,7 +52,7 @@ describe('AuthController (e2e)', () => {
     // Create test data in database
 
     try {
-      adminUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterAdminUser_Auth);
+      adminUserDtoWithTokens = await authDatabaseBuilder.registerUserAsAdmin(testE2ERegisterAdminUser_Auth);
     } catch (error) {
       Logger.error('AUTH: admin user registration failed, see following error message:')
       Logger.error(error);
