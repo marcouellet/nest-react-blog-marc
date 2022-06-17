@@ -15,11 +15,11 @@ export class UserDatabaseBuilder {
 
       for (const user of users) {
         if (user.email.startsWith('e2e.user.')) {
-          Logger.error(`USER: deleting user with email "${user.email}"`)
+          Logger.debug(`USER: deleting user with email "${user.email}"`)
           Logger.flush();
           await this.userService.deleteUser(user.id)
           .then(user => {
-            Logger.error(`USER: user with email "${user.email}" has been deleted`)
+            Logger.debug(`USER: user with email "${user.email}" has been deleted`)
             Logger.flush();
           })
           .catch(error => {
@@ -42,11 +42,11 @@ export class UserDatabaseBuilder {
 
       for (const post of posts) {
         if (post.user.email.startsWith('e2e.user.')) {
-          Logger.error(`USER: deleting post ${post.title} for user with email "${post.user.email}"`)
+          Logger.debug(`USER: deleting post ${post.title} for user with email "${post.user.email}"`)
           Logger.flush();
           await this.postService.deletePost(post.id)
           .then(post => {
-            Logger.error(`USER: post ${post.title} for user with email "${post.user.email}" has been deleted`)
+            Logger.debug(`USER: post ${post.title} for user with email "${post.user.email}" has been deleted`)
             Logger.flush();
           })
           .catch(error => {

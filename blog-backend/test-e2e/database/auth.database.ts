@@ -13,11 +13,11 @@ export class AuthDatabaseBuilder {
 
       for (const user of users) {
         if (user.email.startsWith('e2e.auth.')) {
-          Logger.error(`AUTH: deleting user with email "${user.email}"`)
+          Logger.debug(`AUTH: deleting user with email "${user.email}"`)
           Logger.flush();
           await this.userService.deleteUser(user.id)
           .then(user => {
-            Logger.error(`AUTH: user with email "${user.email}" has been deleted`)
+            Logger.debug(`AUTH: user with email "${user.email}" has been deleted`)
             Logger.flush();
           })
           .catch(error => {

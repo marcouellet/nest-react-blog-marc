@@ -26,18 +26,21 @@ describe('PostController (e2e)', () => {
   let dummyUserDtoWithTokens: UserDto;
   let dummyUserPostDto: PostDto;
   let dummyUserUpdatedPostDto: PostDto;
+
+  const logger = new Logger('PostController');
  
   jest.setTimeout(60000); // 1 minute
 
   beforeAll(async () => {
-    const appModule: TestingModule = await Test.createTestingModule({
+    const moduleBuilder = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    });
+
+    moduleBuilder.setLogger(logger);
+    const appModule: TestingModule = await moduleBuilder.compile();
 
     app = appModule.createNestApplication();
     await app.init();
-
-    app.useLogger(['error', 'warn', 'debug']);
 
     if (!(authService = appModule.get<AuthService>(AuthService))) {
       Logger.error('POST: authService not found');
@@ -84,7 +87,7 @@ describe('PostController (e2e)', () => {
   // 
 
   it('POST(1): (GET) /post - Fetch all posts (not logged in)', () => {
-    Logger.error('POST(1): (GET) /post - Fetch all posts (not logged in)');
+    Logger.debug('POST(1): (GET) /post - Fetch all posts (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .get('/post')
@@ -97,7 +100,7 @@ describe('PostController (e2e)', () => {
   })
 
   it('POST(2): (GET) /post/:postId - Fetch a particular post with an non existing post id (not logged in)', () => {
-    Logger.error('POST(2): (GET) /post/:postId - Fetch a particular post with an non existing post id (not logged in)');
+    Logger.debug('POST(2): (GET) /post/:postId - Fetch a particular post with an non existing post id (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .get(`/post/${testE2ENonExistingPostId_Post}`)
@@ -105,7 +108,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(3): (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (not logged in)', () => {
-    Logger.error('POST(3): (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (not logged in)');
+    Logger.debug('POST(3): (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -124,7 +127,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(4): (PUT) /post/find - Fetch a post based on criterias with no match (not logged in)', () => {
-    Logger.error('POST(4): (PUT) /post/find - Fetch a post based on criterias with no match (not logged in)');
+    Logger.debug('POST(4): (PUT) /post/find - Fetch a post based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/find')
@@ -133,7 +136,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(5): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)', () => {
-    Logger.error('POST(5): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)');
+    Logger.debug('POST(5): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findAll')
@@ -148,7 +151,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(6): (PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)', () => {
-    Logger.error('POST(6): (PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)');
+    Logger.debug('POST(6): (PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findManyCount')
@@ -163,7 +166,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(7): (POST) /post/create - Submit a new post (not logged in)', () => {
-    Logger.error('POST(7): (POST) /post/create - Submit a new post (not logged in)');
+    Logger.debug('POST(7): (POST) /post/create - Submit a new post (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .post('/post/create')
@@ -177,7 +180,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(8): (PUT) /post/update/:postId - Update a post (not logged in)', () => {
-    Logger.error('POST(8): (PUT) /post/update/:postId - Update a post (not logged in)');
+    Logger.debug('POST(8): (PUT) /post/update/:postId - Update a post (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put(`/post/update/${testE2ENonExistingPostId_Post}`)
@@ -186,7 +189,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(9): (DELETE) /post/delete/:postId - Delete a post (not logged in)', () => {
-    Logger.error('POST(9): (DELETE) /post/delete/:postId - Delete a post (not logged in)');
+    Logger.debug('POST(9): (DELETE) /post/delete/:postId - Delete a post (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .delete(`/post/delete/${testE2ENonExistingPostId_Post}`)
@@ -194,7 +197,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(10): (PUT) /auth/login dummy user (not logged in)', () => {
-    Logger.error('POST(10): (PUT) /auth/login dummy user (not logged in)');
+    Logger.debug('POST(10): (PUT) /auth/login dummy user (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
@@ -218,7 +221,7 @@ describe('PostController (e2e)', () => {
   //
 
   it('POST(11): (POST) /post/create - Submit a new post (dummy logged in)', () => {
-    Logger.error('POST(11): (POST) /post/create - Submit a new post (dummy logged in)');
+    Logger.debug('POST(11): (POST) /post/create - Submit a new post (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
       let post = buildCreatePostDto(testE2EDummyUserCreatePostDto_Post);
@@ -241,7 +244,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(12): (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required)', () => {
-    Logger.error('POST(12): (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required)');
+    Logger.debug('POST(12): (GET) /post/count/:userId - Get number of posts owned by user with dummy userId (logged not required)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -261,7 +264,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(13): (PUT) /post/update/:postId - Update a post (dummy logged in)', () => {
-    Logger.error('POST(13): (PUT) /post/update/:postId - Update a post (dummy logged in)');
+    Logger.debug('POST(13): (PUT) /post/update/:postId - Update a post (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens && dummyUserPostDto) {
       return request(app.getHttpServer())
@@ -282,7 +285,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in)', () => {
-    Logger.error('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in)');
+    Logger.debug('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -302,7 +305,7 @@ describe('PostController (e2e)', () => {
   });
 
   it('POST(15): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
-    Logger.error('POST(15): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
+    Logger.debug('POST(15): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens && dummyUserUpdatedPostDto) {
     return request(app.getHttpServer())
