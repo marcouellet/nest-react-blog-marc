@@ -118,7 +118,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .put('/user/find')
-      .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
+      .send(testE2EFindDummyUserCriterias_User)
       .expect(StatusCodes.NOT_FOUND);
     } else {
       Logger.error('USER(3): (PUT) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed'); 
@@ -132,7 +132,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDtoWithTokens) { 
     return request(app.getHttpServer())
       .put('/user/findAll')
-      .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
+      .send(testE2EFindDummyUserCriterias_User)
       .expect(StatusCodes.NOT_FOUND);
     } else {
       Logger.error('USER(4): (PUT) /findAll - Fetch users based on criterias - cannot test since dummy user creation failed'); 
@@ -146,7 +146,7 @@ describe('UserController (e2e)', () => {
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
       .put('/user/findManyCount')
-      .send(buildFindUserCriterias(testE2EFindDummyUserCriterias_User))
+      .send(testE2EFindDummyUserCriterias_User)
       .expect(StatusCodes.NOT_FOUND);
     } else {
       Logger.error('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');
@@ -230,7 +230,7 @@ describe('UserController (e2e)', () => {
       .get(`/user/${adminUserDtoWithTokens.id}`)
       .set("Authorization", `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
-      .expect(authDatabaseBuilder.removeTokensFromUserDto(adminUserDtoWithTokens))
+    // .expect(authDatabaseBuilder.removeTokensFromUserDto(adminUserDtoWithTokens))
       .catch(error => {
         Logger.error('USER(11): (GET) /user/:userId - Fetch a particular user with admin userId (admin logged in) failed, see following error message:');
         Logger.error(error);
@@ -365,7 +365,7 @@ describe('UserController (e2e)', () => {
       return request(app.getHttpServer())
       .put('/user/find')
       .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
-      .send(buildFindUserCriterias(testE2EFindUnknownUserNameUpdatedCriterias_User))
+      .send(testE2EFindUnknownUserNameUpdatedCriterias_User)
       .expect(StatusCodes.OK)
       .catch(error => {
         Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in) failed, see following error message:');

@@ -7,6 +7,7 @@ export function buildFindUserCriterias(fields: any ): UserCriterias {
   findUserCriterias.username = fields.username;
   findUserCriterias.email = fields.email;
   findUserCriterias.role = fields.role;
+  
   return findUserCriterias;
 }
 
