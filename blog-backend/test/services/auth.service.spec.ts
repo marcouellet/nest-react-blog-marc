@@ -13,7 +13,7 @@ import { User } from '../../src/core/entities/user.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias,
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
-          testFindUserWithUnknownUserEmailCriterias, testUserDtoUnrestricted } from '../data/user.data';
+          testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
 import { testToken } from '../data/token.data';

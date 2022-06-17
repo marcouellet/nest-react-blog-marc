@@ -37,10 +37,12 @@ describe('AuthController (e2e)', () => {
 
     if (!(authService = appModule.get<AuthService>(AuthService))) {
       Logger.error('AUTH: authService not found');
+      Logger.flush();
     };
 
     if (!(userService = appModule.get<UserService>(UserService))) {
       Logger.error('AUTH: userService not found');
+      Logger.flush();
     };
   
     authDatabaseBuilder = new AuthDatabaseBuilder(userService, authService);
@@ -69,6 +71,7 @@ describe('AuthController (e2e)', () => {
   });
 
   afterAll(async () => {
+    await authDatabaseBuilder.deleteAllE2EUsers()
     app.close();
   });
 

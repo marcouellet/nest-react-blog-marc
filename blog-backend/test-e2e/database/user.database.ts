@@ -13,21 +13,24 @@ export class UserDatabaseBuilder {
     try {
       const users: UserDto[] = await this.userService.getAllUsers();
 
-      users.forEach(async user => {
-        try {
-          if (user.email.startsWith('e2e.user.')) {
-            Logger.error(`USER: deleting user with email "${user.email}"`)
-            Logger.flush();
-            await this.userService.deleteUser(user.id);
-          }
-        } catch (error) {
-          Logger.error('USER: deleteAllE2EUsers delete failed, see following error message:')
-          Logger.error(error);
+      for (const user of users) {
+        if (user.email.startsWith('e2e.user.')) {
+          Logger.error(`USER: deleting user with email "${user.email}"`)
           Logger.flush();
+          await this.userService.deleteUser(user.id)
+          .then(user => {
+            Logger.error(`USER: user with email "${user.email}" has been deleted`)
+            Logger.flush();
+          })
+          .catch(error => {
+            Logger.error(`USER: user with email "${user.email}" deletion failed, see following error message:`);
+            Logger.error(error);
+            Logger.flush();
+          });
         }
-      });
-    } catch (error) {
-      Logger.error('USER: deleteAllE2EUsers getAllUsers failed, see following error message:')
+      }
+     } catch (error) {
+      Logger.error('USER: deleteAllE2EUsers failed, see following error message:')
       Logger.error(error);
       Logger.flush();
     }
@@ -37,19 +40,22 @@ export class UserDatabaseBuilder {
     try {
       const posts: PostDto[] = await this.postService.getAllPosts();
 
-      posts.forEach(async post => {
-        try {
-          if (post.user.email.startsWith('e2e.user.')) {
-            Logger.error(`USER: deleting post ${post.title} for user email with email "${post.user.email}"`)
-            Logger.flush();
-            await this.postService.deletePost(post.id);
-          }
-        } catch (error) {
-          Logger.error('USER: deleteAllPostsForE2EUsers deletePost failed, see following error message:')
-          Logger.error(error);
+      for (const post of posts) {
+        if (post.user.email.startsWith('e2e.user.')) {
+          Logger.error(`USER: deleting post ${post.title} for user with email "${post.user.email}"`)
           Logger.flush();
+          await this.postService.deletePost(post.id)
+          .then(post => {
+            Logger.error(`USER: post ${post.title} for user with email "${post.user.email}" has been deleted`)
+            Logger.flush();
+          })
+          .catch(error => {
+            Logger.error(`USER: post ${post.title} deletion for user with email "${post.user.email}" failed, see following error message:`);
+            Logger.error(error);
+            Logger.flush();
+          });
         }
-      });
+      }
     } catch (error) {
       Logger.error('USER: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:')
       Logger.error(error);

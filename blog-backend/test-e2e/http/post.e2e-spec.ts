@@ -74,6 +74,8 @@ describe('PostController (e2e)', () => {
   });
 
   afterAll(async () => {
+    await postDatabaseBuilder.deleteAllPostsForE2EUsers();
+    await postDatabaseBuilder.deleteAllE2EUsers();
     app.close();
   });
 

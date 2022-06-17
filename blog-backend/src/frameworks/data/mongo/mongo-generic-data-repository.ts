@@ -49,7 +49,7 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     return this.repository.create(item) as Promise<T>;
   }
 
-  async update(id: string, update: {}, populate?: string) {
+  async update(id: string, update: {}, populate?: string): Promise<T> {
     const options: {[key: string]: any} = { new: true }
     if (populate) {
       options.populate = { path: populate }

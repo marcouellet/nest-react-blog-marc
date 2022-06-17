@@ -11,21 +11,24 @@ export class AuthDatabaseBuilder {
     try {
       const users: UserDto[] = await this.userService.getAllUsers();
 
-      users.forEach(async user => {
-        try {
-          if (user.email.startsWith('e2e.auth.')) {
-            Logger.error(`AUTH: deleting user with email "${user.email}"`)
-            Logger.flush();
-            await this.userService.deleteUser(user.id);
-          }
-        } catch (error) {
-          Logger.error('AUTH: deleteAllE2EUsers delete failed, see following error message:')
-          Logger.error(error);
+      for (const user of users) {
+        if (user.email.startsWith('e2e.auth.')) {
+          Logger.error(`AUTH: deleting user with email "${user.email}"`)
           Logger.flush();
+          await this.userService.deleteUser(user.id)
+          .then(user => {
+            Logger.error(`AUTH: user with email "${user.email}" has been deleted`)
+            Logger.flush();
+          })
+          .catch(error => {
+            Logger.error(`AUTH: user with email "${user.email}" deletion failed, see following error message:`);
+            Logger.error(error);
+            Logger.flush();
+          });
         }
-      });
-    } catch (error) {
-      Logger.error('AUTH: deleteAllE2EUsers getAllUsers failed, see following error message:')
+      }
+     } catch (error) {
+      Logger.error('AUTH: deleteAllE2EUsers failed, see following error message:')
       Logger.error(error);
       Logger.flush();
     }
