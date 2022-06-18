@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
+import { ConfigModule } from '../../src/modules/config.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
@@ -15,6 +16,7 @@ import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_
         testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdatePostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post } from '../data/post.data';
 import { PostDto, UserDto } from '../../src/core';
+import { CustomLogger } from '../../src/common/custom.logger';
 
 describe('PostController (e2e)', () => {
   let app: INestApplication;
@@ -27,7 +29,7 @@ describe('PostController (e2e)', () => {
   let dummyUserPostDto: PostDto;
   let dummyUserUpdatedPostDto: PostDto;
 
-  const logger = new Logger('PostController');
+  const logger = new CustomLogger('PostController');
  
   jest.setTimeout(60000); // 1 minute
 

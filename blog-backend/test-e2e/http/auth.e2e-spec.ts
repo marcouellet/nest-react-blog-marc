@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
+import { ConfigModule } from '../../src/modules/config.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';
@@ -12,6 +13,7 @@ import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.b
 import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
           testE2ERegisterUnknownUser_Auth, testE2EUnknownUserJwtPayload_Auth } from '../data/auth.data';
 import { UserDto } from '../../src/core';
+import { CustomLogger } from '../../src/common/custom.logger';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -23,7 +25,7 @@ describe('AuthController (e2e)', () => {
   let adminUserDtoWithTokens: UserDto;
   let unknownUserDtoWithTokens: UserDto;
 
-  const logger = new Logger('AuthController');
+  const logger = new CustomLogger('AuthController');
 
   jest.setTimeout(60000); // 1 minute
 

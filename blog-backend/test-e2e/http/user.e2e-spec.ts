@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
+import { ConfigModule } from '../../src/modules/config.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
@@ -15,6 +16,7 @@ import { testE2ERegisterDummyUser_User, testE2ERegisterAdminUser_User, testE2EFi
         testE2ECreateUnknownUserDto_User, testE2EUpdateUnknownUserNameDto_User, testE2EFindUnknownUserNameUpdatedCriterias_User,
         testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User, testE2ELoginUnknownUser_User } from '../data/user.data';
 import { UserDto } from '../../src/core';
+import { CustomLogger } from '../../src/common/custom.logger';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -30,7 +32,7 @@ describe('UserController (e2e)', () => {
   let unknownUserDtoNameUpdated: UserDto;
   let unknownUserDtoPasswordUpdated: UserDto;
 
-  const logger = new Logger('UserController');
+  const logger = new CustomLogger('UserController');
 
   jest.setTimeout(60000); // 1 minute
 

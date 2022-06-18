@@ -1,11 +1,12 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import { Logger, LogLevel, NotFoundException } from '@nestjs/common';
+import { LogLevel, NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { IConfig, IConfigService } from '../config/interfaces/config.interface';
 import { EnvConfig } from '../config/interfaces/envconfig.interface';
 import { IConfigOptions } from '../config/interfaces/config-options.interface';
+import { CustomLogger } from '../common/custom.logger';
 import { VALID_AUTH_STRATEGY_NAMES, VALID_DATA_SERVER_NAMES, VALID_LOGGER_LEVELS } from '../config/config.constants';
 
 @Injectable()
@@ -101,7 +102,7 @@ export class ConfigService implements IConfigService {
             throw new NotFoundException('Invalid logger level value(s), should belong to ' + VALID_LOGGER_LEVELS.toString());
         }
 
-        Logger.overrideLogger(this.loggerLevels as LogLevel[]);
+        CustomLogger.overrideLogger(this.loggerLevels as LogLevel[]);
 
         return { dataServerName, connectionString, authStrategyName,
                 authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn, loggerLevels: this.loggerLevels };
