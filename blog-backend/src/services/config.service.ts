@@ -41,8 +41,8 @@ export class ConfigService implements IConfigService {
     }
 
     private validateLoggerLevels(loggerLevels: string): boolean  {
-        this.loggerLevels = loggerLevels.split('|');
-        return this.loggerLevels.every( level => VALID_LOGGER_LEVELS.includes(level.trim()));
+        this.loggerLevels = loggerLevels.split('|').map(level => level.trim());
+        return this.loggerLevels.every( level => VALID_LOGGER_LEVELS.includes(level));
     }
 
     private initConfig(): IConfig {
