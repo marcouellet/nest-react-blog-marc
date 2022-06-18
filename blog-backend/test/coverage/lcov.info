@@ -313,7 +313,7 @@ end_of_record
 TN:
 SF:test\mocks\cryptographer.service.mock.ts
 FN:9,(anonymous_0)
-FN:18,(anonymous_1)
+FN:17,(anonymous_1)
 FNF:2
 FNH:2
 FNDA:3,(anonymous_0)
@@ -326,14 +326,14 @@ DA:10,3
 DA:11,2
 DA:13,1
 DA:14,1
-DA:19,4
-DA:24,2
+DA:18,4
+DA:23,2
 LF:10
 LH:10
 BRDA:10,0,0,2
 BRDA:13,1,0,1
-BRDA:19,2,0,4
-BRDA:19,2,1,4
+BRDA:18,2,0,4
+BRDA:18,2,1,4
 BRF:4
 BRH:4
 end_of_record

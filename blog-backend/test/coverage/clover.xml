@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1655582784854" clover="3.2.0">
-  <project timestamp="1655582784855" name="All files">
+<coverage generated="1655583025479" clover="3.2.0">
+  <project timestamp="1655583025479" name="All files">
     <metrics statements="248" coveredstatements="248" conditionals="12" coveredconditionals="12" methods="57" coveredmethods="57" elements="317" coveredelements="317" complexity="0" loc="248" ncloc="248" packages="6" files="22" classes="22"/>
     <package name="builders">
       <metrics statements="44" coveredstatements="44" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
@@ -225,8 +225,8 @@
         <line num="11" count="2" type="stmt"/>
         <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="19" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="24" count="2" type="stmt"/>
+        <line num="18" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="2" type="stmt"/>
       </file>
       <file name="jwt.service.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\jwt.service.mock.ts">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>

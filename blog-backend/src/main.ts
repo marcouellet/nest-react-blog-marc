@@ -3,11 +3,13 @@ import { CustomLogger } from './common/custom.logger';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
+import { GLOBAL_CONFIG_SERVICE } from './config/config.global';
 
 async function bootstrap() {
   try {
     CustomLogger.setGlobalPrefix('Marc Blog Server');
-    const app = await NestFactory.create(AppModule, {
+    const app = await NestFactory.create(
+      AppModule.register(GLOBAL_CONFIG_SERVICE), {
       logger: new CustomLogger(),
       abortOnError: false,
     }).catch((err) => { throw Error(err); });

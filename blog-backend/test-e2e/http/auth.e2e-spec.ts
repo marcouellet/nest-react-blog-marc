@@ -13,6 +13,7 @@ import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2
           testE2ERegisterUnknownUser_Auth, testE2EUnknownUserJwtPayload_Auth } from '../data/auth.data';
 import { UserDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
+import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -24,17 +25,17 @@ describe('AuthController (e2e)', () => {
   let adminUserDtoWithTokens: UserDto;
   let unknownUserDtoWithTokens: UserDto;
 
-  const logger = new CustomLogger('AuthController');
+   CustomLogger.setGlobalPrefix('AuthController E2E Tests');
 
   jest.setTimeout(60000); // 1 minute
 
   beforeAll(async () => {
 
     const moduleBuilder = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule.register(GLOBAL_TEST_E2E_CONFIG_SERVICE)],
     });
 
-    moduleBuilder.setLogger(logger);
+    moduleBuilder.setLogger(new CustomLogger());
     const appModule: TestingModule = await moduleBuilder.compile();
 
     app = appModule.createNestApplication();

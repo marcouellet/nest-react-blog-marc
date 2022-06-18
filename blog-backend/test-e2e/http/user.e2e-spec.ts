@@ -16,6 +16,7 @@ import { testE2ERegisterDummyUser_User, testE2ERegisterAdminUser_User, testE2EFi
         testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User, testE2ELoginUnknownUser_User } from '../data/user.data';
 import { UserDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
+import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -31,16 +32,16 @@ describe('UserController (e2e)', () => {
   let unknownUserDtoNameUpdated: UserDto;
   let unknownUserDtoPasswordUpdated: UserDto;
 
-  const logger = new CustomLogger('UserController');
+  CustomLogger.setGlobalPrefix('User Controller E2E Tests')
 
   jest.setTimeout(60000); // 1 minute
 
   beforeAll(async () => {
     const moduleBuilder = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule.register(GLOBAL_TEST_E2E_CONFIG_SERVICE)],
     });
 
-    moduleBuilder.setLogger(logger);
+    moduleBuilder.setLogger(new CustomLogger());
     const appModule: TestingModule = await moduleBuilder.compile();
 
     app = appModule.createNestApplication();

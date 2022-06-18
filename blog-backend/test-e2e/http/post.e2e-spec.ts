@@ -16,6 +16,7 @@ import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post } from '../data/post.data';
 import { PostDto, UserDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
+import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('PostController (e2e)', () => {
   let app: INestApplication;
@@ -28,16 +29,16 @@ describe('PostController (e2e)', () => {
   let dummyUserPostDto: PostDto;
   let dummyUserUpdatedPostDto: PostDto;
 
-  const logger = new CustomLogger('PostController');
+  CustomLogger.setGlobalPrefix('Post Controller E2E Tests');
  
   jest.setTimeout(60000); // 1 minute
 
   beforeAll(async () => {
     const moduleBuilder = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule.register(GLOBAL_TEST_E2E_CONFIG_SERVICE)],
     });
 
-    moduleBuilder.setLogger(logger);
+    moduleBuilder.setLogger(new CustomLogger());
     const appModule: TestingModule = await moduleBuilder.compile();
 
     app = appModule.createNestApplication();
