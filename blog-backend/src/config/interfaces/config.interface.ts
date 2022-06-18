@@ -6,6 +6,7 @@ export interface IConfig {
     authExpiresIn: string;
     authRefreshTokenSecretKey: string;
     authRefreshTokenExpiresIn: string;
+    loggerLevels: string[];
 }
 
 export class IConfigService {
