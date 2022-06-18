@@ -6,16 +6,15 @@ import { HttpExceptionFilter } from './common/http-exception.filter';
 
 async function bootstrap() {
   try {
-    // const customLogger =  new CustomLogger();
     const app = await NestFactory.create(AppModule, {
       abortOnError: false,
-     //  logger: customLogger,
     }).catch((err) => { throw Error(err); });
     app.setGlobalPrefix('api');
-    // app.useLogger(customLogger);
+    // app.useLogger(new CustomLogger('Marc Blog Server'));
     app.enableCors();
     app.useGlobalFilters(new HttpExceptionFilter());
     await app.listen(5000);
+    Logger.log('Marc Blog Server is up and running!');
   } catch (err) {
     Logger.error(err); // <-- for example, ECONNREFUSED error
   }
