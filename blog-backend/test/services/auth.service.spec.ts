@@ -15,7 +15,7 @@ import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestrict
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
           testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
-          testRegisterExistingUserDto, testLoginDtoWithWrongPassword } from '../data/auth.data';
+          testRegisterExistingUserDto } from '../data/auth.data';
 import { testToken } from '../data/token.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';

@@ -13,11 +13,9 @@ const CryptographerServiceMock = {
             if (password === testNewPassword) {
                 return testNewSecretPassword;
             }
-            // throw new Error('Invalid test password!');
         }),
         checkPassword: jest.fn().mockImplementation((saltedPasswordHash: string, candidatePassword: string) => {
-            return (saltedPasswordHash === testSecretPassword && candidatePassword === testPassword) ||
-                     (saltedPasswordHash === testNewSecretPassword && candidatePassword === testNewPassword);
+            return (saltedPasswordHash === testSecretPassword && candidatePassword === testPassword);
         }),
     },
 };
