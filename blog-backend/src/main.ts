@@ -6,11 +6,13 @@ import { HttpExceptionFilter } from './common/http-exception.filter';
 
 async function bootstrap() {
   try {
+    // const customLogger =  new CustomLogger();
     const app = await NestFactory.create(AppModule, {
       abortOnError: false,
-      logger: new CustomLogger(),
+     //  logger: customLogger,
     }).catch((err) => { throw Error(err); });
     app.setGlobalPrefix('api');
+    // app.useLogger(customLogger);
     app.enableCors();
     app.useGlobalFilters(new HttpExceptionFilter());
     await app.listen(5000);
