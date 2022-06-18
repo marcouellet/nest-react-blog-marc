@@ -4,14 +4,13 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
-import { ConfigModule } from '../../src/modules/config.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { UserDatabaseBuilder } from '../database/user.database';
 import { buildLoginDto } from '../../test/builders/auth.dtos.builders';
-import { buildCreateUserDto, buildUpdateUserDto, buildFindUserCriterias } from '../../test/builders/user.dtos.builders';
+import { buildCreateUserDto, buildUpdateUserDto } from '../../test/builders/user.dtos.builders';
 import { testE2ERegisterDummyUser_User, testE2ERegisterAdminUser_User, testE2EFindDummyUserCriterias_User,
         testE2ECreateUnknownUserDto_User, testE2EUpdateUnknownUserNameDto_User, testE2EFindUnknownUserNameUpdatedCriterias_User,
         testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User, testE2ELoginUnknownUser_User } from '../data/user.data';

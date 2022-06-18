@@ -4,7 +4,6 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
-import { ConfigModule } from '../../src/modules/config.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';

@@ -14,8 +14,8 @@
     "start:prod": "node dist/main",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest --config test/jest.json",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:watch": "jest --config test/jest.json --watch",
+    "test:cov": "jest --config test/jest.json --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --watchAll --runInBand --detectOpenHandles",
     "test:e2e": "jest --config test-e2e/jest-e2e.json"
   },

@@ -15,7 +15,7 @@ import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestrict
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
           testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
-          testRegisterExistingUserDto } from '../data/auth.data';
+          testRegisterExistingUserDto, testLoginDtoWithWrongPassword } from '../data/auth.data';
 import { testToken } from '../data/token.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
@@ -66,7 +66,6 @@ describe('AuthService', () => {
 
   describe('getUserFromToken', () => {
     it('should return a user', async () => {
-      // expect(await authService.getUserFromToken(testToken)).toEqual(testServiceUserDto);
       expect(await authService.getUserFromToken(testToken));
       expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith(testToken, authService.getTokenVerifyOptions());
       expect(userRepositoryMock.findOne).toHaveBeenCalledWith(testFindUserWithDummyUserEmailCriterias);

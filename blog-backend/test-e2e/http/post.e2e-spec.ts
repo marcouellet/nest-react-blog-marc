@@ -4,14 +4,13 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
-import { ConfigModule } from '../../src/modules/config.module';
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { PostDatabaseBuilder } from '../database/post.database';
 import { buildLoginDto } from '../../test/builders/auth.dtos.builders';
-import { buildCreatePostDto, buildUpdatePostDto, buildFindPostCriterias } from '../../test/builders/post.dtos.builders';
+import { buildCreatePostDto, buildUpdatePostDto } from '../../test/builders/post.dtos.builders';
 import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
         testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdatePostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post } from '../data/post.data';
@@ -133,7 +132,7 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/find')
-      .send(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post))
+      .send(testE2ENonExistingUserFindPostCriterias_Post)
       .expect(StatusCodes.NOT_FOUND);
   });
 
@@ -142,7 +141,7 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findAll')
-      .send(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post))
+      .send(testE2ENonExistingUserFindPostCriterias_Post)
       .expect(StatusCodes.OK)
       .expect(body => body === null)
       .catch(error => {
@@ -157,7 +156,7 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findManyCount')
-      .send(buildFindPostCriterias(testE2ENonExistingUserFindPostCriterias_Post))
+      .send(testE2ENonExistingUserFindPostCriterias_Post)
       .expect(StatusCodes.OK)
       .expect(body => body === null)
       .catch(error => {
@@ -293,7 +292,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .put('/post/find')
       .set("Authorization", `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
-      .send(buildFindPostCriterias(testE2EDummyUserFindUpdatedPostCriterias_Post))
+      .send(testE2EDummyUserFindUpdatedPostCriterias_Post)
       .expect(StatusCodes.OK)
       .catch(error => {
         Logger.error('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in) failed, see following error message:');

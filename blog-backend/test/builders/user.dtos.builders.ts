@@ -1,15 +1,5 @@
 import { CreateUserDto } from '../../src/core/dtos/create-user.dto';
 import { UpdateUserDto } from '../../src/core/dtos/update-user.dto';
-import { UserCriterias } from '../../src/core/find-criterias';
-
-export function buildFindUserCriterias(fields: any ): UserCriterias {
-  const findUserCriterias = new UserCriterias();
-  findUserCriterias.username = fields.username;
-  findUserCriterias.email = fields.email;
-  findUserCriterias.role = fields.role;
-  
-  return findUserCriterias;
-}
 
 export function buildCreateUserDto(fields: any ): CreateUserDto {
     const createUsertDto = new CreateUserDto();
