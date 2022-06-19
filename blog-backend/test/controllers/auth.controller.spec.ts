@@ -37,7 +37,7 @@ describe('AuthController', () => {
 
     describe('login', () => {
       it('should return a user"', async () => {
-        expect(await authController.login(testRequestWithAuthorize, testNotLoggedInDto)).toStrictEqual(testUserDto);
+        expect(await authController.login(testNotLoggedInDto)).toStrictEqual(testUserDto);
         expect(authServiceMock.login).toHaveBeenCalled();
       });
     });

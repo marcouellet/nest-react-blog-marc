@@ -1,3 +1,4 @@
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Model, Types } from 'mongoose';
 import { IGenericDataRepository } from '../../../core/repositories';
 
@@ -48,12 +49,12 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     return this.repository.create(item) as Promise<T>;
   }
 
-  async update(id: string, update: {}, populate?: string) {
-    let populateCriterias: any = null;
+  async update(id: string, update: {}, populate?: string): Promise<T> {
+    const options: {[key: string]: any} = { new: true }
     if (populate) {
-      populateCriterias = {populate: { path: populate }};
+      options.populate = { path: populate }
     }
-    return this.repository.findByIdAndUpdate(id, update, populateCriterias).exec();
+    return this.repository.findByIdAndUpdate(id, update, options).exec();
   }
 
   async delete(id: string, populate?: string): Promise<T> {

@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { IConfigService } from '../../config/interfaces/config.interface';
 import { AuthService } from '../../services/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { UserDto } from '../../core/dtos';
 import { JWT_STRATEGY_NAME } from '../guards/jwt.guard';
@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(
       const {sub} = payload;
       return this.authService.validateUser({email: sub});
     } catch (err) {
-        throw new ForbiddenException('Access Denied');
+        throw new UnauthorizedException('Access Denied');
     }
   }
 }

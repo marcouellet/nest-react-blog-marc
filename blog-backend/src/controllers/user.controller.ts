@@ -9,12 +9,14 @@ import { UserRole } from '../core/enum';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+    // Fetch all users
   @Get()
   @Auth([UserRole.ADMIN])
   async getAll(): Promise<UserDto[]> {
     return this.userService.getAllUsers();
   }
 
+    // Fetch a particular user using ID
   @Get(':id')
   @Auth([UserRole.ADMIN])
   async getById(@Param('id') id: string): Promise<UserDto> {

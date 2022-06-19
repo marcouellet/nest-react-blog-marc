@@ -10,8 +10,8 @@ import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
-import { checkForbidden } from '../../utils/response';
+import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength } from '../../types';
+import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const CreateUser = () => {
@@ -21,9 +21,12 @@ const CreateUser = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required('User name is required'),
-    email: Yup.string().required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    username: Yup.string().required('User name is required')
+      .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
+    email: Yup.string().required('Email is required')
+      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+    password: Yup.string().required('Password is required')
+      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
     role: Yup.string().required('Role is required'),
   });
 
@@ -64,6 +67,8 @@ const CreateUser = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`User creation failed, session expired`);
       dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`User already exist or access denied`);
     } else {
       toast.error(`User creation failed, see error list`);
       setErrorList(apiErrors);      

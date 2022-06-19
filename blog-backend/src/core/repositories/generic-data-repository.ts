@@ -42,7 +42,7 @@ export class GenericDataRepository<T> implements IGenericDataRepository<T> {
     return this.repository.create(item);
   }
 
-  async update(id: string, update: {}, populate?: string) {
+  async update(id: string, update: {}, populate?: string): Promise<T> {
     return this.repository.update(id, update, populate);
   }
 

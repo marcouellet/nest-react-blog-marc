@@ -114,14 +114,6 @@ export const testUpdateUserNewPasswordSuppliedDto: UpdateUserDto = {
   role: testRoleUser,
 };
 
-
-export const testRequestWithAuthorizeAndUser: any = {
-    headers: {
-        authorization: 'token',
-    },
-    user: testUserDto,
-};
-
 export const testUpdateUserCriterias: IUpdateUserCriterias = {
   username: 'dummy',
   email: testDummyEmail,

@@ -50,7 +50,8 @@ export class UserService {
 
   async verifyUserExist(criterias: UserCriterias): Promise<boolean> {
     return this.dataServicesRepositories.users.findOne(criterias)
-      .then(user => Promise.resolve(user != null));
+      .then(user => Promise.resolve(user != null))
+      .catch(error => { throw new Error(error); });
   }
 
   async findUserUnrestricted(criterias: UserCriterias): Promise<UserDto> {
@@ -70,9 +71,18 @@ export class UserService {
   async createUser(userDto: UserDto): Promise<UserDto> {
     const createUserDto = { ... userDto };
     const { email } = createUserDto;
-    if ( await this.verifyUserExist({ email })) {
-      throw new ForbiddenException('User with same email already exist!');
+    let user: UserDto;
+    try {
+      user = await this.findUser({ email });
+    } catch (error) {}
+
+    if (user) {
+      throw new ForbiddenException(`User with email "${email}" already exist!`);
     }
+    
+    // if ( await this.verifyUserExist({ email })) {
+    //   throw new ForbiddenException('User with same email already exist!');
+    // }
     createUserDto.role = userDto.role ? userDto.role :  UserRole.USER;
     createUserDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(createUserDto);

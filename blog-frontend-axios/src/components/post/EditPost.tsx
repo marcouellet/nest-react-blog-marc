@@ -5,13 +5,14 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
-import { IPost, IUpdatePost, createPostForUpdate } from "../../types";
+import { IPost, IUpdatePost, createPostForUpdate, minimumTitleLength, minimumDescriptionLength,
+          minimumBodyLength } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const EditPost = () => {
@@ -23,9 +24,12 @@ const EditPost = () => {
   const [post, setPost] = useState<IPost>();
  
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required('Title is required'),
-    description: Yup.string().required('Description is required'),
-    body: Yup.string().required('Body is required'),
+    title: Yup.string().required('Title is required')
+      .min(minimumTitleLength, `Title must be at least ${minimumTitleLength} characters long`),
+    description: Yup.string().required('Description is required')
+      .min(minimumDescriptionLength, `Description must be at least ${minimumDescriptionLength} characters long`),
+    body: Yup.string().required('Content is required')
+      .min(minimumBodyLength, `Content must be at least ${minimumBodyLength} characters long`),
   });
 
   type UpdateSubmitForm = {
@@ -87,6 +91,8 @@ const EditPost = () => {
       toast.error(`Post update failed, session expired`);
       dispatch(createActionSessionExpired());
       navigate('/'); 
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
     } else {
       toast.error(`Post update failed, see error list`);
       setErrorList(apiErrors);      

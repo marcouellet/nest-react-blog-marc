@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Body, UseGuards, ForbiddenException} from '@nestjs/common';
+import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
@@ -14,17 +14,14 @@ export class AuthController {
   // Get current user
   @Get('/whoami')
   @Auth(AllRoles)
-  async whoAmI(@Req() req: Request): Promise<JwtPayload> {
-    return this.authService.validateToken(req.headers.authorization);
+  async whoAmI(@Headers('Authorization') auth: string): Promise<JwtPayload> {
+    const jwt = auth.replace('Bearer ', '');
+    return this.authService.validateToken(jwt);
   }
 
   // Login user
-  @Post('/login')
-  async login(@Req() request: Request, @Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {
-    if (request.user) {
-      // User already logged in
-      throw new ForbiddenException('User already logged in!');
-    }
+  @Put('/login')
+  async login(@Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {
     return this.authService.login(body);
   }
 
@@ -35,7 +32,7 @@ export class AuthController {
   }
 
   // Refresh auth token
-  @Post('/refresh')
+  @Put('/refresh')
  @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Req() req: Request): Promise<UserDto> {
     return req.user as UserDto;

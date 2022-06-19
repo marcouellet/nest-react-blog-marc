@@ -19,7 +19,7 @@ function getCurrentUser(): User {
 
 async function login(email: string, password: string): Promise<User> {
   const loginParms: ILogin = { email, password }
-  return API.post<User>('/auth/login', loginParms)
+  return API.put<User>('/auth/login', loginParms)
     .then(response => {
       TokenService.setUser(response.data);
       return response.data;
@@ -38,7 +38,7 @@ async function register(username: string, email: string, password: string) : Pro
 async function refresh(user: User) : Promise<User> {
   const { authtoken, authrefreshtoken } = user;
   const refreshParms: IRefresh = { authtoken, authrefreshtoken };
-  return API.post<User>('/auth/refresh', refreshParms)
+  return API.put<User>('/auth/refresh', refreshParms)
     .then(response => {
       TokenService.setUser(response.data);
       return response.data;

@@ -13,7 +13,7 @@ export interface IGenericDataRepository<T> {
 
   create(item: T): Promise<T>;
 
-  update(id: string, update: {}, populate?: string);
+  update(id: string, update: {}, populate?: string): Promise<T>;
 
   delete(id: string, populate?: string): Promise<T>;
 

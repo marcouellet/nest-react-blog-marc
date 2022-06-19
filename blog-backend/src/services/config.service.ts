@@ -1,17 +1,19 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import { NotFoundException } from '@nestjs/common';
+import { LogLevel, NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { IConfig, IConfigService } from '../config/interfaces/config.interface';
 import { EnvConfig } from '../config/interfaces/envconfig.interface';
 import { IConfigOptions } from '../config/interfaces/config-options.interface';
-import { VALID_AUTH_STRATEGY_NAMES, VALID_DATA_SERVER_NAMES } from '../config/config.constants';
+import { CustomLogger } from '../common/custom.logger';
+import { VALID_AUTH_STRATEGY_NAMES, VALID_DATA_SERVER_NAMES, VALID_LOGGER_LEVELS } from '../config/config.constants';
 
 @Injectable()
 export class ConfigService implements IConfigService {
     private readonly envConfig: EnvConfig;
     private config: IConfig;
+    private loggerLevels: string[];
 
     constructor(options: IConfigOptions) {
         const envFile = path.resolve(__dirname, '../../', options.folder(), options.fileName());
@@ -38,6 +40,11 @@ export class ConfigService implements IConfigService {
     return VALID_DATA_SERVER_NAMES.includes(dataServerName);
     }
 
+    private validateLoggerLevels(loggerLevels: string): boolean  {
+        this.loggerLevels = loggerLevels.split('|').map(level => level.trim());
+        return this.loggerLevels.every( level => VALID_LOGGER_LEVELS.includes(level));
+    }
+
     private initConfig(): IConfig {
 
         const dataServerName = this.getEnvConfig('DATA_SERVER_NAME');
@@ -47,6 +54,7 @@ export class ConfigService implements IConfigService {
         const authExpiresIn = this.getEnvConfig('AUTH_EXPIRES_IN');
         const authRefreshTokenSecretKey = this.getEnvConfig('AUTH_REFRESH_TOKEN_SECRET_KEY');
         const authRefreshTokenExpiresIn = this.getEnvConfig('AUTH_REFRESH_TOKEN_EXPIRES_IN');
+        const loggerLevelsString = this.getEnvConfig('LOGGER_LEVELS');
 
         if (!dataServerName) {
             throw new NotFoundException('Please, provide a value for DATA_SERVER_NAME in env file');
@@ -76,6 +84,10 @@ export class ConfigService implements IConfigService {
             throw new NotFoundException('Please, provide a value for AUTH_REFRESH_TOKEN_EXPIRES_IN in env file');
         }
 
+        if (!loggerLevelsString) {
+            throw new NotFoundException('Please, provide a value for LOGGER_LEVELS in env file');
+        }
+
         if (!this.validateAuthStrategyName(authStrategyName)) {
             throw new NotFoundException('Invalid auth strategy name : ' + authStrategyName +
             ', should belong to ' +  VALID_AUTH_STRATEGY_NAMES.toString());
@@ -86,7 +98,13 @@ export class ConfigService implements IConfigService {
             ', should belong to ' +  VALID_DATA_SERVER_NAMES.toString());
         }
 
+        if (!this.validateLoggerLevels(loggerLevelsString)) {
+            throw new NotFoundException('Invalid logger level value(s), should belong to ' + VALID_LOGGER_LEVELS.toString());
+        }
+
+        CustomLogger.overrideLogger(this.loggerLevels as LogLevel[]);
+
         return { dataServerName, connectionString, authStrategyName,
-                authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn };
+                authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn, loggerLevels: this.loggerLevels };
     }
 }

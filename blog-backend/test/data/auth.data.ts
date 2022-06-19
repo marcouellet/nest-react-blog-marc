@@ -5,6 +5,7 @@ export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com'};
 export const testAuthToken: IAuthToken =  { accessToken: 'token.signed'};
 
 export const testPassword = 'password';
+export const testWrongPassword = 'wrong-password';
 export const testSecretPassword = 'secret';
 export const testNewPassword = 'new-password';
 export const testNewSecretPassword = 'new-secret';
@@ -15,15 +16,16 @@ export const testUnknownEmail = 'unknown@email.com';
 export const testRoleUser = 'user';
 export const testRoleAdmin = 'admin';
 
-export const testRequestWithAuthorize: any = {
-    headers: {
-        authorization: 'token',
-    },
-};
+export const testRequestWithAuthorize = 'Bearer token';
 
 export const testLoginDto: LoginDto = {
     email: testDummyEmail,
     password: testPassword,
+};
+
+export const testLoginDtoWithWrongPassword: LoginDto = {
+    email: testDummyEmail,
+    password: testWrongPassword,
 };
 
 export const testNotLoggedInDto: LoginDto = {
