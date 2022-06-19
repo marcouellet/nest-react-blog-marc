@@ -10,7 +10,7 @@ describe('AppController (e2e)', () => {
 
   CustomLogger.setGlobalPrefix('AppController E2E Tests');
 
-  beforeEach(async () => {
+  beforeAll(async () => {
 
     const moduleBuilder = await Test.createTestingModule({
       imports: [AppModule.register(GLOBAL_TEST_E2E_CONFIG_SERVICE)],
@@ -21,6 +21,10 @@ describe('AppController (e2e)', () => {
 
     app = appModule.createNestApplication();
     await app.init();
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   it('/ (GET)', () => {

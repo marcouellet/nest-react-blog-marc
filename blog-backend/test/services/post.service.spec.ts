@@ -5,7 +5,7 @@ import { UserFactoryService } from '../../src/services/user/user-factory.service
 import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
-import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
+import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, 
           testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 import { ConfigModule } from '../../src/modules/config.module';

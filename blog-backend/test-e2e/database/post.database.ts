@@ -3,13 +3,13 @@ import { UserDto } from '../../src/core/dtos';
 import { PostDto } from '../../src/core/dtos';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
-import { PostCriterias } from '../../src/core';
+import { PostFindCriterias } from '../../src/core';
 import { buildCreatePostDto, buildUpdatePostDto } from '../../test/builders/post.dtos.builders';
 
 export class PostDatabaseBuilder {
   constructor(private readonly userService: UserService, private readonly postService: PostService) {}
 
-  async findPost(postCriterias: PostCriterias): Promise<PostDto> {
+  async findPost(postCriterias: PostFindCriterias): Promise<PostDto> {
     return this.postService.findPost(postCriterias); 
   }
 

@@ -1,7 +1,7 @@
 import { IsString, IsDate, IsEmail, IsEnum } from '@nestjs/class-validator';
 import { UserRole } from '../enum';
 
-export class UserCriterias {
+export class UserFindCriterias {
     @IsString()
     username?: string;
 

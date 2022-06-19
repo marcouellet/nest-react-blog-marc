@@ -1,2 +1,2 @@
-export * from './post.criterias';
-export * from './user.criterias';
+export * from './post.find-criterias';
+export * from './user.find-criterias';

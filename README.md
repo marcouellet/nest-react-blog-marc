@@ -8,7 +8,7 @@ This project is an enhancement from project https://github.com/yemiwebby/nest-re
 
 Backend:
 
-- Elaborated architecture (repository pattern, config service, role access, session expiration)
+- Elaborated architecture (repository pattern, config service, role access, session expiration, custom logger, dto validation)
 - Added unit tests and e2e tests for full code coverage
 
 Frontend:

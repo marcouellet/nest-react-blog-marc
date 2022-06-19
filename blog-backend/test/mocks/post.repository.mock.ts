@@ -1,5 +1,5 @@
 import { Post } from '../../src/core/entities';
-import { PostCriterias } from '../../src/core/find-criterias/post.criterias';
+import { PostFindCriterias } from '../../src/core/find-criterias/post.find-criterias';
 import { testPost, testPostCount } from '../data/post.data';
 
 const PostRepositoryMock = {
@@ -9,9 +9,9 @@ const PostRepositoryMock = {
         convertFromGenericEntity: jest.fn().mockImplementation((obj) => obj),
         getAll: jest.fn().mockImplementation(() => Promise.resolve([testPost])),
         get: jest.fn().mockImplementation((id: string) => Promise.resolve(testPost)),
-        findOne: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve(testPost)),
-        findMany: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve([testPost])),
-        findManyCount: jest.fn().mockImplementation((criterias: PostCriterias) => Promise.resolve(testPostCount)),
+        findOne: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve(testPost)),
+        findMany: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve([testPost])),
+        findManyCount: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve(testPostCount)),
         findManyCountForSubDocumentId: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) =>
             Promise.resolve(testPostCount)),
         create: jest.fn().mockImplementation((post: Post) => Promise.resolve(testPost)),
