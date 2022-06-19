@@ -1,6 +1,6 @@
 import { CreateUserDto, UpdateUserDto } from '../../src/core/dtos';
 import { testE2ERoleUser, testE2ERoleAdmin } from './auth.data';
-import { UserCriterias } from '../../src/core';
+import { UserFindCriterias } from '../../src/core';
 
 export const testE2EDummyUserPostTitle_User = 'dummy title';
 export const testE2EDummyUserPostUpdatedTitle_User = 'dummy updated title';
@@ -18,9 +18,9 @@ export const testE2EUnknownUserName_User = 'e2e.user.unknown.name';
 export const testE2ENonExistingUserId_User= 'twelvelong12'; // required by MongoDB
 export const testE2EUnknownUserNameUpdated_User = 'e2e.user.unknown.name.updated';
 export const testE2EUnknownUserPasswordUpdated_User = 'e2e.user.unknown.password.updated';
-export const testE2EFindDummyUserCriterias_User: UserCriterias = { email: testE2EDummyUserEmail_User, role: testE2ERoleUser };
-export const testE2EFindAdminUserCriterias_User: UserCriterias = { email: testE2EAdminUserEmail_User, role: testE2ERoleAdmin };
-export const testE2EFindUnknownUserNameUpdatedCriterias_User: UserCriterias = { username: testE2EUnknownUserNameUpdated_User };
+export const testE2EFindDummyUserCriterias_User: UserFindCriterias = { email: testE2EDummyUserEmail_User, role: testE2ERoleUser };
+export const testE2EFindAdminUserCriterias_User: UserFindCriterias = { email: testE2EAdminUserEmail_User, role: testE2ERoleAdmin };
+export const testE2EFindUnknownUserNameUpdatedCriterias_User: UserFindCriterias = { username: testE2EUnknownUserNameUpdated_User };
 
 export const testE2ELoginDummyUser_User = {
     email: testE2EDummyUserEmail_User,

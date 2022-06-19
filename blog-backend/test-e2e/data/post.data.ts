@@ -1,5 +1,5 @@
 import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostCriterias } from '../../src/core';
+import { PostFindCriterias } from '../../src/core';
 
 const publishedOnDate: Date = new Date();
 
@@ -15,8 +15,8 @@ export const testE2EAdminUserPassword_Post = 'e2e.post.admin.password';
 export const testE2EDummyUserName_Post = 'e2e.post.dummy.name';
 export const testE2EAdminUserName_Post = 'e2e.post.admin.name';
 
-export const testE2ENonExistingUserFindPostCriterias_Post: PostCriterias = { title: testE2ENonExistingUserPostTitle_Post };
-export const testE2EDummyUserFindUpdatedPostCriterias_Post: PostCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
+export const testE2ENonExistingUserFindPostCriterias_Post: PostFindCriterias = { title: testE2ENonExistingUserPostTitle_Post };
+export const testE2EDummyUserFindUpdatedPostCriterias_Post: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
 
 export const testE2ERegisterDummyUser_Post = {
   username: testE2EDummyUserName_Post,

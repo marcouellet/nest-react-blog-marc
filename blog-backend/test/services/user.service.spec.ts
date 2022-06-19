@@ -6,7 +6,7 @@ import { CryptographerService } from '../../src/services/cryptographer.service';
 import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { User } from '../../src/core/entities/user.entity';
-import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
+import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import { testServiceUserDto, testServiceUserDtoUnrestricted, testUserId, testFindUserCriterias, testUserCount,
           testCreateUnknownUserDto, testCreateExistingUserDto, testUpdateUserNoPasswordSuppliedDto, testUpdateUserDto,

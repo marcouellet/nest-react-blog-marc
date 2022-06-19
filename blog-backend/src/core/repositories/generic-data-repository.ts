@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { IGenericDataRepository } from './generic-data-repository.abstract';
+import { IGenericDataRepository } from './generic-data-repository.interface';
 
 export class GenericDataRepository<T> implements IGenericDataRepository<T> {
 

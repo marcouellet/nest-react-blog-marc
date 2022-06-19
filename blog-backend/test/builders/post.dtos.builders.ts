@@ -1,6 +1,6 @@
 import { CreatePostDto } from '../../src/core/dtos/create-post.dto';
 import { UpdatePostDto } from '../../src/core/dtos/update-post.dto';
-import { PostCriterias } from '../../src/core/find-criterias';
+import { PostFindCriterias } from '../../src/core/find-criterias';
 
 export function buildCreatePostDto(fields: any ): CreatePostDto {
     const createPostDto = new CreatePostDto();

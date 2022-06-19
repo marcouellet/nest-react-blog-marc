@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
 import { UserDto } from '../core/dtos';
-import { UserCriterias } from '../core/find-criterias/user.criterias';
+import { UserFindCriterias } from '../core/find-criterias/user.find-criterias';
 import { UserService } from '../services/user/user.service';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';
@@ -32,19 +32,19 @@ export class UserController {
 
   // Fetch a user based on criterias
   @Put('/find')
-  async finUser(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto> {
+  async finUser(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<UserDto> {
     return this.userService.findUser(userCriterias);
   }
 
   // Fetch users based on criterias
   @Put('/findAll')
-  async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<UserDto[]> {
+  async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<UserDto[]> {
     return this.userService.findManyUsers(userCriterias);
   }
 
   // Get count of users meating criterias 
   @Put('/findManyCount')
-  async findManyUsersCount(@Body(new ValidationPipe()) userCriterias: UserCriterias): Promise<number> {
+  async findManyUsersCount(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<number> {
     return this.userService.findManyUsersCount(userCriterias);
   }
 

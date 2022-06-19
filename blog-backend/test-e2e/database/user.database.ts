@@ -3,7 +3,7 @@ import { UserDto } from '../../src/core/dtos';
 import { PostDto } from '../../src/core/dtos';
 import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
-import { UserCriterias } from '../../src/core';
+import { UserFindCriterias } from '../../src/core';
 import { buildCreateUserDto, buildUpdateUserDto } from '../../test/builders/user.dtos.builders';
 
 export class UserDatabaseBuilder {
@@ -63,7 +63,7 @@ export class UserDatabaseBuilder {
     }
   }
 
-  async findUser(userCriterias: UserCriterias): Promise<UserDto> {
+  async findUser(userCriterias: UserFindCriterias): Promise<UserDto> {
     return this.userService.findUser(userCriterias); 
   }
 

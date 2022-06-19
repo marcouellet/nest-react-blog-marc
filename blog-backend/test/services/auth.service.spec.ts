@@ -10,7 +10,7 @@ import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { User } from '../../src/core/entities/user.entity';
-import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.abstract';
+import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias,
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
           testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';

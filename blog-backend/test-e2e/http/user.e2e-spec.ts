@@ -90,7 +90,7 @@ describe('UserController (e2e)', () => {
 
   afterAll(async () => {
     await userDatabaseBuilder.deleteAllE2EUsers();
-    app.close();
+    await app.close();
   });
 
   //

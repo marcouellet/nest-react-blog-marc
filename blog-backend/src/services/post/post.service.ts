@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IDataRepositories } from '../../core/repositories';
 import { Post } from '../../core/entities';
 import { PostDto, UpdatePostDto } from '../../core/dtos';
-import { PostCriterias } from '../../core/find-criterias/post.criterias';
+import { PostFindCriterias } from '../../core/find-criterias/post.find-criterias';
 import { PostFactoryService } from './post-factory.service';
 @Injectable()
 export class PostService {
@@ -34,17 +34,17 @@ export class PostService {
       .then(post => this.processPost(post));
   }
 
-  async findPost(criterias: PostCriterias): Promise<PostDto> {
+  async findPost(criterias: PostFindCriterias): Promise<PostDto> {
     return this.dataServicesRepositories.posts.findOne(criterias)
       .then(post => this.processPost(post));
   }
 
-  async findManyPosts(criterias: PostCriterias): Promise<PostDto[]> {
+  async findManyPosts(criterias: PostFindCriterias): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.findMany(criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsCount(criterias: PostCriterias): Promise<number> {
+  async findManyPostsCount(criterias: PostFindCriterias): Promise<number> {
     return this.dataServicesRepositories.posts.findManyCount(criterias);
   }
 

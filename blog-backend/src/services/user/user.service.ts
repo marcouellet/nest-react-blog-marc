@@ -3,7 +3,7 @@ import { IDataRepositories } from '../../core/repositories';
 import { User } from '../../core/entities';
 import { UserRole } from '../../core/enum'
 import { UserDto, UpdateUserDto } from '../../core/dtos';
-import { UserCriterias } from '../../core/find-criterias/user.criterias';
+import { UserFindCriterias } from '../../core/find-criterias/user.find-criterias';
 import { UserFactoryService } from './user-factory.service';
 import { CryptographerService } from '../../services/cryptographer.service';
 @Injectable()
@@ -43,28 +43,28 @@ export class UserService {
       .then(user => this.processUserUnrestricted(user));
   }
 
-  async findUser(criterias: UserCriterias): Promise<UserDto> {
+  async findUser(criterias: UserFindCriterias): Promise<UserDto> {
     return this.dataServicesRepositories.users.findOne(criterias)
       .then(user => this.processUser(user));
   }
 
-  async verifyUserExist(criterias: UserCriterias): Promise<boolean> {
+  async verifyUserExist(criterias: UserFindCriterias): Promise<boolean> {
     return this.dataServicesRepositories.users.findOne(criterias)
       .then(user => Promise.resolve(user != null))
       .catch(error => { throw new Error(error); });
   }
 
-  async findUserUnrestricted(criterias: UserCriterias): Promise<UserDto> {
+  async findUserUnrestricted(criterias: UserFindCriterias): Promise<UserDto> {
     return this.dataServicesRepositories.users.findOne(criterias)
     .then(user => this.processUserUnrestricted(user));
   }
 
-  async findManyUsers(criterias: UserCriterias): Promise<UserDto[]> {
+  async findManyUsers(criterias: UserFindCriterias): Promise<UserDto[]> {
     return this.dataServicesRepositories.users.findMany(criterias)
       .then(users => users.map(user => this.processUser(user)));
   }
 
-  async findManyUsersCount(criterias: UserCriterias): Promise<number> {
+  async findManyUsersCount(criterias: UserFindCriterias): Promise<number> {
     return this.dataServicesRepositories.users.findManyCount(criterias);
   }
 

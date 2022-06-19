@@ -1,7 +1,7 @@
 import { IsString, IsDate, ValidateNested } from '@nestjs/class-validator';
-import { UserCriterias } from './user.criterias';
+import { UserFindCriterias } from './user.find-criterias';
 
-export class PostCriterias {
+export class PostFindCriterias {
   @IsString()
   title?: string;
 
@@ -9,7 +9,7 @@ export class PostCriterias {
   description?: string;
 
   @ValidateNested()
-  userCriterias?: UserCriterias;
+  userCriterias?: UserFindCriterias;
 
   @IsDate()
     publishedBefore?: Date;

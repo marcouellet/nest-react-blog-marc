@@ -14,6 +14,7 @@ import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2
 import { UserDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
+import { doesNotReject } from 'assert';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -77,8 +78,8 @@ describe('AuthController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await authDatabaseBuilder.deleteAllE2EUsers()
-    app.close();
+    await authDatabaseBuilder.deleteAllE2EUsers();
+    await app.close();
   });
 
   //
