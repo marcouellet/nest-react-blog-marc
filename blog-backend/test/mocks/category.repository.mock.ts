@@ -12,8 +12,6 @@ const CategoryRepositoryMock = {
         findOne: jest.fn().mockImplementation((criterias: CategoryFindCriterias) => Promise.resolve(testCategory)),
         findMany: jest.fn().mockImplementation((criterias: CategoryFindCriterias) => Promise.resolve([testCategory])),
         findManyCount: jest.fn().mockImplementation((criterias: CategoryFindCriterias) => Promise.resolve(testCategoryCount)),
-        findManyCountForSubDocumentId: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) =>
-            Promise.resolve(testCategoryCount)),
         create: jest.fn().mockImplementation((category: Category) => Promise.resolve(testCategory)),
         update: jest.fn().mockImplementation((id: string, update: {}, populate?: string) => Promise.resolve(testCategory)),
         delete: jest.fn().mockImplementation((id: string, populate?: string) => Promise.resolve(testCategory)),

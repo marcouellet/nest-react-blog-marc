@@ -9,7 +9,6 @@ const PostServiceMock = {
       getAllPosts: jest.fn().mockImplementation(() => Promise.resolve([testPost])),
       getPostById: jest.fn().mockImplementation((id: string) => Promise.resolve(testPost)),
       getNumberOfPostsForUser: jest.fn().mockImplementation((userId: string) => Promise.resolve(testPostCount)),
-      getNumberOfPostsForCategory: jest.fn().mockImplementation((categoryId: string) => Promise.resolve(testPostCount)),
       findPost: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve(testPost)),
       findManyPosts: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve([testPost])),
       findManyPostsCount: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve(testPostCount)),

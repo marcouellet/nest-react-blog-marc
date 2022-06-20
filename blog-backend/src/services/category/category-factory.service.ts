@@ -14,7 +14,7 @@ export class CategoryFactoryService {
     category.title = categorytDto.title;
     category.description = categorytDto.description;
 
-    return this.dataServicesRepositories.posts.convertFromGenericEntity(category);
+    return this.dataServicesRepositories.categories.convertFromGenericEntity(category);
   }
 
   createCategoryDto(category: Category): CategoryDto {
