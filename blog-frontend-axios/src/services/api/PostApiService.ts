@@ -14,7 +14,11 @@ class PostApi extends HttpApiService<IPost> {
   };
 
   getNumberOfPostsForUser = (userId: string) => {
-    return super.getCount(`${POST_ENDPOINT}/count/${userId}`);
+    return super.getCount(`${POST_ENDPOINT}/count/user/${userId}`);
+  };
+
+  getNumberOfPostsForCategory = (categoryId: string) => {
+    return super.getCount(`${POST_ENDPOINT}/count/category/${categoryId}`);
   };
 
   createPost = (data: any) => {
