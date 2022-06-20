@@ -29,6 +29,10 @@ export class PostService {
     return  this.dataServicesRepositories.posts.findManyCountForSubDocumentId('user', userId);
   }
 
+  async getNumberOfPostsForCategory(categoryId: string): Promise<number> {
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocumentId('category', categoryId);
+  }
+
   async getPostById(id: string): Promise<PostDto> {
     return this.dataServicesRepositories.posts.get(id)
       .then(post => this.processPost(post));

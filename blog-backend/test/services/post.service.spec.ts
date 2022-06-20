@@ -6,8 +6,8 @@ import { DataServiceRepositories } from '../../src/services/data.service.reposit
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
-import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, 
-          testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
+import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
+          testUpdatePostDto, testFindPostCriterias, testCategoryPostsCount } from '../data/post.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -61,6 +61,13 @@ describe('PostService', () => {
     it('should return 1', async () => {
       expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testUserPostsCount);
       expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('user', testPostId);
+    });
+  });
+
+  describe('getNumberOfPostsForCategory', () => {
+    it('should return 1', async () => {
+      expect(await postService.getNumberOfPostsForCategory(testCategoryId)).toEqual(testCategoryPostsCount);
+      expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('category', testCategoryId);
     });
   });
 

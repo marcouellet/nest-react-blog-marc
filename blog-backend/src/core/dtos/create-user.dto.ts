@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsEmail, IsEnum, MinLength } from '@nestjs/class-validator';
-import { minimumUserNameLength, minimumEmailLength, minimumPasswordLength } from '../entities/user.entity';
+import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '../entities/user.entity';
 import { UserRole } from '../enum';
 
 export class CreateUserDto {
@@ -12,15 +12,15 @@ export class CreateUserDto {
 
     @IsEmail()
     @IsNotEmpty()
-    @MinLength(minimumEmailLength, {
-      message: `Email must be at least ${minimumEmailLength} characters long`,
+    @MinLength(minimumUserEmailLength, {
+      message: `Email must be at least ${minimumUserEmailLength} characters long`,
       })
     email: string;
 
     @IsString()
     @IsNotEmpty()
-    @MinLength(minimumPasswordLength, {
-      message: `Password text must be at least ${minimumPasswordLength} characters long`,
+    @MinLength(minimumUserPasswordLength, {
+      message: `Password text must be at least ${minimumUserPasswordLength} characters long`,
       })
     password: string;
 

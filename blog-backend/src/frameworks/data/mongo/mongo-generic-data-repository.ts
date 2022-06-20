@@ -1,7 +1,5 @@
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Model, Types } from 'mongoose';
 import { IGenericDataRepository } from '../../../core/repositories';
-
 export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> {
 
   constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}

@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty, IsDate, ValidateNested } from '@nestjs/class-validator';
 import { UserDto } from './user.dto';
+import { CategoryDto } from './category.dto';
 
 export class PostDto {
   @IsString()
@@ -17,6 +18,9 @@ export class PostDto {
   @IsString()
   @IsNotEmpty()
   body: string;
+
+  @ValidateNested()
+  category: CategoryDto;
 
   @IsNotEmpty()
   @ValidateNested()

@@ -26,7 +26,7 @@ describe('AuthController (e2e)', () => {
   let adminUserDtoWithTokens: UserDto;
   let unknownUserDtoWithTokens: UserDto;
 
-   CustomLogger.setGlobalPrefix('AuthController E2E Tests');
+  CustomLogger.setGlobalPrefix('AuthController E2E Tests');
 
   jest.setTimeout(60000); // 1 minute
 
@@ -42,16 +42,20 @@ describe('AuthController (e2e)', () => {
     app = appModule.createNestApplication();
     await app.init();
 
-    if (!(authService = appModule.get<AuthService>(AuthService))) {
+    authService = appModule.get<AuthService>(AuthService);
+
+    if (!authService) {
       Logger.error('AUTH: authService not found');
       Logger.flush();
-    };
+    }
 
-    if (!(userService = appModule.get<UserService>(UserService))) {
+    userService = appModule.get<UserService>(UserService);
+
+    if (!userService) {
       Logger.error('AUTH: userService not found');
       Logger.flush();
-    };
-  
+    }
+
     authDatabaseBuilder = new AuthDatabaseBuilder(userService, authService);
 
     // Remove test data in database
@@ -63,7 +67,7 @@ describe('AuthController (e2e)', () => {
     try {
       adminUserDtoWithTokens = await authDatabaseBuilder.registerUserAsAdmin(testE2ERegisterAdminUser_Auth);
     } catch (error) {
-      Logger.error('AUTH: admin user registration failed, see following error message:')
+      Logger.error('AUTH: admin user registration failed, see following error message:');
       Logger.error(error);
       Logger.flush();
     }
@@ -71,7 +75,7 @@ describe('AuthController (e2e)', () => {
     try {
       dummyUserDtoWithTokens = await authDatabaseBuilder.registerUser(testE2ERegisterDummyUser_Auth);
     } catch (error) {
-      Logger.error('AUTH: dummy user registration failed, see following error message:')
+      Logger.error('AUTH: dummy user registration failed, see following error message:');
       Logger.error(error);
       Logger.flush();
     }
@@ -84,10 +88,10 @@ describe('AuthController (e2e)', () => {
 
   //
   // Tests when user is not logged in (authorization token not provided)
-  // 
+  //
 
   it('AUTH(1): (GET) /auth/whoami (not logged in)', () => {
-    Logger.debug('AUTH(1): (GET) /auth/whoami (not logged in)'); 
+    Logger.debug('AUTH(1): (GET) /auth/whoami (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .get('/auth/whoami')
@@ -122,8 +126,8 @@ describe('AuthController (e2e)', () => {
       .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
       .expect(StatusCodes.FORBIDDEN);
     } else {
-      Logger.error('AUTH(3): (POST) /auth/register existing user (admin) (not logged in) - cannot test since admin user registration failed'); 
-      Logger.flush();       
+      Logger.error('AUTH(3): (POST) /auth/register existing user (admin) (not logged in) - cannot test since admin user registration failed');
+      Logger.flush();
     }
   });
 
@@ -160,7 +164,7 @@ describe('AuthController (e2e)', () => {
     if (unknownUserDtoWithTokens) {
     return request(app.getHttpServer())
       .get('/auth/whoami')
-      .set("Authorization", `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
+      .set('Authorization', `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
       .expect(testE2EUnknownUserJwtPayload_Auth)
       .catch(error => {
@@ -183,8 +187,8 @@ describe('AuthController (e2e)', () => {
       .send(buildRegisterDto(testE2ERegisterAdminUser_Auth))
       .expect(StatusCodes.FORBIDDEN);
     } else {
-      Logger.error('AUTH(7): (POST) /auth/register existing user (admin) (admin logged in) - cannot test since admin user registration failed'); 
-      Logger.flush();       
+      Logger.error('AUTH(7): (POST) /auth/register existing user (admin) (admin logged in) - cannot test since admin user registration failed');
+      Logger.flush();
     }
   });
 
@@ -197,7 +201,7 @@ describe('AuthController (e2e)', () => {
       const refreshParms: IRefresh = { authtoken, authrefreshtoken };
       return request(app.getHttpServer())
         .put('/auth/refresh')
-        .set("Authorization", `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
+        .set('Authorization', `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
         .send(refreshParms)
         .expect(StatusCodes.OK)
         .catch(error => {
@@ -207,7 +211,7 @@ describe('AuthController (e2e)', () => {
         });
     } else {
       Logger.error('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed');
-      Logger.flush();      
+      Logger.flush();
     }
   });
 });
