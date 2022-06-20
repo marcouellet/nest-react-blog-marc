@@ -53,12 +53,12 @@ const CreateUser = () => {
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
     await UserApiService.createUser(data)
-    .then(() => { handleSubmitFormSucess(); })
+    .then(() => { handleSubmitFormSuccess(); })
     .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
     dispatch(createActionLoading(false));
   } 
 
-  const handleSubmitFormSucess = () => {
+  const handleSubmitFormSuccess = () => {
     toast.success(`User created successfully...`);
     navigate('/user');
   }

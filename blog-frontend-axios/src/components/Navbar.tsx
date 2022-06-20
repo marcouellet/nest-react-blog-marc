@@ -46,6 +46,9 @@ const Navbar = () => {
                     {!state.isLoading && isAdministrator() && (
                         <li><Link className={"nav-link"} to={"/user"}> Admin User</Link></li>
                     )}
+                    {!state.isLoading && isAdministrator() && (
+                        <li><Link className={"nav-link"} to={"/category"}> Admin Category</Link></li>
+                    )}
                     {!state.isLoading && state.user && (
                         <li>
                             <div>

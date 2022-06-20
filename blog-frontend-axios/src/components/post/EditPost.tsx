@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
-import { IPost, IUpdatePost, createPostForUpdate, minimumTitleLength, minimumDescriptionLength,
-          minimumBodyLength } from "../../types";
+import { IPost, IUpdatePost, createPostForUpdate, minimumPostTitleLength, minimumPostDescriptionLength,
+          minimumPostBodyLength } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
@@ -25,11 +25,11 @@ const EditPost = () => {
  
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
-      .min(minimumTitleLength, `Title must be at least ${minimumTitleLength} characters long`),
+      .min(minimumPostTitleLength, `Title must be at least ${minimumPostTitleLength} characters long`),
     description: Yup.string().required('Description is required')
-      .min(minimumDescriptionLength, `Description must be at least ${minimumDescriptionLength} characters long`),
+      .min(minimumPostDescriptionLength, `Description must be at least ${minimumPostDescriptionLength} characters long`),
     body: Yup.string().required('Content is required')
-      .min(minimumBodyLength, `Content must be at least ${minimumBodyLength} characters long`),
+      .min(minimumPostBodyLength, `Content must be at least ${minimumPostBodyLength} characters long`),
   });
 
   type UpdateSubmitForm = {
@@ -70,7 +70,7 @@ const EditPost = () => {
       dispatch(createActionLoading(true));
       const postData: IUpdatePost = createPostForUpdate({...post, ...data});
       await PostApiService.updatePost(post.id!, postData)
-      .then(() => { handleSubmitFormSucess(); })
+      .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
       dispatch(createActionLoading(false));
      }
@@ -81,7 +81,7 @@ const EditPost = () => {
     setErrorList(apiErrors);
   }
 
-  const handleSubmitFormSucess = () => {
+  const handleSubmitFormSuccess = () => {
     toast.success(`Post updated successfully...`);
     navigate('/'); 
   }

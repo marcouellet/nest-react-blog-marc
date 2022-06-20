@@ -9,7 +9,7 @@ import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors, minimumTitleLength, minimumDescriptionLength,  minimumBodyLength } from '../../types';
+import { IErrors, minimumPostTitleLength, minimumPostDescriptionLength,  minimumPostBodyLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
@@ -21,11 +21,11 @@ const CreatePost = () => {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
-      .min(minimumTitleLength, `Title must be at least ${minimumTitleLength} characters long`),
+      .min(minimumPostTitleLength, `Title must be at least ${minimumPostTitleLength} characters long`),
     description: Yup.string().required('Description is required')
-      .min(minimumDescriptionLength, `Description must be at least ${minimumDescriptionLength} characters long`),
+      .min(minimumPostDescriptionLength, `Description must be at least ${minimumPostDescriptionLength} characters long`),
     body: Yup.string().required('Content is required')
-      .min(minimumBodyLength, `Content must be at least ${minimumBodyLength} characters long`),
+      .min(minimumPostBodyLength, `Content must be at least ${minimumPostBodyLength} characters long`),
   });
 
   type CreateSubmitForm = {
@@ -50,12 +50,12 @@ const CreatePost = () => {
     dispatch(createActionLoading(true));
     const postData = {...data, user}
     await PostApiService.createPost(postData)
-    .then(() => { handleSubmitFormSucess(); })
+    .then(() => { handleSubmitFormSuccess(); })
     .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
     dispatch(createActionLoading(false));
   } 
 
-  const handleSubmitFormSucess = () => {
+  const handleSubmitFormSuccess = () => {
     toast.success(`Post created successfully...`);
     navigate('/'); 
   }

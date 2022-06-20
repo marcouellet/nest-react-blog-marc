@@ -31,6 +31,11 @@ export interface IPost {
   user?: IUser;
   publishDate?: Date;
 }
+export interface ICategory {
+  id?: string; // Identifier uniq
+  title: string;
+  description: string;
+}
 export interface ILogin {
   email: string;
   password: string;
@@ -70,16 +75,29 @@ export interface IUpdatePost {
   description: string;
   body: string;
 }
+export interface IUpdateCategory {
+  title: string;
+  description: string;
+}
 
 export function createPostForUpdate(post: IPost): IUpdatePost {
   const updatePost: IUpdatePost = {title:post.title, description: post.description, body: post.body};
   return updatePost;
 }
 
+export function createCategoryForUpdate(category: ICategory): IUpdateCategory {
+  const updateCategory: IUpdateCategory = {title:category.title, description: category.description};
+  return updateCategory;
+}
+
 export const minimumPasswordLength = 3;
 export const minimumEmailLength = 10;
 export const minimumUserNameLength = 2;
 
-export const minimumTitleLength = 3;
-export const minimumDescriptionLength = 10;
-export const minimumBodyLength = 10;
+export const minimumPostTitleLength = 3;
+export const minimumPostDescriptionLength = 10;
+export const minimumPostBodyLength = 10;
+
+export const minimumCategoryTitleLength = 3;
+export const minimumCategoryDescriptionLength = 10;
+
