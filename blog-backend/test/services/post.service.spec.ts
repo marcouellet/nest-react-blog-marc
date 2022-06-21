@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostService } from '../../src/services/post/post.service';
+import { CategoryFactoryService } from '../../src/services/category/category-factory.service';
 import { PostFactoryService } from '../../src/services/post/post-factory.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { DataServiceRepositories } from '../../src/services/data.service.repositories';
@@ -22,7 +23,7 @@ describe('PostService', () => {
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
         DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
-      providers: [PostService, PostFactoryService, UserFactoryService, DataServiceRepositories],
+      providers: [DataServiceRepositories, PostService, CategoryFactoryService, UserFactoryService, PostFactoryService],
     }).compile();
 
     postService = module.get<PostService>(PostService);
@@ -118,7 +119,7 @@ describe('PostService', () => {
     it('should return a post', async () => {
       expect(await postService.deletePost(testPostId)).toEqual(testServicePostDto);
       expect(postRepositoryMock.get).toHaveBeenCalledWith(testPostId); // check if post exist
-      expect(postRepositoryMock.delete).toHaveBeenCalledWith(testPostId, 'user');
+      expect(postRepositoryMock.delete).toHaveBeenCalledWith(testPostId, ['user', 'category']);
     });
   });
 });

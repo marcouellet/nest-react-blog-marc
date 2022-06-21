@@ -32,6 +32,7 @@ export const testUpdatePostDto: UpdatePostDto = {
   title: 'title',
   description: 'description',
   body: 'content of the post',
+  category: undefined,
 };
 
 export const testPost: Post = {

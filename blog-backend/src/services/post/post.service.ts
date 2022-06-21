@@ -63,14 +63,14 @@ export class PostService {
     return this.getPostById(id)
       .then(() => {   
         if (!updatePostDto.category) {
-          this.dataServicesRepositories.posts.unset(id, {category: ""})
+          return this.dataServicesRepositories.posts.unset(id, {category: ""})
           .then(_ => 
              this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])          
           )
           .then(post => this.processPost(post));
         } else {
         return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])
-        .then(post => this.processPost(post));;
+        .then(post => this.processPost(post));
         }
       })
   }
@@ -78,6 +78,9 @@ export class PostService {
   async deletePost(id: string): Promise<PostDto> {
     return this.getPostById(id)
       .then(_ =>  this.dataServicesRepositories.posts.delete(id, ['user', 'category']))
-      .then(post => this.processPost(post));
+      .then(post => this.processPost(post))
+      .catch(error => { 
+        throw error;
+      });
   }
 }

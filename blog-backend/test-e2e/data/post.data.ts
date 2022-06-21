@@ -3,6 +3,10 @@ import { PostFindCriterias } from '../../src/core';
 
 const publishedOnDate: Date = new Date();
 
+export const testPostCount = 1;
+export const testUserPostsCount = 1;
+export const testCategoryPostsCount = 1;
+
 export const testE2ENonExistingPostId_Post = 'twelvelong12'; // required by MongoDB
 export const testE2ENonExistingCategoryId_Post = 'twelvelong12';
 export const testE2EDummyUserPostTitle_Post = 'dummy title';
