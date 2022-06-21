@@ -29,6 +29,7 @@ export interface IPost {
   description: string;
   body: string;
   user?: IUser;
+  category?: ICategory;
   publishDate?: Date;
 }
 export interface ICategory {
@@ -74,6 +75,7 @@ export interface IUpdatePost {
   title: string;
   description: string;
   body: string;
+  category?: ICategory;
 }
 export interface IUpdateCategory {
   title: string;
@@ -81,7 +83,7 @@ export interface IUpdateCategory {
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {
-  const updatePost: IUpdatePost = {title:post.title, description: post.description, body: post.body};
+  const updatePost: IUpdatePost = {category: post.category, title:post.title, description: post.description, body: post.body};
   return updatePost;
 }
 

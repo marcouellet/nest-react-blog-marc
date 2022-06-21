@@ -21,7 +21,7 @@ export class MongoDataRepositories extends IDataRepositories {
   ) { 
     super();
     this.users = new MongoGenericDataRepository<User>(this.UserRepository);
-    this.posts = new MongoGenericDataRepository<Post>(this.PostRepository, ['user']);
+    this.posts = new MongoGenericDataRepository<Post>(this.PostRepository, ['user', 'category']);
     this.categories = new MongoGenericDataRepository<Category>(this.CategoryRepository);
   }
 }

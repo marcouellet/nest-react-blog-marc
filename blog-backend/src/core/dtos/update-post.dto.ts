@@ -1,4 +1,6 @@
-import { IsString, IsNotEmpty, MinLength } from '@nestjs/class-validator';
+import { IsString, IsNotEmpty, MinLength, ValidateNested } from '@nestjs/class-validator';
+import { Category } from '../../core/entities';
+import { CategoryDto } from '../dtos';
 import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../entities/post.entity';
 
 export class UpdatePostDto {
@@ -22,6 +24,9 @@ export class UpdatePostDto {
       message: `Body text must be at least ${minimumPostBodyLength} characters long`,
     })
     body: string;
+
+    @ValidateNested()
+    category: CategoryDto;
   }
 
-export interface IUpdatePostCriterias {title: string; description: string; body: string; }
+export interface IUpdatePostCriterias {category: Category, title: string; description: string; body: string; }

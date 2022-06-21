@@ -42,11 +42,15 @@ export class GenericDataRepository<T> implements IGenericDataRepository<T> {
     return this.repository.create(item);
   }
 
-  async update(id: string, update: {}, populate?: string): Promise<T> {
+  async unset(id: string, unsetParms: {}): Promise<void> {
+    return this.repository.unset(id, unsetParms);
+  }
+
+  async update(id: string, update: {}, populate?: string | string[]): Promise<T> {
     return this.repository.update(id, update, populate);
   }
 
-  async delete(id: string, populate?: string): Promise<T> {
+  async delete(id: string, populate?: string | string[]): Promise<T> {
     return await this.repository.delete(id, populate);
   }
 }

@@ -21,7 +21,7 @@ class PostApi extends HttpApiService<IPost> {
     return super.getCount(`${POST_ENDPOINT}/count/category/${categoryId}`);
   };
 
-  createPost = (data: any) => {
+  createPost = (data: IPost) => {
     return super.create(`${POST_ENDPOINT}/create`, data);
   };
 

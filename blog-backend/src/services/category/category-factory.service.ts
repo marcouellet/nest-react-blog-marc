@@ -9,22 +9,28 @@ export class CategoryFactoryService {
   constructor(private readonly dataServicesRepositories: IDataRepositories) {}
 
   createCategory(categorytDto: CategoryDto): Category {
-    const category = new Category();
-    category.id = categorytDto.id;
-    category.title = categorytDto.title;
-    category.description = categorytDto.description;
-
-    return this.dataServicesRepositories.categories.convertFromGenericEntity(category);
+    if (categorytDto) {
+      const category = new Category();
+      category.id = categorytDto.id;
+      category.title = categorytDto.title;
+      category.description = categorytDto.description;
+  
+      return this.dataServicesRepositories.categories.convertFromGenericEntity(category);
+    }
+    return undefined;
   }
 
   createCategoryDto(category: Category): CategoryDto {
-    const newCategory = this.dataServicesRepositories.categories.convertToGenericEntity(category);
-    const categorytDto = new CategoryDto();
-    categorytDto.id = newCategory.id;
-    categorytDto.title = newCategory.title;
-    categorytDto.description = newCategory.description;
-
-    return categorytDto;
+    if (category) {
+      const newCategory = this.dataServicesRepositories.categories.convertToGenericEntity(category);
+      const categorytDto = new CategoryDto();
+      categorytDto.id = newCategory.id;
+      categorytDto.title = newCategory.title;
+      categorytDto.description = newCategory.description;
+  
+      return categorytDto;
+    }
+    return undefined;
   }
 
   // Make sure only desired criterias are selected from the incomming object

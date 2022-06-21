@@ -45,6 +45,7 @@ export const testE2EDummyUserCreatePostDto_Post: PostDto = {
   };
 
   export const testE2EDummyUserUpdatePostDto_Post: UpdatePostDto = {
+    category: undefined,
     title: testE2EDummyUserPostUpdatedTitle_Post,
     description: 'updated description',
     body: 'updated content of the post',
