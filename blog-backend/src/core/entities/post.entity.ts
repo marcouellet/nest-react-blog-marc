@@ -1,14 +1,15 @@
-import { User } from './';
+import { User, Category } from './';
 
 export class Post {
   id?: string;
   title: string;
   description: string;
   body: string;
+  category: Category;
   user: User;
   publishDate: Date;
 }
 
-export const minimumTitleLength = 3;
-export const minimumDescriptionLength = 10;
-export const minimumBodyLength = 10;
+export const minimumPostTitleLength = 3;
+export const minimumPostDescriptionLength = 10;
+export const minimumPostBodyLength = 10;

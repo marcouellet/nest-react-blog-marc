@@ -15,6 +15,7 @@ const PostRepositoryMock = {
         findManyCountForSubDocumentId: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) =>
             Promise.resolve(testPostCount)),
         create: jest.fn().mockImplementation((post: Post) => Promise.resolve(testPost)),
+        unset: jest.fn().mockImplementation((id: string, unsetParms: {}) => Promise.resolve(undefined)),
         update: jest.fn().mockImplementation((id: string, update: {}, populate?: string) => Promise.resolve(testPost)),
         delete: jest.fn().mockImplementation((id: string, populate?: string) => Promise.resolve(testPost)),
     },

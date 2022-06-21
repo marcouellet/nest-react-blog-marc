@@ -24,9 +24,15 @@ export class PostController {
   }
 
   // Get number of posts owned by user
-  @Get('/count/:userId')
+  @Get('/count/user/:userId')
   async getNumberOfPostsForUser(@Param('userId') userId: string): Promise<number> {
     return this.postService.getNumberOfPostsForUser(userId);
+  }
+
+  // Get number of posts for a category
+  @Get('/count/category/:categoryId')
+  async getNumberOfPostsForCategory(@Param('categoryId') categoryId: string): Promise<number> {
+    return this.postService.getNumberOfPostsForCategory(categoryId);
   }
 
   // Submit a new post
@@ -61,8 +67,8 @@ export class PostController {
 
   // Get count of posts meating criterias 
   @Put('/findManyCount')
-  async findManyPostsCount(@Body(new ValidationPipe()) userCriterias: PostFindCriterias): Promise<number> {
-    return this.postService.findManyPostsCount(userCriterias);
+  async findManyPostsCount(@Body(new ValidationPipe()) postCriterias: PostFindCriterias): Promise<number> {
+    return this.postService.findManyPostsCount(postCriterias);
   }
 
   // Delete a post

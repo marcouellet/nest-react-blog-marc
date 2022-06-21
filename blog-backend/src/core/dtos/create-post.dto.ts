@@ -1,28 +1,32 @@
 import { IsString, IsNotEmpty, ValidateNested, MinLength } from '@nestjs/class-validator';
-import { minimumTitleLength, minimumDescriptionLength, minimumBodyLength } from '../entities/post.entity';
+import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../entities/post.entity';
+import { CategoryDto } from './category.dto';
 import { UserDto } from './user.dto';
 
 export class CreatePostDto {
     @IsString()
     @IsNotEmpty()
-    @MinLength(minimumTitleLength, {
-      message: `Title text must be at least ${minimumTitleLength} characters long`,
+    @MinLength(minimumPostTitleLength, {
+      message: `Title text must be at least ${minimumPostTitleLength} characters long`,
     })
     title: string;
 
     @IsString()
     @IsNotEmpty()
-    @MinLength(minimumDescriptionLength, {
-      message: `Description text must be at least ${minimumDescriptionLength} characters long`,
+    @MinLength(minimumPostDescriptionLength, {
+      message: `Description text must be at least ${minimumPostDescriptionLength} characters long`,
     })
     description: string;
 
     @IsString()
     @IsNotEmpty()
-    @MinLength(minimumBodyLength, {
-      message: `Body text must be at least ${minimumBodyLength} characters long`,
+    @MinLength(minimumPostBodyLength, {
+      message: `Body text must be at least ${minimumPostBodyLength} characters long`,
     })
     body: string;
+
+    @ValidateNested()
+    category: CategoryDto;
 
     @IsNotEmpty()
     @ValidateNested()

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
@@ -9,7 +9,9 @@ import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors, minimumTitleLength, minimumDescriptionLength,  minimumBodyLength } from '../../types';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { CategoryApiService } from "../../services/api/CategoryApiService";
+import { IErrors, IUser, ICategory, minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
@@ -18,44 +20,76 @@ const CreatePost = () => {
   const navigate = useNavigate();
   const { state: { isLoading, user }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [categories, setCategories] = useState<ICategory[]>();
+  const [category, setCategory] = useState<ICategory>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
-      .min(minimumTitleLength, `Title must be at least ${minimumTitleLength} characters long`),
+      .min(minimumPostTitleLength, `Title must be at least ${minimumPostTitleLength} characters long`),
     description: Yup.string().required('Description is required')
-      .min(minimumDescriptionLength, `Description must be at least ${minimumDescriptionLength} characters long`),
+      .min(minimumPostDescriptionLength, `Description must be at least ${minimumPostDescriptionLength} characters long`),
     body: Yup.string().required('Content is required')
-      .min(minimumBodyLength, `Content must be at least ${minimumBodyLength} characters long`),
+      .min(minimumPostBodyLength, `Content must be at least ${minimumPostBodyLength} characters long`),
+    categoryTitle: Yup.string(),
   });
 
   type CreateSubmitForm = {
+    categoryTitle: string;
     title: string;
     description: string;
     body: string;
   };
 
-  const defaultValues = {title: '', description: '', body: ''};
+  const defaultValues = {title: '', description: '', body: '', categoryTitle: ''};
 
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty },
-    reset
+    reset,
+    setValue,
   } = useForm<CreateSubmitForm>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
   });
 
+  useEffect(() => {
+    (async () => {
+      dispatch(createActionLoading(true));
+      if (!categories) {
+        const fetchCategories = async (): Promise<void> => {
+          CategoryApiService.getAllCategories()
+          .then(categories => {
+            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+            const allCategories = [noCategory].concat(categories);
+            setCategories(allCategories);
+            selectCategory(allCategories, 'no_category', false);
+          })
+          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
+        }
+        await fetchCategories();
+      }
+      dispatch(createActionLoading(false));
+    })();
+ // eslint-disable-next-line
+  }, []);
+
+  const handleFetchCategoriesError = (apiErrors: IErrors) => {
+    toast.error(`Categories reading failed, see error list`);
+    setErrorList(apiErrors);
+  }
+  
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
-    const postData = {...data, user}
+    const iuser: IUser = user!;
+    const postData = {...data, category, iuser};
     await PostApiService.createPost(postData)
-    .then(() => { handleSubmitFormSucess(); })
+    .then(() => { handleSubmitFormSuccess(); })
     .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
     dispatch(createActionLoading(false));
   } 
 
-  const handleSubmitFormSucess = () => {
+  const handleSubmitFormSuccess = () => {
     toast.success(`Post created successfully...`);
     navigate('/'); 
   }
@@ -76,6 +110,19 @@ const CreatePost = () => {
 
   const handleClearCreatePost = () => {
     reset(defaultValues, { keepDirty: false});
+    const noCategory = categories?.find(category => category.id == 'no_category');
+    setCategory(noCategory);
+    setValue('categoryTitle', noCategory!.title, { shouldDirty: false });
+  }
+
+  const handleCategorySelect=(e: any)=>{
+    selectCategory(categories!, e, true);
+  }
+
+  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
+    const category = categories?.find(category => category.id == categoryId);
+    setCategory(category?.id == 'no_category' ? undefined: category);
+    setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
   }
 
   const handleCancelCreatePost = () => {
@@ -88,6 +135,25 @@ const CreatePost = () => {
       <h2> Create Post </h2>
       {errorList && <ListErrors errors={errorList} />}
       <form id={"create-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+        
+        <div className="form-group ">
+          <div className="row">
+            <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
+                {categories && categories.map((category: ICategory) => 
+                (
+                  <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                ))
+              }
+            </DropdownButton>
+            <input style={ {float: 'right'} }    
+              type="text" disabled  placeholder="no category selected" 
+              {...register('categoryTitle')}
+              className={`col-md-2 form-control float-right ${errors.categoryTitle ? 'is-invalid' : ''}`}           
+            />
+          </div>
+          <div className="invalid-feedback">{errors.categoryTitle?.message}</div>
+        </div>
+
         <div className="form-group col-md-12">
           <label htmlFor="title"> Title </label>
           <input 
@@ -148,6 +214,5 @@ const CreatePost = () => {
     </div>
   </div>
   );
-
 }
 export default CreatePost

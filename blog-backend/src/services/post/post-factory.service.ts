@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Post } from '../../core/entities';
+import { Post, Category } from '../../core/entities';
 import { PostDto, IUpdatePostCriterias, UpdatePostDto } from '../../core/dtos';
 import { IDataRepositories } from '../../core/repositories';
 import { UserFactoryService } from '../user/user-factory.service';
+import { CategoryFactoryService } from '../category/category-factory.service';
 
 @Injectable()
 export class PostFactoryService {
 
   constructor(
     private readonly dataServicesRepositories: IDataRepositories,
-    private readonly userFactoryService: UserFactoryService) {}
+    private readonly userFactoryService: UserFactoryService,
+    private readonly categoryFactoryService: CategoryFactoryService) {}
 
   createPost(postDto: PostDto): Post {
     const post = new Post();
@@ -31,6 +33,7 @@ export class PostFactoryService {
     postDto.description = newPost.description;
     postDto.body = newPost.body;
     postDto.user = this.userFactoryService.removeRestrictedProperties(this.userFactoryService.createUserDto(newPost.user));
+    postDto.category = this.categoryFactoryService.createCategoryDto(newPost.category);
     postDto.publishDate = newPost.publishDate;
 
     return postDto;
@@ -40,6 +43,7 @@ export class PostFactoryService {
   createUpdatePostCriterias(updatePostDto: UpdatePostDto): IUpdatePostCriterias {
     const populate = {populate: { path: 'user' }};
     const {title, description, body} = updatePostDto;
-    return {title, description, body, populate} as IUpdatePostCriterias;
+    const category = this.categoryFactoryService.createCategory(updatePostDto.category);
+    return {category, title, description, body, populate} as IUpdatePostCriterias;
   }
 }

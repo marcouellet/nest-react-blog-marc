@@ -8,7 +8,7 @@ export class User {
   }
 
 export const minimumUserNameLength = 2;
-export const minimumEmailLength = 10;
-export const minimumPasswordLength = 3;
+export const minimumUserEmailLength = 10;
+export const minimumUserPasswordLength = 3;
 
 

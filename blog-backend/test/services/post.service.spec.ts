@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostService } from '../../src/services/post/post.service';
+import { CategoryFactoryService } from '../../src/services/category/category-factory.service';
 import { PostFactoryService } from '../../src/services/post/post-factory.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
-import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, 
-          testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
+import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
+          testUpdatePostDto, testFindPostCriterias, testCategoryPostsCount } from '../data/post.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -22,7 +23,7 @@ describe('PostService', () => {
         ConfigModule.register(GLOBAL_TEST_CONFIG_SERVICE),
         DataModuleStub.register(GLOBAL_TEST_CONFIG_SERVICE),
       ],
-      providers: [PostService, PostFactoryService, UserFactoryService, DataServiceRepositories],
+      providers: [DataServiceRepositories, PostService, CategoryFactoryService, UserFactoryService, PostFactoryService],
     }).compile();
 
     postService = module.get<PostService>(PostService);
@@ -61,6 +62,13 @@ describe('PostService', () => {
     it('should return 1', async () => {
       expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testUserPostsCount);
       expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('user', testPostId);
+    });
+  });
+
+  describe('getNumberOfPostsForCategory', () => {
+    it('should return 1', async () => {
+      expect(await postService.getNumberOfPostsForCategory(testCategoryId)).toEqual(testCategoryPostsCount);
+      expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('category', testCategoryId);
     });
   });
 
@@ -111,7 +119,7 @@ describe('PostService', () => {
     it('should return a post', async () => {
       expect(await postService.deletePost(testPostId)).toEqual(testServicePostDto);
       expect(postRepositoryMock.get).toHaveBeenCalledWith(testPostId); // check if post exist
-      expect(postRepositoryMock.delete).toHaveBeenCalledWith(testPostId, 'user');
+      expect(postRepositoryMock.delete).toHaveBeenCalledWith(testPostId, ['user', 'category']);
     });
   });
 });

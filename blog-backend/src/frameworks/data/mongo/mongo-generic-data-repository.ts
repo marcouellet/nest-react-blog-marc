@@ -1,7 +1,5 @@
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Model, Types } from 'mongoose';
 import { IGenericDataRepository } from '../../../core/repositories';
-
 export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> {
 
   constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}
@@ -49,19 +47,25 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     return this.repository.create(item) as Promise<T>;
   }
 
-  async update(id: string, update: {}, populate?: string): Promise<T> {
+  async unset (id: string, unsetParms: {}): Promise<void> {
+    this.repository.updateOne({_id: id}, { $unset: unsetParms }).exec();
+  }
+
+  async update(id: string, update: {}, populate?: string | string[]): Promise<T> {
+
     const options: {[key: string]: any} = { new: true }
     if (populate) {
-      options.populate = { path: populate }
+      options.populate = populate;
     }
+
     return this.repository.findByIdAndUpdate(id, update, options).exec();
   }
 
-  async delete(id: string, populate?: string): Promise<T> {
-    let populateCriterias: any = null;
+  async delete(id: string, populate?: string | string[]): Promise<T> {
+    const options: {[key: string]: any} = { new: true }
     if (populate) {
-      populateCriterias = {populate: { path: populate }};
+      options.populate = populate;
     }
-    return await this.repository.findByIdAndDelete(id, populateCriterias).exec();
+    return this.repository.findByIdAndDelete(id, options).exec();
   }
 }

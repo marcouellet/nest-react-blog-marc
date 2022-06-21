@@ -69,6 +69,13 @@ const ViewPost = () => {
                           </span>
                         </h4>
                         <br/>
+                        <h4 className="category">
+                          <span>
+                            Category:
+                          </span>
+                        </h4>
+                        <h5>{post.category ? post.category.title : 'No category assigned'}</h5>
+                        <br/>
                        <h4 className="title">
                           <span>
                             Title:

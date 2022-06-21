@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { minimumUserNameLength, minimumEmailLength, minimumPasswordLength } from '../../../../core/entities/user.entity';
+import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '../../../../core/entities/user.entity';
 export type UserDocument = User & Document;
 
 @Schema()
@@ -7,10 +7,10 @@ export class User {
   @Prop({ type: String, required: true, min: minimumUserNameLength })
   username: string;
 
-  @Prop({ type: String, required: true, unique: true, min: minimumEmailLength })
+  @Prop({ type: String, required: true, unique: true, min: minimumUserEmailLength })
   email: string;
 
-  @Prop({ type: String, required: true, min: minimumPasswordLength })
+  @Prop({ type: String, required: true, min: minimumUserPasswordLength })
   password: string;
 
   @Prop({ type: String, required: true, enum: ['user', 'admin'] })

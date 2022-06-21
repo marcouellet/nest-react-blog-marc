@@ -6,6 +6,7 @@ import { AuthModule } from './auth.module';
 import { DataModule } from './data.module';
 import { UserModule } from './user.module';
 import { PostModule } from './post.module';
+import { CategoryModule } from './category.module';
 import { IConfigService } from '../config/interfaces/config.interface';
 export class AppModule {
 
@@ -18,6 +19,7 @@ export class AppModule {
         AuthModule,
         UserModule,
         PostModule,
+        CategoryModule,
       ],
       controllers: [AppController],
       providers: [AppService],

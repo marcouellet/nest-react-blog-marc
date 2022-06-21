@@ -73,7 +73,7 @@ const EditUser = () => {
       dispatch(createActionLoading(true));
       const userData: IUpdateUser = createUserForUpdate({...user, ...data});
       await UserApiService.updateUser(user.id!, userData)
-      .then(() => { handleSubmitFormSucess(); })
+      .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
       dispatch(createActionLoading(false));
      }
@@ -84,7 +84,7 @@ const EditUser = () => {
     setErrorList(apiErrors);
   }
 
-  const handleSubmitFormSucess = () => {
+  const handleSubmitFormSuccess = () => {
     toast.success(`User updated successfully...`);
     navigate('/user'); 
   }
@@ -109,7 +109,7 @@ const handleResetEditUser = () => {
 }
 
 const handleCancelEditUser = () => {
-  navigate('/');   
+  navigate('/user');   
 };
 
 const handleRoleSelect=(e: any)=>{
