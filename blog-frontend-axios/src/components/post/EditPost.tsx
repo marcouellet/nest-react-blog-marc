@@ -137,10 +137,11 @@ const EditPost = () => {
 const cancelEditPostMessage = () => `post edition and loose changes`;
 
 const handleResetEditPost = () => {
-  reset(defaultValues, { keepDirty: false});
+  reset(post);
   if (post?.category) {
-    setCategory(post?.category);
-    setValue('categoryTitle', post.category!.title, { shouldDirty: false });
+    selectCategory(categories!, post.category.id!, false);
+  } else {
+    selectCategory(categories!, 'no_category', false);
   }
 }
 
@@ -149,7 +150,7 @@ const handleCategorySelect=(e: any)=>{
 }
 
 const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
-  const category = categories?.find(category => category.id == categoryId);
+  const category = categories.find(category => category.id == categoryId);
   setCategory(category?.id == 'no_category' ? undefined: category);
   setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
 }
