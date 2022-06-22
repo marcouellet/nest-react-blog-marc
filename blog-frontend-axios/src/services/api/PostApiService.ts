@@ -17,6 +17,10 @@ class PostApi extends HttpApiService<IPost> {
     return super.getAll(`${POST_ENDPOINT}/findMany/category/${categoryId}`);
   };
 
+  getAllPostsWithoutCategory = () => {
+    return super.getAll(`${POST_ENDPOINT}/findMany/nocategory`);
+  };
+
   getAllPostsForUser = (userId: string) => {
     return super.getAll(`${POST_ENDPOINT}/findMany/user/${userId}`);
   };

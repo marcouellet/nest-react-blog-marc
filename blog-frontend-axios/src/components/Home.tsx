@@ -92,12 +92,19 @@ const Home = () => {
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
-      if (category && category.title !== 'no_category' && category.title !== 'all') {
-        PostApiService.getAllPostsForCategory(category.id!)
+      if (category) {
+        if ( category.id === 'all') {
+          PostApiService.getAllPosts()
           .then(posts => setPosts(posts));
-      } else {
-        PostApiService.getAllPosts()
-          .then(posts => setPosts(posts));
+        } 
+        else if (category.id === 'no_category') {
+          PostApiService.getAllPostsWithoutCategory()
+            .then(posts => setPosts(posts));
+        } 
+        else {
+          PostApiService.getAllPostsForCategory(category.id!)
+            .then(posts => setPosts(posts));        
+        }
       }
     }
     fetchPosts();
@@ -118,7 +125,8 @@ const Home = () => {
   const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
     const category = categories?.find(category => category.id === categoryId);
     setCategoryTitle(category!.title!);
-    setCategory(category!.id === 'no_category' ||  category!.id === 'all' ? undefined: category);
+    // setCategory(category!.id === 'no_category' ||  category!.id === 'all' ? undefined: category);
+    setCategory(category);
   }
 
     return (
