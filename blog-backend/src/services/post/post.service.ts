@@ -48,6 +48,16 @@ export class PostService {
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
+  async findManyPostsForUser(userId: string): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocumentId('user', userId)
+      .then(posts => posts.map(post => this.processPost(post)));
+  }
+
+  async findManyPostsForCategory(categoryId: string): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocumentId('category', categoryId)
+      .then(posts => posts.map(post => this.processPost(post)));
+  }
+
   async findManyPostsCount(criterias: PostFindCriterias): Promise<number> {
     return this.dataServicesRepositories.posts.findManyCount(criterias);
   }

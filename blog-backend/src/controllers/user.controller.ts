@@ -37,7 +37,7 @@ export class UserController {
   }
 
   // Fetch users based on criterias
-  @Put('/findAll')
+  @Put('/findMany')
   async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<UserDto[]> {
     return this.userService.findManyUsers(userCriterias);
   }

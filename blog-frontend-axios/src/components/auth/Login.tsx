@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength } from "../../types";
-import { checkUnauthorized,checkForbidden, checkNotFound } from '../../utils/response';
+import { checkUnauthorized, checkNotFound } from '../../utils/response';
 
 const Login = () => {
   const navigate = useNavigate();

@@ -38,6 +38,11 @@ export class GenericDataRepository<T> implements IGenericDataRepository<T> {
     return this.repository.findManyCountForSubDocumentId(subDocumentName, subDocumentId);
   }
 
+  async findManyForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<T[]> {
+    const id = new Types.ObjectId(subDocumentId);
+    return this.repository.findManyForSubDocumentId(subDocumentName, subDocumentId);
+  }
+
   async create(item: T): Promise<T> {
     return this.repository.create(item);
   }

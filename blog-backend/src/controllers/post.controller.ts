@@ -60,9 +60,21 @@ export class PostController {
   }
 
   // Fetch posts based on criterias
-  @Put('/findAll')
+  @Put('/findMany')
   async finManyPosts(@Body(new ValidationPipe()) postCriterias: PostFindCriterias): Promise<PostDto[]> {
     return this.postService.findManyPosts(postCriterias);
+  }
+
+  // Fetch posts for a user
+  @Get('/findMany/user/:id')
+  async finManyPostsForUser(@Param('id') id: string): Promise<PostDto[]> {
+    return this.postService.findManyPostsForUser(id);
+  }
+
+  // Fetch posts for a category
+  @Get('/findMany/category/:id')
+  async finManyPostsFoCategory(@Param('id') id: string): Promise<PostDto[]> {
+    return this.postService.findManyPostsForCategory(id);
   }
 
   // Get count of posts meating criterias 

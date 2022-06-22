@@ -144,16 +144,16 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('CATEGORY(5): (PUT) /category/findAll - Fetch categories based on criterias with no match (not logged in)', () => {
-    Logger.debug('CATEGORY(5): (PUT) /category/findAll - Fetch categories based on criterias with no match (not logged in)');
+  it('CATEGORY(5): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)', () => {
+    Logger.debug('CATEGORY(5): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/findAll')
+      .put('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.OK)
       .expect(response => response === null)
       .catch(error => {
-        Logger.error('CATEGORY(5): (PUT) /category/findAll - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(5): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -288,16 +288,16 @@ describe('CategoryController (e2e)', () => {
       });
   });
 
-  it('CATEGORY(14): (PUT) /category/findAll - Fetch categories based on criterias  (not logged in)', () => {
-    Logger.debug('CATEGORY(14): (PUT) /category/findAll - Fetch categories based on criterias  (not logged in)');
+  it('CATEGORY(14): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)', () => {
+    Logger.debug('CATEGORY(14): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/findAll')
+      .put('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [updatedCategoryDto])
       .catch(error => {
-        Logger.error('CATEGORY(14): (PUT) /category/findAll - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(14): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });

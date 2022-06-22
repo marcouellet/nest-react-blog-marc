@@ -41,7 +41,6 @@ const EditCategory = () => {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors, isDirty }
   } = useForm<UpdateSubmitForm>({
     resolver: yupResolver(validationSchema),

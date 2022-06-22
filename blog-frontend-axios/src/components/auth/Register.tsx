@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 import AUTHAPI from '../../services/api/AuthApiService';
@@ -12,11 +12,6 @@ import ListErrors from '../common/ListErrors';
 import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../../types";
 
 const Register = () => {
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const {
@@ -48,13 +43,6 @@ const Register = () => {
   });
 
   const navigate = useNavigate();
-
-  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-  };
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkForbidden(apiErrors)) {

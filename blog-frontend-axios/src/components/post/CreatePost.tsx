@@ -110,7 +110,7 @@ const CreatePost = () => {
 
   const handleClearCreatePost = () => {
     reset(defaultValues, { keepDirty: false});
-    const noCategory = categories?.find(category => category.id == 'no_category');
+    const noCategory = categories?.find(category => category.id === 'no_category');
     setCategory(noCategory);
     setValue('categoryTitle', noCategory!.title, { shouldDirty: false });
   }
@@ -120,8 +120,8 @@ const CreatePost = () => {
   }
 
   const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
-    const category = categories?.find(category => category.id == categoryId);
-    setCategory(category?.id == 'no_category' ? undefined: category);
+    const category = categories?.find(category => category.id === categoryId);
+    setCategory(category?.id === 'no_category' ? undefined: category);
     setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
   }
 
