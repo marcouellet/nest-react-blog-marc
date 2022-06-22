@@ -9,6 +9,7 @@ import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
           testUpdatePostDto, testFindPostCriterias, testCategoryPostsCount } from '../data/post.data';
+import { testUserId } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
@@ -58,9 +59,23 @@ describe('PostService', () => {
     });
   });
 
-  describe('getNumberOfPostsForUser', () => {
+  describe('findManyPostsForUser', () => {
     it('should return 1', async () => {
-      expect(await postService.getNumberOfPostsForUser(testPostId)).toEqual(testUserPostsCount);
+      expect(await postService.findManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findManyForSubDocumentId).toHaveBeenCalledWith('user', testUserId);
+    });
+  });
+
+  describe('getPostsForCategory', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.findManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findManyForSubDocumentId).toHaveBeenCalledWith('category', testCategoryId);
+    });
+  });
+
+  describe('getNumberOfPostsForUser', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.getNumberOfPostsForUser(testUserId)).toEqual(testUserPostsCount);
       expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('user', testPostId);
     });
   });
