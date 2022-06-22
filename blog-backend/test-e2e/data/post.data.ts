@@ -48,7 +48,7 @@ export const testE2EDummyUserCreatePostDto_Post: PostDto = {
     publishDate: publishedOnDate,
   };
 
-  export const testE2EDummyUserUpdatePostDto_Post: UpdatePostDto = {
+  export const testE2EDummyUserUpdateWithoutCategoryPostDto_Post: UpdatePostDto = {
     category: undefined,
     title: testE2EDummyUserPostUpdatedTitle_Post,
     description: 'updated description',

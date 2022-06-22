@@ -6,7 +6,8 @@ import UserServiceMock from '../mocks/user.service.mock';
 import PostServiceMock from '../mocks/post.service.mock';
 import { testUserId } from '../data/user.data';
 import { testCategoryId } from '../data/category.data';
-import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
+import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias,
+          testServicePostWithoutCategoryDto } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
@@ -57,13 +58,19 @@ describe('Post Controller', () => {
     });
   });
 
-  describe('getPostsForCategory', () => {
+  describe('finManyPostsForCategory', () => {
     it('should return 1 post', async () => {
-      expect(await postController.finManyPostsFoCategory(testCategoryId)).toEqual([testServicePostDto]);
+      expect(await postController.finManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
       expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId);
     });
   });
 
+  describe('finManyPostsWithoutCategory', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsWithoutCategory()).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(undefined);
+    });
+  });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return testServicePostCount"', async () => {

@@ -20,7 +20,7 @@ export class PostDto {
   body: string;
 
   @ValidateNested()
-  category: CategoryDto;
+  category?: CategoryDto;
 
   @IsNotEmpty()
   @ValidateNested()

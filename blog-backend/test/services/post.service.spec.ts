@@ -8,7 +8,8 @@ import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
-          testUpdatePostDto, testFindPostCriterias, testCategoryPostsCount } from '../data/post.data';
+          testUpdatePostDto, testFindPostCriterias, testCategoryPostsCount, 
+          testServicePostWithoutCategoryDto } from '../data/post.data';
 import { testUserId } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
@@ -66,10 +67,17 @@ describe('PostService', () => {
     });
   });
 
-  describe('getPostsForCategory', () => {
+  describe('findManyPostsForCategory', () => {
     it('should return 1 post', async () => {
       expect(await postService.findManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
       expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId);
+    });
+  });
+
+  describe('findManyPostsWithoutCategory', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.findManyPostsWithoutCategory()).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined);
     });
   });
 
@@ -87,6 +95,7 @@ describe('PostService', () => {
     });
   });
 
+ 
   describe('findManyCount', () => {
     it('should return testServicePostCount', async () => {
       expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);

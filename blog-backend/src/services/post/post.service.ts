@@ -58,6 +58,11 @@ export class PostService {
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
+  async findManyPostsWithoutCategory(): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', undefined)
+      .then(posts => posts.map(post => this.processPost(post)));
+  }
+
   async findManyPostsCount(criterias: PostFindCriterias): Promise<number> {
     return this.dataServicesRepositories.posts.findManyCount(criterias);
   }

@@ -14,7 +14,7 @@ import { buildCreatePostDto, buildUpdatePostDto } from '../../test/builders/post
 import { buildCreateCategoryDto } from '../../test/builders/category.dtos.builders';
 import { testE2ECreateCategoryDto_Category } from '../data/category.data';
 import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
-        testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdatePostDto_Post,
+        testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdateWithoutCategoryPostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post, testCategoryPostsCount,
         testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post } from '../data/post.data';
 import { PostDto, UserDto, CategoryDto } from '../../src/core';
@@ -223,7 +223,7 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put(`/post/update/${testE2ENonExistingPostId_Post}`)
-      .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
+      .send(buildUpdatePostDto(testE2EDummyUserUpdateWithoutCategoryPostDto_Post))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -379,7 +379,7 @@ describe('PostController (e2e)', () => {
       return request(app.getHttpServer())
         .put(`/post/update/${dummyUserPostDto.id}`)
         .set('Authorization', `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
-        .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
+        .send(buildUpdatePostDto(testE2EDummyUserUpdateWithoutCategoryPostDto_Post))
         .expect(StatusCodes.OK)
         .then(response => response && (dummyUserUpdatedPostDto = response.body))
         .catch(error => {
@@ -457,8 +457,22 @@ describe('PostController (e2e)', () => {
       });
   });
 
-  it('POST(17): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
-    Logger.debug('POST(17): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
+  it('POST(17): (GET) /post/findMany/nocategory - Fetch posts without category (logged not required)', () => {
+    Logger.debug('POST(17): /post/findMany/nocategory - Fetch posts without category (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .get(`/post/findMany/nocategory`)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .catch(error => {
+        Logger.error('POST(17): (GET) /post/findMany/nocategory - Fetch posts without category (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(18): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
+    Logger.debug('POST(18): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens && dummyUserUpdatedPostDto) {
     return request(app.getHttpServer())
@@ -467,12 +481,12 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(dummyUserUpdatedPostDto)
       .catch(error => {
-        Logger.error('POST(17): (DELETE) /post/delete/:postId - Delete a post (dummy logged in) failed, see following error message:');
+        Logger.error('POST(18): (DELETE) /post/delete/:postId - Delete a post (dummy logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-      Logger.error('POST(17): (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed or post update failed');
+      Logger.error('POST(18): (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed or post update failed');
       Logger.flush();
     }
   });
