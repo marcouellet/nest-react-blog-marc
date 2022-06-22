@@ -4,6 +4,8 @@ import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import UserServiceMock from '../mocks/user.service.mock';
 import PostServiceMock from '../mocks/post.service.mock';
+import { testUserId } from '../data/user.data';
+import { testCategoryId } from '../data/category.data';
 import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
 
 describe('Post Controller', () => {
@@ -44,9 +46,24 @@ describe('Post Controller', () => {
   describe('getPost', () => {
     it('should return a post"', async () => {
       expect(await postController.getPost(testPostId)).toStrictEqual(testServicePostDto);
-      expect(postServiceMock.getPostById).toHaveBeenCalled();
+      expect(postServiceMock.getPost).toHaveBeenCalled();
     });
   });
+
+  describe('findManyPostsForUser', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForUser).toHaveBeenCalledWith(testUserId);
+    });
+  });
+
+  describe('getPostsForCategory', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsFoCategory(testCategoryId)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId);
+    });
+  });
+
 
   describe('getNumberOfPostsForUser', () => {
     it('should return testServicePostCount"', async () => {
@@ -58,7 +75,7 @@ describe('Post Controller', () => {
   describe('createPost', () => {
     it('should return a post"', async () => {
       expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testServicePostDto);
-      expect(userServiceMock.getUserById).toHaveBeenCalled();
+      expect(userServiceMock.getUser).toHaveBeenCalled();
       expect(postServiceMock.createPost).toHaveBeenCalled();
     });
   });

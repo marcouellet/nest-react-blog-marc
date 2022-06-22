@@ -33,14 +33,14 @@ export class GenericDataRepository<T> implements IGenericDataRepository<T> {
     return this.repository.findManyCount(criterias);
   }
 
-  async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
+  async findManyCountForSubDocument(subDocumentName: string, subDocumentId: string): Promise<number> {
     const id = new Types.ObjectId(subDocumentId);
-    return this.repository.findManyCountForSubDocumentId(subDocumentName, subDocumentId);
+    return this.repository.findManyCountForSubDocument(subDocumentName, subDocumentId);
   }
 
-  async findManyForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<T[]> {
+  async findManyForSubDocument(subDocumentName: string, subDocumentId: string): Promise<T[]> {
     const id = new Types.ObjectId(subDocumentId);
-    return this.repository.findManyForSubDocumentId(subDocumentName, subDocumentId);
+    return this.repository.findManyForSubDocument(subDocumentName, subDocumentId);
   }
 
   async create(item: T): Promise<T> {

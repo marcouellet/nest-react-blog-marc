@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1655902192409" clover="3.2.0">
-  <project timestamp="1655902192409" name="All files">
-    <metrics statements="289" coveredstatements="287" conditionals="12" coveredconditionals="12" methods="73" coveredmethods="71" elements="374" coveredelements="370" complexity="0" loc="289" ncloc="289" packages="6" files="25" classes="25"/>
+<coverage generated="1655930851327" clover="3.2.0">
+  <project timestamp="1655930851328" name="All files">
+    <metrics statements="289" coveredstatements="289" conditionals="12" coveredconditionals="12" methods="73" coveredmethods="73" elements="374" coveredelements="374" complexity="0" loc="289" ncloc="289" packages="6" files="25" classes="25"/>
     <package name="builders">
       <metrics statements="56" coveredstatements="56" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
       <file name="auth.dtos.builders.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\builders\auth.dtos.builders.ts">
@@ -154,14 +154,14 @@
       </file>
       <file name="category.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\category.data.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="4" count="7" type="stmt"/>
-        <line num="5" count="7" type="stmt"/>
-        <line num="7" count="7" type="stmt"/>
-        <line num="13" count="7" type="stmt"/>
-        <line num="18" count="7" type="stmt"/>
-        <line num="23" count="7" type="stmt"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="35" count="7" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="5" count="8" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="18" count="8" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
       </file>
       <file name="config.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\config.data.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -223,7 +223,7 @@
       </file>
     </package>
     <package name="mocks">
-      <metrics statements="107" coveredstatements="105" conditionals="10" coveredconditionals="10" methods="60" coveredmethods="58"/>
+      <metrics statements="107" coveredstatements="107" conditionals="10" coveredconditionals="10" methods="60" coveredmethods="60"/>
       <file name="app.service.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\app.service.mock.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -303,7 +303,7 @@
         <line num="26" count="5" type="stmt"/>
       </file>
       <file name="post.service.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\post.service.mock.ts">
-        <metrics statements="15" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="11" coveredmethods="9"/>
+        <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="11" coveredmethods="11"/>
         <line num="1" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
@@ -313,8 +313,8 @@
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>

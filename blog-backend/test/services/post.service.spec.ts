@@ -52,9 +52,9 @@ describe('PostService', () => {
     });
   });
 
-  describe('getPostById', () => {
+  describe('getPost', () => {
     it('should return a post', async () => {
-      expect(await postService.getPostById(testPostId)).toEqual(testServicePostDto);
+      expect(await postService.getPost(testPostId)).toEqual(testServicePostDto);
       expect(postRepositoryMock.get).toHaveBeenCalledWith(testPostId);
     });
   });
@@ -62,28 +62,28 @@ describe('PostService', () => {
   describe('findManyPostsForUser', () => {
     it('should return 1', async () => {
       expect(await postService.findManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findManyForSubDocumentId).toHaveBeenCalledWith('user', testUserId);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('user', testUserId);
     });
   });
 
   describe('getPostsForCategory', () => {
     it('should return 1 post', async () => {
       expect(await postService.findManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findManyForSubDocumentId).toHaveBeenCalledWith('category', testCategoryId);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1 post', async () => {
       expect(await postService.getNumberOfPostsForUser(testUserId)).toEqual(testUserPostsCount);
-      expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('user', testPostId);
+      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('user', testPostId);
     });
   });
 
   describe('getNumberOfPostsForCategory', () => {
     it('should return 1', async () => {
       expect(await postService.getNumberOfPostsForCategory(testCategoryId)).toEqual(testCategoryPostsCount);
-      expect(postRepositoryMock.findManyCountForSubDocumentId).toHaveBeenCalledWith('category', testCategoryId);
+      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('category', testCategoryId);
     });
   });
 

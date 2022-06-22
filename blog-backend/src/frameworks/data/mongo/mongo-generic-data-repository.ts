@@ -38,12 +38,12 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     return this.repository.count(criterias).exec();
   }
 
-  async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
+  async findManyCountForSubDocument(subDocumentName: string, subDocumentId: string): Promise<number> {
     const id = new Types.ObjectId(subDocumentId);
     return this.repository.count({}).where(subDocumentName).equals(id).exec();
   }
 
-  async findManyForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<T[]> {
+  async findManyForSubDocument(subDocumentName: string, subDocumentId: string): Promise<T[]> {
     const id = new Types.ObjectId(subDocumentId);
     return this.repository.where(subDocumentName).equals(id).exec();
   }

@@ -11,10 +11,10 @@ const PostRepositoryMock = {
         get: jest.fn().mockImplementation((id: string) => Promise.resolve(testPost)),
         findOne: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve(testPost)),
         findMany: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve([testPost])),
-        findManyForSubDocumentId: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) => 
+        findManyForSubDocument: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) => 
         Promise.resolve([testPost])),
         findManyCount: jest.fn().mockImplementation((criterias: PostFindCriterias) => Promise.resolve(testPostCount)),
-        findManyCountForSubDocumentId: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) =>
+        findManyCountForSubDocument: jest.fn().mockImplementation((subDocumentName: string, subDocumentId: string) =>
             Promise.resolve(testPostCount)),
           create: jest.fn().mockImplementation((post: Post) => Promise.resolve(testPost)),
         unset: jest.fn().mockImplementation((id: string, unsetParms: {}) => Promise.resolve(undefined)),

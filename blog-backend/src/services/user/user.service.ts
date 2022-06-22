@@ -33,7 +33,7 @@ export class UserService {
       .then(users => users.map(user => this.processUser(user)));
   }
 
-  async getUserById(id: string): Promise<UserDto> {
+  async getUser(id: string): Promise<UserDto> {
     return this.dataServicesRepositories.users.get(id)
       .then(user => this.processUser(user));
   }
@@ -104,7 +104,7 @@ export class UserService {
    }
 
   async deleteUser(id: string): Promise<UserDto> {
-    return this.getUserById(id)
+    return this.getUser(id)
       .then(_ =>  this.dataServicesRepositories.users.delete(id))
       .then(user => this.processUser(user));
   }

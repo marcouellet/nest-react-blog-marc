@@ -20,7 +20,7 @@ export class PostController {
   // Fetch a particular post using ID
   @Get(':id')
   async getPost(@Param('id') id: string): Promise<PostDto> {
-    return this.postService.getPostById(id);
+    return this.postService.getPost(id);
   }
 
   // Get number of posts owned by user
@@ -40,7 +40,7 @@ export class PostController {
   @Auth(AllRoles)
   async createPost(@Body(new ValidationPipe()) postDto: PostDto): Promise<PostDto> {
     // Validate userId
-    await this.userService.getUserById(postDto.user.id);
+    await this.userService.getUser(postDto.user.id);
     // userId match a User
     return this.postService.createPost(postDto);
   }

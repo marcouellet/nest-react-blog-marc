@@ -65,9 +65,9 @@ describe('UserService', () => {
       });
     });
 
-    describe('getUserById', () => {
+    describe('getUser', () => {
       it('should return a user', async () => {
-        expect(await userService.getUserById(testUserId)).toEqual(testServiceUserDto);
+        expect(await userService.getUser(testUserId)).toEqual(testServiceUserDto);
         expect(userRepositoryMock.get).toHaveBeenCalledWith(testUserId);
       });
     });

@@ -37,7 +37,7 @@ describe('User Controller', () => {
   describe('getById', () => {
     it('should return one user"', async () => {
       expect(await userController.getById(testUserId)).toStrictEqual(testServiceUserDtoUnrestricted);
-      expect(userServiceMock.getUserById).toHaveBeenCalled();
+      expect(userServiceMock.getUser).toHaveBeenCalled();
     });
   });
 
