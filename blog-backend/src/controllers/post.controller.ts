@@ -72,15 +72,16 @@ export class PostController {
   }
 
   // Fetch posts for a category
-  @Get('/findMany/category/:id')
-  async finManyPostsForCategory(@Param('id') id: string): Promise<PostDto[]> {
-    return this.postService.findManyPostsForCategory(id);
+  @Put('/findMany/category/:id')
+  async finManyPostsForCategory(@Param('id') id: string, 
+                                @Body(new ValidationPipe()) postCriterias: PostFindCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPostsForCategory(id, postCriterias);
   }
 
   // Fetch posts without category
-  @Get('/findMany/nocategory')
-  async finManyPostsWithoutCategory(): Promise<PostDto[]> {
-    return this.postService.findManyPostsForCategory(undefined);
+  @Put('/findMany/nocategory')
+  async finManyPostsWithoutCategory(@Body(new ValidationPipe()) postCriterias: PostFindCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPostsForCategory(undefined, postCriterias);
   }
 
   // Get count of posts meating criterias 

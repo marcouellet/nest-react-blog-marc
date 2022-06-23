@@ -6,12 +6,14 @@ export enum AuthActionType {
   Loading = 'LOADING',
   SessionExpired = 'SESSION_EXPIRED',
   SetCategoryFilter = 'SET_CATEGORY_FILTER',
+  SetPostTitleFilter = 'SET_POST_TITLE_FILTER',
 }
 export const createActionLogout = () : AuthAction => { return {type:  AuthActionType.Logout}}
 export const createActionLoadUser = (user: User) : AuthAction => { return {type:  AuthActionType.LoadUser, user: user}}
 export const createActionLoading = (isLoading: boolean) : AuthAction => { return {type:  AuthActionType.Loading, isLoading: isLoading}}
 export const createActionSessionExpired = () : AuthAction => { return {type:  AuthActionType.SessionExpired}}
 export const createActionSetCategoryFilter = (category: ICategory) : AuthAction => { return {type:  AuthActionType.SetCategoryFilter, categoryFilter: category}}
+export const createActionSetPostTitleFilter = (titleFilter: string) : AuthAction => { return {type:  AuthActionType.SetPostTitleFilter, postTitleFilter: titleFilter}}
 
 export type AuthAction =
   | {
@@ -30,12 +32,17 @@ export type AuthAction =
       type: AuthActionType.SetCategoryFilter;
       categoryFilter: ICategory;
     }
-;
+  | { 
+      type: AuthActionType.SetPostTitleFilter;
+      postTitleFilter: string;
+    }
+;;
 export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   isSessionExpired: boolean;
   categoryFilter: ICategory | null,
+  postTitleFilter: string,
   user: User | null;
 }
 
@@ -44,6 +51,7 @@ export const initialState: AuthState = {
   isAuthenticated: false,
   isSessionExpired: false,
   categoryFilter: null,
+  postTitleFilter: '',
   user: null,
 };
 
@@ -64,7 +72,11 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
     }
     case AuthActionType.SetCategoryFilter: {
       return { ...state, categoryFilter: action.categoryFilter};
-    }    default:
+    }
+    case AuthActionType.SetPostTitleFilter: {
+      return { ...state, postTitleFilter: action.postTitleFilter};
+    }    
+    default:
       return state;
   }
 }

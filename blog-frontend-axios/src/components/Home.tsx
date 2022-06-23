@@ -11,7 +11,7 @@ import { ICategory, IErrors } from '../types';
 import DeleteButton from './common/deleteConfirmation';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { checkUnauthorized, checkForbidden } from '../utils/response';
-import { createActionSessionExpired, createActionSetCategoryFilter } from '../reducers/auth';
+import { createActionSessionExpired, createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../reducers/auth';
 
 const Home = () => {
   
@@ -23,6 +23,7 @@ const Home = () => {
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
+  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
 
   const _removePostFromView = (id: string) => {
     const index = posts.findIndex((post: IPost) => post.id! === id);
@@ -81,14 +82,6 @@ const Home = () => {
         }
         await fetchCategories();
       }
-      if (!posts) {
-        const fetchPosts = async (): Promise<void> => {
-          PostApiService.getAllPosts()
-          .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
-        }
-        await fetchPosts();
-      }
       dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
@@ -98,21 +91,24 @@ const Home = () => {
     const fetchPosts = async (): Promise<void> => {
       if (category) {
         if ( category.id === 'all') {
-          PostApiService.getAllPosts()
-          .then(posts => setPosts(posts));
+          PostApiService.findManyPosts(postTitleFilter)
+          .then(posts => setPosts(posts))
+          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         } 
         else if (category.id === 'no_category') {
-          PostApiService.getAllPostsWithoutCategory()
-            .then(posts => setPosts(posts));
+          PostApiService.findManyPostsWithoutCategory(postTitleFilter)
+          .then(posts => setPosts(posts))
+          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         } 
         else {
-          PostApiService.getAllPostsForCategory(category.id!)
-            .then(posts => setPosts(posts));        
+          PostApiService.findManyPostsForCategory(category.id!, postTitleFilter)
+          .then(posts => setPosts(posts))
+          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
       }
     }
     fetchPosts();
-  }, [category])
+  }, [category, postTitleFilter])
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
     toast.error(`Categories reading failed, see error list`);
@@ -133,6 +129,11 @@ const Home = () => {
     dispatch(createActionSetCategoryFilter(category!));
   }
 
+  const handlePostTitleFilterChange = (filter: string)=>{
+    setPostTitleFilter(filter);
+    dispatch(createActionSetPostTitleFilter(postTitleFilter));
+  }
+
     return (
         <section className="blog-area section">
         {errors && <ListErrors errors={errors} />}
@@ -145,12 +146,20 @@ const Home = () => {
                 ))
               }
             </DropdownButton>
-            <input style={ {float: 'right'} }    
+            <input style={ {float: 'right'} } className="col-md-2"   
               type="text" disabled  placeholder="no category selected" value={categoryTitle}        
+            />
+            <h4 className="col-md-1">
+              <span>
+                Filter:
+              </span>
+            </h4>
+            <input  
+              type="text" name="postTitleFilter" value={postTitleFilter} placeholder="enter post title text" 
+              onChange={e => handlePostTitleFilterChange(e.target.value)}      
             />
           </div>
         </div>
-
         <div className="container">
           <div className="row">
             {posts && posts.map((post: IPost) => (
