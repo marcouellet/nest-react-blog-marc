@@ -21,6 +21,7 @@ export const testE2EAdminUserName_Post = 'e2e.post.admin.name';
 
 export const testE2ENonExistingUserFindPostCriterias_Post: PostFindCriterias = { title: testE2ENonExistingUserPostTitle_Post };
 export const testE2EDummyUserFindUpdatedPostCriterias_Post: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
+export const testE2EmptyPostFilterCriterias: PostFindCriterias = {};
 
 export const testE2ERegisterDummyUser_Post = {
   username: testE2EDummyUserName_Post,

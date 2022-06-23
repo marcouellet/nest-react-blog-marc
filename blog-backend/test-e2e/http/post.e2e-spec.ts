@@ -16,7 +16,8 @@ import { testE2ECreateCategoryDto_Category } from '../data/category.data';
 import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
         testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdateWithoutCategoryPostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post, testCategoryPostsCount,
-        testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post } from '../data/post.data';
+        testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post, 
+        testE2EmptyPostFilterCriterias } from '../data/post.data';
 import { PostDto, UserDto, CategoryDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
@@ -344,15 +345,16 @@ describe('PostController (e2e)', () => {
     }
   });
 
-  it('POST(12c): (GET) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required)', () => {
-    Logger.debug('POST(12c): (GET) /post/findMany/category/:categoryId - Fetch posts based on category criteria (logged not required)');
+  it('POST(12c): (PUT) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required)', () => {
+    Logger.debug('POST(12c): (PUT) /post/findMany/category/:categoryId - Fetch posts based on category criteria (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
-      .get(`/post/findMany/category/${createdCategoryDto.id}`)
+      .put(`/post/findMany/category/${createdCategoryDto.id}`)
+      .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === testPostCount) // Should be 1
       .catch(error => {
-        Logger.error('POST(12c): (GET) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required) failed, see following error message:');
+        Logger.error('POST(12c): (PUT) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -457,15 +459,16 @@ describe('PostController (e2e)', () => {
       });
   });
 
-  it('POST(17): (GET) /post/findMany/nocategory - Fetch posts without category (logged not required)', () => {
-    Logger.debug('POST(17): /post/findMany/nocategory - Fetch posts without category (logged not required)');
+  it('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category (logged not required)', () => {
+    Logger.debug('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
-      .get(`/post/findMany/nocategory`)
+      .put(`/post/findMany/nocategory`)
+      .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
       .catch(error => {
-        Logger.error('POST(17): (GET) /post/findMany/nocategory - Fetch posts without category (logged not required) failed, see following error message:');
+        Logger.error('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
