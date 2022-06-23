@@ -412,13 +412,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .put(`/post/findMany/nocategory}`)
       .send(testE2EmptyPostFilterCriterias)
-      .expect(StatusCodes.OK)
-      .expect(response => response && response.body === []) // Should return no post since the only post created has a category
-      .catch(error => {
-        Logger.error('POST(12g): (PUT) /post/findMany/nocategory without filter - Fetch posts without category without filter (logged not required) failed, see following error message:');
-        Logger.error(error);
-        Logger.flush();
-      });
+      .expect(StatusCodes.NOT_FOUND);
   });
 
   it('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
