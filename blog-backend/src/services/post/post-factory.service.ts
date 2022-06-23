@@ -20,6 +20,7 @@ export class PostFactoryService {
     post.description = postDto.description;
     post.body = postDto.body;
     post.user = this.userFactoryService.createUser(postDto.user);
+    post.category = this.categoryFactoryService.createCategory(postDto.category);
     post.publishDate = new Date();
 
     return this.dataServicesRepositories.posts.convertFromGenericEntity(post);
@@ -33,7 +34,9 @@ export class PostFactoryService {
     postDto.description = newPost.description;
     postDto.body = newPost.body;
     postDto.user = this.userFactoryService.removeRestrictedProperties(this.userFactoryService.createUserDto(newPost.user));
-    postDto.category = this.categoryFactoryService.createCategoryDto(newPost.category);
+    if (newPost.category) {
+      postDto.category = this.categoryFactoryService.createCategoryDto(newPost.category);
+    }
     postDto.publishDate = newPost.publishDate;
 
     return postDto;

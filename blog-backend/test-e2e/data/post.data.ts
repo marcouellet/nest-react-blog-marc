@@ -20,7 +20,17 @@ export const testE2EDummyUserName_Post = 'e2e.post.dummy.name';
 export const testE2EAdminUserName_Post = 'e2e.post.admin.name';
 
 export const testE2ENonExistingUserFindPostCriterias_Post: PostFindCriterias = { title: testE2ENonExistingUserPostTitle_Post };
-export const testE2EDummyUserFindUpdatedPostCriterias_Post: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
+
+export const testE2EmptyPostFilterCriterias: PostFindCriterias = {};
+
+export const testE2EWithTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostTitle_Post };
+export const testE2EWithPartOfTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostTitle_Post.substring(1,3) };
+export const testE2EWithNotPartOfTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostTitle_Post+'extra' };
+
+export const testE2EWithUpdatedTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
+export const testE2EWithPartOfUpdatedTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post.substring(1,3) };
+export const testE2EWithNotPartOfUpdatedTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post+'extra' };
+
 
 export const testE2ERegisterDummyUser_Post = {
   username: testE2EDummyUserName_Post,

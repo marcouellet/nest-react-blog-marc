@@ -6,8 +6,8 @@ import UserServiceMock from '../mocks/user.service.mock';
 import PostServiceMock from '../mocks/post.service.mock';
 import { testUserId } from '../data/user.data';
 import { testCategoryId } from '../data/category.data';
-import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias,
-          testServicePostWithoutCategoryDto } from '../data/post.data';
+import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testWithTitleFindPostCriterias,
+          testServicePostWithoutCategoryDto, testEmptyPostFilterCriterias } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
@@ -58,17 +58,31 @@ describe('Post Controller', () => {
     });
   });
 
-  describe('finManyPostsForCategory', () => {
+  describe('finManyPostsForCategory without filter', () => {
     it('should return 1 post', async () => {
-      expect(await postController.finManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
-      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId);
+      expect(await postController.finManyPostsForCategory(testCategoryId, testEmptyPostFilterCriterias)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId, testEmptyPostFilterCriterias);
     });
   });
 
-  describe('finManyPostsWithoutCategory', () => {
+  describe('finManyPostsForCategory with title filter', () => {
     it('should return 1 post', async () => {
-      expect(await postController.finManyPostsWithoutCategory()).toEqual([testServicePostWithoutCategoryDto]);
-      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(undefined);
+      expect(await postController.finManyPostsForCategory(testCategoryId, testWithTitleFindPostCriterias)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId, testWithTitleFindPostCriterias);
+    });
+  });
+
+  describe('finManyPostsWithoutCategory without filter', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsWithoutCategory(testEmptyPostFilterCriterias)).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postServiceMock.findManyPostsWithoutCategory).toHaveBeenCalledWith(testEmptyPostFilterCriterias);
+    });
+  });
+
+  describe('finManyPostsWithoutCategory with title filter', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsWithoutCategory(testWithTitleFindPostCriterias)).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postServiceMock.findManyPostsWithoutCategory).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 
@@ -89,21 +103,21 @@ describe('Post Controller', () => {
 
   describe('finPost', () => {
     it('should return a post"', async () => {
-      expect(await postController.finPost(testFindPostCriterias)).toStrictEqual(testServicePostDto);
+      expect(await postController.finPost(testWithTitleFindPostCriterias)).toStrictEqual(testServicePostDto);
       expect(postServiceMock.findPost).toHaveBeenCalled();
     });
   });
 
   describe('finManyPosts', () => {
     it('should return an array of one post"', async () => {
-      expect(await postController.finManyPosts(testFindPostCriterias)).toStrictEqual([testServicePostDto]);
+      expect(await postController.finManyPosts(testWithTitleFindPostCriterias)).toStrictEqual([testServicePostDto]);
       expect(postServiceMock.findManyPosts).toHaveBeenCalled();
     });
   });
 
   describe('finManyPostsCount', () => {
     it('should return testServicePostCount"', async () => {
-      expect(await postController.findManyPostsCount(testFindPostCriterias)).toStrictEqual(testPostCount);
+      expect(await postController.findManyPostsCount(testWithTitleFindPostCriterias)).toStrictEqual(testPostCount);
       expect(postServiceMock.findManyPostsCount).toHaveBeenCalled();
     });
   });
