@@ -57,7 +57,8 @@
             "args": [
                 "-c",
                 "./test/jest.json",
-                "--runInBand"
+                "--runInBand",
+                "--coverage",
             ],
             "cwd": "${workspaceFolder}\\blog-backend",
             "console": "integratedTerminal",

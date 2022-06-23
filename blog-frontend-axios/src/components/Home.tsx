@@ -109,7 +109,6 @@ const Home = () => {
           PostApiService.getAllPostsForCategory(category.id!)
             .then(posts => setPosts(posts));        
         }
-        dispatch(createActionSetCategoryFilter(category));
       }
     }
     fetchPosts();
