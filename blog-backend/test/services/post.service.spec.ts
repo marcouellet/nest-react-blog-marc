@@ -63,21 +63,21 @@ describe('PostService', () => {
   describe('findManyPostsForUser', () => {
     it('should return 1', async () => {
       expect(await postService.findManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('user', testUserId);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('user', testUserId, {});
     });
   });
 
   describe('findManyPostsForCategory', () => {
     it('should return 1 post', async () => {
-      expect(await postService.findManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId);
+      expect(await postService.findManyPostsForCategory(testCategoryId, {})).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId, {});
     });
   });
 
   describe('findManyPostsWithoutCategory', () => {
     it('should return 1 post', async () => {
-      expect(await postService.findManyPostsWithoutCategory()).toEqual([testServicePostWithoutCategoryDto]);
-      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined);
+      expect(await postService.findManyPostsWithoutCategory({})).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined, {});
     });
   });
 

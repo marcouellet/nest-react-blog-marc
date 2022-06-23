@@ -81,7 +81,7 @@ export class PostController {
   // Fetch posts without category
   @Put('/findMany/nocategory')
   async finManyPostsWithoutCategory(@Body(new ValidationPipe()) postCriterias: PostFindCriterias): Promise<PostDto[]> {
-    return this.postService.findManyPostsForCategory(undefined, postCriterias);
+    return this.postService.findManyPostsWithoutCategory(postCriterias);
   }
 
   // Get count of posts meating criterias 

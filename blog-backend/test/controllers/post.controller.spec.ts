@@ -60,15 +60,15 @@ describe('Post Controller', () => {
 
   describe('finManyPostsForCategory', () => {
     it('should return 1 post', async () => {
-      expect(await postController.finManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
-      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId);
+      expect(await postController.finManyPostsForCategory(testCategoryId, {})).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId, {});
     });
   });
 
   describe('finManyPostsWithoutCategory', () => {
     it('should return 1 post', async () => {
-      expect(await postController.finManyPostsWithoutCategory()).toEqual([testServicePostWithoutCategoryDto]);
-      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(undefined);
+      expect(await postController.finManyPostsWithoutCategory({})).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postServiceMock.findManyPostsWithoutCategory).toHaveBeenCalledWith({});
     });
   });
 
