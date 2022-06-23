@@ -150,8 +150,8 @@ const handleCategorySelect=(e: any)=>{
 }
 
 const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
-  const category = categories.find(category => category.id == categoryId);
-  setCategory(category?.id == 'no_category' ? undefined: category);
+  const category = categories.find(category => category.id === categoryId);
+  setCategory(category?.id === 'no_category' ? undefined: category);
   setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
 }
 

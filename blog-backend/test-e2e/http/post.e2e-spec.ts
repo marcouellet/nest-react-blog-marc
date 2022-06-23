@@ -14,7 +14,7 @@ import { buildCreatePostDto, buildUpdatePostDto } from '../../test/builders/post
 import { buildCreateCategoryDto } from '../../test/builders/category.dtos.builders';
 import { testE2ECreateCategoryDto_Category } from '../data/category.data';
 import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
-        testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdatePostDto_Post,
+        testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdateWithoutCategoryPostDto_Post,
         testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post, testCategoryPostsCount,
         testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post } from '../data/post.data';
 import { PostDto, UserDto, CategoryDto } from '../../src/core';
@@ -174,16 +174,16 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('POST(5): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)', () => {
-    Logger.debug('POST(5): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)');
+  it('POST(5): (PUT) /post/findMany - Fetch posts based on criterias with no match (not logged in)', () => {
+    Logger.debug('POST(5): (PUT) /post/findMany - Fetch posts based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/post/findAll')
+      .put('/post/findMany')
       .send(testE2ENonExistingUserFindPostCriterias_Post)
       .expect(StatusCodes.OK)
       .expect(response => response === null)
       .catch(error => {
-        Logger.error('POST(5): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('POST(5): (PUT) /post/findMany - Fetch posts based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -223,7 +223,7 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put(`/post/update/${testE2ENonExistingPostId_Post}`)
-      .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
+      .send(buildUpdatePostDto(testE2EDummyUserUpdateWithoutCategoryPostDto_Post))
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -331,7 +331,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/post/count/user/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === testPostCount) // No post created yet
+      .expect(response => response && response.body === testPostCount) // Should be 1
       .catch(error => {
         Logger.error('POST(12b): (GET) /post/count/user/:userId - Get number of posts owned by user with dummy userId (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -344,6 +344,34 @@ describe('PostController (e2e)', () => {
     }
   });
 
+  it('POST(12c): (GET) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required)', () => {
+    Logger.debug('POST(12c): (GET) /post/findMany/category/:categoryId - Fetch posts based on category criteria (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .get(`/post/findMany/category/${createdCategoryDto.id}`)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === testPostCount) // Should be 1
+      .catch(error => {
+        Logger.error('POST(12c): (GET) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(12d): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
+    Logger.debug('POST(12d): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .get(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === testPostCount) // Should be 1
+      .catch(error => {
+        Logger.error('POST(12d): (GET)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
   it('POST(13): (PUT) /post/update/:postId - Update a post with no category (dummy logged in)', () => {
     Logger.debug('POST(13): (PUT) /post/update/:postId - Update a post (dummy logged in)');
     Logger.flush();
@@ -351,7 +379,7 @@ describe('PostController (e2e)', () => {
       return request(app.getHttpServer())
         .put(`/post/update/${dummyUserPostDto.id}`)
         .set('Authorization', `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
-        .send(buildUpdatePostDto(testE2EDummyUserUpdatePostDto_Post))
+        .send(buildUpdatePostDto(testE2EDummyUserUpdateWithoutCategoryPostDto_Post))
         .expect(StatusCodes.OK)
         .then(response => response && (dummyUserUpdatedPostDto = response.body))
         .catch(error => {
@@ -399,38 +427,52 @@ describe('PostController (e2e)', () => {
       });
   });
 
-  it('POST(15): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)', () => {
-    Logger.debug('POST(15): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in)');
+  it('POST(15): (PUT) /post/findMany - Fetch posts based on title criteria (not logged in)', () => {
+    Logger.debug('POST(15): (PUT) /post/findMany - Fetch posts based on title criteria (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/post/findAll')
+      .put('/post/findMany')
       .send(testE2EDummyUserFindUpdatedPostCriterias_Post)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [dummyUserUpdatedPostDto])
       .catch(error => {
-        Logger.error('POST(15): (PUT) /post/findAll - Fetch posts based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('POST(15): (PUT) /post/findMany - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('POST(16): (PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)', () => {
-    Logger.debug('POST(16): (PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in)');
+  it('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in)', () => {
+    Logger.debug('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findManyCount')
       .send(testE2EDummyUserFindUpdatedPostCriterias_Post)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === '1')
+      .expect(response => response && response.body === testPostCount)
       .catch(error => {
-        Logger.error('POST(16): (PUT) /post/findManyCount - Get count of posts meating criterias no match (not logged in) failed, see following error message:');
+        Logger.error('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('POST(17): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
-    Logger.debug('POST(17): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
+  it('POST(17): (GET) /post/findMany/nocategory - Fetch posts without category (logged not required)', () => {
+    Logger.debug('POST(17): /post/findMany/nocategory - Fetch posts without category (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .get(`/post/findMany/nocategory`)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .catch(error => {
+        Logger.error('POST(17): (GET) /post/findMany/nocategory - Fetch posts without category (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(18): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)', () => {
+    Logger.debug('POST(18): (DELETE) /post/delete/:postId - Delete a post (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens && dummyUserUpdatedPostDto) {
     return request(app.getHttpServer())
@@ -439,12 +481,12 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(dummyUserUpdatedPostDto)
       .catch(error => {
-        Logger.error('POST(17): (DELETE) /post/delete/:postId - Delete a post (dummy logged in) failed, see following error message:');
+        Logger.error('POST(18): (DELETE) /post/delete/:postId - Delete a post (dummy logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-      Logger.error('POST(17): (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed or post update failed');
+      Logger.error('POST(18): (DELETE) /post/delete/:postId - Delete a post - cannot test since dummy user creation failed or post update failed');
       Logger.flush();
     }
   });

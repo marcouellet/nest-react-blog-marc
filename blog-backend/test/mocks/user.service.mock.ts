@@ -7,7 +7,7 @@ const UserServiceMock = {
     provide: UserService,
     useValue: {
       getAllUsers: jest.fn().mockImplementation(() => Promise.resolve([testUserUnrestricted])),
-      getUserById: jest.fn().mockImplementation((id: string) => Promise.resolve(testUserUnrestricted)),
+      getUser: jest.fn().mockImplementation((id: string) => Promise.resolve(testUserUnrestricted)),
       findUser: jest.fn().mockImplementation((criterias: UserFindCriterias) => Promise.resolve(testUserUnrestricted)),
       findManyUsers: jest.fn().mockImplementation((criterias: UserFindCriterias) => Promise.resolve([testUserUnrestricted])),
       findManyUsersCount: jest.fn().mockImplementation((criterias: UserFindCriterias) => Promise.resolve(testUserCount)),

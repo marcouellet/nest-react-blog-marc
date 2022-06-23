@@ -38,7 +38,6 @@ const CreateCategory = () => {
     handleSubmit,
     formState: { errors, isDirty },
     reset,
-    setValue,
   } = useForm<CreateSubmitForm>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues

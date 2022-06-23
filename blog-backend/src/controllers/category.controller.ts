@@ -45,7 +45,7 @@ export class CategoryController {
   }
 
   // Fetch categories based on criterias
-  @Put('/findAll')
+  @Put('/findMany')
   async findCanyCategories(@Body(new ValidationPipe()) categoriesCriterias: CategoryFindCriterias): Promise<CategoryDto[]> {
     return this.categoryService.findManyCategories(categoriesCriterias);
   }

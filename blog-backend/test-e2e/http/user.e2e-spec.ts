@@ -139,17 +139,17 @@ describe('UserController (e2e)', () => {
     }
   });
 
-  it('USER(4): (PUT) /findAll - Fetch users based on criterias (not logged in)', () => {
-    Logger.debug('USER(4): (PUT) /findAll - Fetch users based on criterias (not logged in)');
+  it('USER(4): (PUT) /findMany - Fetch users based on criterias (not logged in)', () => {
+    Logger.debug('USER(4): (PUT) /findMany - Fetch users based on criterias (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .put('/user/findAll')
+      .put('/user/findMany')
       .send(testE2EFindDummyUserCriterias_User)
       .expect(StatusCodes.OK)
       .expect(body => body != null);
     } else {
-      Logger.error('USER(4): (PUT) /findAll - Fetch users based on criterias - cannot test since dummy user creation failed');
+      Logger.error('USER(4): (PUT) /findMany - Fetch users based on criterias - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });

@@ -55,4 +55,13 @@ export const testServicePostDto: PostDto = {
   publishDate: publishedOnDate,
 };
 
+export const testServicePostWithoutCategoryDto: PostDto = {
+  id: testPostId,
+  title: 'title',
+  description: 'description',
+  body: 'content of the post',
+  user: testServiceUserDto,
+  publishDate: publishedOnDate,
+};
+
 export const testFindPostCriterias = { title: 'title' };

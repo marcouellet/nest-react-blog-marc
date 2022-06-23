@@ -26,14 +26,14 @@ export class PostService {
   }
 
   async getNumberOfPostsForUser(userId: string): Promise<number> {
-    return  this.dataServicesRepositories.posts.findManyCountForSubDocumentId('user', userId);
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocument('user', userId);
   }
 
   async getNumberOfPostsForCategory(categoryId: string): Promise<number> {
-    return  this.dataServicesRepositories.posts.findManyCountForSubDocumentId('category', categoryId);
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocument('category', categoryId);
   }
 
-  async getPostById(id: string): Promise<PostDto> {
+  async getPost(id: string): Promise<PostDto> {
     return this.dataServicesRepositories.posts.get(id)
       .then(post => this.processPost(post));
   }
@@ -45,6 +45,21 @@ export class PostService {
 
   async findManyPosts(criterias: PostFindCriterias): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.findMany(criterias)
+      .then(posts => posts.map(post => this.processPost(post)));
+  }
+
+  async findManyPostsForUser(userId: string): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('user', userId)
+      .then(posts => posts.map(post => this.processPost(post)));
+  }
+
+  async findManyPostsForCategory(categoryId: string): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', categoryId)
+      .then(posts => posts.map(post => this.processPost(post)));
+  }
+
+  async findManyPostsWithoutCategory(): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', undefined)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
@@ -60,7 +75,7 @@ export class PostService {
 
   async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<PostDto> {
     const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
-    return this.getPostById(id)
+    return this.getPost(id)
       .then(() => {   
         if (!updatePostDto.category) {
           return this.dataServicesRepositories.posts.unset(id, {category: ""})
@@ -76,7 +91,7 @@ export class PostService {
   }
 
   async deletePost(id: string): Promise<PostDto> {
-    return this.getPostById(id)
+    return this.getPost(id)
       .then(_ =>  this.dataServicesRepositories.posts.delete(id, ['user', 'category']))
       .then(post => this.processPost(post))
       .catch(error => { 

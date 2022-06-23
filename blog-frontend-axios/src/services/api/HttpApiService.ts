@@ -34,6 +34,15 @@ class HttpApiService<T> {
      });
   }
 
+  protected findMany(endpoint: string, data: {}, conf = {}): Promise<T[]> {
+    return new Promise(resolve => {
+      API.put<T[]>(`${endpoint}`, data, conf)
+        .then(response => {
+          resolve(response.data);
+        });
+     });
+  }
+
   protected create(endpoint: string, data: {}, conf = {}): Promise<T> {
     return this.post(endpoint, data, conf)
   }

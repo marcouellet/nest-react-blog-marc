@@ -20,7 +20,7 @@ export class PostController {
   // Fetch a particular post using ID
   @Get(':id')
   async getPost(@Param('id') id: string): Promise<PostDto> {
-    return this.postService.getPostById(id);
+    return this.postService.getPost(id);
   }
 
   // Get number of posts owned by user
@@ -40,7 +40,7 @@ export class PostController {
   @Auth(AllRoles)
   async createPost(@Body(new ValidationPipe()) postDto: PostDto): Promise<PostDto> {
     // Validate userId
-    await this.userService.getUserById(postDto.user.id);
+    await this.userService.getUser(postDto.user.id);
     // userId match a User
     return this.postService.createPost(postDto);
   }
@@ -60,9 +60,27 @@ export class PostController {
   }
 
   // Fetch posts based on criterias
-  @Put('/findAll')
+  @Put('/findMany')
   async finManyPosts(@Body(new ValidationPipe()) postCriterias: PostFindCriterias): Promise<PostDto[]> {
     return this.postService.findManyPosts(postCriterias);
+  }
+
+  // Fetch posts for a user
+  @Get('/findMany/user/:id')
+  async finManyPostsForUser(@Param('id') id: string): Promise<PostDto[]> {
+    return this.postService.findManyPostsForUser(id);
+  }
+
+  // Fetch posts for a category
+  @Get('/findMany/category/:id')
+  async finManyPostsForCategory(@Param('id') id: string): Promise<PostDto[]> {
+    return this.postService.findManyPostsForCategory(id);
+  }
+
+  // Fetch posts without category
+  @Get('/findMany/nocategory')
+  async finManyPostsWithoutCategory(): Promise<PostDto[]> {
+    return this.postService.findManyPostsForCategory(undefined);
   }
 
   // Get count of posts meating criterias 

@@ -4,7 +4,10 @@ import { UserService } from '../../src/services/user/user.service';
 import { PostService } from '../../src/services/post/post.service';
 import UserServiceMock from '../mocks/user.service.mock';
 import PostServiceMock from '../mocks/post.service.mock';
-import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias } from '../data/post.data';
+import { testUserId } from '../data/user.data';
+import { testCategoryId } from '../data/category.data';
+import { testPostId, testServicePostDto, testPostCount, testCreatePostDto, testUpdatePostDto, testFindPostCriterias,
+          testServicePostWithoutCategoryDto } from '../data/post.data';
 
 describe('Post Controller', () => {
   let postController: PostController;
@@ -44,7 +47,28 @@ describe('Post Controller', () => {
   describe('getPost', () => {
     it('should return a post"', async () => {
       expect(await postController.getPost(testPostId)).toStrictEqual(testServicePostDto);
-      expect(postServiceMock.getPostById).toHaveBeenCalled();
+      expect(postServiceMock.getPost).toHaveBeenCalled();
+    });
+  });
+
+  describe('findManyPostsForUser', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForUser).toHaveBeenCalledWith(testUserId);
+    });
+  });
+
+  describe('finManyPostsForCategory', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsForCategory(testCategoryId)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(testCategoryId);
+    });
+  });
+
+  describe('finManyPostsWithoutCategory', () => {
+    it('should return 1 post', async () => {
+      expect(await postController.finManyPostsWithoutCategory()).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postServiceMock.findManyPostsForCategory).toHaveBeenCalledWith(undefined);
     });
   });
 
@@ -58,7 +82,7 @@ describe('Post Controller', () => {
   describe('createPost', () => {
     it('should return a post"', async () => {
       expect(await postController.createPost(testCreatePostDto)).toStrictEqual(testServicePostDto);
-      expect(userServiceMock.getUserById).toHaveBeenCalled();
+      expect(userServiceMock.getUser).toHaveBeenCalled();
       expect(postServiceMock.createPost).toHaveBeenCalled();
     });
   });

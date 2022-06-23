@@ -20,7 +20,7 @@ export class UserController {
   @Get(':id')
   @Auth([UserRole.ADMIN])
   async getById(@Param('id') id: string): Promise<UserDto> {
-    return this.userService.getUserById(id);
+    return this.userService.getUser(id);
   }
 
   // Submit a new user
@@ -37,7 +37,7 @@ export class UserController {
   }
 
   // Fetch users based on criterias
-  @Put('/findAll')
+  @Put('/findMany')
   async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<UserDto[]> {
     return this.userService.findManyUsers(userCriterias);
   }

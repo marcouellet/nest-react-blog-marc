@@ -38,9 +38,18 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     return this.repository.count(criterias).exec();
   }
 
-  async findManyCountForSubDocumentId(subDocumentName: string, subDocumentId: string): Promise<number> {
+  async findManyCountForSubDocument(subDocumentName: string, subDocumentId: string): Promise<number> {
     const id = new Types.ObjectId(subDocumentId);
     return this.repository.count({}).where(subDocumentName).equals(id).exec();
+  }
+
+  async findManyForSubDocument(subDocumentName: string, subDocumentId: string): Promise<T[]> {
+    if (subDocumentId) {
+      const id = new Types.ObjectId(subDocumentId); 
+      return this.repository.where(subDocumentName).equals(id).exec();
+    } else {
+      return this.repository.where(subDocumentName).exists(false).exec();
+    }
   }
 
   async create(item: T): Promise<T> {

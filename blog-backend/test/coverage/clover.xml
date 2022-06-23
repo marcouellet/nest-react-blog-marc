@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1655835399825" clover="3.2.0">
-  <project timestamp="1655835399825" name="All files">
-    <metrics statements="286" coveredstatements="286" conditionals="12" coveredconditionals="12" methods="70" coveredmethods="70" elements="368" coveredelements="368" complexity="0" loc="286" ncloc="286" packages="6" files="25" classes="25"/>
+<coverage generated="1655984759103" clover="3.2.0">
+  <project timestamp="1655984759103" name="All files">
+    <metrics statements="290" coveredstatements="290" conditionals="12" coveredconditionals="12" methods="73" coveredmethods="73" elements="375" coveredelements="375" complexity="0" loc="290" ncloc="290" packages="6" files="25" classes="25"/>
     <package name="builders">
       <metrics statements="56" coveredstatements="56" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
       <file name="auth.dtos.builders.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\builders\auth.dtos.builders.ts">
@@ -123,7 +123,7 @@
       </file>
     </package>
     <package name="data">
-      <metrics statements="76" coveredstatements="76" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="77" coveredstatements="77" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="app.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\app.data.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -154,14 +154,14 @@
       </file>
       <file name="category.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\category.data.ts">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="4" count="7" type="stmt"/>
-        <line num="5" count="7" type="stmt"/>
-        <line num="7" count="7" type="stmt"/>
-        <line num="13" count="7" type="stmt"/>
-        <line num="18" count="7" type="stmt"/>
-        <line num="23" count="7" type="stmt"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="35" count="7" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="5" count="8" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="18" count="8" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
       </file>
       <file name="config.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\config.data.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -172,7 +172,7 @@
         <line num="7" count="1" type="stmt"/>
       </file>
       <file name="post.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\post.data.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="3" count="8" type="stmt"/>
         <line num="5" count="8" type="stmt"/>
         <line num="7" count="8" type="stmt"/>
@@ -186,6 +186,7 @@
         <line num="38" count="8" type="stmt"/>
         <line num="48" count="8" type="stmt"/>
         <line num="58" count="8" type="stmt"/>
+        <line num="67" count="8" type="stmt"/>
       </file>
       <file name="token.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\token.data.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -223,7 +224,7 @@
       </file>
     </package>
     <package name="mocks">
-      <metrics statements="104" coveredstatements="104" conditionals="10" coveredconditionals="10" methods="57" coveredmethods="57"/>
+      <metrics statements="107" coveredstatements="107" conditionals="10" coveredconditionals="10" methods="60" coveredmethods="60"/>
       <file name="app.service.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\app.service.mock.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -283,26 +284,27 @@
         <line num="12" count="1" type="stmt"/>
       </file>
       <file name="post.repository.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\post.repository.mock.ts">
-        <metrics statements="16" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="12" coveredmethods="12"/>
+        <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="13" coveredmethods="13"/>
         <line num="1" count="5" type="stmt"/>
         <line num="3" count="5" type="stmt"/>
         <line num="5" count="5" type="stmt"/>
-        <line num="8" count="9" type="stmt"/>
+        <line num="8" count="12" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="3" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
         <line num="16" count="2" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
-        <line num="24" count="5" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
       </file>
       <file name="post.service.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\post.service.mock.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="9"/>
+        <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="11" coveredmethods="11"/>
         <line num="1" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
@@ -312,10 +314,12 @@
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
       </file>
       <file name="user.repository.mock.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\mocks\user.repository.mock.ts">
         <metrics statements="20" coveredstatements="20" conditionals="6" coveredconditionals="6" methods="10" coveredmethods="10"/>
@@ -324,7 +328,7 @@
         <line num="4" count="5" type="stmt"/>
         <line num="5" count="5" type="stmt"/>
         <line num="7" count="5" type="stmt"/>
-        <line num="10" count="34" type="stmt"/>
+        <line num="10" count="37" type="stmt"/>
         <line num="11" count="3" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="9" type="stmt"/>
