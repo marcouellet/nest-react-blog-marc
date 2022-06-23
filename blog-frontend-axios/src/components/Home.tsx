@@ -82,6 +82,7 @@ const Home = () => {
         }
         await fetchCategories();
       }
+      setPostTitleFilter(state.postTitleFilter);
       dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
@@ -131,7 +132,7 @@ const Home = () => {
 
   const handlePostTitleFilterChange = (filter: string)=>{
     setPostTitleFilter(filter);
-    dispatch(createActionSetPostTitleFilter(postTitleFilter));
+    dispatch(createActionSetPostTitleFilter(filter));
   }
 
     return (
