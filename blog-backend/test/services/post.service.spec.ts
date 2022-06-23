@@ -8,7 +8,7 @@ import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
-          testUpdatePostDto, testFindPostCriterias, testCategoryPostsCount, 
+          testUpdatePostDto, testWithTitleFindPostCriterias, testCategoryPostsCount, 
           testServicePostWithoutCategoryDto } from '../data/post.data';
 import { testUserId } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
@@ -98,29 +98,29 @@ describe('PostService', () => {
  
   describe('findManyCount', () => {
     it('should return testServicePostCount', async () => {
-      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
-      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testFindPostCriterias);
+      expect(await postService.findManyPostsCount(testWithTitleFindPostCriterias)).toEqual(testPostCount);
+      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 
   describe('findPost', () => {
     it('should return a post', async () => {
-      expect(await postService.findPost(testFindPostCriterias)).toEqual(testServicePostDto);
-      expect(postRepositoryMock.findOne).toHaveBeenCalledWith(testFindPostCriterias);
+      expect(await postService.findPost(testWithTitleFindPostCriterias)).toEqual(testServicePostDto);
+      expect(postRepositoryMock.findOne).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 
   describe('findManyPosts', () => {
     it('should return an array of one post', async () => {
-      expect(await postService.findManyPosts(testFindPostCriterias)).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findMany).toHaveBeenCalledWith(testFindPostCriterias);
+      expect(await postService.findManyPosts(testWithTitleFindPostCriterias)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findMany).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 
   describe('findManPostsCount', () => {
     it('should return testPostCount', async () => {
-      expect(await postService.findManyPostsCount(testFindPostCriterias)).toEqual(testPostCount);
-      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testFindPostCriterias);
+      expect(await postService.findManyPostsCount(testWithTitleFindPostCriterias)).toEqual(testPostCount);
+      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 

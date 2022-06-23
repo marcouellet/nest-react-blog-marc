@@ -156,8 +156,8 @@ const Home = () => {
               </span>
             </h4>
             <input  
-              type="text" name="postTitleFilter" value={postTitleFilter} placeholder="enter post title text" 
-              onChange={e => handlePostTitleFilterChange(e.target.value)}      
+              type="text" name="postTitleFilter" value={postTitleFilter} placeholder="enter some part of post title text" 
+              className="col-md-2" onChange={e => handlePostTitleFilterChange(e.target.value)}      
             />
           </div>
         </div>

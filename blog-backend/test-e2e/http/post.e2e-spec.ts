@@ -13,11 +13,12 @@ import { buildLoginDto } from '../../test/builders/auth.dtos.builders';
 import { buildCreatePostDto, buildUpdatePostDto } from '../../test/builders/post.dtos.builders';
 import { buildCreateCategoryDto } from '../../test/builders/category.dtos.builders';
 import { testE2ECreateCategoryDto_Category } from '../data/category.data';
-import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,
+import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_Post,testE2EWithNotPartOfUpdatedTitleFindPostCriterias,
         testE2ENonExistingPostId_Post, testE2EDummyUserCreatePostDto_Post, testE2EDummyUserUpdateWithoutCategoryPostDto_Post,
-        testE2EDummyUserFindUpdatedPostCriterias_Post, testE2ELoginDummyUser_Post, testCategoryPostsCount,
-        testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post, 
-        testE2EmptyPostFilterCriterias } from '../data/post.data';
+        testE2ELoginDummyUser_Post, testCategoryPostsCount, testE2EWithPartOfUpdatedTitleFindPostCriterias,
+        testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post, testE2EWithTitleFindPostCriterias,
+        testE2EmptyPostFilterCriterias, testE2EWithPartOfTitleFindPostCriterias, testE2EWithUpdatedTitleFindPostCriterias,
+        testE2EWithNotPartOfTitleFindPostCriterias } from '../data/post.data';
 import { PostDto, UserDto, CategoryDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
@@ -345,30 +346,90 @@ describe('PostController (e2e)', () => {
     }
   });
 
-  it('POST(12c): (PUT) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required)', () => {
-    Logger.debug('POST(12c): (PUT) /post/findMany/category/:categoryId - Fetch posts based on category criteria (logged not required)');
+  it('POST(12c): (PUT) /post/findMany/category/:categoryId without filter - Fetch posts based on category (logged not required)', () => {
+    Logger.debug('POST(12c): (PUT) /post/findMany/category/:categoryId without filter - Fetch posts based on category criteria (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
       .put(`/post/findMany/category/${createdCategoryDto.id}`)
       .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === testPostCount) // Should be 1
+      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
       .catch(error => {
-        Logger.error('POST(12c): (PUT) /post/findMany/category/:categoryId - Fetch posts based on category (logged not required) failed, see following error message:');
+        Logger.error('POST(12c): (PUT) /post/findMany/category/:categoryId without filter - Fetch posts based on category (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('POST(12d): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
-    Logger.debug('POST(12d): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
+  it('POST(12d): (PUT) /post/findMany/category/:categoryId with title filter - Fetch posts based on category (logged not required)', () => {
+    Logger.debug('POST(12d): (PUT) /post/findMany/category/:categoryId with title filter - Fetch posts based on category criteria (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/category/${createdCategoryDto.id}`)
+      .send(testE2EWithTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
+      .catch(error => {
+        Logger.error('POST(12d): (PUT) /post/findMany/category/:categoryId with title filter - Fetch posts based on category (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(12e): (PUT) /post/findMany/category/:categoryId with part of title filter - Fetch posts based on category (logged not required)', () => {
+    Logger.debug('POST(12e): (PUT) /post/findMany/category/:categoryId with part of title filter - Fetch posts based on category criteria (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/category/${createdCategoryDto.id}`)
+      .send(testE2EWithPartOfTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
+      .catch(error => {
+        Logger.error('POST(12e): (PUT) /post/findMany/category/:categoryId with part of title filter - Fetch posts based on category (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(12f): (PUT) /post/findMany/category/:categoryId with no part of title filter - Fetch posts based on category (logged not required)', () => {
+    Logger.debug('POST(12f): (PUT) /post/findMany/category/:categoryId with part of title filter - Fetch posts based on category criteria (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/category/${createdCategoryDto.id}`)
+      .send(testE2EWithNotPartOfTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === []) // Should return no post
+      .catch(error => {
+        Logger.error('POST(12f): (PUT) /post/findMany/category/:categoryId with no part of title filter - Fetch posts based on category (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(12g): (PUT) /post/findMany/nocategory without filter - Fetch posts without category without filter (logged not required)', () => {
+    Logger.debug('POST(12g): (PUT) /post/findMany/nocategory without filter - Fetch posts without category without filter (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/nocategory}`)
+      .send(testE2EmptyPostFilterCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === []) // Should return no post since the only post created has a category
+      .catch(error => {
+        Logger.error('POST(12g): (PUT) /post/findMany/nocategory without filter - Fetch posts without category without filter (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
+    Logger.debug('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
       .get(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === testPostCount) // Should be 1
+      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
       .catch(error => {
-        Logger.error('POST(12d): (GET)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
+        Logger.error('POST(12h): (GET)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -419,9 +480,9 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/find')
-      .send(testE2EDummyUserFindUpdatedPostCriterias_Post)
+      .send(testE2EWithUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === dummyUserUpdatedPostDto)
+      .expect(response => response && response.body === dummyUserUpdatedPostDto) // Should return one post
       .catch(error => {
         Logger.error('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in) failed, see following error message:');
         Logger.error(error);
@@ -429,16 +490,61 @@ describe('PostController (e2e)', () => {
       });
   });
 
-  it('POST(15): (PUT) /post/findMany - Fetch posts based on title criteria (not logged in)', () => {
-    Logger.debug('POST(15): (PUT) /post/findMany - Fetch posts based on title criteria (not logged in)');
+  it('POST(15): (PUT) /post/findMany with no filter - Fetch posts based on title criteria (not logged in)', () => {
+    Logger.debug('POST(15): (PUT) /post/findMany with no filter - Fetch posts based on title criteria (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findMany')
-      .send(testE2EDummyUserFindUpdatedPostCriterias_Post)
+      .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto])
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
       .catch(error => {
-        Logger.error('POST(15): (PUT) /post/findMany - Fetch posts based on title criteria (not logged in) failed, see following error message:');
+        Logger.error('POST(15): (PUT) /post/findMany with no filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(15a): (PUT) /post/findMany with title filter - Fetch posts based on title criteria (not logged in)', () => {
+    Logger.debug('POST(15a): (PUT) /post/findMany with title filter - Fetch posts based on title criteria (not logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put('/post/findMany')
+      .send(testE2EWithUpdatedTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .catch(error => {
+        Logger.error('POST(15a): (PUT) /post/findMany with title filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(15b): (PUT) /post/findMany with part of title filter - Fetch posts based on title criteria (not logged in)', () => {
+    Logger.debug('POST(15b): (PUT) /post/findMany with title filter - Fetch posts based on title criteria (not logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put('/post/findMany')
+      .send(testE2EWithPartOfTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .catch(error => {
+        Logger.error('POST(15b): (PUT) /post/findMany with part of title filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(15c): (PUT) /post/findMany with no part of title filter - Fetch posts based on title criteria (not logged in)', () => {
+    Logger.debug('POST(15c): (PUT) /post/findMany with title filter - Fetch posts based on title criteria (not logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put('/post/findMany')
+      .send(testE2EWithNotPartOfTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === []) // Should return no post
+      .catch(error => {
+        Logger.error('POST(15c): (PUT) /post/findMany with no part of title filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -449,9 +555,9 @@ describe('PostController (e2e)', () => {
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findManyCount')
-      .send(testE2EDummyUserFindUpdatedPostCriterias_Post)
+      .send(testE2EWithUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === testPostCount)
+      .expect(response => response && response.body === testPostCount) // should be 1
       .catch(error => {
         Logger.error('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -459,8 +565,8 @@ describe('PostController (e2e)', () => {
       });
   });
 
-  it('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category (logged not required)', () => {
-    Logger.debug('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category (logged not required)');
+  it('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category without filter (logged not required)', () => {
+    Logger.debug('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category without filter (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
       .put(`/post/findMany/nocategory`)
@@ -468,7 +574,52 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
       .catch(error => {
-        Logger.error('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category (logged not required) failed, see following error message:');
+        Logger.error('POST(17): (PUT) /post/findMany/nocategory - Fetch posts without category without filter (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(17a): (PUT) /post/findMany/nocategory - Fetch posts without category with updated title filter (logged not required)', () => {
+    Logger.debug('POST(17a): (PUT) /post/findMany/nocategory - Fetch posts without category with updated title filter (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/nocategory`)
+      .send(testE2EWithUpdatedTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .catch(error => {
+        Logger.error('POST(17a): (PUT) /post/findMany/nocategory - Fetch posts without category with updated title filter (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(17b): (PUT) /post/findMany/nocategory - Fetch posts without category with part of updated title filter (logged not required)', () => {
+    Logger.debug('POST(17b): (PUT) /post/findMany/nocategory - Fetch posts without category with updated title filter (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/nocategory`)
+      .send(testE2EWithPartOfUpdatedTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .catch(error => {
+        Logger.error('POST(17b): (PUT) /post/findMany/nocategory - Fetch posts without category with part of updated title filter (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(17c): (PUT) /post/findMany/nocategory - Fetch posts without category with no part of updated title filter (logged not required)', () => {
+    Logger.debug('POST(17c): (PUT) /post/findMany/nocategory - Fetch posts without category with no part of updated title filter (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/nocategory`)
+      .send(testE2EWithNotPartOfUpdatedTitleFindPostCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === []) // Shouldtryurn no post
+      .catch(error => {
+        Logger.error('POST(17c): (PUT) /post/findMany/nocategory - Fetch posts without category with no part of updated title filter (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });

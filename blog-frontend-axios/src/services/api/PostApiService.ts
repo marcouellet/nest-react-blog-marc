@@ -5,6 +5,7 @@ const POST_ENDPOINT = `/post`;
 
 class PostApi extends HttpApiService<IPost> {
  
+  //TODO Should be done on server side
   private buildPostTitleFilter(postTitleFilter: string) : any {
     let filter: any = {};
     if (postTitleFilter) {
