@@ -11,7 +11,7 @@ import { ICategory, IErrors } from '../types';
 import DeleteButton from './common/deleteConfirmation';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { checkUnauthorized, checkForbidden } from '../utils/response';
-import { createActionSessionExpired } from '../reducers/auth';
+import { createActionSessionExpired, createActionSetCategoryFilter } from '../reducers/auth';
 
 const Home = () => {
   
@@ -71,7 +71,11 @@ const Home = () => {
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
             const allCategories = [all, noCategory].concat(categories);
             setCategories(allCategories);
-            selectCategory(allCategories, 'all', false);
+            if (state.categoryFilter) {
+              selectCategory(allCategories, state.categoryFilter.id!, false);
+            } else {
+              selectCategory(allCategories, 'all', false);
+            }            
           })
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
         }
@@ -105,6 +109,7 @@ const Home = () => {
           PostApiService.getAllPostsForCategory(category.id!)
             .then(posts => setPosts(posts));        
         }
+        dispatch(createActionSetCategoryFilter(category));
       }
     }
     fetchPosts();
@@ -125,8 +130,8 @@ const Home = () => {
   const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
     const category = categories?.find(category => category.id === categoryId);
     setCategoryTitle(category!.title!);
-    // setCategory(category!.id === 'no_category' ||  category!.id === 'all' ? undefined: category);
     setCategory(category);
+    dispatch(createActionSetCategoryFilter(category!));
   }
 
     return (
