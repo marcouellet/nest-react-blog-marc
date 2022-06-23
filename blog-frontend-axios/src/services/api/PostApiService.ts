@@ -5,6 +5,14 @@ const POST_ENDPOINT = `/post`;
 
 class PostApi extends HttpApiService<IPost> {
  
+  private buildPostTitleFilter(postTitleFilter: string) : any {
+    let filter: any = {};
+    if (postTitleFilter) {
+       filter.title = { "$regex": postTitleFilter, "$options": "i" }
+    }
+    return filter;
+  }
+
   getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);
   };
@@ -18,18 +26,15 @@ class PostApi extends HttpApiService<IPost> {
   };
 
   findManyPosts = (postTitleFilter: string) => {
-    let filter = postTitleFilter ? {title: postTitleFilter} : {};
-    return super.findMany(`${POST_ENDPOINT}/findMany`, filter);
+    return super.findMany(`${POST_ENDPOINT}/findMany`, this.buildPostTitleFilter(postTitleFilter));
   }
 
   findManyPostsForCategory = (categoryId: string, postTitleFilter: string) => {
-    let filter = postTitleFilter ? {title: postTitleFilter} : {};
-    return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, filter);
+    return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, this.buildPostTitleFilter(postTitleFilter));
   };
 
   findManyPostsWithoutCategory = (postTitleFilter: string) => {
-    let filter = postTitleFilter ? {title: postTitleFilter} : {};
-      return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, filter);  
+      return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, this.buildPostTitleFilter(postTitleFilter));  
   };
 
   createPost = (data: IPost) => {
