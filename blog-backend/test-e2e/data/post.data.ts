@@ -1,5 +1,5 @@
 import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostFindCriterias } from '../../src/core';
+import { PostFindCriterias, FilterFindCriterias } from '../../src/core';
 
 const publishedOnDate: Date = new Date();
 
@@ -30,6 +30,8 @@ export const testE2EWithNotPartOfTitleFindPostCriterias: PostFindCriterias = { t
 export const testE2EWithUpdatedTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post };
 export const testE2EWithPartOfUpdatedTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post.substring(1,3) };
 export const testE2EWithNotPartOfUpdatedTitleFindPostCriterias: PostFindCriterias = { title: testE2EDummyUserPostUpdatedTitle_Post+'extra' };
+
+export const testWithTitleFilterFindCriterias: FilterFindCriterias = { contains: { property:'title', value:'title' }};
 
 
 export const testE2ERegisterDummyUser_Post = {
