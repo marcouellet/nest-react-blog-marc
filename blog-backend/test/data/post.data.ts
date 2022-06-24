@@ -1,6 +1,6 @@
 import { Post } from '../../src/core/entities/post.entity';
 import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostFindCriterias } from '../../src/core';
+import { PostFindCriterias, FilterFindCriterias } from '../../src/core';
 import { testUser, testUserDto, testServiceUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();
@@ -67,3 +67,4 @@ export const testServicePostWithoutCategoryDto: PostDto = {
 
 export const testEmptyPostFilterCriterias: PostFindCriterias = {};
 export const testWithTitleFindPostCriterias: PostFindCriterias = { title: 'title' };
+export const testWithTitleFilterFindCriterias: FilterFindCriterias = { contains: { property:'title', value:'title' }};
