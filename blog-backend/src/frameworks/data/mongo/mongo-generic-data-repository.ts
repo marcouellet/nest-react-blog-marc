@@ -1,5 +1,6 @@
 import { Model, Types } from 'mongoose';
 import { IGenericDataRepository } from '../../../core/repositories';
+import { buildMongoFindCriterias } from './mongo.filter.find-criterias';
 export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> {
 
   constructor(private readonly repository: Model<T>, private readonly populateOnFind: string[] = []) {}
@@ -27,28 +28,39 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
   }
 
   async findOne(criterias: {}): Promise<T> {
-    return this.repository.findOne(criterias).populate(this.populateOnFind).exec() as Promise<T>;
+    const findCriterias = buildMongoFindCriterias(criterias);
+    return this.repository.findOne(findCriterias).populate(this.populateOnFind).exec() as Promise<T>;
   }
 
   async findMany(criterias: {}): Promise<T[]> {
-    return this.repository.find(criterias).populate(this.populateOnFind).exec() as Promise<T[]>;
+    const findCriterias = buildMongoFindCriterias(criterias);
+    return this.repository.find(findCriterias).populate(this.populateOnFind).exec() as Promise<T[]>;
   }
 
   async findManyCount(criterias: {}): Promise<number> {
-    return this.repository.count(criterias).exec();
+    const findCriterias = buildMongoFindCriterias(criterias);
+    return this.repository.count(findCriterias).exec();
   }
 
-  async findManyCountForSubDocument(subDocumentName: string, subDocumentId: string): Promise<number> {
-    const id = new Types.ObjectId(subDocumentId);
-    return this.repository.count({}).where(subDocumentName).equals(id).exec();
+  async findManyCountForSubDocument(subDocumentName: string, subDocumentId: string, criterias: {}): Promise<number> {
+    const findCriterias = buildMongoFindCriterias(criterias);
+    if (subDocumentId) {
+      const id = new Types.ObjectId(subDocumentId); 
+      return this.repository.count(findCriterias).where(subDocumentName).equals(id).exec();
+    } else {
+      let crit = {...findCriterias};
+      crit[subDocumentName] = { $exists: false }
+      return this.repository.count(crit).where(subDocumentName).exec();
+    }
   }
 
   async findManyForSubDocument(subDocumentName: string, subDocumentId: string, criterias: {}): Promise<T[]> {
+    const findCriterias = buildMongoFindCriterias(criterias);
     if (subDocumentId) {
       const id = new Types.ObjectId(subDocumentId); 
-      return this.repository.find(criterias).where(subDocumentName).equals(id).exec();
+      return this.repository.find(findCriterias).where(subDocumentName).equals(id).exec();
     } else {
-      let crit = {...criterias};
+      let crit = {...findCriterias};
       crit[subDocumentName] = { $exists: false }
       return this.repository.find(crit).where(subDocumentName).exec();
     }

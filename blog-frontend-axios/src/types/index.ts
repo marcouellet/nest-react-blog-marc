@@ -77,9 +77,22 @@ export interface IUpdatePost {
   body: string;
   category?: ICategory;
 }
+export interface IFilterFindContainsCriterias {
+  property: string;
+  value: string;
+}
+export interface IFilterFindExistCriterias {
+  property: string;
+  exist: boolean;
+}
 export interface IUpdateCategory {
   title: string;
   description: string;
+}
+
+export interface IFilterFindCriterias {
+  contains?: IFilterFindContainsCriterias;
+  exist?: IFilterFindExistCriterias;
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {

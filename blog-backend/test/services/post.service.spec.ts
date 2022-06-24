@@ -84,14 +84,14 @@ describe('PostService', () => {
   describe('getNumberOfPostsForUser', () => {
     it('should return 1 post', async () => {
       expect(await postService.getNumberOfPostsForUser(testUserId)).toEqual(testUserPostsCount);
-      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('user', testPostId);
+      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('user', testPostId, {});
     });
   });
 
   describe('getNumberOfPostsForCategory', () => {
     it('should return 1', async () => {
       expect(await postService.getNumberOfPostsForCategory(testCategoryId)).toEqual(testCategoryPostsCount);
-      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('category', testCategoryId);
+      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('category', testCategoryId, {});
     });
   });
 

@@ -1,18 +1,10 @@
-import HttpApiService from "./HttpApiService";
-import { IPost, IUpdatePost } from "../../types";
+import HttpApiService from './HttpApiService';
+import { IPost, IUpdatePost } from '../../types';
+import { buildPostTitleFilter } from './FilterApiService';
 
 const POST_ENDPOINT = `/post`;
 
 class PostApi extends HttpApiService<IPost> {
- 
-  //TODO Should be done on server side
-  private buildPostTitleFilter(postTitleFilter: string) : any {
-    let filter: any = {};
-    if (postTitleFilter) {
-       filter.title = { "$regex": postTitleFilter, "$options": "i" }
-    }
-    return filter;
-  }
 
   getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);
@@ -27,15 +19,15 @@ class PostApi extends HttpApiService<IPost> {
   };
 
   findManyPosts = (postTitleFilter: string) => {
-    return super.findMany(`${POST_ENDPOINT}/findMany`, this.buildPostTitleFilter(postTitleFilter));
+    return super.findMany(`${POST_ENDPOINT}/findMany`, buildPostTitleFilter(postTitleFilter));
   }
 
   findManyPostsForCategory = (categoryId: string, postTitleFilter: string) => {
-    return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, this.buildPostTitleFilter(postTitleFilter));
+    return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, buildPostTitleFilter(postTitleFilter));
   };
 
   findManyPostsWithoutCategory = (postTitleFilter: string) => {
-      return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, this.buildPostTitleFilter(postTitleFilter));  
+      return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, buildPostTitleFilter(postTitleFilter));  
   };
 
   createPost = (data: IPost) => {
