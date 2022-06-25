@@ -28,14 +28,19 @@ export interface IPost {
   title: string;
   description: string;
   body: string;
-  user?: IUser;
+  user?: User;
   category?: ICategory;
+  image?: IPostImage;
   publishDate?: Date;
 }
 export interface ICategory {
   id?: string; // Identifier uniq
   title: string;
   description: string;
+}
+export interface IPostImage {
+  data: Buffer;
+  contentType: String;
 }
 export interface ILogin {
   email: string;
@@ -76,6 +81,7 @@ export interface IUpdatePost {
   description: string;
   body: string;
   category?: ICategory;
+  image?: IPostImage;
 }
 export interface IFilterFindContainsCriterias {
   property: string;
@@ -96,7 +102,8 @@ export interface IFilterFindCriterias {
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {
-  const updatePost: IUpdatePost = {category: post.category, title:post.title, description: post.description, body: post.body};
+  const updatePost: IUpdatePost = {category: post.category, title:post.title, description: post.description, body: post.body,
+                                    image: post.image};
   return updatePost;
 }
 

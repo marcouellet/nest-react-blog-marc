@@ -56,6 +56,7 @@ export const testE2EDummyUserCreatePostDto_Post: PostDto = {
     description: 'description',
     body: 'content of the post',
     category: undefined,
+    image: undefined,
     user: undefined,
     publishDate: publishedOnDate,
   };
@@ -65,4 +66,5 @@ export const testE2EDummyUserCreatePostDto_Post: PostDto = {
     title: testE2EDummyUserPostUpdatedTitle_Post,
     description: 'updated description',
     body: 'updated content of the post',
+    image: undefined,
   };

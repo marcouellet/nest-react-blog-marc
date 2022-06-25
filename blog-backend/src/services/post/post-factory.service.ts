@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Post, Category } from '../../core/entities';
+import { Post } from '../../core/entities';
 import { PostDto, IUpdatePostCriterias, UpdatePostDto } from '../../core/dtos';
 import { IDataRepositories } from '../../core/repositories';
 import { UserFactoryService } from '../user/user-factory.service';
@@ -21,6 +21,7 @@ export class PostFactoryService {
     post.body = postDto.body;
     post.user = this.userFactoryService.createUser(postDto.user);
     post.category = this.categoryFactoryService.createCategory(postDto.category);
+    post.image = postDto.image;
     post.publishDate = new Date();
 
     return this.dataServicesRepositories.posts.convertFromGenericEntity(post);
@@ -37,6 +38,7 @@ export class PostFactoryService {
     if (newPost.category) {
       postDto.category = this.categoryFactoryService.createCategoryDto(newPost.category);
     }
+    postDto.image = newPost.image;
     postDto.publishDate = newPost.publishDate;
 
     return postDto;

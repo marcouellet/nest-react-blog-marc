@@ -11,7 +11,8 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IErrors, IUser, ICategory, minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../../types';
+import { IErrors, IUser, ICategory, IPostImage, minimumPostTitleLength, minimumPostDescriptionLength, 
+          minimumPostBodyLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
 
@@ -22,6 +23,7 @@ const CreatePost = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
+  const [postImage, setPostImage] = useState<IPostImage>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -81,8 +83,8 @@ const CreatePost = () => {
   
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
-    const iuser: IUser = user!;
-    const postData = {...data, category, iuser};
+    const image: IPostImage | undefined = postImage;
+    const postData = {...data, category, image, user};
     await PostApiService.createPost(postData)
     .then(() => { handleSubmitFormSuccess(); })
     .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });

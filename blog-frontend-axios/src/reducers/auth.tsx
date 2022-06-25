@@ -41,18 +41,18 @@ export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   isSessionExpired: boolean;
-  categoryFilter: ICategory | null,
+  categoryFilter: ICategory | undefined,
   postTitleFilter: string,
-  user: User | null;
+  user: User | undefined;
 }
 
 export const initialState: AuthState = {
   isLoading: false,
   isAuthenticated: false,
   isSessionExpired: false,
-  categoryFilter: null,
+  categoryFilter: undefined,
   postTitleFilter: '',
-  user: null,
+  user: undefined,
 };
 
 export function authReducer(state: AuthState, action: AuthAction): AuthState {
@@ -62,7 +62,7 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
       return { ...state, isAuthenticated: true, isSessionExpired: false, user: action.user! };
     }
     case AuthActionType.Logout: {
-      return { ...state, isAuthenticated: false, isSessionExpired: false, user: null };
+      return { ...state, isAuthenticated: false, isSessionExpired: false, user: undefined };
     }
     case AuthActionType.Loading: {
       return { ...state, isLoading: action.isLoading!};
