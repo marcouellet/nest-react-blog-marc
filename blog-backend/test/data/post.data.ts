@@ -18,6 +18,7 @@ export const testPostDto: PostDto = {
   body: 'content of the post',
   category: undefined,
   user: testUserDto,
+  image: undefined,
   publishDate: publishedOnDate,
 };
 
@@ -26,6 +27,7 @@ export const testCreatePostDto: PostDto = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
   user: testUserDto,
 };
 
@@ -34,6 +36,7 @@ export const testUpdatePostDto: UpdatePostDto = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
 };
 
 export const testPost: Post = {
@@ -42,6 +45,7 @@ export const testPost: Post = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
   user: testUser,
   publishDate: publishedOnDate,
 };
@@ -52,6 +56,7 @@ export const testServicePostDto: PostDto = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
   user: testServiceUserDto,
   publishDate: publishedOnDate,
 };
@@ -61,6 +66,7 @@ export const testServicePostWithoutCategoryDto: PostDto = {
   title: 'title',
   description: 'description',
   body: 'content of the post',
+  image: undefined,
   user: testServiceUserDto,
   publishDate: publishedOnDate,
 };

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1656086688629" clover="3.2.0">
-  <project timestamp="1656086688630" name="All files">
+<coverage generated="1656165751325" clover="3.2.0">
+  <project timestamp="1656165751325" name="All files">
     <metrics statements="293" coveredstatements="293" conditionals="12" coveredconditionals="12" methods="74" coveredmethods="74" elements="379" coveredelements="379" complexity="0" loc="293" ncloc="293" packages="6" files="25" classes="25"/>
     <package name="builders">
       <metrics statements="56" coveredstatements="56" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
@@ -181,14 +181,14 @@
         <line num="11" count="8" type="stmt"/>
         <line num="12" count="8" type="stmt"/>
         <line num="14" count="8" type="stmt"/>
-        <line num="24" count="8" type="stmt"/>
-        <line num="32" count="8" type="stmt"/>
-        <line num="39" count="8" type="stmt"/>
-        <line num="49" count="8" type="stmt"/>
-        <line num="59" count="8" type="stmt"/>
-        <line num="68" count="8" type="stmt"/>
-        <line num="69" count="8" type="stmt"/>
-        <line num="70" count="8" type="stmt"/>
+        <line num="25" count="8" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="42" count="8" type="stmt"/>
+        <line num="53" count="8" type="stmt"/>
+        <line num="64" count="8" type="stmt"/>
+        <line num="74" count="8" type="stmt"/>
+        <line num="75" count="8" type="stmt"/>
+        <line num="76" count="8" type="stmt"/>
       </file>
       <file name="token.data.ts" path="F:\Documents\Documents\_Nest\nest-react-blog-marc\blog-backend\test\data\token.data.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
