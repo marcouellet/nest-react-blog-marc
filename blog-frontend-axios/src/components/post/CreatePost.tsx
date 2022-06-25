@@ -11,7 +11,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IErrors, IUser, ICategory, IPostImage, minimumPostTitleLength, minimumPostDescriptionLength, 
+import { IErrors, ICategory, IPostImage, minimumPostTitleLength, minimumPostDescriptionLength, 
           minimumPostBodyLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';

@@ -118,7 +118,7 @@ const EditPost = () => {
 
   const handleSubmitFormSuccess = () => {
     toast.success(`Post updated successfully...`);
-    navigate('/'); 
+    navigate(`/post/${post?.id}`);
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
@@ -156,7 +156,7 @@ const selectCategory = (categories: ICategory[], categoryId: string, setDirty: b
 }
 
 const handleCancelEditPost = () => {
-  navigate('/');   
+  navigate(`/post/${post?.id}`);   
 };
 
   return (

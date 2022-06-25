@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { PostApiService } from "../services/api/PostApiService";
 import { CategoryApiService } from "../services/api/CategoryApiService";
-import { IPost, UserRole } from "../types";
+import { IPost } from "../types";
 import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { ICategory, IErrors } from '../types';
-import DeleteButton from './common/deleteConfirmation';
+import ViewCard, { onViewPostDetail } from './post/ViewCard';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { checkUnauthorized, checkForbidden } from '../utils/response';
-import { createActionSessionExpired, createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../reducers/auth';
+import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../reducers/auth';
 
 const Home = () => {
   
@@ -24,42 +23,6 @@ const Home = () => {
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
   const [postTitleFilter, setPostTitleFilter] = useState<string>('');
-
-  const _removePostFromView = (id: string) => {
-    const index = posts.findIndex((post: IPost) => post.id! === id);
-    posts.splice(index, 1);
-  }
-
-  const isAdministrator = () => state.isAuthenticated && state.user?.role === UserRole.ADMIN;
-
-  const deletePostMessage = (post: IPost) => `${post.title} post`;
-
-  const handleDeletePost = async (id: string) => {
-    dispatch(createActionLoading(true));
-    await PostApiService.deletePost(id)
-     .then(() => handleDeletePostSucess())
-     .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
-    dispatch(createActionLoading(false));
-    _removePostFromView(id);
-    navigate('/');
-  }
-
-  const handleDeletePostSucess = () => {
-    toast.success(`Post deleted successfully...`);
-  }
-
-  const handleDeletePostError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Post delete failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/'); 
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Post delete failed, see error list`);
-      setErrors(apiErrors);      
-    }
-  }
 
   useEffect(() => {
     (async () => {
@@ -112,10 +75,12 @@ const Home = () => {
   }, [category, postTitleFilter])
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
+    setErrors(apiErrors);
     toast.error(`Categories reading failed, see error list`);
   }
 
   const handleFetchPostError = (apiErrors: IErrors) => {
+    setErrors(apiErrors);
     toast.error(`Post reading failed, see error list`);
   }
 
@@ -133,6 +98,10 @@ const Home = () => {
   const handlePostTitleFilterChange = (filter: string)=>{
     setPostTitleFilter(filter);
     dispatch(createActionSetPostTitleFilter(filter));
+  }
+
+  const handleViewCardDetail: onViewPostDetail = (postId: string)=>{
+    navigate(`/post/${postId}`);
   }
 
     return (
@@ -165,61 +134,7 @@ const Home = () => {
           <div className="row">
             {posts && posts.map((post: IPost) => (
               <div className="col-lg-4 col-md-6" key={post.id}>
-              <div className="card h-100">
-                <div className="single-post post-style-1">
-                  <span className="avatar">
-                    <span>
-                     <h4>User: {post.user!.username} </h4> 
-                    </span>
-                  </span>
-
-                  <div className="blog-info">
-
-                    <h4 className="title">
-                      <span>
-                        <b>{post.title}</b>
-                      </span>
-                    </h4>
-                  </div>
-                </div>
-
-                <ul className="post-footer">
-                  {
-                    !state.isLoading &&
-                    (
-                      <li>
-                      {
-                        <p>
-                          <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View Post</Link>
-                        </p>
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) &&
-                    (
-                      <li>
-                      {
-                        <p>
-                          <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-primary">Edit Post</Link>
-                        </p>
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) && 
-                    (                   
-                      <li>
-                      {
-                        <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
-                      }
-                      </li>
-                    )
-                  }
-                </ul>
-              </div>
+                <ViewCard post={post} onViewPostDetail={handleViewCardDetail}/>
             </div>
             ))}
           </div>

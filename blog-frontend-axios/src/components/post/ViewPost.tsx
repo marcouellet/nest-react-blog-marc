@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { IPost } from "../../types";
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { IPost, UserRole } from "../../types";
 import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
-import { createActionLoading } from '../../reducers/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { toLocalDateString } from '../../utils/utils';
+import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import DeleteButton from '../common/deleteConfirmation';
 
 const ViewPost = () => {
 
   const { postId } = useParams<{ postId: string }>();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
   const [errors, setErrors] = React.useState<IErrors | null>();
 
   const navigate = useNavigate();
+
+  const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
+  const deletePostMessage = (post: IPost) => `${post.title} post`;
 
   useEffect(() => {
     if (!post) {
@@ -31,6 +36,32 @@ const ViewPost = () => {
     }
   // eslint-disable-next-line
   }, []);
+
+  
+  const handleDeletePost = async (id: string) => {
+    dispatch(createActionLoading(true));
+    await PostApiService.deletePost(id)
+     .then(() => handleDeletePostSucess())
+     .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
+    dispatch(createActionLoading(false));
+    navigate('/');
+  }
+  const handleDeletePostSucess = () => {
+    toast.success(`Post deleted successfully...`);
+  }
+
+  const handleDeletePostError = (apiErrors: IErrors) => {
+    if (checkForbidden(apiErrors)) {
+      toast.error(`Post delete failed, session expired`);
+      dispatch(createActionSessionExpired());
+      navigate('/'); 
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`Post delete failed, see error list`);
+      setErrors(apiErrors);      
+    }
+  }
 
   const handleFetchPostError = (apiErrors: IErrors) => {
     toast.error(`Post reading failed, see error list`);
@@ -100,12 +131,24 @@ const ViewPost = () => {
                         </h4>
                        </div>
                   </div>
-                  <div className="form-group col-md-1 pull-right">
-                    <button className="btn btn-secondary"  onClick={ () => handleReturn() } >
+                  <div className="form-group row-md-2 pull-right">
+                    <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
                       Return
                     </button>
                     {isLoading &&
                       <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                    {
+                      isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
+                      (
+                        <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  
+                      )
+                    }
+                    {
+                      isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
+                      (               
+                          <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
+                      )
                     }
                   </div>
                 </div>               
