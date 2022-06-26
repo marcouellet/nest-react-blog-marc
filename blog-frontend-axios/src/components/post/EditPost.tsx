@@ -13,9 +13,11 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { IErrors } from '../../types';
+import { IErrors, ImageData } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
+import Image from '../common/Image';
+import UploadImage from '../common/UploadImage';
 
 const EditPost = () => {
 
@@ -159,6 +161,17 @@ const handleCancelEditPost = () => {
   navigate(`/post/${post?.id}`);   
 };
 
+const handleImageUpload = (image: ImageData) => {
+    const post_: IPost = { ...post!, image};
+    setPost(post_);
+}
+
+const handleDeleteImage = () => {
+  const post_: IPost = { ...post!};
+  delete post_.image;
+  setPost(post_);
+}
+
   return (
     <div className={'page-wrapper'}>
     {post &&
@@ -168,24 +181,49 @@ const handleCancelEditPost = () => {
           {errorList && <ListErrors errors={errorList} />}
           <form id={"create-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
 
-          <div className="form-group ">
-          <div className="row">
-            <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-                {categories && categories.map((category: ICategory) => 
-                (
-                  <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
-                ))
-              }
-            </DropdownButton>
-            <input style={ {float: 'right'} }    
-              type="text" disabled  placeholder="no category selected" 
-              {...register('categoryTitle')}
-              className={`col-md-2 form-control float-right ${errors.categoryTitle ? 'is-invalid' : ''}`}           
-            />
-          </div>
-          <div className="invalid-feedback">{errors.categoryTitle?.message}</div>
-        </div>
+            <div className="form-group col-md-8">
+              <div className="row">
+                <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
+                    {categories && categories.map((category: ICategory) => 
+                    (
+                      <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                    ))
+                  }
+                </DropdownButton>
+                <input    
+                  type="text" disabled  placeholder="no category selected" 
+                  {...register('categoryTitle')}
+                  className={`col-md-2 form-control float-right ${errors.categoryTitle ? 'is-invalid' : ''}`}           
+                />
+                </div>
+              <div className="invalid-feedback">{errors.categoryTitle?.message}</div>
+            </div>
 
+            <div className="form-group col-md-4">
+              <div className="row">
+                <label className="col-md-2"> Image: </label>
+                { post.image && 
+                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                    Delete Image
+                  </button>  
+                }   
+                <UploadImage onImageUpload={handleImageUpload}/>                        
+              </div>
+            </div>
+
+            <div className="form-group col-md-12">
+
+              { post.image && <Image imageData={post.image}/> }        
+
+              <br/>
+              <input 
+                type="text"
+                placeholder="Enter title"
+                {...register('title')}
+                className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
+              />
+              <div className="invalid-feedback">{errors.title?.message}</div>
+           </div>
 
             <div className="form-group col-md-12">
               <label htmlFor="title"> Title </label>

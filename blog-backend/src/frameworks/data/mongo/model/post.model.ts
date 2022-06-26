@@ -4,8 +4,7 @@ import { Category } from './category.model';
 import { User } from './user.model';
 import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../../../../core/entities/post.entity';
 import { Optional } from '@nestjs/common';
-import { IPostImage } from '../../../../core/entities/post.entity';
-import { PostImage } from './post.image.model';
+import { Image } from './image.model';
 
 export type PostDocument = Post & Document;
 @Schema()
@@ -19,8 +18,8 @@ export class Post {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: false })
   category: Category;
   @Optional()
-  @Prop({ type: PostImage, required: false })
-  image: IPostImage;
+  @Prop({ type: Image, required: false })
+  image: Image;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user: User;
   @Prop({ type: Date, default: Date.now })

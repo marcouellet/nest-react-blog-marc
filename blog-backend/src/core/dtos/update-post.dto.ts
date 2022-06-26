@@ -1,7 +1,8 @@
 import { IsString, IsNotEmpty, MinLength, ValidateNested, IsOptional } from '@nestjs/class-validator';
 import { Category } from '../../core/entities';
 import { CategoryDto } from '../dtos';
-import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength, IPostImage } from '../entities/post.entity';
+import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../entities/post.entity';
+import { ImageData } from'../interfaces';
 
 export class UpdatePostDto {
     @IsString()
@@ -29,7 +30,7 @@ export class UpdatePostDto {
     category: CategoryDto;
 
     @IsOptional()
-    image: IPostImage;
+    image: ImageData;
   }
 
-export interface IUpdatePostCriterias {category: Category, title: string; description: string; body: string; }
+export interface IUpdatePostCriterias {category: Category, title: string; description: string; body: string; image: ImageData}

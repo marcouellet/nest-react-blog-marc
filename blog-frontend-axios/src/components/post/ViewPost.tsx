@@ -10,6 +10,7 @@ import { IErrors } from '../../types';
 import { toLocalDateString } from '../../utils/utils';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import DeleteButton from '../common/deleteConfirmation';
+import Image from '../common/Image';
 
 const ViewPost = () => {
 
@@ -91,6 +92,7 @@ const ViewPost = () => {
               (
                 <div className="main-post">
                   <div className="post-top-area">
+                  { post.image && <Image imageData={post.image}/> }
                     <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
                       <div>
                         <br/>

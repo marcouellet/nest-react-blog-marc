@@ -1,16 +1,12 @@
 import { User, Category } from './';
-
-export interface IPostImage {
-  data: Buffer;
-  contentType: String;
-}
+import { ImageData } from '../interfaces';
 export class Post {
   id?: string;
   title: string;
   description: string;
   body: string;
   category: Category;
-  image: IPostImage;
+  image: ImageData;
   user: User;
   publishDate: Date;
 }

@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsDate, ValidateNested, IsOptional } from '@nestjs/class-validator';
 import { UserDto } from './user.dto';
 import { CategoryDto } from './category.dto';
-import { IPostImage } from '../entities/post.entity';
+import { ImageData } from '../interfaces';
 
 export class PostDto {
   @IsString()
@@ -24,7 +24,7 @@ export class PostDto {
   category?: CategoryDto;
 
   @IsOptional()
-  image: IPostImage;
+  image: ImageData;
 
   @IsNotEmpty()
   @ValidateNested()

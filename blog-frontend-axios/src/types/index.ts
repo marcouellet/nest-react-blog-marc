@@ -30,7 +30,7 @@ export interface IPost {
   body: string;
   user?: User;
   category?: ICategory;
-  image?: IPostImage;
+  image?: ImageData;
   publishDate?: Date;
 }
 export interface ICategory {
@@ -38,9 +38,9 @@ export interface ICategory {
   title: string;
   description: string;
 }
-export interface IPostImage {
+export interface ImageData {
   data: Buffer;
-  contentType: String;
+  contentType: string;
 }
 export interface ILogin {
   email: string;
@@ -81,7 +81,7 @@ export interface IUpdatePost {
   description: string;
   body: string;
   category?: ICategory;
-  image?: IPostImage;
+  image?: ImageData;
 }
 export interface IFilterFindContainsCriterias {
   property: string;
@@ -99,6 +99,16 @@ export interface IUpdateCategory {
 export interface IFilterFindCriterias {
   contains?: IFilterFindContainsCriterias;
   exist?: IFilterFindExistCriterias;
+}
+export interface Image {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {

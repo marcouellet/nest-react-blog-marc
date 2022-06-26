@@ -11,10 +11,12 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IErrors, ICategory, IPostImage, minimumPostTitleLength, minimumPostDescriptionLength, 
+import { IErrors, ICategory, ImageData, minimumPostTitleLength, minimumPostDescriptionLength, 
           minimumPostBodyLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/response';
 import { createActionSessionExpired } from '../../reducers/auth';
+import UploadImage from '../common/UploadImage';
+import Image from '../common/Image';
 
 const CreatePost = () => {
 
@@ -23,7 +25,7 @@ const CreatePost = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
-  const [postImage, setPostImage] = useState<IPostImage>();
+  const [postImage, setPostImage] = useState<ImageData>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -42,7 +44,7 @@ const CreatePost = () => {
     body: string;
   };
 
-  const defaultValues = {title: '', description: '', body: '', categoryTitle: ''};
+  const defaultValues = {title: '', description: '', body: '', categoryTitle: '', image: undefined};
 
   const {
     register,
@@ -83,7 +85,7 @@ const CreatePost = () => {
   
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
-    const image: IPostImage | undefined = postImage;
+    const image: ImageData | undefined = postImage;
     const postData = {...data, category, image, user};
     await PostApiService.createPost(postData)
     .then(() => { handleSubmitFormSuccess(); })
@@ -131,6 +133,14 @@ const CreatePost = () => {
     navigate('/');   
   };
 
+  const handleImageUpload = (image: ImageData) => {
+    setPostImage(image);
+  }
+  
+  const handleDeleteImage = () => {
+    setPostImage(undefined);
+  }
+
   return (
     <div>
     <div className={"col-md-12 form-wrapper"}>
@@ -156,7 +166,21 @@ const CreatePost = () => {
           <div className="invalid-feedback">{errors.categoryTitle?.message}</div>
         </div>
 
+        <div className="form-group col-md-4">
+          <div className="row">
+            <label className="col-md-2"> Image: </label>
+            { postImage && 
+              <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                Delete Image
+              </button>  
+            }  
+            <UploadImage onImageUpload={handleImageUpload}/>                
+            </div>
+        </div>
+
         <div className="form-group col-md-12">
+        { postImage && <Image imageData={postImage}/> }
+        <br/>
           <label htmlFor="title"> Title </label>
           <input 
             type="text"

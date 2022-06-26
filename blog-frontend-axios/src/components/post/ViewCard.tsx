@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {Container ,Card, Button} from 'react-bootstrap';
 import { IPost } from "../../types";
+import Image from '../common/Image';
 
 type ViewCardProps = React.HTMLProps<HTMLElement> & {
   post: IPost,
@@ -21,6 +22,7 @@ const ViewCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetail}) 
               <Card.Header>
                 <span>{post.user?.username}</span>
               </Card.Header> 
+              { post.image && <Image imageData={post.image}/> }
               <Card.Title>
                 <br/>
                 {post.title}
