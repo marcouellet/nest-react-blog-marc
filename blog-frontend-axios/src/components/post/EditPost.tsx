@@ -28,6 +28,7 @@ const EditPost = () => {
   const [post, setPost] = useState<IPost>();
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
+  const [postImage, setPostImage] = useState<ImageData>();
  
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -83,6 +84,7 @@ const EditPost = () => {
           .then(post => { 
             setPost(post); 
             reset(post);
+            setPostImage(post?.image);
             if (post?.category) {
               selectCategory(allCategories, post.category.id!, false);
             }
@@ -100,7 +102,8 @@ const EditPost = () => {
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (post && isDirty) {
       dispatch(createActionLoading(true));
-      const postData: IUpdatePost = createPostForUpdate({...post, ...data, category});
+      const image = postImage;
+      const postData: IUpdatePost = createPostForUpdate({...post, ...data, image, category});
       await PostApiService.updatePost(post.id!, postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
@@ -162,14 +165,11 @@ const handleCancelEditPost = () => {
 };
 
 const handleImageUpload = (image: ImageData) => {
-    const post_: IPost = { ...post!, image};
-    setPost(post_);
+  setPostImage(image);
 }
 
 const handleDeleteImage = () => {
-  const post_: IPost = { ...post!};
-  delete post_.image;
-  setPost(post_);
+  setPostImage(undefined);
 }
 
   return (
@@ -202,7 +202,7 @@ const handleDeleteImage = () => {
             <div className="form-group col-md-4">
               <div className="row">
                 <label className="col-md-2"> Image: </label>
-                { post.image && 
+                { postImage && 
                   <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
                     Delete Image
                   </button>  
@@ -213,7 +213,12 @@ const handleDeleteImage = () => {
 
             <div className="form-group col-md-12">
 
-              { post.image && <Image imageData={post.image}/> }        
+            { postImage && 
+              <>
+                <Image imageData={postImage}/> 
+                <br/>
+              </>
+            }    
 
               <br/>
               <input 

@@ -179,7 +179,12 @@ const CreatePost = () => {
         </div>
 
         <div className="form-group col-md-12">
-        { postImage && <Image imageData={postImage}/> }
+        { postImage && 
+          <>
+            <Image imageData={postImage}/> 
+            <br/>
+          </>
+        }
         <br/>
           <label htmlFor="title"> Title </label>
           <input 

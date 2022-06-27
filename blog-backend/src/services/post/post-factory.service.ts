@@ -38,7 +38,11 @@ export class PostFactoryService {
     if (newPost.category) {
       postDto.category = this.categoryFactoryService.createCategoryDto(newPost.category);
     }
-    postDto.image = newPost.image;
+    if (post.image) {
+      postDto.image = {data: post.image.data, contentType: post.image.contentType};
+    } else {
+      postDto.image = undefined;
+    }
     postDto.publishDate = newPost.publishDate;
 
     return postDto;

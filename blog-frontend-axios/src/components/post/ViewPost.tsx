@@ -92,7 +92,12 @@ const ViewPost = () => {
               (
                 <div className="main-post">
                   <div className="post-top-area">
-                  { post.image && <Image imageData={post.image}/> }
+                  { post.image && 
+                    <>
+                      <Image imageData={post.image}/> 
+                      <br/>
+                    </>
+                  }  
                     <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
                       <div>
                         <br/>
