@@ -7,8 +7,8 @@ import { createActionLoading, createActionSessionExpired } from '../../reducers/
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { toLocalDateString } from '../../utils/utils';
-import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import { toLocalDateString } from '../../utils/local.storage.utils';
+import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import DeleteButton from '../common/deleteConfirmation';
 import Image from '../common/Image';
 

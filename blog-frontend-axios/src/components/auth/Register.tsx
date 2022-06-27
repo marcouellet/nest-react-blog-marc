@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
-import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../../types";
 

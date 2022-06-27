@@ -7,7 +7,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { toLocalDateString } from '../../utils/utils';
+import { toLocalDateString } from '../../utils/local.storage.utils';
 
 const ViewUser = () => {
 

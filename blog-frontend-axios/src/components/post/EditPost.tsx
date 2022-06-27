@@ -14,10 +14,10 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { IErrors, ImageData } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
-import UploadImage from '../common/UploadImage';
+import ImageUpload, {ImageResizeProps} from '../common/ImageUpload';
 
 const EditPost = () => {
 
@@ -172,6 +172,8 @@ const handleDeleteImage = () => {
   setPostImage(undefined);
 }
 
+const imageMaxSize: ImageResizeProps = {maxWidth:260, maxHeight:260}
+
   return (
     <div className={'page-wrapper'}>
     {post &&
@@ -207,7 +209,7 @@ const handleDeleteImage = () => {
                     Delete Image
                   </button>  
                 }   
-                <UploadImage onImageUpload={handleImageUpload}/>                        
+                <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                     
               </div>
             </div>
 

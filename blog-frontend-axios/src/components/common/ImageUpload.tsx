@@ -1,7 +1,13 @@
 import React from 'react';
 import { ImageData } from '../../types';
+import { resizeImage } from '../../utils/image.utils';
 
+export interface ImageResizeProps {
+    maxWidth:number,  
+    maxHeight:number,
+}
 export interface ImageUploadProps {
+    resize: ImageResizeProps,
     onImageUpload: (imageData: ImageData) => void;
 }
 
@@ -16,13 +22,18 @@ const ImageUpload = (props: ImageUploadProps) => {
         });
     }
 
-    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             let img = event.target.files[0];
+
             getArrayBuffer(img).then(data => {
-                const buffer =  Buffer.from(data);
-                const imageData: ImageData = { data: buffer, contentType: img.type};
-                props.onImageUpload(imageData);
+                let imageData: ImageData = { data: Buffer.from(data), contentType: img.type };
+                if (props.resize) {
+                    resizeImage(imageData, props.resize.maxWidth, props.resize.maxHeight) 
+                        .then(imageData => props.onImageUpload(imageData));
+                } else {
+                    props.onImageUpload(imageData);
+                }
             });
         }
     };

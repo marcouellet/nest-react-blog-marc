@@ -8,7 +8,7 @@ import { createActionLoading } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import DeleteButton from '../common/deleteConfirmation'
-import { checkUnauthorized } from '../../utils/response';
+import { checkUnauthorized } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import { PostApiService } from '../../services/api/PostApiService';
 

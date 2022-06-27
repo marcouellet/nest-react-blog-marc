@@ -13,9 +13,9 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IErrors, ICategory, ImageData, minimumPostTitleLength, minimumPostDescriptionLength, 
           minimumPostBodyLength } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
-import UploadImage from '../common/UploadImage';
+import ImageUpload, {ImageResizeProps} from '../common/ImageUpload';
 import Image from '../common/Image';
 
 const CreatePost = () => {
@@ -141,6 +141,8 @@ const CreatePost = () => {
     setPostImage(undefined);
   }
 
+  const imageMaxSize: ImageResizeProps = {maxWidth:260, maxHeight:260}
+
   return (
     <div>
     <div className={"col-md-12 form-wrapper"}>
@@ -174,7 +176,7 @@ const CreatePost = () => {
                 Delete Image
               </button>  
             }  
-            <UploadImage onImageUpload={handleImageUpload}/>                
+            <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
             </div>
         </div>
 
