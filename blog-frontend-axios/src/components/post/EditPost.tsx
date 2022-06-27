@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
 import { IPost, IUpdatePost, ICategory, createPostForUpdate, minimumPostTitleLength, minimumPostDescriptionLength,
-          minimumPostBodyLength } from "../../types";
+          minimumPostBodyLength, ImageSizeProps } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { createActionLoading } from '../../reducers/auth';
@@ -17,7 +17,7 @@ import { IErrors, ImageData } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
-import ImageUpload, {ImageResizeProps} from '../common/ImageUpload';
+import ImageUpload from '../common/ImageUpload';
 
 const EditPost = () => {
 
@@ -172,7 +172,7 @@ const handleDeleteImage = () => {
   setPostImage(undefined);
 }
 
-const imageMaxSize: ImageResizeProps = {maxWidth:260, maxHeight:260}
+const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
 
   return (
     <div className={'page-wrapper'}>
@@ -214,22 +214,12 @@ const imageMaxSize: ImageResizeProps = {maxWidth:260, maxHeight:260}
             </div>
 
             <div className="form-group col-md-12">
-
-            { postImage && 
-              <>
-                <Image imageData={postImage}/> 
-                <br/>
-              </>
-            }    
-
-              <br/>
-              <input 
-                type="text"
-                placeholder="Enter title"
-                {...register('title')}
-                className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
-              />
-              <div className="invalid-feedback">{errors.title?.message}</div>
+              { postImage && 
+                <>
+                  <Image imageData={postImage}/> 
+                  <br/>
+                </>
+              }    
            </div>
 
             <div className="form-group col-md-12">

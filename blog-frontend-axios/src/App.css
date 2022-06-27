@@ -20,3 +20,15 @@
 .App-link {
   color: #09d3ac;
 }
+
+img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.image-container {
+  width: fit-content; 
+  /* To adjust the height as well */ 
+  height: fit-content;
+}

@@ -11,11 +11,11 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IErrors, ICategory, ImageData, minimumPostTitleLength, minimumPostDescriptionLength, 
+import { IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, minimumPostDescriptionLength, 
           minimumPostBodyLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
-import ImageUpload, {ImageResizeProps} from '../common/ImageUpload';
+import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
 
 const CreatePost = () => {
@@ -141,7 +141,7 @@ const CreatePost = () => {
     setPostImage(undefined);
   }
 
-  const imageMaxSize: ImageResizeProps = {maxWidth:260, maxHeight:260}
+  const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
 
   return (
     <div>

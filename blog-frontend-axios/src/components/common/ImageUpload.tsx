@@ -1,13 +1,8 @@
 import React from 'react';
-import { ImageData } from '../../types';
+import { ImageData, ImageSizeProps } from '../../types';
 import { resizeImage } from '../../utils/image.utils';
-
-export interface ImageResizeProps {
-    maxWidth:number,  
-    maxHeight:number,
-}
 export interface ImageUploadProps {
-    resize: ImageResizeProps,
+    resize: ImageSizeProps,
     onImageUpload: (imageData: ImageData) => void;
 }
 

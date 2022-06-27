@@ -100,15 +100,9 @@ export interface IFilterFindCriterias {
   contains?: IFilterFindContainsCriterias;
   exist?: IFilterFindExistCriterias;
 }
-export interface Image {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  destination: string;
-  filename: string;
-  path: string;
-  size: number;
+export interface ImageSizeProps {
+  maxWidth:number,  
+  maxHeight:number,
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {

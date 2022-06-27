@@ -1,8 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import React from 'react';
 import {Container ,Card, Button} from 'react-bootstrap';
-import { IPost } from "../../types";
-import Image from '../common/Image';
+import { IPost, ImageSizeProps } from "../../types";
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils';
 
 type ViewCardProps = React.HTMLProps<HTMLElement> & {
   post: IPost,
@@ -13,16 +14,18 @@ export type onViewPostDetail = (postId: string) => void;
 
 const ViewCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetail}) => {
 
+  const imageMaxSize: ImageSizeProps = {maxWidth:260, maxHeight:260};
+
   return (  
     <div className="ViewCard">  
       <Container className='p-4'>  
           <Card>  
             {/* <Card.Img variant="top" src={post.image?.data} />   */}
-            <Card.Body>
+            <Card.Body className="image-container">
               <Card.Header>
                 <span>{post.user?.username}</span>
               </Card.Header> 
-              { post.image && <Image imageData={post.image}/> }
+              { post.image && <ImageResize imageData={post.image} resize={imageMaxSize}/> }
               <Card.Title>
                 <br/>
                 {post.title}
