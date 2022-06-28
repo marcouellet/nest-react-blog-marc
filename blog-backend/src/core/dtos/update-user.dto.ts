@@ -33,4 +33,4 @@ export class UpdateUserDto {
     image?: ImageData;
 }
 
-export interface IUpdateUserCriterias {username: string; email: string; password: string;  role: string; }
+export interface IUpdateUserCriterias {username: string; email: string; password: string;  role: string; image: ImageData}

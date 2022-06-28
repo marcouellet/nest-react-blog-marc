@@ -77,18 +77,17 @@ export class PostService {
   async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<PostDto> {
     const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
     return this.getPost(id)
-      .then(() => {   
+      .then(async () => {   
         if (!updatePostDto.category) {
-          return this.dataServicesRepositories.posts.unset(id, {category: ""})
-          .then(_ => 
-             this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])          
-          )
-          .then(post => this.processPost(post));
-        } else {
-        return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])
-        .then(post => this.processPost(post));
+          await this.dataServicesRepositories.posts.unset(id, {category: ""});
         }
-      })
+        if (!updatePostDto.image) {
+          await this.dataServicesRepositories.posts.unset(id, {image: ""});
+        }
+
+        return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])  
+        .then(post => this.processPost(post));
+      });
   }
 
   async deletePost(id: string): Promise<PostDto> {

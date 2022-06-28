@@ -81,9 +81,6 @@ export class UserService {
       throw new ForbiddenException(`User with email "${email}" already exist!`);
     }
     
-    // if ( await this.verifyUserExist({ email })) {
-    //   throw new ForbiddenException('User with same email already exist!');
-    // }
     createUserDto.role = userDto.role ? userDto.role :  UserRole.USER;
     createUserDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(createUserDto);
@@ -100,6 +97,9 @@ export class UserService {
         ? user.password
         : this.cryptoService.hashPassword(updatedUserCriterias.password);
       });
+    if (!updateUserDto.image) {
+      await this.dataServicesRepositories.users.unset(id, {image: ""});
+    }
     return this.dataServicesRepositories.users.update(id, updatedUserCriterias)
       .then((user: User) => this.processUserUnrestricted(user));
    }
