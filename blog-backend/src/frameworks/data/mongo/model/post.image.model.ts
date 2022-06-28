@@ -3,8 +3,8 @@ import * as mongoose from 'mongoose';
 import { ImageData } from '../../../../core/interfaces';
 
 export class Image implements ImageData {
-  @Prop({ type: mongoose.Schema.Types.Buffer })
-  data: Buffer;
+  @Prop({ type: String })
+  base64: string;
   @Prop({ type: String })
   contentType: String;
 }

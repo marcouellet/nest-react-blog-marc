@@ -3,11 +3,9 @@ import { ImageData } from '../types';
 export function resizeImage(imageData:ImageData, maxWidth:number, maxHeight:number): Promise<ImageData> {
 
     return new Promise<ImageData>((resolve, reject) => {
-        const base64 = Buffer.from(imageData.data.valueOf()).toString('base64');
-        const imageContentType = imageData.contentType.trim();
-        const imageSrc =  'data:' + imageContentType + ';base64,' + base64
+
         let image = new Image();
-        image.src = imageSrc;
+        image.src = 'data:' + imageData.contentType.trim() + ';base64,' + imageData.base64;
         image.onload = () => {
             let width = image.width;
             let height = image.height;
@@ -38,8 +36,8 @@ export function resizeImage(imageData:ImageData, maxWidth:number, maxHeight:numb
             canvas.toBlob(blob => {
                 blob?.arrayBuffer()
                     .then((array) => {
-                        const buffer = Buffer.from(array);
-                        const newImageData : ImageData = {data: buffer, contentType: imageContentType };
+                        const base64 = Buffer.from(array).toString('base64');
+                        const newImageData : ImageData = {base64: base64, contentType: imageData.contentType.trim() };
                         resolve(newImageData);
                     });
             });

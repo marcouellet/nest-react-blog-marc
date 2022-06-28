@@ -8,7 +8,7 @@ import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { ICategory, IErrors } from '../types';
-import ViewCard, { onViewPostDetail } from './post/ViewCard';
+import ViewPostCard, { onViewPostDetail } from './post/ViewPostCard';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../reducers/auth';
 
@@ -134,7 +134,7 @@ const Home = () => {
           <div className="row">
             {posts && posts.map((post: IPost) => (
               <div className="col-lg-4 col-md-6" key={post.id}>
-                <ViewCard post={post} onViewPostDetail={handleViewCardDetail}/>
+                <ViewPostCard post={post} onViewPostDetail={handleViewCardDetail}/>
             </div>
             ))}
           </div>

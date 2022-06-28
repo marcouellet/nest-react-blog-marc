@@ -1,4 +1,4 @@
 export interface ImageData {
-    data: Buffer;
+    base64: string;
     contentType: String;
   }

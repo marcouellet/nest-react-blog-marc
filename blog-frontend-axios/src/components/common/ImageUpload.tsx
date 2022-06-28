@@ -22,7 +22,7 @@ const ImageUpload = (props: ImageUploadProps) => {
             let img = event.target.files[0];
 
             getArrayBuffer(img).then(data => {
-                let imageData: ImageData = { data: Buffer.from(data), contentType: img.type };
+                let imageData: ImageData = { base64: Buffer.from(data).toString('base64'), contentType: img.type };
                 if (props.resize) {
                     resizeImage(imageData, props.resize.maxWidth, props.resize.maxHeight) 
                         .then(imageData => props.onImageUpload(imageData));

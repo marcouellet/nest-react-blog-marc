@@ -12,7 +12,7 @@ type ViewCardProps = React.HTMLProps<HTMLElement> & {
 
 export type onViewPostDetail = (postId: string) => void;
 
-const ViewCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetail}) => {
+const ViewPostCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetail}) => {
 
   const imageMaxSize: ImageSizeProps = {maxWidth:260, maxHeight:260};
 
@@ -46,4 +46,4 @@ const ViewCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetail}) 
   );  
 };
 
-export default ViewCard;
+export default ViewPostCard;

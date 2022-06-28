@@ -8,11 +8,9 @@ interface ImageProps {
 
 const Image = (props: ImageProps) => {
 
-  const base64 = Buffer.from(props.imageData.data.valueOf()).toString('base64');
-
   return  (
     <img 
-      src={ `data:${props.imageData.contentType};base64,` + base64} 
+      src={ `data:${props.imageData.contentType};base64,` + props.imageData.base64} 
       onError={() => {
         props.onError && props.onError();
       }}

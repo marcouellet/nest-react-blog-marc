@@ -39,7 +39,7 @@ export interface ICategory {
   description: string;
 }
 export interface ImageData {
-  data: Buffer;
+  base64: string;
   contentType: string;
 }
 export interface ILogin {
