@@ -117,18 +117,18 @@ const ViewUser = () => {
                       <h5>{user.role}</h5>
                       </div>
                   </div>
-                  <div className="col-md-3 pull-right">
-                    <button className="btn btn-secondary"  onClick={ () => handleReturn() } >
+                  <div className="form-group row-md-2 pull-right">
+                    <button className="btn ml-2 btn-secondary" onClick={ () => handleReturn() } >
                       Return
                     </button>
                     {isLoading &&
                       <span className="fa fa-circle-o-notch fa-spin" />
                     }
                     {isAuthenticated && !isLoading && 
-                      <Link to={`/user/edit/${user.id}`} className="btn btn-sm btn-primary">Edit User</Link>
+                      <Link to={`/user/edit/${user.id}`} className="btn ml-2 btn-primary">Edit User</Link>
                     }
                     {isAuthenticated && !isLoading &&  
-                      <DeleteButton message={deleteUserMessage(user)} onClick={() => handleDeleteUser(user.id!)} className="btn btn-danger">Delete User</DeleteButton>
+                      <DeleteButton message={deleteUserMessage(user)} onClick={() => handleDeleteUser(user.id!)} className="btn ml-2 btn-danger">Delete User</DeleteButton>
                     }
                   </div>
                 </div>   

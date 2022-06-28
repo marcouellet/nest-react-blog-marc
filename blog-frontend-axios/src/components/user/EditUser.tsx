@@ -32,8 +32,18 @@ const EditUser = () => {
       .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
       .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
-    password: Yup.string().required('Password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+    password: Yup.lazy(value => {
+      if (
+        value &&
+        Object.values(value).some(v => !(v === null || v === undefined || v === ""))
+      ) {
+        // Return our normal validation
+        return Yup.string().required()
+          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
+        }
+      // Otherwise, return a simple validation
+      return Yup.mixed().notRequired();
+    }),
     role: Yup.string().required('Role is required'),
     imageChanged: Yup.bool(),
   });
@@ -41,12 +51,12 @@ const EditUser = () => {
   type UpdateSubmitForm = {
     username: string;
     email: string;
-    password: string;
+    password?: string;
     role: string;
     imageChanged: boolean;
   };
 
-  const defaultValues = {username: user?.username, email: user?.email, password: '', role: user?.role, imageChanged: false};
+  const defaultValues = {username: user?.username, email: user?.email, password: undefined, role: user?.role, imageChanged: false};
 
   const {
     register,
@@ -200,10 +210,10 @@ const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
             <div className="form-group col-md-12">
               <label htmlFor="password"> Enter Password </label>
               <input 
-                type="text" 
+                type="password" 
                 placeholder="Enter a value to change current password" 
                 {...register('password')}
-                className={`form-control`}           
+                className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
               />
               <div className="invalid-feedback">{errors.password?.message}</div>
             </div>
