@@ -29,7 +29,7 @@ const EditPost = () => {
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
- 
+
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
       .min(minimumPostTitleLength, `Title must be at least ${minimumPostTitleLength} characters long`),
@@ -38,6 +38,7 @@ const EditPost = () => {
     body: Yup.string().required('Content is required')
       .min(minimumPostBodyLength, `Content must be at least ${minimumPostBodyLength} characters long`),
     categoryTitle: Yup.string(),
+    imageChanged: Yup.bool(),
   });
 
   type UpdateSubmitForm = {
@@ -45,9 +46,11 @@ const EditPost = () => {
     title: string;
     description: string;
     body: string;
+    imageChanged: boolean;
   };
 
-  const defaultValues = {categoryTitle: '', title: post?.title, description: post?.description, body: post?.body};
+  const defaultValues = {categoryTitle: '', title: post?.title, description: post?.description, body: post?.body,
+                          imageChanged: false};
 
   const {
     register,
@@ -84,7 +87,6 @@ const EditPost = () => {
           .then(post => { 
             setPost(post); 
             reset(post);
-            setPostImage(post?.image);
             if (post?.category) {
               selectCategory(allCategories, post.category.id!, false);
             }
@@ -96,8 +98,13 @@ const EditPost = () => {
       dispatch(createActionLoading(false));
 
     })();
- // eslint-disable-next-line
+  // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setImageData(post?.image);
+  // eslint-disable-next-line
+  }, [post]);
 
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (post && isDirty) {
@@ -165,11 +172,20 @@ const handleCancelEditPost = () => {
 };
 
 const handleImageUpload = (image: ImageData) => {
-  setPostImage(image);
+  setImageData(image);
 }
 
 const handleDeleteImage = () => {
-  setPostImage(undefined);
+  setImageData(undefined);
+}
+
+const setImageData = (image: ImageData | undefined) => {
+  const isImageDefined = image !== undefined;
+  const isInitialImageDefined = post?.image !== undefined;
+  const imageChanged = (isImageDefined !== isInitialImageDefined) ||
+                        (isImageDefined && image?.base64 !== post?.image?.base64);
+  setValue('imageChanged', imageChanged, {shouldDirty: true});
+  setPostImage(image);
 }
 
 const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
@@ -214,6 +230,7 @@ const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
             </div>
 
             <div className="form-group col-md-12">
+              {/* <input type="text" {...register('imageData')} hidden/>                             */}
               { postImage && 
                 <>
                   <Image imageData={postImage}/> 

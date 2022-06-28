@@ -35,6 +35,7 @@ const EditUser = () => {
     password: Yup.string().required('Password is required')
       .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
     role: Yup.string().required('Role is required'),
+    imageChanged: Yup.bool(),
   });
 
   type UpdateSubmitForm = {
@@ -42,9 +43,10 @@ const EditUser = () => {
     email: string;
     password: string;
     role: string;
+    imageChanged: boolean;
   };
 
-  const defaultValues = {username: user?.username, email: user?.email, password: '', role: user?.role};
+  const defaultValues = {username: user?.username, email: user?.email, password: '', role: user?.role, imageChanged: false};
 
   const {
     register,
@@ -70,6 +72,11 @@ const EditUser = () => {
     }
   // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setImageData(user?.image);
+  // eslint-disable-next-line
+  }, [user]);
 
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (user && isDirty) {
@@ -121,11 +128,20 @@ const handleRoleSelect=(e: any)=>{
 }
 
 const handleImageUpload = (image: ImageData) => {
-  setUserImage(image);
+  setImageData(image);
 }
 
 const handleDeleteImage = () => {
-  setUserImage(undefined);
+  setImageData(undefined);
+}
+
+const setImageData = (image: ImageData | undefined) => {
+  const isImageDefined = image !== undefined;
+  const isInitialImageDefined = user?.image !== undefined;
+  const imageChanged = (isImageDefined !== isInitialImageDefined) ||
+                        (isImageDefined && image?.base64 !== user?.image?.base64);
+  setValue('imageChanged', imageChanged, {shouldDirty: true});
+  setUserImage(image);
 }
 
 const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
