@@ -92,51 +92,51 @@ const ViewPost = () => {
               (
                 <div className="main-post">
                   <div className="post-top-area">
-                  { post.image && 
-                    <>
-                      <Image imageData={post.image}/> 
-                      <br/>
-                    </>
-                  }  
+                    { post.image && 
+                      <>
+                        <Image imageData={post.image}/> 
+                        <br/>
+                      </>
+                    }  
                     <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
-                      <div>
-                        <br/>
-                        <h4 className="title">
-                          <span>
-                            Date posted:&nbsp;{getDateString(post.publishDate!)}
-                          </span>
-                        </h4>
-                        <br/>
-                        <h4 className="category">
-                          <span>
-                            Category:
-                          </span>
-                        </h4>
-                        <h5>{post.category ? post.category.title : 'No category assigned'}</h5>
-                        <br/>
-                       <h4 className="title">
-                          <span>
-                            Title:
-                          </span>
-                        </h4>
-                        <h5>{post.title}</h5>
-                        <br/>
-                        <h4 className="description">
-                          <span>
-                            Description:
-                          </span>
-                        </h4>
-                        <h5>{post.description}</h5>
-                        <br/>
-                        <h4 className="body">
-                          <span>
-                            Detail: 
-                          </span>
-                          <p className="para">
-                            {post.body}
-                          </p>
-                        </h4>
-                       </div>
+                    <div>
+                      <br/>
+                      <h4 className="title">
+                        <span>
+                          Date posted:&nbsp;{getDateString(post.publishDate!)}
+                        </span>
+                      </h4>
+                      <br/>
+                      <h4 className="category">
+                        <span>
+                          Category:
+                        </span>
+                      </h4>
+                      <h5>{post.category ? post.category.title : 'No category assigned'}</h5>
+                      <br/>
+                      <h4 className="title">
+                        <span>
+                          Title:
+                        </span>
+                      </h4>
+                      <h5>{post.title}</h5>
+                      <br/>
+                      <h4 className="description">
+                        <span>
+                          Description:
+                        </span>
+                      </h4>
+                      <h5>{post.description}</h5>
+                      <br/>
+                      <h4 className="body">
+                        <span>
+                          Detail: 
+                        </span>
+                        <p className="para">
+                          {post.body}
+                        </p>
+                      </h4>
+                    </div>
                   </div>
                   <div className="form-group row-md-2 pull-right">
                     <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
@@ -145,14 +145,12 @@ const ViewPost = () => {
                     {isLoading &&
                       <span className="fa fa-circle-o-notch fa-spin" />
                     }
-                    {
-                      isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
+                    {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
                       (
                         <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  
                       )
                     }
-                    {
-                      isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
+                    {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
                       (               
                           <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
                       )

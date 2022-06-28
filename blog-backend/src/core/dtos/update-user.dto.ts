@@ -1,7 +1,8 @@
 import { IsString, IsNotEmpty, IsEmail, IsEnum, MinLength } from '@nestjs/class-validator';
 import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '../entities/user.entity';
 import { UserRole } from '../enum';
-
+import { Optional } from '@nestjs/common';
+import { ImageData } from'../interfaces';
 export class UpdateUserDto {
     @IsString()
     @IsNotEmpty()
@@ -27,6 +28,9 @@ export class UpdateUserDto {
     @IsEnum(UserRole)
     @IsNotEmpty()
     role?: string;
+
+    @Optional()
+    image?: ImageData;
 }
 
 export interface IUpdateUserCriterias {username: string; email: string; password: string;  role: string; }

@@ -9,7 +9,7 @@ export interface IUser {
   password?: string;
   email: string;
   role: string;
-  createdOn?: Date;
+  image?: ImageData;
 }
 
 export class IAuthToken {
@@ -67,10 +67,12 @@ export interface IUpdateUser {
   email: string;
   password?: string;
   role: string;
+  image?: ImageData;
 }
 
 export function createUserForUpdate(user: IUser): IUpdateUser {
-  const updateUser: IUpdateUser = {username:user.username, email: user.email, password: user.password, role: user.role};
+  const updateUser: IUpdateUser = {username:user.username, email: user.email, password: user.password, 
+    role: user.role, image: user.image};
   if (!updateUser.password) {
     delete updateUser.password;
   }

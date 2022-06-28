@@ -1,6 +1,7 @@
 import { IsString, IsNotEmpty, IsEmail, MinLength } from '@nestjs/class-validator';
 import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '../entities/user.entity';
-
+import { Optional } from '@nestjs/common';
+import { ImageData } from'../interfaces';
 export class RegisterDto {
   @IsString()
   @IsNotEmpty()
@@ -22,5 +23,8 @@ export class RegisterDto {
     message: `Password text must be at least ${minimumUserPasswordLength} characters long`,
   })
   password: string;
+
+  @Optional()
+  image?: ImageData;
 }
 

@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
 import { IUser, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
-        minimumUserNameLength } from "../../types";
+        minimumUserNameLength, ImageData, ImageSizeProps } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
@@ -15,6 +15,8 @@ import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
+import Image from '../common/Image';
+import ImageUpload from '../common/ImageUpload';
 
 const EditUser = () => {
 
@@ -23,6 +25,7 @@ const EditUser = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [user, setUser] = useState<IUser>();
+  const [userImage, setUserImage] = useState<ImageData>();
  
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -59,7 +62,7 @@ const EditUser = () => {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
         await UserApiService.getUserById(userId!)
-        .then((user) => { setUser(user); reset(user);})
+        .then((user) => { setUser(user); reset(user); setUserImage(user?.image);})
         .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
         dispatch(createActionLoading(false));
        }
@@ -71,7 +74,8 @@ const EditUser = () => {
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (user && isDirty) {
       dispatch(createActionLoading(true));
-      const userData: IUpdateUser = createUserForUpdate({...user, ...data});
+      const image: ImageData | undefined = userImage;
+      const userData: IUpdateUser = createUserForUpdate({...user, ...data, image});
       await UserApiService.updateUser(user.id!, userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
@@ -116,6 +120,16 @@ const handleRoleSelect=(e: any)=>{
   setValue('role', e);
 }
 
+const handleImageUpload = (image: ImageData) => {
+  setUserImage(image);
+}
+
+const handleDeleteImage = () => {
+  setUserImage(undefined);
+}
+
+const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
+
   return (
     <div className={'page-wrapper'}>
     {user &&
@@ -124,6 +138,27 @@ const handleRoleSelect=(e: any)=>{
           <h2> Edit User  </h2>
           {errorList && <ListErrors errors={errorList} />}
           <form id={"create-user-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+            <div className="form-group col-md-4">
+                <div className="row">
+                  <label className="col-md-2"> Image: </label>
+                  { userImage && 
+                    <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                      Delete Image
+                    </button>  
+                  }   
+                  <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                     
+                </div>
+              </div>
+
+              <div className="form-group col-md-12">
+                { userImage && 
+                  <>
+                    <Image imageData={userImage}/> 
+                    <br/>
+                  </>
+                }    
+            </div>
+
             <div className="form-group col-md-12">
               <label htmlFor="username"> Title </label>
               <input 

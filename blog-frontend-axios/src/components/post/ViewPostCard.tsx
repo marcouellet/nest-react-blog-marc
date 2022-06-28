@@ -3,7 +3,6 @@ import React from 'react';
 import {Container ,Card, Button} from 'react-bootstrap';
 import { IPost, ImageSizeProps } from "../../types";
 import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
 
 type ViewCardProps = React.HTMLProps<HTMLElement> & {
   post: IPost,
@@ -20,7 +19,6 @@ const ViewPostCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetai
     <div className="ViewCard">  
       <Container className='p-4'>  
           <Card>  
-            {/* <Card.Img variant="top" src={post.image?.data} />   */}
             <Card.Body className="image-container">
               <Card.Header>
                 <span>{post.user?.username}</span>

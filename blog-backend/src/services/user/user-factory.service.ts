@@ -15,7 +15,7 @@ export class UserFactoryService {
     user.email = userDto.email;
     user.password = userDto.password;
     user.role = userDto.role;
-    user.createdOn = new Date();
+    user.image = userDto.image;
 
     return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
@@ -27,6 +27,7 @@ export class UserFactoryService {
     user.email = userDto.email;
     user.password = userDto.password;
     user.role = userDto.role;
+    user.image = userDto.image;
 
     return this.dataServicesRepositories.users.convertFromGenericEntity(user);
   }
@@ -39,15 +40,15 @@ export class UserFactoryService {
     userDto.username = newUser.username;
     userDto.password = newUser.password;
     userDto.role = newUser.role;
-    userDto.createdOn = newUser.createdOn;
+    userDto.image = newUser.image;
 
     return userDto;
   }
 
   // Make sure only desired criterias are selected from the incomming object
   createUpdateUserCriterias(updateUserDto: UpdateUserDto): IUpdateUserCriterias {
-    const {username, email, password, role} = updateUserDto;
-    return {username, email, password, role} as IUpdateUserCriterias;
+    const {username, email, password, role, image} = updateUserDto;
+    return {username, email, password, role, image} as IUpdateUserCriterias;
   }
 
   removeRestrictedProperties(user: UserDto): UserDto { delete user.password; return user; }

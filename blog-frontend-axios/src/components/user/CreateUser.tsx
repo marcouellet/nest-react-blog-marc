@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
@@ -10,15 +10,19 @@ import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength } from '../../types';
+import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
+          ImageSizeProps, ImageData } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
+import ImageUpload from '../common/ImageUpload';
+import Image from '../common/Image';
 
 const CreateUser = () => {
 
   const navigate = useNavigate();
   const { state: { isLoading }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [userImage, setUserImage] = useState<ImageData>();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -52,7 +56,9 @@ const CreateUser = () => {
 
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
-    await UserApiService.createUser(data)
+    const image: ImageData | undefined = userImage;
+    const userData = {...data, image};
+    await UserApiService.createUser(userData)
     .then(() => { handleSubmitFormSuccess(); })
     .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
     dispatch(createActionLoading(false));
@@ -89,77 +95,107 @@ const CreateUser = () => {
       setValue('role', e);
   }
 
+  const handleImageUpload = (image: ImageData) => {
+    setUserImage(image);
+  }
+  
+  const handleDeleteImage = () => {
+    setUserImage(undefined);
+  }
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
+
   return (
     <div>
     <div className={"col-md-12 form-wrapper"}>
       <h2> Create User </h2>
       {errorList && <ListErrors errors={errorList} />}
       <form id={"create-User-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
-      <div className="form-group col-md-12">
-              <label htmlFor="username"> Title </label>
-              <input 
-                type="text"
-                placeholder="Enter user name"
-                {...register('username')}
-                className={`form-control ${errors.username ? 'is-invalid' : ''}`} 
-              />
-              <div className="invalid-feedback">{errors.username?.message}</div>
-           </div>
 
-            <div className="form-group col-md-12">
-              <label htmlFor="email"> Email </label>
-              <input 
-                type="text" 
-                placeholder="Enter email"
-                {...register('email')}
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
-              />
-              <div className="invalid-feedback">{errors.email?.message}</div>
+        <div className="form-group col-md-4">
+          <div className="row">
+            <label className="col-md-2"> Image: </label>
+            { userImage && 
+              <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                Delete Image
+              </button>  
+            }  
+            <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
             </div>
+        </div>
+        <div className="form-group col-md-12">
+          { userImage && 
+            <>
+              <Image imageData={userImage}/> 
+              <br/>
+            </>
+          }
+          <br/>
 
-            <div className="form-group col-md-12">
-              <label htmlFor="password"> Enter Password </label>
-              <input 
-                type="text" 
-                placeholder="Enter password" 
-                {...register('password')}
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
-              />
-              <div className="invalid-feedback">{errors.password?.message}</div>
-            </div>
+          <label htmlFor="username"> Title </label>
+          <input 
+            type="text"
+            placeholder="Enter user name"
+            {...register('username')}
+            className={`form-control ${errors.username ? 'is-invalid' : ''}`} 
+          />
+          <div className="invalid-feedback">{errors.username?.message}</div>
+        </div>
 
-            <div className="form-group ">
-              <div className="row">
-                <DropdownButton title="Select Role" onSelect={handleRoleSelect} className="col-md-1">
-                    <Dropdown.Item eventKey='user'>User</Dropdown.Item>
-                    <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
-                </DropdownButton>
-                <input style={ {float: 'right'} }    
-                  type="text" disabled  placeholder="no role selected" 
-                  {...register('role')}
-                  className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
-                />
-              </div>
-              <div className="invalid-feedback">{errors.role?.message}</div>
-            </div>
+        <div className="form-group col-md-12">
+          <label htmlFor="email"> Email </label>
+          <input 
+            type="text" 
+            placeholder="Enter email"
+            {...register('email')}
+            className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
+          />
+          <div className="invalid-feedback">{errors.email?.message}</div>
+        </div>
 
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Create
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
+        <div className="form-group col-md-12">
+          <label htmlFor="password"> Enter Password </label>
+          <input 
+            type="text" 
+            placeholder="Enter password" 
+            {...register('password')}
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
+          />
+          <div className="invalid-feedback">{errors.password?.message}</div>
+        </div>
 
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
+        <div className="form-group ">
+          <div className="row">
+            <DropdownButton title="Select Role" onSelect={handleRoleSelect} className="col-md-1">
+                <Dropdown.Item eventKey='user'>User</Dropdown.Item>
+                <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
+            </DropdownButton>
+            <input style={ {float: 'right'} }    
+              type="text" disabled  placeholder="no role selected" 
+              {...register('role')}
+              className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
+            />
+          </div>
+          <div className="invalid-feedback">{errors.role?.message}</div>
+        </div>
+
+        <div className="form-group col-md-4 pull-right">
+          <button className="btn btn-success"  disabled={!isDirty} type="submit">
+            Create
+          </button>
+          {isLoading &&
+            <span className="fa fa-circle-o-notch fa-spin" />
+          }
+        </div>
+
+        <div className="form-group col-md-1 pull-right">
+          <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
+            Reset
+          </button>
+          {isLoading &&
+            <span className="fa fa-circle-o-notch fa-spin" />
+          }
+        </div>
 
       </form>
 
