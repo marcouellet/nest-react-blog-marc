@@ -7,6 +7,7 @@ export enum AuthActionType {
   SessionExpired = 'SESSION_EXPIRED',
   SetCategoryFilter = 'SET_CATEGORY_FILTER',
   SetPostTitleFilter = 'SET_POST_TITLE_FILTER',
+  UpdateUser = 'UPDATE_USER',
 }
 export const createActionLogout = () : AuthAction => { return {type:  AuthActionType.Logout}}
 export const createActionLoadUser = (user: User) : AuthAction => { return {type:  AuthActionType.LoadUser, user: user}}
@@ -14,6 +15,7 @@ export const createActionLoading = (isLoading: boolean) : AuthAction => { return
 export const createActionSessionExpired = () : AuthAction => { return {type:  AuthActionType.SessionExpired}}
 export const createActionSetCategoryFilter = (category: ICategory) : AuthAction => { return {type:  AuthActionType.SetCategoryFilter, categoryFilter: category}}
 export const createActionSetPostTitleFilter = (titleFilter: string) : AuthAction => { return {type:  AuthActionType.SetPostTitleFilter, postTitleFilter: titleFilter}}
+export const createActionUpdateUser = (user: User) : AuthAction => { return {type:  AuthActionType.UpdateUser, user: user}}
 
 export type AuthAction =
   | {
@@ -36,6 +38,10 @@ export type AuthAction =
       type: AuthActionType.SetPostTitleFilter;
       postTitleFilter: string;
     }
+  | {
+    type: AuthActionType.UpdateUser;
+    user: User;
+  }
 ;;
 export interface AuthState {
   isLoading: boolean;
@@ -75,6 +81,9 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
     }
     case AuthActionType.SetPostTitleFilter: {
       return { ...state, postTitleFilter: action.postTitleFilter};
+    }    
+    case AuthActionType.UpdateUser: {
+      return { ...state, user: action.user!};
     }    
     default:
       return state;
