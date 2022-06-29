@@ -36,6 +36,7 @@ const Navbar = () => {
     const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
     const handleImageUpload = (image: ImageData) => {
+        setImageData(undefined);
         setImageData(image);
       }
       
@@ -83,8 +84,12 @@ const Navbar = () => {
         const isInitialImageDefined = user?.image !== undefined;
         const imageChanged = (isImageDefined !== isInitialImageDefined) ||
                               (isImageDefined && image?.base64 !== user?.image?.base64);
+        let newImage: ImageData | undefined = undefined;
+        if (image) {
+            newImage = { ...image}
+        }
+        setUserImage(newImage);
         setImageChanged(imageChanged);
-        setUserImage(image);
     }
 
     const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400};
@@ -125,10 +130,10 @@ const Navbar = () => {
                             </div>
                         </div>
                         { userImage && 
-                        <div>
-                            <ImageResize imageData={userImage} resize={imageDisplayMaxSize}/>
-                            <br/>
-                        </div>
+                            <>
+                                <ImageResize imageData={userImage} resize={imageDisplayMaxSize}/>
+                                <br/>
+                            </>
           }
           <br/>
 

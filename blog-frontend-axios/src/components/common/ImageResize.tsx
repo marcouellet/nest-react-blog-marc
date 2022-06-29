@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ImageData, ImageSizeProps } from '../../types';
 import { resizeImage } from '../../utils/image.utils';
 import Image from '../common/Image';
@@ -10,17 +10,14 @@ export interface ImageResizeProps {
 
 const ImageResize = (props: ImageResizeProps) => {
 
-    const [image, setImage] = useState<ImageData>();
+    const [image, setImage] = useState<ImageData>(); 
 
-    useEffect(() => {
-        const resize = async (): Promise<void> => {
-            resizeImage(props.imageData, props.resize.maxWidth, props.resize.maxHeight)
-                .then(imageData => setImage(imageData));
-          }
-        resize();  
-      // eslint-disable-next-line
-      }, []);
-    
+    resizeImage(props.imageData, props.resize.maxWidth, props.resize.maxHeight)
+        .then(imageData => {
+            //return <Image imageData={image}/>
+            setImage(imageData);
+        });
+
     return (
         <>
         { image && <Image imageData={image}/> }
