@@ -16,18 +16,18 @@ import Image from '../common/Image';
 const ViewUser = () => {
 
   const { userId } = useParams<{ userId: string }>();
-  const { state: { isLoading, isAuthenticated }, dispatch } = useAuth();
-  const [user, setUser] = useState<IUser>();
+  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
+  const [userDisplayed, setUserDisplayed] = useState<IUser>();
   const [errors, setErrors] = React.useState<IErrors | null>();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    if (!userDisplayed) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
         await UserApiService.getUserById(userId!)
-        .then(user => setUser(user))
+        .then(user => setUserDisplayed(user))
         .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
         dispatch(createActionLoading(false));
       }
@@ -84,13 +84,13 @@ const ViewUser = () => {
           <div className="row">
             <div className="col-lg-1 col-md-0" />
             <div className="col-lg-10 col-md-12">
-              {user && 
+              {userDisplayed && 
               (
                 <div className="main-user">
                   <div className="user-top-area">
-                    { user.image && 
+                    { user && userDisplayed.image && 
                       <>
-                        <Image imageData={user.image}/> 
+                        <Image imageData={userDisplayed.image}/> 
                         <br/>
                       </>
                     } 
@@ -100,21 +100,21 @@ const ViewUser = () => {
                           Name:
                         </span>
                       </h4>
-                      <h5>{user.username}</h5>
+                      <h5>{userDisplayed.username}</h5>
                       <br/>
                       <h4 className="email">
                         <span>
                           Email:
                         </span>
                       </h4>
-                      <h5>{user.email}</h5>
+                      <h5>{userDisplayed.email}</h5>
                       <br/>
                       <h4 className="role">
                         <span>
                           Role: 
                         </span>
                         </h4>
-                      <h5>{user.role}</h5>
+                      <h5>{userDisplayed.role}</h5>
                       </div>
                   </div>
                   <div className="form-group row-md-2 pull-right">
@@ -125,10 +125,10 @@ const ViewUser = () => {
                       <span className="fa fa-circle-o-notch fa-spin" />
                     }
                     {isAuthenticated && !isLoading && 
-                      <Link to={`/user/edit/${user.id}`} className="btn ml-2 btn-primary">Edit User</Link>
+                      <Link to={`/user/edit/${userDisplayed.id}`} className="btn ml-2 btn-primary">Edit User</Link>
                     }
                     {isAuthenticated && !isLoading &&  
-                      <DeleteButton message={deleteUserMessage(user)} onClick={() => handleDeleteUser(user.id!)} className="btn ml-2 btn-danger">Delete User</DeleteButton>
+                      <DeleteButton message={deleteUserMessage(userDisplayed)} onClick={() => handleDeleteUser(userDisplayed.id!)} className="btn ml-2 btn-danger">Delete User</DeleteButton>
                     }
                   </div>
                 </div>   

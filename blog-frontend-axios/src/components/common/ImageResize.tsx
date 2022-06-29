@@ -14,7 +14,6 @@ const ImageResize = (props: ImageResizeProps) => {
 
     resizeImage(props.imageData, props.resize.maxWidth, props.resize.maxHeight)
         .then(imageData => {
-            //return <Image imageData={image}/>
             setImage(imageData);
         });
 

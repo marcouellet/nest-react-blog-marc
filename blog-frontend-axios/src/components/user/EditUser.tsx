@@ -107,7 +107,7 @@ const EditUser = () => {
 
   const handleSubmitFormSuccess = () => {
     toast.success(`User updated successfully...`);
-    navigate('/user'); 
+    navigate(`/user/${user!.id}`); 
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
