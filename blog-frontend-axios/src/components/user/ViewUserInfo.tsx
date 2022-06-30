@@ -19,13 +19,11 @@ const ViewUserInfo = () => {
     const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
     useEffect(() => {
-        //setImageData(undefined);
         setImageData(user?.image);
       // eslint-disable-next-line
       }, [user]);
 
     const handleImageUpload = (image: ImageData) => {
-        //setImageData(undefined);
         setImageData(image);
       }
       
@@ -34,7 +32,6 @@ const ViewUserInfo = () => {
     }
 
     const handleCancelImage = () => {
-        setImageData(undefined);
         setImageData(user?.image);
     }
 
@@ -86,45 +83,49 @@ const ViewUserInfo = () => {
         <>
         {  
             user && 
-            <div className="ViewCard">  
-                <Container className='p-4'>  
-                    <Card>  
+            <div className="ViewUserInfo">  
+            <div className="float-start">
+            <Container className='p-4'>  
+                <Card>  
                     <Card.Body className="image-container">
                         <Card.Header>
-                        <h5>{user?.username}&nbsp;{isAdministrator() && '(admin)'}</h5>
+                            <h5>{user?.username}&nbsp;{isAdministrator() && '(admin)'}</h5>
                         </Card.Header> 
                         { userImage && <ImageResize imageData={userImage} resize={imageMaxSize}/> }
                         <Card.Subtitle>
-                        <br/>
-                        <span>Email:&nbsp;</span> 
-                        <span>{user.email}</span> 
+                            <br/>
+                            <span>Email:&nbsp;</span> 
+                            <span>{user.email}</span> 
                         </Card.Subtitle> 
                         <Card.Footer>
-                        <div className="row">
-                                    <label className="col-md-2"> Image: </label>
-                                    { userImage && 
-                                        <button className="btn btn-secondary col-md-2"  onClick={ () => handleDeleteImage() } >
-                                            Delete
+                            <Card.Text>
+                                <label className="col-md-1"> Image: </label>
+                            </Card.Text>
+                            <Card.Text>
+                                { userImage && 
+                                    <button className="btn btn-secondary col-md-1"  onClick={ () => handleDeleteImage() } >
+                                        Delete
+                                    </button> 
+                                }
+                            </Card.Text>
+                            <Card.Text>
+                                { imageChanged && 
+                                    <div className="form-group col-md-4">
+                                        <button className="btn btn-secondary col-md-4"  onClick={ () => handleSaveImage() } >
+                                            Update
                                         </button> 
-                                    }
-                                    { imageChanged && 
-                                            <div className="form-group col-md-5">
-                                                <button className="btn btn-secondary col-md-4"  onClick={ () => handleSaveImage() } >
-                                                    Update
-                                                </button> 
-                                                <button className="btn btn-secondary col-md-4"  onClick={ () => handleCancelImage() } >
-                                                    Cancel
-                                                </button>  
-                                            </div> 
-                                                                                                
-                                    }  
-                                    <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
-                                </div>
-
+                                        <button className="btn btn-secondary col-md-3"  onClick={ () => handleCancelImage() } >
+                                            Cancel
+                                        </button>  
+                                    </div>                                                                               
+                                }  
+                                <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
+                            </Card.Text>
                         </Card.Footer>     
                     </Card.Body>  
                     </Card>  
                 </Container>  
+            </div>
             </div>  
         }
         </>
