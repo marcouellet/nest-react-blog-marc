@@ -10,7 +10,7 @@ export interface ImageResizeProps {
 
 const ImageResize = (props: ImageResizeProps) => {
 
-    const [image, setImage] = useState<ImageData>(); 
+    const [image, setImage] = useState<ImageData | undefined>(undefined); 
 
     useEffect(() => {
         const propImage: ImageData = {...props.imageData};
@@ -25,7 +25,7 @@ const ImageResize = (props: ImageResizeProps) => {
             }); 
         }
       // eslint-disable-next-line
-      }, []);
+      }, [props.imageData]);
 
     const handleOnError = (error: any) => {
         throw new Error(error);
