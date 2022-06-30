@@ -34,7 +34,7 @@ const ViewUser = () => {
       fetchData();  
     }
   // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   const handleFetchUserError = (apiErrors: IErrors) => {
     toast.error(`User reading failed, see error list`);
@@ -58,12 +58,12 @@ const ViewUser = () => {
       .then(() => handleDeleteUserSuccess())
       .catch((apiErrors: IErrors) => handleDeleteUserError(apiErrors))
       dispatch(createActionLoading(false));
-      navigate('/user'); 
     }
   }
 
   const handleDeleteUserSuccess = () => {
     toast.success(`User deleted successfully...`);
+    navigate('/user'); 
   }
 
   const handleDeleteUserError = (apiErrors: IErrors) => {

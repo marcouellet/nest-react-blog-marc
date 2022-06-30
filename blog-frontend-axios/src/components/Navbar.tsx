@@ -20,6 +20,7 @@ const Navbar = () => {
     const [errorList, setErrorList] = React.useState<IErrors | null>();
 
     useEffect(() => {
+        setImageData(undefined);
         setImageData(user?.image);
       // eslint-disable-next-line
       }, [user]);
@@ -134,9 +135,8 @@ const Navbar = () => {
                                 <ImageResize imageData={userImage} resize={imageDisplayMaxSize}/>
                                 <br/>
                             </>
-          }
-          <br/>
-
+                        }
+                        <br/>
                     </div>                
                 )}
                 <ul className="main-menu visible-on-click" id="main-menu">

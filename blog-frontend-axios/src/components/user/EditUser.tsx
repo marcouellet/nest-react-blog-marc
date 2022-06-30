@@ -6,10 +6,10 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
-import { IUser, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
+import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
         minimumUserNameLength, ImageData, ImageSizeProps } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading } from '../../reducers/auth';
+import { createActionLoading, createActionUpdateUser } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
@@ -21,10 +21,10 @@ import ImageUpload from '../common/ImageUpload';
 const EditUser = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { state: { isLoading, user }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
-  const [user, setUser] = useState<IUser>();
+  const [userEdited, setUserEdited] = useState<User>();
   const [userImage, setUserImage] = useState<ImageData>();
  
   const validationSchema = Yup.object().shape({
@@ -56,7 +56,8 @@ const EditUser = () => {
     imageChanged: boolean;
   };
 
-  const defaultValues = {username: user?.username, email: user?.email, password: undefined, role: user?.role, imageChanged: false};
+  const defaultValues = {username: userEdited?.username, email: userEdited?.email, password: undefined, role: userEdited?.role,
+                           imageChanged: false};
 
   const {
     register,
@@ -70,11 +71,11 @@ const EditUser = () => {
   });
 
   useEffect(() => {
-    if (!user) {
+    if (!userEdited) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
         await UserApiService.getUserById(userId!)
-        .then((user) => { setUser(user); reset(user); setUserImage(user?.image);})
+        .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
         .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
         dispatch(createActionLoading(false));
        }
@@ -84,17 +85,19 @@ const EditUser = () => {
   }, []);
 
   useEffect(() => {
-    setImageData(user?.image);
+    if (user?.email === userEdited?.email) {
+      setImageData(user?.image);
+    }
   // eslint-disable-next-line
   }, [user]);
 
   const onSubmit = async (data: UpdateSubmitForm) => {
-    if (user && isDirty) {
+    if (userEdited && isDirty) {
       dispatch(createActionLoading(true));
       const image: ImageData | undefined = userImage;
-      const userData: IUpdateUser = createUserForUpdate({...user, ...data, image});
-      await UserApiService.updateUser(user.id!, userData)
-      .then(() => { handleSubmitFormSuccess(); })
+      const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
+      await UserApiService.updateUser(userEdited.id!, userData)
+      .then((userUpdated) => { setUserEdited(userUpdated);  handleSubmitFormSuccess(userUpdated); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
       dispatch(createActionLoading(false));
      }
@@ -105,9 +108,13 @@ const EditUser = () => {
     setErrorList(apiErrors);
   }
 
-  const handleSubmitFormSuccess = () => {
+  const handleSubmitFormSuccess = (userUpdated: User) => {
+    if (user?.email === userUpdated?.email) {
+      // Update state user to refresh user info in NavBar
+          dispatch(createActionUpdateUser(userUpdated!));
+    }
     toast.success(`User updated successfully...`);
-    navigate(`/user/${user!.id}`); 
+    navigate(`/user/${userEdited!.id}`); 
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
@@ -147,7 +154,7 @@ const handleDeleteImage = () => {
 
 const setImageData = (image: ImageData | undefined) => {
   const isImageDefined = image !== undefined;
-  const isInitialImageDefined = user?.image !== undefined;
+  const isInitialImageDefined = userEdited?.image !== undefined;
   const imageChanged = (isImageDefined !== isInitialImageDefined) ||
                         (isImageDefined && image?.base64 !== user?.image?.base64);
   setValue('imageChanged', imageChanged, {shouldDirty: true});
@@ -158,7 +165,7 @@ const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
 
   return (
     <div className={'page-wrapper'}>
-    {user &&
+    {userEdited &&
       (
         <div className={"col-md-12 form-wrapper"}>
           <h2> Edit User  </h2>

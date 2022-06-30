@@ -72,7 +72,7 @@ const Home = () => {
       }
     }
     fetchPosts();
-  }, [category, postTitleFilter])
+  }, [category, postTitleFilter, state.user])
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
     setErrors(apiErrors);

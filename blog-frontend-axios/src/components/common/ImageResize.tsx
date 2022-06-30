@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImageData, ImageSizeProps } from '../../types';
 import { resizeImage } from '../../utils/image.utils';
 import Image from '../common/Image';
@@ -12,16 +12,30 @@ const ImageResize = (props: ImageResizeProps) => {
 
     const [image, setImage] = useState<ImageData>(); 
 
-    resizeImage(props.imageData, props.resize.maxWidth, props.resize.maxHeight)
-        .then(imageData => {
-            setImage(imageData);
-        });
+    useEffect(() => {
+        const propImage: ImageData = {...props.imageData};
+        
+        if (propImage) {
+            resizeImage(propImage, props.resize.maxWidth, props.resize.maxHeight)
+            .then(imageData => { 
+                setImage(imageData); 
+            })
+            .catch(error => {
+                throw new Error(error);
+            }); 
+        }
+      // eslint-disable-next-line
+      }, []);
 
-    return (
+    const handleOnError = (error: any) => {
+        throw new Error(error);
+    }
+    
+    return ( 
         <>
-        { image && <Image imageData={image}/> }
-        </>
-    )
+            {image && <Image imageData={image} onError={handleOnError}/> }         
+       </>
+    ) 
 }
 
 export default ImageResize;

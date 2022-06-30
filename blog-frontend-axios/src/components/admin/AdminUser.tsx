@@ -9,7 +9,7 @@ const AdminUser = () => {
   
   const navigate = useNavigate();
 
-  const { state: { isLoading, isAuthenticated } } = useAuth();
+  const { state: { isLoading, isAuthenticated, user } } = useAuth();
 
   const [users, setUsers] = useState<IUser[]>([]);
 
@@ -23,7 +23,7 @@ const AdminUser = () => {
         .then(users => setUsers(users));
     }
     fetchUsers();
-  }, [])
+  }, [user])
 
     return (
         <section className="blog-area section">
