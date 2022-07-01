@@ -8,7 +8,8 @@ import useAuth from '../contexts/auth';
 import { createActionLoading } from '../reducers/auth';
 import ListErrors from './common/ListErrors';
 import { ICategory, IErrors } from '../types';
-import ViewPostCard, { onViewPostDetail } from './post/ViewPostCard';
+import ViewPostCards from './post/ViewPostCards';
+import { onViewPostDetail } from './post/ViewPostCard';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../reducers/auth';
 
@@ -112,12 +113,21 @@ const Home = () => {
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
                 {categories && categories.map((category: ICategory) => 
                 (
-                  <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                  <div key={category.id}>
+                    <Dropdown.Item eventKey={category.id}>
+                      {category.title}
+                    </Dropdown.Item>
+                  </div>
                 ))
               }
             </DropdownButton>
-            <input style={ {float: 'right'} } className="col-md-2"   
-              type="text" disabled  placeholder="no category selected" value={categoryTitle}        
+            <input 
+              style={{float: 'right'}} 
+              className="col-md-2"   
+              type="text" 
+              disabled  
+              placeholder="no category selected" 
+              value={categoryTitle}        
             />
             <h4 className="col-md-1">
               <span>
@@ -125,18 +135,18 @@ const Home = () => {
               </span>
             </h4>
             <input  
-              type="text" name="postTitleFilter" value={postTitleFilter} placeholder="enter some part of post title text" 
-              className="col-md-2" onChange={e => handlePostTitleFilterChange(e.target.value)}      
+              type="text" 
+              name="postTitleFilter" 
+              value={postTitleFilter} 
+              placeholder="enter some part of post title text" 
+              className="col-md-2" 
+              onChange={e => handlePostTitleFilterChange(e.target.value)}      
             />
           </div>
         </div>
         <div className="container">
           <div className="row">
-            {posts && posts.map((post: IPost) => (
-              <div className="col-lg-4 col-md-6" key={post.id}>
-                <ViewPostCard post={post} onViewPostDetail={handleViewCardDetail}/>
-            </div>
-            ))}
+            <ViewPostCards className="col-lg-4 col-md-6" posts={posts}/> 
           </div>
         </div>
       </section>

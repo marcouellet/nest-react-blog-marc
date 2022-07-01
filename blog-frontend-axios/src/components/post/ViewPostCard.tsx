@@ -13,7 +13,7 @@ export type onViewPostDetail = (postId: string) => void;
 
 const ViewPostCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetail}) => {
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:260, maxHeight:260};
+  const imageMaxSize: ImageSizeProps = {maxWidth:120, maxHeight:90};
 
   return (  
     <div className="ViewCard">  
@@ -21,9 +21,9 @@ const ViewPostCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetai
           <Card>  
             <Card.Body className="image-container">
               <Card.Header>
-                <span>{post.user?.username}</span>
+                <h5>{post.user?.username}</h5>
+                {post.image && <ImageResize imageData={post.image} resize={imageMaxSize}/>}
               </Card.Header> 
-              { post.image && <ImageResize imageData={post.image} resize={imageMaxSize}/> }
               <Card.Title>
                 <br/>
                 {post.title}
@@ -35,8 +35,8 @@ const ViewPostCard: React.FC<ViewCardProps> = ({className, post, onViewPostDetai
               <Card.Text>
                 <br/>
                 {post.description}
-              </Card.Text>  
-              <Button className={className} onClick={() => onViewPostDetail(post.id!)}>View</Button>  
+              </Card.Text> 
+                <Button onClick={() => onViewPostDetail(post.id!)}>View</Button>
             </Card.Body>  
           </Card>  
       </Container>  
