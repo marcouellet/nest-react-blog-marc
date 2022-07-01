@@ -58,11 +58,11 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     const findCriterias = buildMongoFindCriterias(criterias);
     if (subDocumentId) {
       const id = new Types.ObjectId(subDocumentId); 
-      return this.repository.find(findCriterias).where(subDocumentName).equals(id).exec();
+      return this.repository.find(findCriterias).where(subDocumentName).equals(id).populate(this.populateOnFind).exec();
     } else {
       let crit = {...findCriterias};
       crit[subDocumentName] = { $exists: false }
-      return this.repository.find(crit).where(subDocumentName).exec();
+      return this.repository.find(crit).where(subDocumentName).populate(this.populateOnFind).exec();
     }
   }
 

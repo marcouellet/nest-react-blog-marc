@@ -32,19 +32,19 @@ const Navbar = () => {
                   <ul className="main-menu visible-on-click" id="main-menu">
                     <li><Link className={"nav-link"} to={"/"}> Home </Link></li>
                     {!isLoading && isAuthenticated && (
-                        <li><Link className={"nav-link"} to={"/post/create"}> Create Post</Link></li>
+                        <li><Link className={"nav-link"} to={"/post/create"}>Create Post</Link></li>
                     )}
                     {!isLoading && !isAuthenticated && (
-                        <li><Link className={"nav-link"} to={"/login"}> Log In </Link></li>
+                        <li><Link className={"nav-link"} to={"/login"}>Log In</Link></li>
                     )}
                     {!isLoading && !isAuthenticated && (
-                        <li><Link className={"nav-link"} to={"/register"}> Register </Link></li>
+                        <li><Link className={"nav-link"} to={"/register"}>Register</Link></li>
                     )}
                     {!isLoading && isAdministrator() && (
-                        <li><Link className={"nav-link"} to={"/user"}> Admin User</Link></li>
+                        <li><Link className={"nav-link"} to={"/user"}>Admin User</Link></li>
                     )}
-                    {!isLoading && isAdministrator() && (
-                        <li><Link className={"nav-link"} to={"/category"}> Admin Category</Link></li>
+                    {!isLoading && (
+                        <li><Link className={"nav-link"} to={"/category"}>Category</Link></li>
                     )}
                     {!isLoading && user && (
                         <li>
