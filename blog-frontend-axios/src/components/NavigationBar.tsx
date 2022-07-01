@@ -47,7 +47,7 @@ const NavigationBar = () => {
                 <Navbar.Brand href="/">Blog Marc</Navbar.Brand>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
-                    {!isLoading && <Nav.Link href="/post/create">Create Post</Nav.Link>}
+                    {!isLoading && isAuthenticated && <Nav.Link href="/post/create">Create Post</Nav.Link>}
                     {!isLoading && <Nav.Link href="/category">Categories</Nav.Link>}
                     {!isLoading && isAdministrator() && <Nav.Link href="/user">Admin User</Nav.Link>}
                 </Nav>
