@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Table from 'react-bootstrap/Table'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
@@ -72,81 +73,74 @@ const ListCategories = () => {
     fetchCategories();
   }, [dispatch])
 
-    return (
-        <section className="blog-area section">
-        {errors && <ListErrors errors={errors} />}
-        <div className="container">
-          <div>
-            {
-              isAdministrator() && !isLoading && 
-              (
-                  <Link to={`/category/create`} className="btn btn-sm btn-primary">Create Category</Link>
-              )
-            }
-          </div>
-          <br/>
-          <div className="row">
-            {categories && categories.map((category: ICategory) => (
-              <div className="col-lg-4 col-md-6" key={category.id}>
-              <div className="card h-100">
-                <div className="single-user user-style-1">
-
-                  <div className="blog-info">
-
-                    <h4 className="title">
-                      <span>
-                        <b>{category.title}</b>
-                      </span>
-                    </h4>
-                 </div>
-                </div>
-
-                <ul className="user-footer">
-                  {
-                    !isLoading &&
-                    (
-                      <li>
-                      {
-                        (
-                          <p>
-                            <Link to={`/category/${category.id}`} className="btn btn-sm btn-info">View Category</Link>
-                          </p>
-                        )
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    isAdministrator() && !isLoading && 
-                    (
-                      <li>
-                      {
-                        (
-                          <p>
-                            <Link to={`/category/edit/${category.id}`} className="btn btn-sm btn-primary">Edit Category</Link>
-                          </p>
-                        )
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    isAdministrator() && !isLoading &&  
-                    (                   
-                      <li>
-                      {
-                        <DeleteButton message={deleteCategoryMessage(category)} onClick={() => handleDeleteCategory(category.id!)} className="btn btn-danger">Delete Category</DeleteButton>
-                      }
-                      </li>
-                    )
-                  }
-                </ul>
-              </div>
-            </div>
-            ))}
-          </div>
+  return (
+    <section className="blog-area section">
+      {errors && <ListErrors errors={errors} />}
+      <div className="container">
+        <div>
+          {
+            isAdministrator() && !isLoading && 
+            (
+                <Link to={`/category/create`} className="btn btn-sm btn-primary">Create Category</Link>
+            )
+          }
         </div>
-      </section>
+        <br/>
+        <div>
+          <Table striped bordered hover>
+            <thead>
+              <th className="col-md-3">
+                Name
+              </th>
+              <th className="col-md-15">
+                Description
+              </th>
+              <th className="col-md-2">
+                Actions
+              </th>
+            </thead>
+            {
+              categories && categories.map((category: ICategory) => 
+              (
+                <tr key={category.id}>
+                  <td>
+                    <b>{category.title}</b>
+                  </td>
+                  <td>
+                    <b>{category.description}</b>
+                  </td>
+                  <td>
+                    <div className="row">
+                      {
+                          !isLoading &&
+                          (
+                            <p>
+                              <Link to={`/category/${category.id}`} className="btn btn-sm btn-info">View</Link>
+                            </p>
+                          )
+                      }
+                      {
+                        isAdministrator() && !isLoading && 
+                        (
+                            <Link to={`/category/edit/${category.id}`} className="btn btn-sm btn-primary">Edit</Link> 
+                        )              
+                      }
+                      {
+                        isAdministrator() && !isLoading &&  
+                        (                   
+                            <DeleteButton message={deleteCategoryMessage(category)} onClick={() => handleDeleteCategory(category.id!)} 
+                              className="btn btn-sm btn-danger">Delete</DeleteButton>
+                        )
+                      }
+                    </div>
+                  </td>
+                </tr>
+              ))
+            }
+          </Table>
+        </div>
+      </div>
+    </section>
     );
 }
 

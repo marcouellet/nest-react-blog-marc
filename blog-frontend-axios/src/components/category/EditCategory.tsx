@@ -125,7 +125,7 @@ const handleCancelEditCategory = () => {
            </div>
 
             <div className="form-group col-md-12">
-              <label htmlFor="description"> Email </label>
+              <label htmlFor="description"> Description </label>
               <input 
                 type="text" 
                 placeholder="Enter description"
