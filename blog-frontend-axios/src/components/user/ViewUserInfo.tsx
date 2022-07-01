@@ -83,6 +83,7 @@ const ViewUserInfo = () => {
         <>
         {  
             user && 
+            (
             <div className="ViewUserInfo">  
             <div className="float-start">
             <Container className='p-4'>  
@@ -103,13 +104,16 @@ const ViewUserInfo = () => {
                             </Card.Text>
                             <Card.Text>
                                 { userImage && 
+                                (
                                     <button className="btn btn-secondary col-md-1"  onClick={ () => handleDeleteImage() } >
                                         Delete
-                                    </button> 
+                                    </button>
+                                ) 
                                 }
                             </Card.Text>
                             <Card.Text>
                                 { imageChanged && 
+                                (
                                     <div className="form-group col-md-4">
                                         <button className="btn btn-secondary col-md-4"  onClick={ () => handleSaveImage() } >
                                             Update
@@ -117,7 +121,8 @@ const ViewUserInfo = () => {
                                         <button className="btn btn-secondary col-md-3"  onClick={ () => handleCancelImage() } >
                                             Cancel
                                         </button>  
-                                    </div>                                                                               
+                                    </div>    
+                                )                                                                           
                                 }  
                                 <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
                             </Card.Text>
@@ -127,6 +132,7 @@ const ViewUserInfo = () => {
                 </Container>  
             </div>
             </div>  
+            )
         }
         </>
     );

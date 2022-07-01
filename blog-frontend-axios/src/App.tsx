@@ -1,13 +1,14 @@
 import * as React from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { BrowserRouter } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import NavigationBar from "./components/NavigationBar";
 import { AuthProvider } from './contexts/auth';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from "./routes/AppRoutes";
+import ViewUserInfo from './components/user/ViewUserInfo';
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
 import SessionTimeoutHandler from "./components/auth/sessionTimeoutHandler";
 
@@ -17,7 +18,8 @@ const App = () => {
       <ConfirmationModalContextProvider>
         <BrowserRouter>
           <SessionTimeoutHandler/>
-          <Navbar/>
+          <NavigationBar/>
+          <ViewUserInfo/>
           <AppRoutes />
           <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
         </BrowserRouter>
