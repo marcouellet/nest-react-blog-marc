@@ -42,7 +42,7 @@ const NavigationBar = () => {
 
     return (
     <>
-        <Navbar bg="dark" variant="dark">
+        <Navbar expand="lg" bg="dark" variant="dark">
             <Container>
                 <Navbar.Brand href="/">Blog Marc</Navbar.Brand>
                 <Nav className="me-auto">
