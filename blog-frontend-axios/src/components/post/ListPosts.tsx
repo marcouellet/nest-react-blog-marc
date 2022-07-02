@@ -103,47 +103,47 @@ const ListPosts = () => {
   return (
     <section className="blog-area section">
       {errors && <ListErrors errors={errors} />}
-      <div className="form-group ">
-        <div className="row">
-          <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-              {categories && categories.map((category: ICategory) => 
-              (
-                <div key={category.id}>
-                  <Dropdown.Item eventKey={category.id}>
-                    {category.title}
-                  </Dropdown.Item>
-                </div>
-              ))
-            }
-          </DropdownButton>
-          <input 
-            style={{float: 'right'}} 
-            className="col-md-2"   
-            type="text" 
-            disabled  
-            placeholder="no category selected" 
-            value={categoryTitle}        
-          />
-          <h4 className="col-md-1">
-            <span>
-              Filter:
-            </span>
-          </h4>
-          <input  
-            type="text" 
-            name="postTitleFilter" 
-            value={postTitleFilter} 
-            placeholder="enter some part of post title text" 
-            className="col-md-2" 
-            onChange={e => handlePostTitleFilterChange(e.target.value)}      
-          />
+      <Container  className="col-md-10">
+        <div className="form-group ">
+          <div className="row">
+            <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
+                {categories && categories.map((category: ICategory) => 
+                (
+                  <div key={category.id}>
+                    <Dropdown.Item eventKey={category.id}>
+                      {category.title}
+                    </Dropdown.Item>
+                  </div>
+                ))
+              }
+            </DropdownButton>
+            <input 
+              style={{float: 'right'}} 
+              className="col-md-2"   
+              type="text" 
+              disabled  
+              placeholder="no category selected" 
+              value={categoryTitle}        
+            />
+            <h4 className="col-md-1">
+              <span>
+                Filter:
+              </span>
+            </h4>
+            <input  
+              type="text" 
+              name="postTitleFilter" 
+              value={postTitleFilter} 
+              placeholder="enter some part of post title text" 
+              className="col-md-2" 
+              onChange={e => handlePostTitleFilterChange(e.target.value)}      
+            />
+          </div>
         </div>
-      </div>
-      {
-        !isLoading && posts && posts.map((post: IPost) =>    
-        (
-          <div key={post.id}>
-            <Container  className="col-md-10">
+        {
+          !isLoading && posts && posts.map((post: IPost) =>    
+          (
+            <div key={post.id}>
               <Table striped bordered hover>
                 <thead>
                   <th className="col-auto"/>
@@ -177,12 +177,11 @@ const ListPosts = () => {
                       <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View</Link>
                   </td>
               </tr>
-              </Table>
-            </Container>
-        </div>
-
-        ))
-      }
+            </Table>
+          </div>
+          ))
+        }
+      </Container>
     </section>
   );
 }

@@ -25,6 +25,10 @@ const NavigationBar = () => {
           }, 1500);
       };
 
+      const handleUserProfile = () => {
+        navigate('/user/profile');
+      }
+
     const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
     const authButton = () => {
@@ -53,6 +57,7 @@ const NavigationBar = () => {
                 </Nav>
             </Container>
             <Form inline className="mx-3">
+                {!isLoading && isAuthenticated && <Button variant="secondary" onClick={handleUserProfile}>User Profile</Button>}
                 {authButton()}
             </Form>
         </Navbar>

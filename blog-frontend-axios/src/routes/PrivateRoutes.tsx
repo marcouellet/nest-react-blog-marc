@@ -6,6 +6,7 @@ import AdminUser from "../components/admin/AdminUser";
 import ViewUser from "../components/user/ViewUser";
 import CreateUser from "../components/user/CreateUser";
 import EditUser from "../components/user/EditUser";
+import UserProfile from "../components/user/UserProfile";
 
 import CreateCategory from "../components/category/CreateCategory";
 import EditCategory from "../components/category/EditCategory";
@@ -18,10 +19,11 @@ import EditPost from "../components/post/EditPost";
 const PrivateRoutes = () => {
   return (
     <Route>
-      <Route path={"/user"} element={<AdminUser/>} />
+      <Route path={"/user/profile"} element={<UserProfile/>} />
       <Route path={"/user/:userId"} element={<ViewUser/>}/>
       <Route path={"/user/create"} element={<CreateUser/>} />
       <Route path={"/user/edit/:userId"} element={<EditUser/>} />
+      <Route path={"/user"} element={<AdminUser/>} />
       <Route path={"/category/create"} element={<CreateCategory/>} />
       <Route path={"/category/edit/:userId"} element={<EditCategory/>} />
       <Route path={"/post/edit/:postId"} element={<EditPost/>}/>

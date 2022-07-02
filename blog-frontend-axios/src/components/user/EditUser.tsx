@@ -5,16 +5,15 @@ import { toast } from "react-toastify";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import CancelButton from '../common/cancelConfirmation'
+import CancelButton from '../common/cancelConfirmation';
 import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
         minimumUserNameLength, ImageData, ImageSizeProps } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading, createActionUpdateUser } from '../../reducers/auth';
+import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
 
