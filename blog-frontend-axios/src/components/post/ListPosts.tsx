@@ -8,7 +8,7 @@ import { createActionLoading } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
-import { DropdownButton, Dropdown, Table } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ImageResize from '../common/ImageResize';
 
@@ -142,35 +142,43 @@ const ListPosts = () => {
       {
         !isLoading && posts && posts.map((post: IPost) =>    
         (
-          <div className="col-md-15" key={post.id}>
-          <Table striped bordered hover size="sm" >
-            <thead>
-                <th className="col-auto"/>
-                <th className="col-md-2">
-                    Name
-                </th>
-              <th className="col-md-10">
-                Description
-              </th>
-              <th className="col-md-2">
-                Actions
-              </th>
-            </thead>
-            <tr>
-              <td>
-                  {post.image && <ImageResize imageData={post.image} resize={imageMaxSize}/>}
-              </td>
-              <td>
-                  {post.title}
-              </td>
-              <td>
-                  {post.description}
-              </td>
-              <td>
-                  <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View</Link>
-              </td>
-          </tr>
-          </Table>
+          <div key={post.id}>
+            <Container  className="col-md-10">
+              <Table striped bordered hover>
+                <thead>
+                  <th className="col-auto"/>
+                  <th className="col-md-2">
+                      Name
+                  </th>
+                  <th className="col-md-2">
+                      Owner
+                  </th>
+                  <th className="col-md-10">
+                    Description
+                  </th>
+                  <th className="col-md-2">
+                    Actions
+                  </th>
+                </thead>
+                <tr>
+                  <td>
+                      {post.image && <ImageResize imageData={post.image} resize={imageMaxSize}/>}
+                  </td>
+                  <td>
+                      {post.title}
+                  </td>
+                  <td>
+                      {post.user!.username}
+                  </td>
+                  <td>
+                      {post.description}
+                  </td>
+                  <td>
+                      <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View</Link>
+                  </td>
+              </tr>
+              </Table>
+            </Container>
         </div>
 
         ))
