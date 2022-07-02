@@ -77,7 +77,7 @@ const ViewUserInfo = () => {
         setImageChanged(imageChanged);
     }
 
-    const imageMaxSize: ImageSizeProps = {maxWidth:260, maxHeight:260};
+    const imageMaxSize: ImageSizeProps = {maxWidth:120, maxHeight:90};
 
     return (  
         <>
