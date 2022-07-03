@@ -98,6 +98,10 @@ const CreateUser = () => {
   const handleImageUpload = (image: ImageData) => {
     setUserImage(image);
   }
+
+  const handleImageUploadError = (error: any) => {
+    toast.error(`User image upload failed`);
+  }
   
   const handleDeleteImage = () => {
     setUserImage(undefined);
@@ -120,7 +124,7 @@ const CreateUser = () => {
                 Delete Image
               </button>  
             }  
-            <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
+            <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
             </div>
         </div>
         <div className="form-group col-md-12">

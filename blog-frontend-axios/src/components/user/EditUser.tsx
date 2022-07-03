@@ -147,6 +147,10 @@ const handleImageUpload = (image: ImageData) => {
   setImageData(image);
 }
 
+const handleImageUploadError = (error: any) => {
+  toast.error(`User image upload failed`);
+}
+
 const handleDeleteImage = () => {
   setImageData(undefined);
 }
@@ -160,7 +164,7 @@ const setImageData = (image: ImageData | undefined) => {
   setUserImage(image);
 }
 
-const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
+const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
 
   return (
     <div className={'page-wrapper'}>
@@ -178,7 +182,7 @@ const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
                       Delete Image
                     </button>  
                   }   
-                  <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                     
+                  <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                     
                 </div>
               </div>
 

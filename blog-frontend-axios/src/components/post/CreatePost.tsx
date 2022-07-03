@@ -136,6 +136,10 @@ const CreatePost = () => {
   const handleImageUpload = (image: ImageData) => {
     setPostImage(image);
   }
+
+  const handleImageUploadError = (error: any) => {
+    toast.error(`User image upload failed`);
+  }
   
   const handleDeleteImage = () => {
     setPostImage(undefined);
@@ -176,7 +180,7 @@ const CreatePost = () => {
                 Delete Image
               </button>  
             }  
-            <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
+            <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
             </div>
         </div>
 

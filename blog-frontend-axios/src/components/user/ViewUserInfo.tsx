@@ -26,6 +26,10 @@ const ViewUserInfo = () => {
     const handleImageUpload = (image: ImageData) => {
         setImageData(image);
       }
+
+    const handleImageUploadError = (error: any) => {
+        toast.error(`User image upload failed`);
+    }
       
     const handleDeleteImage = () => {
         setImageData(undefined);
@@ -124,7 +128,7 @@ const ViewUserInfo = () => {
                                     </div>    
                                 )                                                                           
                                 }  
-                                <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                
+                                <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
                             </Card.Text>
                         </Card.Footer>     
                     </Card.Body>  

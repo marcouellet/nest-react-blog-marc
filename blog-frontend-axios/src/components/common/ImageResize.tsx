@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ImageData, ImageSizeProps } from '../../types';
-import { resizeImage } from '../../utils/image.utils';
+import { resizeImageData } from '../../utils/image.utils';
 import Image from '../common/Image';
 
 export interface ImageResizeProps {
@@ -16,7 +16,7 @@ const ImageResize = (props: ImageResizeProps) => {
         const propImage: ImageData = {...props.imageData};
         
         if (propImage) {
-            resizeImage(propImage, props.resize.maxWidth, props.resize.maxHeight)
+            resizeImageData(propImage, props.resize.maxWidth, props.resize.maxHeight)
             .then(imageData => { 
                 setImage(imageData); 
             })

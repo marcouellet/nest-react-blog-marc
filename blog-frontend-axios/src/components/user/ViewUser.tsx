@@ -6,12 +6,14 @@ import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
+import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
 import { checkUnauthorized } from '../../utils/html.response.utils';
 import { PostApiService } from '../../services/api/PostApiService';
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils';
 
 const ViewUser = () => {
 
@@ -19,6 +21,7 @@ const ViewUser = () => {
   const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [userDisplayed, setUserDisplayed] = useState<IUser>();
   const [errors, setErrors] = React.useState<IErrors | null>();
+  const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();
 
@@ -26,9 +29,17 @@ const ViewUser = () => {
     if (!userDisplayed) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
-        await UserApiService.getUserById(userId!)
-        .then(user => setUserDisplayed(user))
-        .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
+        getDefaultUserImage()
+        .then(imageData => { 
+          setuserDefaultImage(imageData);
+        }) 
+        .catch(error => {
+          throw new Error(error);
+        })
+        UserApiService.getUserById(userId!)
+          .then(user => setUserDisplayed(user))
+          .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
+
         dispatch(createActionLoading(false));
       }
       fetchData();  
@@ -39,6 +50,20 @@ const ViewUser = () => {
   const handleFetchUserError = (apiErrors: IErrors) => {
     toast.error(`User reading failed, see error list`);
     setErrors(apiErrors);
+  }
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+
+  const UserImage = () => {
+    if(userDisplayed?.image) {
+      return <ImageResize imageData={userDisplayed.image} resize={imageMaxSize}/>;
+    }  else {
+      return  userDefaultImage && <Image imageData={userDefaultImage}/> 
+    }
+  }
+
+  const getDefaultUserImage = (): Promise<ImageData> => {
+    return resizeImage('/default-profil-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
   const handleReturn = () => {
@@ -84,16 +109,11 @@ const ViewUser = () => {
           <div className="row">
             <div className="col-lg-1 col-md-0" />
             <div className="col-lg-10 col-md-12">
-              {userDisplayed && 
+              {userDisplayed  &&
               (
                 <div className="main-user">
                   <div className="user-top-area">
-                    { user && userDisplayed.image && 
-                      <>
-                        <Image imageData={userDisplayed.image}/> 
-                        <br/>
-                      </>
-                    } 
+                    {UserImage()}
                     <div>
                       <h4 className="username">
                         <span>

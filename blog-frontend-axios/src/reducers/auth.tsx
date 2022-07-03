@@ -7,6 +7,7 @@ export enum AuthActionType {
   SessionExpired = 'SESSION_EXPIRED',
   SetCategoryFilter = 'SET_CATEGORY_FILTER',
   SetPostTitleFilter = 'SET_POST_TITLE_FILTER',
+  SetUserNameFilter = 'SET_USER_NAME_FILTER',
   UpdateUser = 'UPDATE_USER',
 }
 export const createActionLogout = () : AuthAction => { return {type:  AuthActionType.Logout}}
@@ -16,6 +17,7 @@ export const createActionSessionExpired = () : AuthAction => { return {type:  Au
 export const createActionSetCategoryFilter = (category: ICategory) : AuthAction => { return {type:  AuthActionType.SetCategoryFilter, categoryFilter: category}}
 export const createActionSetPostTitleFilter = (titleFilter: string) : AuthAction => { return {type:  AuthActionType.SetPostTitleFilter, postTitleFilter: titleFilter}}
 export const createActionUpdateUser = (user: User) : AuthAction => { return {type:  AuthActionType.UpdateUser, user: user}}
+export const createActionSetUserNameFilter = (userName: string) : AuthAction => { return {type:  AuthActionType.SetUserNameFilter, userNameFilter: userName}}
 
 export type AuthAction =
   | {
@@ -42,6 +44,10 @@ export type AuthAction =
     type: AuthActionType.UpdateUser;
     user: User;
   }
+  | { 
+    type: AuthActionType.SetUserNameFilter;
+    userNameFilter: string;
+  }
 ;;
 export interface AuthState {
   isLoading: boolean;
@@ -49,7 +55,8 @@ export interface AuthState {
   isSessionExpired: boolean;
   categoryFilter: ICategory | undefined,
   postTitleFilter: string,
-  user: User | undefined;
+  user: User | undefined,
+  userNameFilter: string,
 }
 
 export const initialState: AuthState = {
@@ -59,6 +66,7 @@ export const initialState: AuthState = {
   categoryFilter: undefined,
   postTitleFilter: '',
   user: undefined,
+  userNameFilter: '',
 };
 
 export function authReducer(state: AuthState, action: AuthAction): AuthState {
@@ -84,7 +92,10 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
     }    
     case AuthActionType.UpdateUser: {
       return { ...state, user: action.user!};
-    }    
+    }   
+    case AuthActionType.SetUserNameFilter: {
+      return { ...state, userNameFilter: action.userNameFilter};
+    }     
     default:
       return state;
   }

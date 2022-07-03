@@ -7,10 +7,13 @@ import ViewPost from "../components/post/ViewPost";
 import useAuth from '../contexts/auth';
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";
+// import { UserRole } from '../types';
+import AdminRoutes from "./AdminRoutes";
 
 export const AppRoutes = () => {
 
   const { state : { isAuthenticated } } = useAuth();
+  // const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
   return (
     <Routes>
@@ -19,6 +22,8 @@ export const AppRoutes = () => {
       <Route path={"/category"} element={<ListCategories/>}/>
       <Route path={"/category/:categoryId"} element={<ViewCategory/>}/>
       {isAuthenticated ?  PrivateRoutes() : RestrictedRoutes()}
+      {AdminRoutes()}
+      {/* {isAdministrator() ? AdminRoutes() : <></>} */}
       <Route
           path="*"
           element={<Navigate to="/" replace />}

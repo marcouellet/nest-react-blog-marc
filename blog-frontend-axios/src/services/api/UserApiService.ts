@@ -1,5 +1,6 @@
 import HttpApiService from "./HttpApiService";
 import { IUser, IUpdateUser } from "../../types";
+import { buildUserNameFilter } from './FilterApiService';
 
 const USER_ENDPOINT = `/user`;
 class UserApi extends HttpApiService<IUser> {
@@ -11,6 +12,10 @@ class UserApi extends HttpApiService<IUser> {
   getAllUsers = () => {
     return super.getAll(`${USER_ENDPOINT}`);
   };
+
+  findManyUsers = (userNameFilter: string) => {
+    return super.findMany(`${USER_ENDPOINT}/findMany`, buildUserNameFilter(userNameFilter));
+  }
 
   createUser = (data: any) => {
     return super.create(`${USER_ENDPOINT}/create`, data);

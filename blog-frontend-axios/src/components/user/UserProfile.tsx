@@ -150,6 +150,10 @@ const UserProfile = () => {
         setImageData(image);
     }
 
+    const handleImageUploadError = (error: any) => {
+      toast.error(`User image upload failed`);
+    }
+
     const handleDeleteImage = () => {
         setImageData(undefined);
     }
@@ -183,7 +187,7 @@ const UserProfile = () => {
                             </button>  
                         )
                       }   
-                      <ImageUpload onImageUpload={handleImageUpload} resize={imageMaxSize}/>                     
+                      <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                     
                     </div>
                   </div>
     

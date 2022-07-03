@@ -53,7 +53,7 @@ const NavigationBar = () => {
                     <Nav.Link href="/">Home</Nav.Link>
                     {!isLoading && isAuthenticated && <Nav.Link href="/post/create">Create Post</Nav.Link>}
                     {!isLoading && <Nav.Link href="/category">Categories</Nav.Link>}
-                    {!isLoading && isAdministrator() && <Nav.Link href="/user">Admin User</Nav.Link>}
+                    {!isLoading && isAdministrator() && <Nav.Link href="/user">Users</Nav.Link>}
                 </Nav>
             </Container>
             <Form inline className="mx-3">

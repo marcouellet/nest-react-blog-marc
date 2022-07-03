@@ -9,3 +9,13 @@ export function buildPostTitleFilter(postTitleFilter: string) {
     }
     return filter;
 }
+
+export function buildUserNameFilter(userNameFilter: string) {
+    let filter: any = {};
+    if (userNameFilter) {
+        const containsFilter: IFilterFindContainsCriterias = {property: 'username', value: userNameFilter}
+        const nameFilter: IFilterFindCriterias = {contains: containsFilter}
+        filter = nameFilter;
+    }
+    return filter;
+}
