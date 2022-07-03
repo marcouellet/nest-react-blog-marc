@@ -35,7 +35,7 @@ const ViewUser = () => {
         }) 
         .catch(error => {
           throw new Error(error);
-        })
+        });
         UserApiService.getUserById(userId!)
           .then(user => setUserDisplayed(user))
           .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
