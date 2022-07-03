@@ -32,7 +32,7 @@ const UserProfile = () => {
       .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
       email: Yup.string().required('Email is required')
       .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
-      currentPassword: Yup.lazy(value => {
+      password: Yup.lazy(value => {
           if (
           value &&
           Object.values(value).some(v => !(v === null || v === undefined || v === ""))
@@ -44,17 +44,24 @@ const UserProfile = () => {
           // Otherwise, return a simple validation
           return Yup.mixed().notRequired();
       }),
-      newPassword: Yup.lazy(value => {
+      confirmPassword: Yup.lazy(value => {
       if (
           value &&
           Object.values(value).some(v => !(v === null || v === undefined || v === ""))
       ) {
           // Return our normal validation
           return Yup.string().required()
-          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
+          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+          .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
+          .oneOf([Yup.ref('password'), null], "Passwords don't match!");
           }
       // Otherwise, return a simple validation
-      return Yup.mixed().notRequired();
+      return Yup.mixed().when('password', {
+        is: (password: string) => {
+          return password && password.length > 0
+        },
+        then: (schema) => schema.required()
+      });
       }),
       imageChanged: Yup.bool(),
   });
@@ -63,13 +70,12 @@ const UserProfile = () => {
       username: string;
       email: string;
       password?: string;
+      confirmPassword?: string;
       imageChanged: boolean;
-      currentPassword?: string;
-      newPassword?: string;
   };
 
-  const defaultValues = {username: userEdited?.username, email: userEdited?.email, currentPassword: undefined, 
-                          newPassword: undefined, imageChanged: false};
+  const defaultValues = {username: userEdited?.username, email: userEdited?.email, password: undefined, 
+                          confirmPassword: undefined, imageChanged: false};
 
   const {
       register,
@@ -240,25 +246,25 @@ const UserProfile = () => {
             </div>
 
             <div className="form-group col-md-12">
-              <label htmlFor="password"> Enter Current Password </label>
+              <label htmlFor="password"> Enter Password </label>
               <input 
                 type="password" 
                 placeholder="Enter a value to change current password" 
-                {...register('currentPassword')}
+                {...register('password')}
                 className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
               />
-              <div className="invalid-feedback">{errors.currentPassword?.message}</div>
+              <div className="invalid-feedback">{errors.password?.message}</div>
             </div>
 
             <div className="form-group col-md-12">
-              <label htmlFor="password"> Enter New Password </label>
+              <label htmlFor="password"> Confirm Password</label>
               <input 
                 type="password" 
                 placeholder="Enter a value to change current password" 
-                {...register('newPassword')}
-                className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`}           
+                {...register('confirmPassword')}
+                className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}           
               />
-              <div className="invalid-feedback">{errors.newPassword?.message}</div>
+              <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
             </div>
 
             <div className="form-group col-md-4 pull-right">

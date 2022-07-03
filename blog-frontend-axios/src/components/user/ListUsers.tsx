@@ -34,7 +34,7 @@ const ListUsers = () => {
     }
     fetchUsers();
     // eslint-disable-next-line
-  }, [user])
+  }, [user, userNameFilter])
  
   const handleFetchUserError = (apiErrors: IErrors) => {
     toast.error(`Users reading failed, see error list`);
