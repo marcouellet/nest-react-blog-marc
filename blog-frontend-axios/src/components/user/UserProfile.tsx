@@ -87,7 +87,7 @@ const UserProfile = () => {
           if (!userEdited) {
               const fetchData = async (): Promise<void> => {
               dispatch(createActionLoading(true));
-              getDefaultUserImage()
+              await getDefaultUserImage()
               .then(imageData => { 
                 setuserDefaultImage(imageData);
               }) 

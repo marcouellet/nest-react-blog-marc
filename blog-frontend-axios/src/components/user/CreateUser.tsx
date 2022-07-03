@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
@@ -16,6 +16,8 @@ import { checkUnauthorized, checkForbidden } from '../../utils/html.response.uti
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils'
 
 const CreateUser = () => {
 
@@ -23,6 +25,7 @@ const CreateUser = () => {
   const { state: { isLoading }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userImage, setUserImage] = useState<ImageData>();
+  const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -42,6 +45,39 @@ const CreateUser = () => {
   };
 
   const defaultValues = {username: '', email: '', password: '', role: ''};
+
+  useEffect(() => {
+    if (!userDefaultImage) {
+      const fetchData = async (): Promise<void> => {
+        dispatch(createActionLoading(true));
+        await getDefaultUserImage()
+        .then(imageData => { 
+          setuserDefaultImage(imageData);
+        }) 
+        .catch(error => {
+          throw new Error(error);
+        });
+        dispatch(createActionLoading(false));
+      }
+      fetchData();      
+    }
+  // eslint-disable-next-line
+  }, []);
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+
+  const UserImage = () => {
+    if(userImage) {
+      return <ImageResize imageData={userImage} resize={imageMaxSize}/>;
+    }  else {
+      return  userDefaultImage && <Image imageData={userDefaultImage}/> 
+    }
+  }
+
+  const getDefaultUserImage = (): Promise<ImageData> => {
+    return resizeImage('/default-profil-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
 
   const {
     register,
@@ -107,8 +143,6 @@ const CreateUser = () => {
     setUserImage(undefined);
   }
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
-
   return (
     <div>
     <div className={"col-md-12 form-wrapper"}>
@@ -128,12 +162,7 @@ const CreateUser = () => {
             </div>
         </div>
         <div className="form-group col-md-12">
-          { userImage && 
-            <>
-              <Image imageData={userImage}/> 
-              <br/>
-            </>
-          }
+          {UserImage()}  
           <br/>
 
           <label htmlFor="username"> Title </label>

@@ -33,6 +33,7 @@ const ListUsers = () => {
       dispatch(createActionLoading(false));
     }
     fetchUsers();
+    // eslint-disable-next-line
   }, [user])
  
   const handleFetchUserError = (apiErrors: IErrors) => {
@@ -63,6 +64,15 @@ const ListUsers = () => {
     <section className="blog-area section">
       {errors && <ListErrors errors={errors} />}
       <Container  className="col-md-10">
+        <div>
+            {
+              !isLoading && 
+              (
+                <Link to={`/user/create`} className="btn btn-sm btn-primary">Create User</Link>
+              )
+            }
+        </div>
+        <br/>
         <div className="form-group ">
           <div className="row">
             <h4 className="col-md-1">
@@ -75,7 +85,7 @@ const ListUsers = () => {
               name="userNameFilter" 
               value={userNameFilter} 
               placeholder="enter some part of user name text" 
-              className="col-md-2" 
+              className="col-md-3" 
               onChange={e => handleUserNameFilterChange(e.target.value)}      
             />
           </div>

@@ -16,6 +16,8 @@ import { IErrors } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils';
 
 const EditUser = () => {
 
@@ -25,6 +27,7 @@ const EditUser = () => {
   const { userId } = useParams<{ userId: string }>();
   const [userEdited, setUserEdited] = useState<User>();
   const [userImage, setUserImage] = useState<ImageData>();
+  const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
  
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -73,6 +76,13 @@ const EditUser = () => {
     if (!userEdited) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
+        await getDefaultUserImage()
+        .then(imageData => { 
+          setuserDefaultImage(imageData);
+        }) 
+        .catch(error => {
+          throw new Error(error);
+        });
         await UserApiService.getUserById(userId!)
         .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
         .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
@@ -89,6 +99,20 @@ const EditUser = () => {
     }
   // eslint-disable-next-line
   }, [user]);
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+
+  const UserImage = () => {
+    if(userImage) {
+      return <ImageResize imageData={userImage} resize={imageMaxSize}/>;
+    }  else {
+      return  userDefaultImage && <Image imageData={userDefaultImage}/> 
+    }
+  }
+
+  const getDefaultUserImage = (): Promise<ImageData> => {
+    return resizeImage('/default-profil-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
 
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (userEdited && isDirty) {
@@ -164,8 +188,6 @@ const setImageData = (image: ImageData | undefined) => {
   setUserImage(image);
 }
 
-const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
-
   return (
     <div className={'page-wrapper'}>
     {userEdited &&
@@ -175,24 +197,19 @@ const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
           {errorList && <ListErrors errors={errorList} />}
           <form id={"create-user-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
             <div className="form-group col-md-4">
-                <div className="row">
-                  <label className="col-md-2"> Image: </label>
-                  { userImage && 
-                    <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
-                      Delete Image
-                    </button>  
-                  }   
-                  <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                     
-                </div>
-              </div>
-
-              <div className="form-group col-md-12">
+              <div className="row">
+                <label className="col-md-2"> Image: </label>
                 { userImage && 
-                  <>
-                    <Image imageData={userImage}/> 
-                    <br/>
-                  </>
-                }    
+                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                    Delete Image
+                  </button>  
+                }   
+                <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                     
+              </div>
+            </div>
+
+            <div className="form-group col-md-12">
+              {UserImage()}  
             </div>
 
             <div className="form-group col-md-12">
