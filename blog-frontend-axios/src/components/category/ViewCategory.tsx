@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ICategory } from "../../types";
 import { toast } from "react-toastify";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionLoading } from '../../reducers/auth';
+import { PostApiService } from '../../services/api/PostApiService';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
+import { IErrors, UserRole } from '../../types';
+import DeleteButton from '../common/deleteConfirmation';
+import { checkUnauthorized } from '../../utils/html.response.utils';
 
 const ViewCategory = () => {
 
   const { categoryId } = useParams<{ categoryId: string }>();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [category, setCategory] = useState<ICategory>();
   const [errors, setErrors] = React.useState<IErrors | null>();
+
+  const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
   const navigate = useNavigate();
 
@@ -38,6 +43,38 @@ const ViewCategory = () => {
 
   const handleReturn = () => {
     navigate('/category');  
+  }
+
+  const deleteCategoryMessage = (category: ICategory) => `${category.title} Category`;
+
+  const handleDeleteCategory = async (id: string) => {
+    dispatch(createActionLoading(true));
+    const postscount = await PostApiService.getNumberOfPostsForCategory(id);
+    if (postscount) {
+      toast.error(`Category has linked posts, delete them first`);
+      dispatch(createActionLoading(false));
+    } else {
+      await CategoryApiService.deleteCategory(id)
+      .then(() => handleDeleteCategorySuccess())
+      .catch((apiErrors: IErrors) => handleDeleteCategoryError(apiErrors))
+      dispatch(createActionLoading(false));
+      navigate('/category'); 
+    }
+  }
+
+  const handleDeleteCategorySuccess = () => {
+    toast.success(`Category deleted successfully...`);
+  }
+
+  const handleDeleteCategoryError = (apiErrors: IErrors) => {
+    if (checkUnauthorized(apiErrors)) {
+      toast.error(`Category delete failed, session expired`);
+      dispatch(createActionSessionExpired());
+      navigate('/category'); 
+    } else {
+      toast.error(`Category delete failed, see error list`);
+      setErrors(apiErrors);      
+    }
   }
 
     return (
@@ -68,12 +105,22 @@ const ViewCategory = () => {
                         <h5>{category.description}</h5>
                       </div>
                   </div>
-                  <div className="form-group col-md-1 pull-right">
-                    <button className="btn btn-secondary"  onClick={ () => handleReturn() } >
+                  <div className="form-group col-md-5 pull-right">
+                    <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
                       Return
                     </button>
                     {isLoading &&
                       <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                   {!isLoading && isAdministrator() &&
+                      (
+                        <Link to={`/category/edit/${category.id}`} className="btn ml-2 btn-primary">Edit Category</Link>                  
+                      )
+                    }
+                    {!isLoading && isAdministrator() && 
+                      (               
+                          <DeleteButton message={deleteCategoryMessage(category)} onClick={() => handleDeleteCategory(category.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
+                      )
                     }
                   </div>
                 </div>   

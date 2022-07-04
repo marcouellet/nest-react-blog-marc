@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -33,7 +32,12 @@ const NavigationBar = () => {
 
     const authButton = () => {
         if (isAuthenticated) {
-            return <Button variant="secondary" onClick={handleLogout}>Logout</Button>;
+            return (
+                <ButtonGroup>
+                    <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+                    <Button variant="secondary" onClick={handleUserProfile}>Profile</Button>
+                </ButtonGroup>
+            )
         } else {
             return (
                 <ButtonGroup>
@@ -47,17 +51,19 @@ const NavigationBar = () => {
     return (
     <>
         <Navbar expand="lg" bg="dark" variant="dark">
-            <Container>
-                <Navbar.Brand href="/">Blog Marc</Navbar.Brand>
+            <div className="container-fluid">
+                <Navbar.Brand href="/">Marc's Blog</Navbar.Brand>
+                <div>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
                     {!isLoading && <Nav.Link href="/post">Posts</Nav.Link>}
                     {!isLoading && <Nav.Link href="/category">Categories</Nav.Link>}
                     {!isLoading && isAdministrator() && <Nav.Link href="/user">Users</Nav.Link>}
                 </Nav>
-            </Container>
+
+                </div>
+            </div>
             <Form inline className="mx-3">
-                {!isLoading && isAuthenticated && <Button variant="secondary" onClick={handleUserProfile}>User Profile</Button>}
                 {authButton()}
             </Form>
         </Navbar>

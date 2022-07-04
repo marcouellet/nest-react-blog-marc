@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { IErrors, ImageSizeProps, ImageData } from '../types';
+import { ImageSizeProps, ImageData } from '../types';
 import { createActionLoading } from '../reducers/auth';
 import useAuth from '../contexts/auth';
-import Image from './common/Image';
 import ImageResize from './common/ImageResize';
 import { resizeImage } from '../utils/image.utils';
 
 const Home = () => {
 
   const [homeDefaultImage, sethomeDefaultImage] = useState<ImageData>();
-  const { state: { isLoading }, dispatch } = useAuth();
 
   useEffect(() => {
     if (!homeDefaultImage) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
         getDefaultHomeImage()
         .then(imageData => { 
           sethomeDefaultImage(imageData);
@@ -22,7 +19,6 @@ const Home = () => {
         .catch(error => {
           throw new Error(error);
         });
-        dispatch(createActionLoading(false));
       }
       fetchData();  
     }
@@ -44,7 +40,7 @@ const Home = () => {
             </div>
             <div className="col-md-7">
               <h2>
-                Welcome to Marc Blog
+                Welcome to Marc's Blog
               </h2>
               <br/>            
               <h4>
