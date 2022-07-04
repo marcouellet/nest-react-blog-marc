@@ -18,6 +18,8 @@ import { checkUnauthorized, checkForbidden } from '../../utils/html.response.uti
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils';
 
 const EditPost = () => {
 
@@ -29,6 +31,7 @@ const EditPost = () => {
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
+  const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -82,7 +85,12 @@ const EditPost = () => {
       }
       if (!post) {
         const fetchPost = async (): Promise<void> => {
-          PostApiService.getPostById(postId!)
+          await getDefaultPostImage()
+          .then(imageData => { setpostDefaultImage(imageData);})
+          .catch(error => {
+            throw new Error(error);
+          });  
+          await PostApiService.getPostById(postId!)
           .then(post => { 
             setPost(post); 
             reset(post);
@@ -105,6 +113,19 @@ const EditPost = () => {
   // eslint-disable-next-line
   }, [post]);
 
+  const getDefaultPostImage = (): Promise<ImageData> => {
+    return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
+  const PostImage = (post: IPost) => {
+    if(postImage) {
+      return <ImageResize imageData={postImage} resize={imageMaxSize}/>;
+    }  else {
+      return  postDefaultImage && <Image imageData={postDefaultImage}/> 
+    }
+  }
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (post && isDirty) {
       dispatch(createActionLoading(true));
@@ -191,8 +212,6 @@ const setImageData = (image: ImageData | undefined) => {
   setPostImage(image);
 }
 
-const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
-
   return (
     <div className={'page-wrapper'}>
     {post &&
@@ -233,13 +252,7 @@ const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
             </div>
 
             <div className="form-group col-md-12">
-              {/* <input type="text" {...register('imageData')} hidden/>                             */}
-              { postImage && 
-                <>
-                  <Image imageData={postImage}/> 
-                  <br/>
-                </>
-              }    
+              {PostImage(post)}
            </div>
 
             <div className="form-group col-md-12">

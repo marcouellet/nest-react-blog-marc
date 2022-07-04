@@ -91,7 +91,7 @@ const ViewPost = () => {
   }
 
   const handleReturn = () => {
-    navigate('/');  
+    navigate('/post');  
   }
 
   const getDateString = (date: Date): string => {
