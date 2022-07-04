@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IPost, ICategory } from "../../types";
+import { IPost, ICategory, ImageData } from "../../types";
 import useAuth from '../../contexts/auth';
 import { createActionLoading } from '../../reducers/auth';
+import { resizeImage } from '../../utils/image.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
 import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ImageResize from '../common/ImageResize';
+import Image from '../common/Image';
 
 const ListPosts = () => {
 
@@ -21,6 +23,7 @@ const ListPosts = () => {
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
   const [postTitleFilter, setPostTitleFilter] = useState<string>('');
+  const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
     (async () => {
@@ -51,6 +54,12 @@ const ListPosts = () => {
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
+      await getDefaultPostImage()
+      .then(imageData => { setpostDefaultImage(imageData);})
+      .catch(error => {
+        throw new Error(error);
+      }) 
+
       if (category) {
         dispatch(createActionLoading(true));
         if ( category.id === 'all') {
@@ -84,6 +93,19 @@ const ListPosts = () => {
     toast.error(`Post reading failed, see error list`);
   }
 
+  const getDefaultPostImage = (): Promise<ImageData> => {
+    return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
+  const PostImage = (post: IPost) => {
+    if(post.image) {
+      return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
+    }  else {
+      return  postDefaultImage && <Image imageData={postDefaultImage}/> 
+    }
+  }
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:40, maxHeight:40};
   const handleCategorySelect=(e: any)=>{
     selectCategory(categories!, e, true);
   }
@@ -99,8 +121,6 @@ const ListPosts = () => {
     setPostTitleFilter(filter);
     dispatch(createActionSetPostTitleFilter(filter));
   }
-
-  const imageMaxSize: ImageSizeProps = {maxWidth:40, maxHeight:40};
 
   return (
     <section className="blog-area section">
@@ -172,7 +192,7 @@ const ListPosts = () => {
                 </thead>
                 <tr>
                   <td>
-                      {post.image && <ImageResize imageData={post.image} resize={imageMaxSize}/>}
+                    {PostImage(post)}
                   </td>
                   <td>
                       {post.title}
