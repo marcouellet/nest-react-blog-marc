@@ -58,8 +58,7 @@ const ListPosts = () => {
       .then(imageData => { setpostDefaultImage(imageData);})
       .catch(error => {
         throw new Error(error);
-      }) 
-
+      });
       if (category) {
         dispatch(createActionLoading(true));
         if ( category.id === 'all') {
@@ -106,6 +105,7 @@ const ListPosts = () => {
   }
 
   const imageMaxSize: ImageSizeProps = {maxWidth:40, maxHeight:40};
+
   const handleCategorySelect=(e: any)=>{
     selectCategory(categories!, e, true);
   }

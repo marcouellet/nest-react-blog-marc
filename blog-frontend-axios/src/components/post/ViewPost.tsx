@@ -6,11 +6,13 @@ import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
+import { IErrors, ImageData, ImageSizeProps } from '../../types';
 import { toLocalDateString } from '../../utils/local.storage.utils';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import DeleteButton from '../common/deleteConfirmation';
 import Image from '../common/Image';
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils';
 
 const ViewPost = () => {
 
@@ -18,6 +20,7 @@ const ViewPost = () => {
   const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
   const [errors, setErrors] = React.useState<IErrors | null>();
+  const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();
 
@@ -28,6 +31,11 @@ const ViewPost = () => {
     if (!post) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
+        await getDefaultPostImage()
+        .then(imageData => { setpostDefaultImage(imageData);})
+        .catch(error => {
+          throw new Error(error);
+        }); 
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
@@ -38,6 +46,19 @@ const ViewPost = () => {
   // eslint-disable-next-line
   }, []);
 
+  const getDefaultPostImage = (): Promise<ImageData> => {
+    return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
+  const PostImage = (post: IPost) => {
+    if(post.image) {
+      return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
+    }  else {
+      return  postDefaultImage && <Image imageData={postDefaultImage}/> 
+    }
+  }
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
   
   const handleDeletePost = async (id: string) => {
     dispatch(createActionLoading(true));
@@ -92,13 +113,8 @@ const ViewPost = () => {
               (
                 <div className="main-post">
                   <div className="post-top-area">
-                    { post.image && 
-                      <>
-                        <Image imageData={post.image}/> 
-                        <br/>
-                      </>
-                    }  
-                    <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
+                    {PostImage(post)}
+                     <h5 className="pre-title">This post belongs to: {post.user!.username}</h5>
                     <div>
                       <br/>
                       <h4 className="title">
