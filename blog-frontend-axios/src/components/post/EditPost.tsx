@@ -126,6 +126,7 @@ const EditPost = () => {
   }
 
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (post && isDirty) {
       dispatch(createActionLoading(true));
@@ -220,7 +221,6 @@ const setImageData = (image: ImageData | undefined) => {
           <h2> Edit Post  </h2>
           {errorList && <ListErrors errors={errorList} />}
           <form id={"create-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
-
             <div className="form-group col-md-8">
               <div className="row">
                 <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">

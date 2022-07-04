@@ -78,7 +78,6 @@ const CreateUser = () => {
     return resizeImage('/default-profil-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-
   const {
     register,
     handleSubmit,

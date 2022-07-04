@@ -17,6 +17,8 @@ import { checkUnauthorized, checkForbidden } from '../../utils/html.response.uti
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
+import ImageResize from '../common/ImageResize';
+import { resizeImage } from '../../utils/image.utils'
 
 const CreatePost = () => {
 
@@ -26,6 +28,7 @@ const CreatePost = () => {
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
+  const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -62,6 +65,11 @@ const CreatePost = () => {
       if (!categories) {
         dispatch(createActionLoading(true));
         const fetchCategories = async (): Promise<void> => {
+        await getDefaultPostImage()
+          .then(imageData => { setpostDefaultImage(imageData);})
+          .catch(error => {
+            throw new Error(error);
+          });  
         await CategoryApiService.getAllCategories()
           .then(categories => {
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -82,6 +90,20 @@ const CreatePost = () => {
     toast.error(`Categories reading failed, see error list`);
     setErrorList(apiErrors);
   }
+
+  const getDefaultPostImage = (): Promise<ImageData> => {
+    return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
+  const PostImage = () => {
+    if(postImage) {
+      return <ImageResize imageData={postImage} resize={imageMaxSize}/>;
+    }  else {
+      return  postDefaultImage && <Image imageData={postDefaultImage}/> 
+    }
+  }
+
+  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
   
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
@@ -145,8 +167,6 @@ const CreatePost = () => {
     setPostImage(undefined);
   }
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:600, maxHeight:400}
-
   return (
     <div>
     <div className={"col-md-12 form-wrapper"}>
@@ -185,12 +205,7 @@ const CreatePost = () => {
         </div>
 
         <div className="form-group col-md-12">
-        { postImage && 
-          <>
-            <Image imageData={postImage}/> 
-            <br/>
-          </>
-        }
+        {PostImage()}
         <br/>
           <label htmlFor="title"> Title </label>
           <input 
