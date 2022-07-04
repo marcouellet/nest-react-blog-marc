@@ -14,7 +14,7 @@ import ImageResize from '../common/ImageResize';
 
 const ListPosts = () => {
 
-  const { state: { user, isLoading, categoryFilter }, dispatch } = useAuth();
+  const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
   const [errors, setErrors] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
@@ -27,7 +27,7 @@ const ListPosts = () => {
       dispatch(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
-          CategoryApiService.getAllCategories()
+        await CategoryApiService.getAllCategories()
           .then(categories => {
             const all: ICategory = {id:'all', title: 'All', description: ''};
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -41,7 +41,7 @@ const ListPosts = () => {
           })
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
         }
-        await fetchCategories();
+        fetchCategories();
       }
       setPostTitleFilter(postTitleFilter);
       dispatch(createActionLoading(false));
@@ -52,21 +52,23 @@ const ListPosts = () => {
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
       if (category) {
+        dispatch(createActionLoading(true));
         if ( category.id === 'all') {
-          PostApiService.findManyPosts(postTitleFilter)
+          await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         } 
         else if (category.id === 'no_category') {
-          PostApiService.findManyPostsWithoutCategory(postTitleFilter)
+          await PostApiService.findManyPostsWithoutCategory(postTitleFilter)
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         } 
         else {
-          PostApiService.findManyPostsForCategory(category.id!, postTitleFilter)
+          await PostApiService.findManyPostsForCategory(category.id!, postTitleFilter)
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
+        dispatch(createActionLoading(false));
       }
     }
     fetchPosts();
@@ -138,6 +140,14 @@ const ListPosts = () => {
               className="col-md-2" 
               onChange={e => handlePostTitleFilterChange(e.target.value)}      
             />
+            <div className="col-md-2 pull-right">
+              {
+                !isLoading && isAuthenticated &&
+                (
+                  <Link to={`/post/create`} className="btn btn-sm btn-primary">Create Post</Link>
+                )
+              }
+            </div>
           </div>
         </div>
         {

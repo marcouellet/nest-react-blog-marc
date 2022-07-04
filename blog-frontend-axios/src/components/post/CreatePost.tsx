@@ -59,10 +59,10 @@ const CreatePost = () => {
 
   useEffect(() => {
     (async () => {
-      dispatch(createActionLoading(true));
       if (!categories) {
+        dispatch(createActionLoading(true));
         const fetchCategories = async (): Promise<void> => {
-          CategoryApiService.getAllCategories()
+        await CategoryApiService.getAllCategories()
           .then(categories => {
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
             const allCategories = [noCategory].concat(categories);
@@ -70,10 +70,10 @@ const CreatePost = () => {
             selectCategory(allCategories, 'no_category', false);
           })
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
+        dispatch(createActionLoading(false));
         }
-        await fetchCategories();
+        fetchCategories();
       }
-      dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
   }, []);

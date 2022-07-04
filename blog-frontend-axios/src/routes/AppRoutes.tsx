@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../components/Home";
+import ListPosts from "../components/post/ListPosts";
 import ListCategories from "../components/category/ListCategories";
 import ViewCategory from "../components/category/ViewCategory";
 import ViewPost from "../components/post/ViewPost";
@@ -8,9 +9,8 @@ import CreatePost from "../components/post/CreatePost";
 import useAuth from '../contexts/auth';
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";
-// import { UserRole } from '../types';
 import AdminRoutes from "./AdminRoutes";
-import { JsxAttributeLike } from "typescript";
+
 
 export const AppRoutes = () => {
 
@@ -29,6 +29,7 @@ export const AppRoutes = () => {
       {controlledRoutes}
       {AdminRoutes()}
       <Route path={"/"} element={<Home/>} />
+      <Route path={"/post"} element={<ListPosts/>}/>
       <Route path={"/post/create"} element={<CreatePost/>} /> 
       <Route path={"/post/:postId"} element={<ViewPost/>}/>
       <Route path={"/category"} element={<ListCategories/>}/>

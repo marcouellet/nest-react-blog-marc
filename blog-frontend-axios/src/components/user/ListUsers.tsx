@@ -64,15 +64,6 @@ const ListUsers = () => {
     <section className="blog-area section">
       {errors && <ListErrors errors={errors} />}
       <Container  className="col-md-10">
-        <div>
-            {
-              !isLoading && 
-              (
-                <Link to={`/user/create`} className="btn btn-sm btn-primary">Create User</Link>
-              )
-            }
-        </div>
-        <br/>
         <div className="form-group ">
           <div className="row">
             <h4 className="col-md-1">
@@ -88,7 +79,16 @@ const ListUsers = () => {
               className="col-md-3" 
               onChange={e => handleUserNameFilterChange(e.target.value)}      
             />
+            <div className="col-md-2 pull-right">
+              {
+                !isLoading && 
+                (
+                  <Link to={`/user/create`} className="btn btn-sm btn-primary">Create User</Link>
+                )
+              }
+            </div>
           </div>
+        <br/>
         </div>
         {
           !isLoading && users && users.map((user: IUser) =>    

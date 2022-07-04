@@ -3,14 +3,13 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { IUser } from "../../types";
 import { toast } from "react-toastify";
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading } from '../../reducers/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
 import { checkUnauthorized } from '../../utils/html.response.utils';
 import { PostApiService } from '../../services/api/PostApiService';
-import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
 import { resizeImage } from '../../utils/image.utils';
@@ -29,17 +28,16 @@ const ViewUser = () => {
     if (!userDisplayed) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
-        getDefaultUserImage()
+        await getDefaultUserImage()
         .then(imageData => { 
           setuserDefaultImage(imageData);
         }) 
         .catch(error => {
           throw new Error(error);
         });
-        UserApiService.getUserById(userId!)
+        await UserApiService.getUserById(userId!)
           .then(user => setUserDisplayed(user))
           .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
-
         dispatch(createActionLoading(false));
       }
       fetchData();  

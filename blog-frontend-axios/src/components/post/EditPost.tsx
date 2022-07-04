@@ -66,11 +66,10 @@ const EditPost = () => {
   useEffect(() => {
     (async () => {
       let allCategories: ICategory[];
-
       dispatch(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
-          CategoryApiService.getAllCategories()
+        await CategoryApiService.getAllCategories()
           .then(categories => {
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
             allCategories = [noCategory].concat(categories);
@@ -79,7 +78,7 @@ const EditPost = () => {
           })
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
         }
-        await fetchCategories();
+        fetchCategories();
       }
       if (!post) {
         const fetchPost = async (): Promise<void> => {
