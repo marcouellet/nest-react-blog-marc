@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ImageSizeProps, ImageData } from '../types';
-import { createActionLoading } from '../reducers/auth';
-import useAuth from '../contexts/auth';
 import ImageResize from './common/ImageResize';
 import { resizeImage } from '../utils/image.utils';
 

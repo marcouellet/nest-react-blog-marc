@@ -20,6 +20,7 @@ import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
 import ImageResize from '../common/ImageResize';
 import { resizeImage } from '../../utils/image.utils';
+import EditPostContent from './EditPostContent';
 
 const EditPost = () => {
 
@@ -32,6 +33,7 @@ const EditPost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
+  const [editContent, setEditContent] = useState<boolean>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -60,6 +62,7 @@ const EditPost = () => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors, isDirty }
   } = useForm<UpdateSubmitForm>({
     resolver: yupResolver(validationSchema),
@@ -178,8 +181,17 @@ const handleResetEditPost = () => {
   }
 }
 
+const handleEditContent = () => {
+  setEditContent(true);
+}
+
 const handleCategorySelect=(e: any)=>{
   selectCategory(categories!, e, true);
+}
+
+const onSavePostContent = (content: string) => {
+  setEditContent(true);
+  setValue('body', content);
 }
 
 const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
@@ -242,10 +254,11 @@ const setImageData = (image: ImageData | undefined) => {
             <div className="form-group col-md-4">
               <div className="row">
                 <label className="col-md-2"> Image: </label>
-                { postImage && 
+                { postImage && (
                   <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
                     Delete Image
-                  </button>  
+                  </button>
+                )  
                 }   
                 <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                     
               </div>
@@ -287,6 +300,35 @@ const setImageData = (image: ImageData | undefined) => {
               />
               <div className="invalid-feedback">{errors.body?.message}</div>
             </div>
+
+            {!editContent && (
+              <div>
+                <div className="form-group col-md-12">
+                  <label htmlFor="body"> Enter Content </label>
+                  <input 
+                    type="text" 
+                    placeholder="Enter content" 
+                    {...register('body')}
+                    className={`form-control ${errors.body ? 'is-invalid' : ''}`}           
+                  />
+                  <div className="invalid-feedback">{errors.body?.message}</div>
+                </div>
+
+                <div className="form-group col-md-4 pull-right">
+                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
+                      Edit Content
+                  </button>  
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+                </div> 
+              </div>
+            )         
+            }
+            {editContent && (
+              <EditPostContent content={getValues('body')} onSavePostContent={onSavePostContent}/>
+            ) 
+            }
 
             <div className="form-group col-md-4 pull-right">
               <button className="btn btn-success"  disabled={!isDirty} type="submit">

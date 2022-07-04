@@ -80,6 +80,7 @@ const ListPosts = () => {
       }
     }
     fetchPosts();
+  // eslint-disable-next-line
   }, [category, postTitleFilter, user])
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
