@@ -71,7 +71,7 @@ const ViewPost = () => {
      .then(() => handleDeletePostSucess())
      .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
     dispatch(createActionLoading(false));
-    navigate('/');
+    navigate('/post');
   }
   const handleDeletePostSucess = () => {
     toast.success(`Post deleted successfully...`);
@@ -81,7 +81,7 @@ const ViewPost = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`Post delete failed, session expired`);
       dispatch(createActionSessionExpired());
-      navigate('/'); 
+      navigate('/post'); 
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else {
