@@ -6,7 +6,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
-import { createActionLogout } from '../reducers/auth';
+import { createActionLogout, createActionLoading } from '../reducers/auth';
 import AUTHAPI from '../services/api/AuthApiService';
 // import { toast } from "react-toastify";
 import { UserRole } from '../types';
@@ -16,10 +16,12 @@ const NavigationBar = () => {
     const navigate = useNavigate();
 
      const handleLogout = () => {
+        dispatch(createActionLoading(true));
         dispatch(createActionLogout());
         AUTHAPI.logout();
         // toast.info(`${user!.username} is logged out`);
         setTimeout(() => {
+            dispatch(createActionLoading(false));
             navigate('/');
           }, 1500);
       };
@@ -34,15 +36,15 @@ const NavigationBar = () => {
         if (isAuthenticated) {
             return (
                 <ButtonGroup>
-                    <Button variant="secondary" onClick={handleLogout}>Logout</Button>
-                    <Button variant="secondary" onClick={handleUserProfile}>Profile</Button>
+                    <Button variant="secondary" onClick={handleLogout} disabled={isLoading}>Logout</Button>
+                    <Button variant="secondary" onClick={handleUserProfile}  disabled={isLoading}>Profile</Button>
                 </ButtonGroup>
             )
         } else {
             return (
                 <ButtonGroup>
-                    <Button variant="secondary" as={Link} to="/login">Login</Button>
-                    <Button variant="secondary" as={Link} to="/register">Register</Button>
+                    <Button variant="secondary" as={Link} to="/login" disabled={isLoading}>Login</Button>
+                    <Button variant="secondary" as={Link} to="/register" disabled={isLoading}>Register</Button>
                 </ButtonGroup>
             )              
         } 
@@ -56,9 +58,9 @@ const NavigationBar = () => {
                 <div>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
-                    {!isLoading && <Nav.Link href="/post">Posts</Nav.Link>}
-                    {!isLoading && <Nav.Link href="/category">Categories</Nav.Link>}
-                    {!isLoading && isAdministrator() && <Nav.Link href="/user">Users</Nav.Link>}
+                    <Nav.Link href="/post" disabled={isLoading}>Posts</Nav.Link>
+                    <Nav.Link href="/category" disabled={isLoading}>Categories</Nav.Link>
+                    {isAdministrator() && <Nav.Link href="/user" disabled={isLoading}>Users</Nav.Link>}
                 </Nav>
 
                 </div>
