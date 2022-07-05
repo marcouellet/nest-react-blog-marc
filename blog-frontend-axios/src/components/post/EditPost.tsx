@@ -61,6 +61,7 @@ const EditPost = () => {
     register,
     handleSubmit,
     reset,
+    setError,
     setValue,
     getValues,
     formState: { errors, isDirty }
@@ -100,7 +101,8 @@ const EditPost = () => {
             if (post?.category) {
               selectCategory(allCategories, post.category.id!, false);
             }
-            setContent(post.body);
+            register('body');
+            setPostContent(post.body);
           })
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
@@ -190,8 +192,11 @@ const handleCategorySelect=(e: any)=>{
   selectCategory(categories!, e, true);
 }
 
-const onSaveContent = (value: string) => {
-  setValue('body', value, { shouldDirty: true });
+const setPostContent = (value: string) => {
+  setValue('body', value, { shouldDirty: true, shouldValidate: true });
+  if (!value) {
+    setError('body', {message: 'Content must not be empty, user Edit button to add some content'});
+  }
   setContent(value);
   setEditingContent(false);
 }
@@ -300,7 +305,8 @@ const setImageData = (image: ImageData | undefined) => {
               <div>
                 <div className="form-group col-md-12">
                   <label htmlFor="body"> Content </label>
-                  {content && (
+                  {content !== undefined && (
+                    <div>
                     <textarea 
                       readOnly 
                       className="col-md-12"
@@ -308,8 +314,14 @@ const setImageData = (image: ImageData | undefined) => {
                     >
                       {content}
                     </textarea> 
-                  )
-                  }
+                    {errors && errors.body && (
+                    <div>
+                      <div style={{color: 'red'}}>{errors.body?.message}</div>
+                    </div>
+                    )
+                    }
+                  </div>
+                  )}
                 </div>
 
                 <div className="form-group col-md-4 pull-right">
@@ -324,7 +336,7 @@ const setImageData = (image: ImageData | undefined) => {
             )         
             }
             {editingContent && (
-              <EditPostContent content={getValues('body')} onSaveContent={onSaveContent} onCancelEditing={onCancelContentEditing}/>
+              <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
             ) 
             }
 

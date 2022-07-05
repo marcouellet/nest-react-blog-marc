@@ -21,9 +21,6 @@ export class UpdatePostDto {
 
     @IsString()
     @IsNotEmpty()
-    @MinLength(minimumPostBodyLength, {
-      message: `Body text must be at least ${minimumPostBodyLength} characters long`,
-    })
     body: string;
 
     @ValidateNested()
