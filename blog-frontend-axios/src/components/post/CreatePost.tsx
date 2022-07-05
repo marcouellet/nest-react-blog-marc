@@ -18,7 +18,8 @@ import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils'
+import { resizeImage } from '../../utils/image.utils';
+import EditPostContent from './EditPostContent';
 
 const CreatePost = () => {
 
@@ -29,14 +30,15 @@ const CreatePost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
+  const [content, setContent] = useState<string>();
+  const [editingContent, setEditingContent] = useState<boolean>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
       .min(minimumPostTitleLength, `Title must be at least ${minimumPostTitleLength} characters long`),
     description: Yup.string().required('Description is required')
       .min(minimumPostDescriptionLength, `Description must be at least ${minimumPostDescriptionLength} characters long`),
-    body: Yup.string().required('Content is required')
-      .min(minimumPostBodyLength, `Content must be at least ${minimumPostBodyLength} characters long`),
+    body: Yup.string().required('Content is required'),
     categoryTitle: Yup.string(),
   });
 
@@ -55,6 +57,8 @@ const CreatePost = () => {
     formState: { errors, isDirty },
     reset,
     setValue,
+    getValues,
+    setError,
   } = useForm<CreateSubmitForm>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
@@ -63,22 +67,24 @@ const CreatePost = () => {
   useEffect(() => {
     (async () => {
       if (!categories) {
-        dispatch(createActionLoading(true));
         const fetchCategories = async (): Promise<void> => {
-        await getDefaultPostImage()
-          .then(imageData => { setpostDefaultImage(imageData);})
-          .catch(error => {
-            throw new Error(error);
-          });  
-        await CategoryApiService.getAllCategories()
-          .then(categories => {
-            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
-            const allCategories = [noCategory].concat(categories);
-            setCategories(allCategories);
-            selectCategory(allCategories, 'no_category', false);
-          })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
-        dispatch(createActionLoading(false));
+          dispatch(createActionLoading(true));
+          await getDefaultPostImage()
+            .then(imageData => { setpostDefaultImage(imageData);})
+            .catch(error => {
+              throw new Error(error);
+            });  
+          await CategoryApiService.getAllCategories()
+            .then(categories => {
+              const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+              const allCategories = [noCategory].concat(categories);
+              setCategories(allCategories);
+              selectCategory(allCategories, 'no_category', false);
+            })
+            .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
+          register('body');
+          setContent('');
+          dispatch(createActionLoading(false));
         }
         fetchCategories();
       }
@@ -143,6 +149,23 @@ const CreatePost = () => {
 
   const handleCategorySelect=(e: any)=>{
     selectCategory(categories!, e, true);
+  }
+
+  const handleEditContent = () => {
+    setEditingContent(true);
+  }
+  
+  const setPostContent = (value: string) => {
+    setValue('body', value, { shouldDirty: true, shouldValidate: true });
+    if (!value) {
+      setError('body', {message: 'Content must not be empty, user Edit button to add some content'});
+    }
+    setContent(value);
+    setEditingContent(false);
+  }
+  
+  const onCancelContentEditing = () => {
+    setEditingContent(false);
   }
 
   const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
@@ -228,16 +251,44 @@ const CreatePost = () => {
           <div className="invalid-feedback">{errors.description?.message}</div>
         </div>
 
-        <div className="form-group col-md-12">
-          <label htmlFor="body"> Write Content </label>
-          <input 
-            type="text" 
-            placeholder="Enter body" 
-            {...register('body')}
-            className={`form-control ${errors.body ? 'is-invalid' : ''}`}           
-          />
-          <div className="invalid-feedback">{errors.body?.message}</div>
-        </div>
+        {!editingContent && (
+              <div>
+                <div className="form-group col-md-12">
+                  <label htmlFor="body"> Content </label>
+                  {content !== undefined && (
+                    <div>
+                    <textarea 
+                      readOnly 
+                      className="col-md-12"
+                      placeholder="Content must not be empty, user Edit button to edit the content"
+                    >
+                      {content}
+                    </textarea> 
+                    {errors && errors.body && (
+                    <div>
+                      <div style={{color: 'red'}}>{errors.body?.message}</div>
+                    </div>
+                    )
+                    }
+                  </div>
+                  )}
+                </div>
+
+                <div className="form-group col-md-4 pull-right">
+                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
+                      Edit Content
+                  </button>  
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+                </div> 
+              </div>
+            )         
+            }
+            {editingContent && (
+              <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
+            ) 
+            }
 
         <div className="form-group col-md-1 pull-right">
           <button className="btn btn-success"  disabled={!isDirty} type="submit">
