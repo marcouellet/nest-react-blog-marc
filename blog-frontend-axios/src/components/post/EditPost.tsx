@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CancelButton from '../common/cancelConfirmation'
 import { IPost, IUpdatePost, ICategory, createPostForUpdate, minimumPostTitleLength, minimumPostDescriptionLength,
-          minimumPostBodyLength, ImageSizeProps } from "../../types";
+          ImageSizeProps } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { createActionLoading } from '../../reducers/auth';
@@ -33,15 +33,15 @@ const EditPost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
-  const [editContent, setEditContent] = useState<boolean>();
+  const [content, setContent] = useState<string>();
+  const [editingContent, setEditingContent] = useState<boolean>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
       .min(minimumPostTitleLength, `Title must be at least ${minimumPostTitleLength} characters long`),
     description: Yup.string().required('Description is required')
       .min(minimumPostDescriptionLength, `Description must be at least ${minimumPostDescriptionLength} characters long`),
-    body: Yup.string().required('Content is required')
-      .min(minimumPostBodyLength, `Content must be at least ${minimumPostBodyLength} characters long`),
+    body: Yup.string().required('Content is required'),
     categoryTitle: Yup.string(),
     imageChanged: Yup.bool(),
   });
@@ -100,6 +100,7 @@ const EditPost = () => {
             if (post?.category) {
               selectCategory(allCategories, post.category.id!, false);
             }
+            setContent(post.body);
           })
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
@@ -182,16 +183,21 @@ const handleResetEditPost = () => {
 }
 
 const handleEditContent = () => {
-  setEditContent(true);
+  setEditingContent(true);
 }
 
 const handleCategorySelect=(e: any)=>{
   selectCategory(categories!, e, true);
 }
 
-const onSavePostContent = (content: string) => {
-  setEditContent(true);
-  setValue('body', content);
+const onSaveContent = (value: string) => {
+  setValue('body', value, { shouldDirty: true });
+  setContent(value);
+  setEditingContent(false);
+}
+
+const onCancelContentEditing = () => {
+  setEditingContent(false);
 }
 
 const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
@@ -290,28 +296,20 @@ const setImageData = (image: ImageData | undefined) => {
               <div className="invalid-feedback">{errors.description?.message}</div>
             </div>
 
-            <div className="form-group col-md-12">
-              <label htmlFor="body"> Enter Content </label>
-              <input 
-                type="text" 
-                placeholder="Enter content" 
-                {...register('body')}
-                className={`form-control ${errors.body ? 'is-invalid' : ''}`}           
-              />
-              <div className="invalid-feedback">{errors.body?.message}</div>
-            </div>
-
-            {!editContent && (
+            {!editingContent && (
               <div>
                 <div className="form-group col-md-12">
-                  <label htmlFor="body"> Enter Content </label>
-                  <input 
-                    type="text" 
-                    placeholder="Enter content" 
-                    {...register('body')}
-                    className={`form-control ${errors.body ? 'is-invalid' : ''}`}           
-                  />
-                  <div className="invalid-feedback">{errors.body?.message}</div>
+                  <label htmlFor="body"> Content </label>
+                  {content && (
+                    <textarea 
+                      readOnly 
+                      className="col-md-12"
+                      placeholder="Content must not be empty, user Edit button to edit the content"
+                    >
+                      {content}
+                    </textarea> 
+                  )
+                  }
                 </div>
 
                 <div className="form-group col-md-4 pull-right">
@@ -325,8 +323,8 @@ const setImageData = (image: ImageData | undefined) => {
               </div>
             )         
             }
-            {editContent && (
-              <EditPostContent content={getValues('body')} onSavePostContent={onSavePostContent}/>
+            {editingContent && (
+              <EditPostContent content={getValues('body')} onSaveContent={onSaveContent} onCancelEditing={onCancelContentEditing}/>
             ) 
             }
 

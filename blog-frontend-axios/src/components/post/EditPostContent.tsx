@@ -3,12 +3,16 @@ import JoditEditor from "jodit-react";
 
 type ViewPostContentProps = React.HTMLProps<HTMLElement> & {
     content: string,
-    onSavePostContent: onSavePostContent,
+    onSaveContent: onSaveContent,
+    onCancelEditing?: onCancelEditing,
+    onChangeContent?: onChangeContent,
   }
 
-export type onSavePostContent = (content: string) => void;
+export type onChangeContent = (content: string) => void;
+export type onCancelEditing = () => void;
+export type onSaveContent = (content: string) => void;
 
-const EditPostContent: React.FC<ViewPostContentProps> = ({className, content, onSavePostContent}) => {
+const EditPostContent: React.FC<ViewPostContentProps> = ({className, content, onCancelEditing, onSaveContent, onChangeContent}) => {
 
     const editor = useRef(null);
     const config = {
@@ -16,23 +20,48 @@ const EditPostContent: React.FC<ViewPostContentProps> = ({className, content, on
         height: 400
     };
 
-    const handleUpdate = (value: string) => {
-        onSavePostContent(value);
+    let editedContent: string = '' + content;
+
+    const handleSaveContent = () => {
+        onSaveContent(editedContent);
+    };
+
+    const handleCancelEditing = () => {
+        if (onCancelEditing) {
+            onCancelEditing();
+        }
+    };
+
+    const handleChangeContent = (value: string) => {
+        editedContent = value;
+        if (onChangeContent) {
+            onChangeContent(editedContent);
+        }
     };
 
     return (
         <div className="App">
-        <h1>React Editors</h1>
-        <h2>Start editing to see some magic happen!</h2>
-        <JoditEditor
-            ref={editor}
-            value={content}
-            config={config}
-            onChange={handleUpdate}
-        />
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+            <h1>React Editors</h1>
+            <h2>Start editing to see some magic happen!</h2>
+            <div>
+            <button className="btn btn-secondary" onClick={() => handleSaveContent()} >
+                Save 
+            </button>                 
+            <button className="btn btn-secondary" onClick={() => handleCancelEditing()} >
+                Cancel
+            </button> 
+           </div>
+         <div>
+            <JoditEditor
+                ref={editor}
+                value={editedContent}
+                config={config}
+                onChange={handleChangeContent}
+            />
+            <div dangerouslySetInnerHTML={{ __html: content }} />
+            </div>
         </div>
-    );
+     );
 }
 
 export default EditPostContent;
