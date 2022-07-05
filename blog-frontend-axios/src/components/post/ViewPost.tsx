@@ -145,27 +145,29 @@ const ViewPost = () => {
                 </p>                
               </div>
               <div className="row">
-                <div className="form-group row-md-2 pull-right">
-                  <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
-                     Return
-                  </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
-                  {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
-                    (
-                      <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  
-                    )
-                  }
-                  {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
-                    (               
-                      <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
-                    )
-                  }
+                <div className="col-lg-10 col-md-12">
+                  <div className="form-group row-md-5 pull-right">
+                    <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
+                      Return
+                    </button>
+                    {isLoading &&
+                      <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                    {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
+                      (
+                        <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  
+                      )
+                    }
+                    {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
+                      (               
+                        <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
+                      )
+                    }
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                {errors && <ListErrors errors={errors} />}
+                <div className="row">
+                  {errors && <ListErrors errors={errors} />}
+                </div>
               </div>
             </div>
           )

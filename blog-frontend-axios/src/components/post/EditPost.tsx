@@ -102,7 +102,7 @@ const EditPost = () => {
               selectCategory(allCategories, post.category.id!, false);
             }
             register('body');
-            setPostContent(post.body);
+            setContent(post.body);
           })
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
