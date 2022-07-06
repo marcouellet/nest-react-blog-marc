@@ -169,7 +169,8 @@ const UserProfile = () => {
   const cancelEditUserMessage = () => `user edition and loose changes`;
 
   const handleResetEditUser = () => {
-      reset(defaultValues, { keepDirty: false});
+    setImageData(userEdited?.image);
+    reset(defaultValues, { keepDirty: false});
   }
 
   const handleCancelEditUser = () => {
