@@ -277,7 +277,7 @@ const setImageData = (image: ImageData | undefined) => {
 
             <div className="form-group col-md-12">
               {PostImage(post)}
-           </div>
+            </div>
 
             <div className="form-group col-md-12">
               <label htmlFor="title"> Title </label>
@@ -288,7 +288,7 @@ const setImageData = (image: ImageData | undefined) => {
                 className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
               />
               <div className="invalid-feedback">{errors.title?.message}</div>
-           </div>
+            </div>
 
             <div className="form-group col-md-12">
               <label htmlFor="description"> Description </label>
@@ -324,7 +324,7 @@ const setImageData = (image: ImageData | undefined) => {
                   )}
                 </div>
 
-                <div className="form-group col-md-4 pull-right">
+                <div className="form-group col-md-4">
                   <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
                       Edit Content
                   </button>  
@@ -339,7 +339,7 @@ const setImageData = (image: ImageData | undefined) => {
               <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
             ) 
             }
-           </form>
+          </form>
 
           <div className="row">
             <div className="col-lg-10 col-md-12">
