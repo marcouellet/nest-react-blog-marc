@@ -60,7 +60,6 @@ const EditPost = () => {
     register,
     handleSubmit,
     reset,
-    setError,
     setValue,
     getValues,
     formState: { errors, isDirty }
@@ -100,8 +99,6 @@ const EditPost = () => {
             if (post?.category) {
               selectCategory(allCategories, post.category.id!, false);
             }
-            register('body');
-            setPostContent(post.body, false);
           })
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
@@ -193,10 +190,7 @@ const handleCategorySelect=(e: any)=>{
 }
 
 const setPostContent = (value: string, shouldDirty: boolean = true) => {
-  setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: true });
-  if (!value) {
-    setError('body', {message: 'Content must not be empty, user Edit button to add some content'});
-  }
+  setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: false });
   setEditingContent(false);
 }
 
@@ -307,18 +301,12 @@ const setImageData = (image: ImageData | undefined) => {
                   <div>
                     <textarea 
                       readOnly 
-                      className="col-md-12"
                       placeholder="Content must not be empty, user Edit button to edit the content"
-                      value={getValues('body')}
+                      {...register('body')}
+                      className={`form-control ${errors.body ? 'is-invalid' : ''}`} 
                     />
-                    {errors && errors.body && (
-                    <div>
-                      <div style={{color: 'red'}}>{errors.body?.message}</div>
-                    </div>
-                    )
-                    }
+                    <div className="invalid-feedback">{errors.body?.message}</div>
                   </div>
-
                 </div>
 
                 <div className="form-group col-md-4">

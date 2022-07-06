@@ -57,7 +57,6 @@ const CreatePost = () => {
     reset,
     setValue,
     getValues,
-    setError,
   } = useForm<CreateSubmitForm>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
@@ -154,9 +153,6 @@ const CreatePost = () => {
   
   const setPostContent = (value: string, shouldDirty: boolean = true) => {
     setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: true });
-    if (!value) {
-      setError('body', {message: 'Content must not be empty, user Edit button to add some content'});
-    }
     setEditingContent(false);
   }
   
