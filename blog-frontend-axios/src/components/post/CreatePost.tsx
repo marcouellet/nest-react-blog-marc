@@ -30,7 +30,6 @@ const CreatePost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
-  const [content, setContent] = useState<string>();
   const [editingContent, setEditingContent] = useState<boolean>();
 
   const validationSchema = Yup.object().shape({
@@ -82,8 +81,6 @@ const CreatePost = () => {
               selectCategory(allCategories, 'no_category', false);
             })
             .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
-          register('body');
-          setContent('');
           dispatch(createActionLoading(false));
         }
         fetchCategories();
@@ -123,7 +120,7 @@ const CreatePost = () => {
 
   const handleSubmitFormSuccess = () => {
     toast.success(`Post created successfully...`);
-    navigate('/'); 
+    navigate('/post'); 
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
@@ -155,12 +152,11 @@ const CreatePost = () => {
     setEditingContent(true);
   }
   
-  const setPostContent = (value: string) => {
-    setValue('body', value, { shouldDirty: true, shouldValidate: true });
+  const setPostContent = (value: string, shouldDirty: boolean = true) => {
+    setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: true });
     if (!value) {
       setError('body', {message: 'Content must not be empty, user Edit button to add some content'});
     }
-    setContent(value);
     setEditingContent(false);
   }
   
@@ -175,7 +171,7 @@ const CreatePost = () => {
   }
 
   const handleCancelCreatePost = () => {
-    navigate('/');   
+    navigate('/post');   
   };
 
   const handleImageUpload = (image: ImageData) => {
@@ -260,23 +256,15 @@ const CreatePost = () => {
           <div>
             <div className="form-group col-md-12">
               <label htmlFor="body"> Content </label>
-              {content !== undefined && (
-                <div>
+              <div>
                 <textarea 
                   readOnly 
-                  className="col-md-12"
                   placeholder="Content must not be empty, user Edit button to edit the content"
-                >
-                  {content}
-                </textarea> 
-                {errors && errors.body && (
-                <div>
-                  <div style={{color: 'red'}}>{errors.body?.message}</div>
-                </div>
-                )
-                }
+                  {...register('body')}
+                  className={`form-control ${errors.body ? 'is-invalid' : ''}`} 
+                />
+                <div className="invalid-feedback">{errors.body?.message}</div>
               </div>
-              )}
             </div>
             <div className="form-group col-md-4">
               <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
