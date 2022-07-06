@@ -101,40 +101,39 @@ const ViewUser = () => {
   }
 
     return (
-        <section className="user-area">
-        {errors && <ListErrors errors={errors} />}
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-1 col-md-0" />
-            <div className="col-lg-10 col-md-12">
-              {userDisplayed  &&
-              (
-                <div className="main-user">
-                  <div className="user-top-area">
-                    {UserImage()}
-                    <div>
-                      <h4 className="username">
-                        <span>
-                          Name:
-                        </span>
-                      </h4>
-                      <h5>{userDisplayed.username}</h5>
-                      <br/>
-                      <h4 className="email">
-                        <span>
-                          Email:
-                        </span>
-                      </h4>
-                      <h5>{userDisplayed.email}</h5>
-                      <br/>
-                      <h4 className="role">
-                        <span>
-                          Role: 
-                        </span>
-                        </h4>
-                      <h5>{userDisplayed.role}</h5>
-                      </div>
-                  </div>
+      <div className="container">
+          {userDisplayed  &&
+          (     
+            <div>         
+              <div className="row">
+                <div className="col-md-4">
+                  {UserImage()}
+                </div>
+                <div>
+                  <h4 className="username">
+                    <span>
+                      Name:
+                    </span>
+                  </h4>
+                  <h5>{userDisplayed.username}</h5>
+                  <br/>
+                  <h4 className="email">
+                    <span>
+                      Email:
+                    </span>
+                  </h4>
+                  <h5>{userDisplayed.email}</h5>
+                  <br/>
+                  <h4 className="role">
+                    <span>
+                      Role: 
+                    </span>
+                    </h4>
+                  <h5>{userDisplayed.role}</h5>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-10 col-md-12">
                   <div className="form-group row-md-2 pull-right">
                     <button className="btn ml-2 btn-secondary" onClick={ () => handleReturn() } >
                       Return
@@ -149,13 +148,15 @@ const ViewUser = () => {
                       <DeleteButton message={deleteUserMessage(userDisplayed)} onClick={() => handleDeleteUser(userDisplayed.id!)} className="btn ml-2 btn-danger">Delete User</DeleteButton>
                     }
                   </div>
-                </div>   
-              )           
-              }
-            </div>
-          </div>
-        </div>
-      </section>
+                </div>
+              </div>
+              <div className="row">
+                {errors && <ListErrors errors={errors} />}
+              </div>
+          </div>  
+          )           
+          }
+      </div>
     );
 }
 

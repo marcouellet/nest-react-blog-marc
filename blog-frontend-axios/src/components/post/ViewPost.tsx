@@ -108,71 +108,69 @@ const ViewPost = () => {
   }
 
     return (
-      <div className="Home"> 
-        <div className="container-fluid">
-          {post && 
-          (
-            <div>
-              <div className="row">
-                <div className="col-md-4">
-                  {PostImage(post)}
-                </div>
-                <div className="col-md-7">
-                  <h5 className="date">
-                    <span>
-                      Date posted:&nbsp;{getDateString(post.publishDate!)}
-                    </span>
-                  </h5>
-                  <br/>
-                  <h5 className="title">
-                    <span>
-                      Title:&nbsp;{post.title}
-                    </span>
-                  </h5>
-                  <br/>
-                  <h5 className="category">
-                    <span>
-                      Category:&nbsp;{post.category ? post.category.title : 'No category assigned'}
-                    </span>
-                  </h5>
-                  <br/>
-                </div>
+      <div className="container">
+        {post && 
+        (
+          <div>
+            <div className="row">
+              <div className="col-md-4">
+                {PostImage(post)}
               </div>
-              <br/>
-              <div className="row">
-                <p className="para">
-                  {parseHtml(post.body)}
-                </p>                
+              <div className="col-md-7">
+                <h5 className="date">
+                  <span>
+                    Date posted:&nbsp;{getDateString(post.publishDate!)}
+                  </span>
+                </h5>
+                <br/>
+                <h5 className="title">
+                  <span>
+                    Title:&nbsp;{post.title}
+                  </span>
+                </h5>
+                <br/>
+                <h5 className="category">
+                  <span>
+                    Category:&nbsp;{post.category ? post.category.title : 'No category assigned'}
+                  </span>
+                </h5>
+                <br/>
               </div>
-              <div className="row">
-                <div className="col-lg-10 col-md-12">
-                  <div className="form-group row-md-5 pull-right">
-                    <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
-                      Return
-                    </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
-                    {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
-                      (
-                        <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  
-                      )
-                    }
-                    {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
-                      (               
-                        <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
-                      )
-                    }
-                  </div>
-                </div>
-                <div className="row">
-                  {errors && <ListErrors errors={errors} />}
+            </div>
+            <br/>
+            <div className="row">
+              <p className="para">
+                {parseHtml(post.body)}
+              </p>                
+            </div>
+            <div className="row">
+              <div className="col-lg-10 col-md-12">
+                <div className="form-group row-md-6 pull-right">
+                  <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
+                    Return
+                  </button>
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+                  {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
+                    (
+                      <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  
+                    )
+                  }
+                  {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) && 
+                    (               
+                      <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn ml-2 btn-danger">Delete Post</DeleteButton>
+                    )
+                  }
                 </div>
               </div>
             </div>
-          )
-          }
-        </div>
+            <div className="row">
+                {errors && <ListErrors errors={errors} />}
+            </div>
+          </div>
+        )
+        }
       </div>
     );
 }

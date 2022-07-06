@@ -144,7 +144,7 @@ const EditUser = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`User update failed, session expired`);
       dispatch(createActionSessionExpired());
-      navigate('/user'); 
+      navigate(`/user/${userEdited!.id}`); 
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else {
@@ -160,7 +160,7 @@ const handleResetEditUser = () => {
 }
 
 const handleCancelEditUser = () => {
-  navigate('/user');   
+  navigate(`/user/${userEdited!.id}`);   
 };
 
 const handleRoleSelect=(e: any)=>{
@@ -259,32 +259,28 @@ const setImageData = (image: ImageData | undefined) => {
               </div>
               <div className="invalid-feedback">{errors.role?.message}</div>
             </div>
-
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Update
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
-
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
           </form>
-
-          <div className="form-group col-md-1 pull-right">
-              {
-              <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn btn-danger">Cancel</CancelButton>
-              }
-           </div>
-
+          <div className="row">
+            <div className="col-lg-10 col-md-12">
+              <div className="form-group row-md-5 pull-right">
+                  {
+                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                  }
+                  <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
+                    Reset
+                  </button>
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+                  <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                    Update
+                  </button>
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+              </div>
+            </div>
+          </div>
         </div>
       )
     }

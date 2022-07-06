@@ -11,8 +11,8 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, minimumPostDescriptionLength, 
-          minimumPostBodyLength } from '../../types';
+import { IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
+          minimumPostDescriptionLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
@@ -252,68 +252,64 @@ const CreatePost = () => {
         </div>
 
         {!editingContent && (
-              <div>
-                <div className="form-group col-md-12">
-                  <label htmlFor="body"> Content </label>
-                  {content !== undefined && (
-                    <div>
-                    <textarea 
-                      readOnly 
-                      className="col-md-12"
-                      placeholder="Content must not be empty, user Edit button to edit the content"
-                    >
-                      {content}
-                    </textarea> 
-                    {errors && errors.body && (
-                    <div>
-                      <div style={{color: 'red'}}>{errors.body?.message}</div>
-                    </div>
-                    )
-                    }
-                  </div>
-                  )}
+          <div>
+            <div className="form-group col-md-12">
+              <label htmlFor="body"> Content </label>
+              {content !== undefined && (
+                <div>
+                <textarea 
+                  readOnly 
+                  className="col-md-12"
+                  placeholder="Content must not be empty, user Edit button to edit the content"
+                >
+                  {content}
+                </textarea> 
+                {errors && errors.body && (
+                <div>
+                  <div style={{color: 'red'}}>{errors.body?.message}</div>
                 </div>
-
-                <div className="form-group col-md-4 pull-right">
-                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
-                      Edit Content
-                  </button>  
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
-                </div> 
+                )
+                }
               </div>
-            )         
-            }
-            {editingContent && (
-              <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
-            ) 
-            }
-
-        <div className="form-group col-md-1 pull-right">
-          <button className="btn btn-success"  disabled={!isDirty} type="submit">
-            Create Post
-          </button>
-          {isLoading &&
-            <span className="fa fa-circle-o-notch fa-spin" />
-          }
-        </div>
-  
-        <div className="form-group col-md-1 pull-right">
-          <button className="btn btn-secondary"  disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
-            Clear
-          </button>
-          {isLoading &&
-            <span className="fa fa-circle-o-notch fa-spin" />
-          }
-        </div>
-
-      </form>
-
-      <div className="form-group col-md-1 pull-right">
-              <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn btn-danger">Cancel</CancelButton>
+              )}
             </div>
-
+            <div className="form-group col-md-4 pull-right">
+              <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
+                  Edit Content
+              </button>  
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+            </div> 
+          </div>
+        )         
+        }
+        {editingContent && (
+          <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
+        ) 
+        }
+      </form>
+      <div className="row">
+        <div className="col-lg-10 col-md-12">
+          <div className="form-group row-md-5 pull-right">
+              {
+                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+              }
+              <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
+                Clear
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+              <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                Create
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   );

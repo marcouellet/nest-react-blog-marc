@@ -40,25 +40,23 @@ const EditPostContent: React.FC<ViewPostContentProps> = ({className, content, on
     };
 
     return (
-        <div className="App">
-            <h1>React Editors</h1>
-            <h2>Start editing to see some magic happen!</h2>
-            <div>
-            <button className="btn btn-secondary" onClick={() => handleSaveContent()} >
-                Save 
-            </button>                 
-            <button className="btn btn-secondary" onClick={() => handleCancelEditing()} >
-                Cancel
-            </button> 
+        <div>
+           <div>
+                <button className="btn btn-secondary" onClick={() => handleSaveContent()} >
+                    Save 
+                </button>                 
+                <button className="btn btn-secondary" onClick={() => handleCancelEditing()} >
+                    Cancel
+                </button> 
            </div>
-         <div>
-            <JoditEditor
-                ref={editor}
-                value={editedContent}
-                config={config}
-                onChange={handleChangeContent}
-            />
-            <div dangerouslySetInnerHTML={{ __html: content }} />
+            <div>
+                <JoditEditor
+                    ref={editor}
+                    value={editedContent}
+                    config={config}
+                    onChange={handleChangeContent}
+                />
+                <div dangerouslySetInnerHTML={{ __html: content }} />
             </div>
         </div>
      );

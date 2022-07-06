@@ -339,32 +339,29 @@ const setImageData = (image: ImageData | undefined) => {
               <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
             ) 
             }
+           </form>
 
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Update Post
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
+          <div className="row">
+            <div className="col-lg-10 col-md-12">
+              <div className="form-group row-md-5 pull-right">
+                  {
+                    <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                  }
+                  <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
+                    Reset
+                  </button>
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+                  <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                    Update
+                  </button>
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+              </div>
             </div>
-
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
-          </form>
-
-          <div className="form-group col-md-1 pull-right">
-              {
-              <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn btn-danger">Cancel</CancelButton>
-              }
-           </div>
-
+          </div>
         </div>
       )
     }

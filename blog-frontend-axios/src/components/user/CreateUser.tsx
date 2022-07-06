@@ -210,31 +210,28 @@ const CreateUser = () => {
           </div>
           <div className="invalid-feedback">{errors.role?.message}</div>
         </div>
-
-        <div className="form-group col-md-4 pull-right">
-          <button className="btn btn-success"  disabled={!isDirty} type="submit">
-            Create
-          </button>
-          {isLoading &&
-            <span className="fa fa-circle-o-notch fa-spin" />
-          }
-        </div>
-
-        <div className="form-group col-md-1 pull-right">
-          <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
-            Reset
-          </button>
-          {isLoading &&
-            <span className="fa fa-circle-o-notch fa-spin" />
-          }
-        </div>
-
       </form>
-
-      <div className="form-group col-md-1 pull-right">
-              <CancelButton prompt={isDirty} message={cancelCreateUserMessage()} onClick={() => handleCancelCreateUser()} className="btn btn-danger">Cancel</CancelButton>
-            </div>
-
+      <div className="row">
+        <div className="col-lg-10 col-md-12">
+          <div className="form-group row-md-5 pull-right">
+              {
+                <CancelButton prompt={isDirty} message={cancelCreateUserMessage()} onClick={() => handleCancelCreateUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+              }
+              <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
+                Reset
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+              <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                Create
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   );

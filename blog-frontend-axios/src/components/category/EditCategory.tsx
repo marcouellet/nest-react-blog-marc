@@ -79,14 +79,14 @@ const EditCategory = () => {
 
   const handleSubmitFormSucess = () => {
     toast.success(`Category updated successfully...`);
-    navigate('/category'); 
+    navigate(`/category/${category?.id}`)
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkForbidden(apiErrors)) {
       toast.error(`Category update failed, session expired`);
       dispatch(createActionSessionExpired());
-      navigate('/category'); 
+      navigate(`/category/${category?.id}`) 
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else {
@@ -102,7 +102,7 @@ const handleResetEditCategory = () => {
 }
 
 const handleCancelEditCategory = () => {
-  navigate('/category');   
+  navigate(`/category/${category?.id}`)
 };
 
   return (
@@ -110,7 +110,7 @@ const handleCancelEditCategory = () => {
     {category &&
       (
         <div className={"col-md-12 form-wrapper"}>
-          <h2> Edit Category  </h2>
+          <h2> Edit Category </h2>
           {errorList && <ListErrors errors={errorList} />}
           <form id={"create-user-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
             <div className="form-group col-md-12">
@@ -122,8 +122,7 @@ const handleCancelEditCategory = () => {
                 className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
               />
               <div className="invalid-feedback">{errors.title?.message}</div>
-           </div>
-
+            </div>
             <div className="form-group col-md-12">
               <label htmlFor="description"> Description </label>
               <input 
@@ -134,36 +133,30 @@ const handleCancelEditCategory = () => {
               />
               <div className="invalid-feedback">{errors.description?.message}</div>
             </div>
-
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Update
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
+          </form> 
+          <div className="row">
+            <div className="col-lg-10 col-md-12">
+              <div className="form-group row-md-5 pull-right">
+                <CancelButton prompt={isDirty} message={cancelEditCategoryMessage()} onClick={() => handleCancelEditCategory()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleResetEditCategory()} >
+                  Reset
+                </button>
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+                <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                  Update
+                </button>
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+              </div>
             </div>
-
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditCategory() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
-          </form>
-
-          <div className="form-group col-md-1 pull-right">
-              {
-              <CancelButton prompt={isDirty} message={cancelEditCategoryMessage()} onClick={() => handleCancelEditCategory()} className="btn btn-danger">Cancel</CancelButton>
-              }
-           </div>
-
+          </div>
         </div>
       )
     }
-  </div>
+    </div>
   )
 }
 

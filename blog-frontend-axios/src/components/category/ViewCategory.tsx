@@ -78,58 +78,57 @@ const ViewCategory = () => {
   }
 
     return (
-        <section className="user-area">
-        {errors && <ListErrors errors={errors} />}
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-1 col-md-0" />
-            <div className="col-lg-10 col-md-12">
-              {category && 
-              (
-                <div className="main-user">
-                  <div className="user-top-area">
-                      <div>
-                        <br/>
-                         <h4 className="title">
-                          <span>
-                            Title:
-                          </span>
-                        </h4>
-                        <h5>{category.title}</h5>
-                        <br/>
-                        <h4 className="description">
-                          <span>
-                            Description:
-                          </span>
-                        </h4>
-                        <h5>{category.description}</h5>
-                      </div>
-                  </div>
-                  <div className="form-group col-md-5 pull-right">
-                    <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
-                      Return
-                    </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
-                   {!isLoading && isAdministrator() &&
-                      (
-                        <Link to={`/category/edit/${category.id}`} className="btn ml-2 btn-primary">Edit Category</Link>                  
-                      )
-                    }
-                    {!isLoading && isAdministrator() && 
-                      (               
-                          <DeleteButton message={deleteCategoryMessage(category)} onClick={() => handleDeleteCategory(category.id!)} className="btn ml-2 btn-danger">Delete</DeleteButton>
-                      )
-                    }
-                  </div>
-                </div>   
-                )           
-              }
+      <div className="container">
+        {category && 
+        (
+          <div>
+            <div className="row">
+              <div>
+                <br/>
+                  <h4 className="title">
+                  <span>
+                    Title:
+                  </span>
+                </h4>
+                <h5>{category.title}</h5>
+                <br/>
+                <h4 className="description">
+                  <span>
+                    Description:
+                  </span>
+                </h4>
+                <h5>{category.description}</h5>
+              </div>
+            </div> 
+            <div className="row">
+              <div className="col-lg-16 col-md-12">
+                <div className="form-group col-md-5 pull-right">
+                  <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
+                    Return
+                  </button>
+                  {isLoading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                  }
+                  {!isLoading && isAdministrator() &&
+                    (
+                      <Link to={`/category/edit/${category.id}`} className="btn ml-2 btn-primary">Edit Category</Link>                  
+                    )
+                  }
+                  {!isLoading && isAdministrator() && 
+                    (               
+                        <DeleteButton message={deleteCategoryMessage(category)} onClick={() => handleDeleteCategory(category.id!)} className="btn ml-2 btn-danger">Delete Category</DeleteButton>
+                    )
+                  }
+                </div>
+              </div>
+            </div>            
+            <div className="row">
+                {errors && <ListErrors errors={errors} />}
             </div>
           </div>
-        </div>
-      </section>
+          )           
+        }
+      </div>
     );
 }
 
