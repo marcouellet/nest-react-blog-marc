@@ -33,7 +33,6 @@ const EditPost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
-  const [content, setContent] = useState<string>();
   const [editingContent, setEditingContent] = useState<boolean>();
 
   const validationSchema = Yup.object().shape({
@@ -102,7 +101,7 @@ const EditPost = () => {
               selectCategory(allCategories, post.category.id!, false);
             }
             register('body');
-            setContent(post.body);
+            setPostContent(post.body, false);
           })
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
@@ -177,6 +176,7 @@ const cancelEditPostMessage = () => `post edition and loose changes`;
 
 const handleResetEditPost = () => {
   reset(post);
+  setPostContent(post!.body, false);
   if (post?.category) {
     selectCategory(categories!, post.category.id!, false);
   } else {
@@ -192,12 +192,11 @@ const handleCategorySelect=(e: any)=>{
   selectCategory(categories!, e, true);
 }
 
-const setPostContent = (value: string) => {
-  setValue('body', value, { shouldDirty: true, shouldValidate: true });
+const setPostContent = (value: string, shouldDirty: boolean = true) => {
+  setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: true });
   if (!value) {
     setError('body', {message: 'Content must not be empty, user Edit button to add some content'});
   }
-  setContent(value);
   setEditingContent(false);
 }
 
@@ -305,15 +304,13 @@ const setImageData = (image: ImageData | undefined) => {
               <div>
                 <div className="form-group col-md-12">
                   <label htmlFor="body"> Content </label>
-                  {content !== undefined && (
-                    <div>
+                  <div>
                     <textarea 
                       readOnly 
                       className="col-md-12"
                       placeholder="Content must not be empty, user Edit button to edit the content"
-                    >
-                      {content}
-                    </textarea> 
+                      value={getValues('body')}
+                    />
                     {errors && errors.body && (
                     <div>
                       <div style={{color: 'red'}}>{errors.body?.message}</div>
@@ -321,7 +318,7 @@ const setImageData = (image: ImageData | undefined) => {
                     )
                     }
                   </div>
-                  )}
+
                 </div>
 
                 <div className="form-group col-md-4">
