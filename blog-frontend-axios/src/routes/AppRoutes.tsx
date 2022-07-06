@@ -10,7 +10,7 @@ import useAuth from '../contexts/auth';
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";
 import AdminRoutes from "./AdminRoutes";
-
+import UserProfile from "../components/user/UserProfile";
 
 export const AppRoutes = () => {
 
@@ -29,6 +29,7 @@ export const AppRoutes = () => {
       {controlledRoutes}
       {AdminRoutes()}
       <Route path={"/"} element={<Home/>} />
+      <Route path={"/user/profile"} element={<UserProfile/>} />
       <Route path={"/post"} element={<ListPosts/>}/>
       <Route path={"/post/create"} element={<CreatePost/>} /> 
       <Route path={"/post/:postId"} element={<ViewPost/>}/>
