@@ -39,6 +39,7 @@ const CreatePost = () => {
       .min(minimumPostDescriptionLength, `Description must be at least ${minimumPostDescriptionLength} characters long`),
     body: Yup.string().required('Content is required'),
     categoryTitle: Yup.string(),
+    imageChanged: Yup.bool(),
   });
 
   type CreateSubmitForm = {
@@ -46,9 +47,10 @@ const CreatePost = () => {
     title: string;
     description: string;
     body: string;
+    imageChanged: boolean;
   };
 
-  const defaultValues = {title: '', description: '', body: '', categoryTitle: '', image: undefined};
+  const defaultValues = {title: '', description: '', body: '', categoryTitle: '', image: undefined, imageChanged: false};
 
   const {
     register,
@@ -137,10 +139,12 @@ const CreatePost = () => {
   const cancelCreatePostMessage = () => `post creation and loose changes`;
 
   const handleClearCreatePost = () => {
-    reset(defaultValues, { keepDirty: false});
+
     const noCategory = categories?.find(category => category.id === 'no_category');
     setCategory(noCategory);
     setValue('categoryTitle', noCategory!.title, { shouldDirty: false });
+    setPostImage(undefined);
+    reset(defaultValues, { keepDirty: false});
   }
 
   const handleCategorySelect=(e: any)=>{
@@ -172,6 +176,7 @@ const CreatePost = () => {
 
   const handleImageUpload = (image: ImageData) => {
     setPostImage(image);
+    setValue('imageChanged', true, {shouldDirty: true});
   }
 
   const handleImageUploadError = (error: any) => {

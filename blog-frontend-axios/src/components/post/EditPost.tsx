@@ -178,6 +178,7 @@ const handleResetEditPost = () => {
   } else {
     selectCategory(categories!, 'no_category', false);
   }
+  setImageData(post?.image);
   reset(post);
 }
 
