@@ -35,6 +35,7 @@ const CreateUser = () => {
     password: Yup.string().required('Password is required')
       .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
     role: Yup.string().required('Role is required'),
+    imageChanged: Yup.bool(),
   });
 
   type CreateSubmitForm = {
@@ -42,9 +43,10 @@ const CreateUser = () => {
     email: string;
     password: string;
     role: string;
+    imageChanged: boolean;
   };
 
-  const defaultValues = {username: '', email: '', password: '', role: ''};
+  const defaultValues = {username: '', email: '', password: '', role: '', imageChanged: false};
 
   useEffect(() => {
     if (!userDefaultImage) {
@@ -119,6 +121,7 @@ const CreateUser = () => {
   const cancelCreateUserMessage = () => `User creation and loose changes`;
 
   const handleClearCreateUser = () => {
+    setUserImage(undefined);
     reset(defaultValues, { keepDirty: false});
   }
 
@@ -132,6 +135,7 @@ const CreateUser = () => {
 
   const handleImageUpload = (image: ImageData) => {
     setUserImage(image);
+    setValue('imageChanged', true, {shouldDirty: true});
   }
 
   const handleImageUploadError = (error: any) => {
@@ -152,9 +156,11 @@ const CreateUser = () => {
             <div className="row">
               <label className="col-md-2"> Image: </label>
               { userImage && 
+              (
                 <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
                   Delete Image
                 </button>  
+              )
               }  
               <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
               </div>
@@ -201,8 +207,11 @@ const CreateUser = () => {
                   <Dropdown.Item eventKey='user'>User</Dropdown.Item>
                   <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
               </DropdownButton>
-              <input style={ {float: 'right'} }    
-                type="text" disabled  placeholder="no role selected" 
+              <input 
+                style={{float: 'right'}}    
+                type="text" 
+                disabled  
+                placeholder="no role selected" 
                 {...register('role')}
                 className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
               />

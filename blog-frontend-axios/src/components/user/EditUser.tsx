@@ -156,6 +156,7 @@ const EditUser = () => {
 const cancelEditUserMessage = () => `user edition and loose changes`;
 
 const handleResetEditUser = () => {
+  setImageData(userEdited?.image);
   reset(defaultValues, { keepDirty: false});
 }
 
