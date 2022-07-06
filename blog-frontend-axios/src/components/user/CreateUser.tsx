@@ -144,94 +144,93 @@ const CreateUser = () => {
 
   return (
     <div>
-    <div className={"col-md-12 form-wrapper"}>
-      <h2> Create User </h2>
-      {errorList && <ListErrors errors={errorList} />}
-      <form id={"create-User-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
-
-        <div className="form-group col-md-4">
-          <div className="row">
-            <label className="col-md-2"> Image: </label>
-            { userImage && 
-              <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
-                Delete Image
-              </button>  
-            }  
-            <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
-            </div>
-        </div>
-        <div className="form-group col-md-12">
-          {UserImage()}  
-          <br/>
-
-          <label htmlFor="username"> Title </label>
-          <input 
-            type="text"
-            placeholder="Enter user name"
-            {...register('username')}
-            className={`form-control ${errors.username ? 'is-invalid' : ''}`} 
-          />
-          <div className="invalid-feedback">{errors.username?.message}</div>
-        </div>
-
-        <div className="form-group col-md-12">
-          <label htmlFor="email"> Email </label>
-          <input 
-            type="text" 
-            placeholder="Enter email"
-            {...register('email')}
-            className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
-          />
-          <div className="invalid-feedback">{errors.email?.message}</div>
-        </div>
-
-        <div className="form-group col-md-12">
-          <label htmlFor="password"> Enter Password </label>
-          <input 
-            type="text" 
-            placeholder="Enter password" 
-            {...register('password')}
-            className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
-          />
-          <div className="invalid-feedback">{errors.password?.message}</div>
-        </div>
-
-        <div className="form-group ">
-          <div className="row">
-            <DropdownButton title="Select Role" onSelect={handleRoleSelect} className="col-md-1">
-                <Dropdown.Item eventKey='user'>User</Dropdown.Item>
-                <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
-            </DropdownButton>
-            <input style={ {float: 'right'} }    
-              type="text" disabled  placeholder="no role selected" 
-              {...register('role')}
-              className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
-            />
+      <div className={"col-md-12 form-wrapper"}>
+        <h2> Create User </h2>
+        {errorList && <ListErrors errors={errorList} />}
+        <form id={"create-user-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+          <div className="form-group col-md-4">
+            <div className="row">
+              <label className="col-md-2"> Image: </label>
+              { userImage && 
+                <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                  Delete Image
+                </button>  
+              }  
+              <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
+              </div>
           </div>
-          <div className="invalid-feedback">{errors.role?.message}</div>
+          <div className="form-group col-md-12">
+            {UserImage()}  
+            <br/>
+
+            <label htmlFor="username"> Title </label>
+            <input 
+              type="text"
+              placeholder="Enter user name"
+              {...register('username')}
+              className={`form-control ${errors.username ? 'is-invalid' : ''}`} 
+            />
+            <div className="invalid-feedback">{errors.username?.message}</div>
+          </div>
+
+          <div className="form-group col-md-12">
+            <label htmlFor="email"> Email </label>
+            <input 
+              type="text" 
+              placeholder="Enter email"
+              {...register('email')}
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
+            />
+            <div className="invalid-feedback">{errors.email?.message}</div>
+          </div>
+
+          <div className="form-group col-md-12">
+            <label htmlFor="password"> Enter Password </label>
+            <input 
+              type="text" 
+              placeholder="Enter password" 
+              {...register('password')}
+              className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
+            />
+            <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+
+          <div className="form-group ">
+            <div className="row">
+              <DropdownButton title="Select Role" onSelect={handleRoleSelect} className="col-md-1">
+                  <Dropdown.Item eventKey='user'>User</Dropdown.Item>
+                  <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
+              </DropdownButton>
+              <input style={ {float: 'right'} }    
+                type="text" disabled  placeholder="no role selected" 
+                {...register('role')}
+                className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
+              />
+            </div>
+            <div className="invalid-feedback">{errors.role?.message}</div>
+          </div>
+          <div className="row">
+          <div className="col-lg-10 col-md-12">
+            <div className="form-group row-md-5 pull-right">
+                {
+                  <CancelButton prompt={isDirty} message={cancelCreateUserMessage()} onClick={() => handleCancelCreateUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                }
+                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
+                  Reset
+                </button>
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+                <button className="btn ml-2 btn-success" disabled={!isDirty} type="submit">
+                  Create
+                </button>
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+            </div>
+          </div>
         </div>
       </form>
-      <div className="row">
-        <div className="col-lg-10 col-md-12">
-          <div className="form-group row-md-5 pull-right">
-              {
-                <CancelButton prompt={isDirty} message={cancelCreateUserMessage()} onClick={() => handleCancelCreateUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-              }
-              <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-              <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
-                Create
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-          </div>
-        </div>
-      </div>
     </div>
   </div>
   );

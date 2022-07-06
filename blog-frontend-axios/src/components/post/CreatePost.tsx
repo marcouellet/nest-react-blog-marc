@@ -197,7 +197,7 @@ const CreatePost = () => {
       {errorList && <ListErrors errors={errorList} />}
       <form id={"create-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
         
-        <div className="form-group ">
+        <div className="form-group">
           <div className="row">
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
                 {categories && categories.map((category: ICategory) => 
@@ -206,8 +206,11 @@ const CreatePost = () => {
                 ))
               }
             </DropdownButton>
-            <input style={ {float: 'right'} }    
-              type="text" disabled  placeholder="no category selected" 
+            <input 
+              style={{float: 'right'}}    
+              type="text" 
+              disabled  
+              placeholder="no category selected" 
               {...register('categoryTitle')}
               className={`col-md-2 form-control float-right ${errors.categoryTitle ? 'is-invalid' : ''}`}           
             />
@@ -219,17 +222,19 @@ const CreatePost = () => {
           <div className="row">
             <label className="col-md-2"> Image: </label>
             { postImage && 
+            (
               <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
                 Delete Image
-              </button>  
+              </button>
+            )  
             }  
             <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                
             </div>
         </div>
 
         <div className="form-group col-md-12">
-        {PostImage()}
-        <br/>
+          {PostImage()}
+          <br/>
           <label htmlFor="title"> Title </label>
           <input 
             type="text"
@@ -273,7 +278,7 @@ const CreatePost = () => {
               </div>
               )}
             </div>
-            <div className="form-group col-md-4 pull-right">
+            <div className="form-group col-md-4">
               <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
                   Edit Content
               </button>  
@@ -288,28 +293,29 @@ const CreatePost = () => {
           <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
         ) 
         }
-      </form>
-      <div className="row">
-        <div className="col-lg-10 col-md-12">
-          <div className="form-group row-md-5 pull-right">
-              {
-                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-              }
-              <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
-                Clear
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-              <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
-                Create
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
+        <br/>
+        <div className="row">
+          <div className="col-lg-10 col-md-12">
+            <div className="form-group row-md-5 pull-right">
+                {
+                  <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                }
+                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
+                  Clear
+                </button>
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+                <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                  Create
+                </button>
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
   );

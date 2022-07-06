@@ -205,7 +205,7 @@ const UserProfile = () => {
         <div className={"col-md-12 form-wrapper"}>
           <h2> Edit User Profile </h2>
           {errorList && <ListErrors errors={errorList} />}
-          <form id={"create-user-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+          <form id={"user-profile-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
             <div className="form-group col-md-4">
               <div className="row">
                 <label className="col-md-2"> Image: </label>
@@ -268,7 +268,7 @@ const UserProfile = () => {
             </div>
 
             <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
+              <button className="btn btn-success" disabled={!isDirty} type="submit">
                 Update
               </button>
               {isLoading &&

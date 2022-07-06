@@ -83,53 +83,49 @@ const CreateCategory = () => {
     <div className={"col-md-12 form-wrapper"}>
       <h2> Create Category </h2>
       {errorList && <ListErrors errors={errorList} />}
-      <form id={"create-Category-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
-      <div className="form-group col-md-12">
-              <label htmlFor="title"> Title </label>
-              <input 
-                type="text"
-                placeholder="Enter title"
-                {...register('title')}
-                className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
-              />
-              <div className="invalid-feedback">{errors.title?.message}</div>
-           </div>
+      <form id={"create-category-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+        <div className="form-group col-md-12">
+          <label htmlFor="title"> Title </label>
+          <input 
+            type="text"
+            placeholder="Enter title"
+            {...register('title')}
+            className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
+          />
+          <div className="invalid-feedback">{errors.title?.message}</div>
+        </div>
 
-            <div className="form-group col-md-12">
-              <label htmlFor="description"> Description </label>
-              <input 
-                type="text" 
-                placeholder="Enter description"
-                {...register('description')}
-                className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
-              />
-              <div className="invalid-feedback">{errors.description?.message}</div>
-            </div>
+        <div className="form-group col-md-12">
+          <label htmlFor="description"> Description </label>
+          <input 
+            type="text" 
+            placeholder="Enter description"
+            {...register('description')}
+            className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
+          />
+          <div className="invalid-feedback">{errors.description?.message}</div>
+        </div>
 
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
+        <div className="row">
+          <div className="col-lg-10 col-md-12">
+            <div className="form-group row-md-5 pull-right">
+              <CancelButton prompt={isDirty} message={cancelCreateCategoryMessage()} onClick={() => handleCancelCreateCategory()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+              <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleClearCreateCategory()} >
+                Clear
+              </button>
+              {isLoading &&
+                <span className="fa fa-circle-o-notch fa-spin" />
+              }
+              <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
                 Create
               </button>
               {isLoading &&
                 <span className="fa fa-circle-o-notch fa-spin" />
               }
             </div>
-
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateCategory() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
-
+          </div>
+        </div>
       </form>
-
-      <div className="form-group col-md-1 pull-right">
-              <CancelButton prompt={isDirty} message={cancelCreateCategoryMessage()} onClick={() => handleCancelCreateCategory()} className="btn btn-danger">Cancel</CancelButton>
-            </div>
-
     </div>
   </div>
   );

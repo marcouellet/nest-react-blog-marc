@@ -175,13 +175,13 @@ const EditPost = () => {
 const cancelEditPostMessage = () => `post edition and loose changes`;
 
 const handleResetEditPost = () => {
-  reset(post);
   setPostContent(post!.body, false);
   if (post?.category) {
     selectCategory(categories!, post.category.id!, false);
   } else {
     selectCategory(categories!, 'no_category', false);
   }
+  reset(post);
 }
 
 const handleEditContent = () => {
@@ -242,7 +242,7 @@ const setImageData = (image: ImageData | undefined) => {
         <div className={"col-md-12 form-wrapper"}>
           <h2> Edit Post  </h2>
           {errorList && <ListErrors errors={errorList} />}
-          <form id={"create-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+          <form id={"edit-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
             <div className="form-group col-md-8">
               <div className="row">
                 <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
@@ -336,29 +336,28 @@ const setImageData = (image: ImageData | undefined) => {
               <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
             ) 
             }
-          </form>
-
-          <div className="row">
-            <div className="col-lg-10 col-md-12">
-              <div className="form-group row-md-5 pull-right">
-                  {
-                    <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                  }
-                  <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
-                    Reset
-                  </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
-                  <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
-                    Update
-                  </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
+            <div className="row">
+              <div className="col-lg-10 col-md-12">
+                <div className="form-group row-md-5 pull-right">
+                    {
+                      <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                    }
+                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
+                      Reset
+                    </button>
+                    {isLoading &&
+                      <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                    <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                      Update
+                    </button>
+                    {isLoading &&
+                      <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       )
     }
