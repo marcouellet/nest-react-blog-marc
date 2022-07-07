@@ -53,8 +53,8 @@ describe('Post Controller', () => {
 
   describe('findManyPostsForUser', () => {
     it('should return 1 post', async () => {
-      expect(await postController.finManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
-      expect(postServiceMock.findManyPostsForUser).toHaveBeenCalledWith(testUserId);
+      expect(await postController.finManyPostsForUser(testUserId, testEmptyPostFilterCriterias)).toEqual([testServicePostDto]);
+      expect(postServiceMock.findManyPostsForUser).toHaveBeenCalledWith(testUserId, testEmptyPostFilterCriterias);
     });
   });
 

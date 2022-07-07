@@ -3,8 +3,6 @@ import { CreateUserDto, UpdateUserDto, UserDto, IUpdateUserCriterias } from '../
 import { testAuthToken, testPassword, testSecretPassword, testNewPassword, testDummyEmail, testAdminEmail, testUnknownEmail,
           testRoleUser, testRoleAdmin } from './auth.data';
 
-const createdOnDate: Date = new Date();
-
 export const testUserId = 'abcdefghijkl';
 export const testUserCount = 1;
 
@@ -13,7 +11,7 @@ export const testUser: User = {
   username: 'dummy',
   email: testDummyEmail,
   role: testRoleUser,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testUserUnrestricted: User = {
@@ -22,7 +20,7 @@ export const testUserUnrestricted: User = {
   email: testDummyEmail,
   password: testSecretPassword,
   role: testRoleUser,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testUserAdminUnrestricted: User = {
@@ -31,7 +29,7 @@ export const testUserAdminUnrestricted: User = {
   email: testAdminEmail,
   password: testSecretPassword,
   role: testRoleAdmin,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testUserDto: UserDto = {
@@ -41,7 +39,7 @@ export const testUserDto: UserDto = {
   role: testRoleUser,
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testUserUnknownDto: UserDto = {
@@ -51,7 +49,7 @@ export const testUserUnknownDto: UserDto = {
   role: testRoleUser,
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testUserAdminDto: UserDto = {
@@ -59,7 +57,7 @@ export const testUserAdminDto: UserDto = {
   username: 'admin',
   email: testAdminEmail,
   role: testRoleAdmin,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testUserDtoUnrestricted: UserDto = {
@@ -70,7 +68,7 @@ export const testUserDtoUnrestricted: UserDto = {
   role: testRoleUser,
   authtoken: testAuthToken,
   authrefreshtoken: testAuthToken,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testCreateExistingUserDto: CreateUserDto = {
@@ -78,6 +76,7 @@ export const testCreateExistingUserDto: CreateUserDto = {
   email: testDummyEmail,
   password: testPassword,
   role: testRoleUser,
+  image: undefined,
 };
 
 export const testCreateUnknownUserDto: CreateUserDto = {
@@ -85,6 +84,7 @@ export const testCreateUnknownUserDto: CreateUserDto = {
   email: testUnknownEmail,
   password: testPassword,
   role: testRoleUser,
+  image: undefined,
 };
 
 export const testUpdateUserDto: UpdateUserDto = {
@@ -119,6 +119,7 @@ export const testUpdateUserCriterias: IUpdateUserCriterias = {
   email: testDummyEmail,
   password: testSecretPassword,
   role: testRoleUser,
+  image: undefined,
 };
 
 export const testServiceUser: User = {
@@ -126,7 +127,7 @@ export const testServiceUser: User = {
   username: 'dummy',
   email: testDummyEmail,
   role: testRoleUser,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testServiceUserDto: UserDto = {
@@ -134,7 +135,7 @@ export const testServiceUserDto: UserDto = {
   username: 'dummy',
   email: testDummyEmail,
   role: testRoleUser,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testServiceUserDtoUnrestricted: UserDto  = {
@@ -143,7 +144,7 @@ export const testServiceUserDtoUnrestricted: UserDto  = {
   email: testDummyEmail,
   password: testSecretPassword,
   role: testRoleUser,
-  createdOn: createdOnDate,
+  image: undefined,
 };
 
 export const testFindUserCriterias = { email: testDummyEmail, role: testRoleUser };

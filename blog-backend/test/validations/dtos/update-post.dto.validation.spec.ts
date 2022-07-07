@@ -29,9 +29,9 @@ describe('UpdatePostDto Validation', () => {
     expect(error.property === 'description');
   });
 
-  it('should complain for body length too short', async () => {
+  it('should complain for body empty', async () => {
     const postDto = buildUpdatePostDto(testCreatePostDto);
-    postDto.body = '_'.repeat(minimumPostBodyLength ? minimumPostBodyLength - 1 : 0);
+    postDto.body = '';
     const errors = await validate(postDto, { skipMissingProperties: true });
     expect(errors.length).toEqual(1);
     const error = errors[0];

@@ -62,7 +62,7 @@ describe('PostService', () => {
 
   describe('findManyPostsForUser', () => {
     it('should return 1', async () => {
-      expect(await postService.findManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
+      expect(await postService.findManyPostsForUser(testUserId, testEmptyPostFilterCriterias)).toEqual([testServicePostDto]);
       expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('user', testUserId, {});
     });
   });

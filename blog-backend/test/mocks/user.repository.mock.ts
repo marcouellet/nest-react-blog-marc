@@ -24,6 +24,7 @@ const UserRepositoryMock = {
         findMany: jest.fn().mockImplementation((criterias: UserFindCriterias) => Promise.resolve([testUserUnrestricted])),
         findManyCount: jest.fn().mockImplementation((criterias: UserFindCriterias) => Promise.resolve(testUserCount)),
         create: jest.fn().mockImplementation((post: User) => Promise.resolve(testUserUnrestricted)),
+        unset: jest.fn().mockImplementation((id: string, unserParms: {}) => Promise.resolve()),
         update: jest.fn().mockImplementation((id: string, update: {}, populate?: string) => Promise.resolve(testUserUnrestricted)),
         delete: jest.fn().mockImplementation((id: string, populate?: string) => Promise.resolve(testUserUnrestricted)),
     },
