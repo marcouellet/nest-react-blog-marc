@@ -19,6 +19,7 @@ import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
 import { resizeImage } from '../../utils/image.utils';
+import ViewPostContent from './ViewPostContent';
 import EditPostContent from './EditPostContent';
 
 const CreatePost = () => {
@@ -30,6 +31,7 @@ const CreatePost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
+  const [viewingContent, setViewingContent] = useState<boolean>();
   const [editingContent, setEditingContent] = useState<boolean>();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
@@ -163,6 +165,10 @@ const CreatePost = () => {
     selectCategory(categories!, e, true);
   }
 
+  const handleViewContent = () => {
+    setViewingContent(true);
+  }
+
   const handleEditContent = () => {
     setEditingContent(true);
   }
@@ -172,6 +178,10 @@ const CreatePost = () => {
     setEditingContent(false);
   }
   
+  const onCloseContentViewing = () => {
+    setViewingContent(false);
+  }
+
   const onCancelContentEditing = () => {
     setEditingContent(false);
   }
@@ -280,15 +290,28 @@ const CreatePost = () => {
               </div>
             </div>
             <div className="form-group col-md-4">
-              <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
-                  Edit Content
-              </button>  
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div> 
+              <div className="row">
+                <button className="btn btn-secondary col-md-3"  onClick={ () => handleViewContent() } >
+                    View Content
+                </button> 
+                &nbsp; 
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+                <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
+                    Edit Content
+                </button>  
+                {isLoading &&
+                  <span className="fa fa-circle-o-notch fa-spin" />
+                }
+              </div> 
+            </div>
           </div>
         )         
+        }
+        {viewingContent && (
+          <ViewPostContent content={getValues('body')} onClose={onCloseContentViewing}/>
+        ) 
         }
         {editingContent && (
           <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>
