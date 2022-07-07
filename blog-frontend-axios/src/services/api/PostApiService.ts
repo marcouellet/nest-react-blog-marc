@@ -22,6 +22,10 @@ class PostApi extends HttpApiService<IPost> {
     return super.findMany(`${POST_ENDPOINT}/findMany`, buildPostTitleFilter(postTitleFilter));
   }
 
+  finManyPostsForUser = (userId: string, postTitleFilter: string) => {
+    return super.findMany(`${POST_ENDPOINT}/findMany/user/${userId}`, buildPostTitleFilter(postTitleFilter));
+  };
+
   findManyPostsForCategory = (categoryId: string, postTitleFilter: string) => {
     return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, buildPostTitleFilter(postTitleFilter));
   };

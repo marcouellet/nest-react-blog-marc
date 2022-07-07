@@ -56,39 +56,40 @@ export class PostController {
 
   // Fetch a post based on criterias
   @Put('/find')
-  async finPost(@Body(new ValidationPipe()) postCriterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto> {
-    return this.postService.findPost(postCriterias);
+  async finPost(@Body(new ValidationPipe()) criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto> {
+    return this.postService.findPost(criterias);
   }
 
   // Fetch posts based on criterias
   @Put('/findMany')
-  async finManyPosts(@Body(new ValidationPipe()) postCriterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
-    return this.postService.findManyPosts(postCriterias);
+  async finManyPosts(@Body(new ValidationPipe()) criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPosts(criterias);
   }
 
   // Fetch posts for a user
-  @Get('/findMany/user/:id')
-  async finManyPostsForUser(@Param('id') id: string): Promise<PostDto[]> {
-    return this.postService.findManyPostsForUser(id);
+  @Put('/findMany/user/:id')
+  async finManyPostsForUser(@Param('id') id: string,
+                            @Body(new ValidationPipe()) criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPostsForUser(id, criterias);
   }
 
   // Fetch posts for a category
   @Put('/findMany/category/:id')
   async finManyPostsForCategory(@Param('id') id: string, 
-                                @Body(new ValidationPipe()) postCriterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
-    return this.postService.findManyPostsForCategory(id, postCriterias);
+                                @Body(new ValidationPipe()) criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPostsForCategory(id, criterias);
   }
 
   // Fetch posts without category
   @Put('/findMany/nocategory')
-  async finManyPostsWithoutCategory(@Body(new ValidationPipe()) postCriterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
-    return this.postService.findManyPostsWithoutCategory(postCriterias);
+  async finManyPostsWithoutCategory(@Body(new ValidationPipe()) criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.postService.findManyPostsWithoutCategory(criterias);
   }
 
   // Get count of posts meating criterias 
   @Put('/findManyCount')
-  async findManyPostsCount(@Body(new ValidationPipe()) postCriterias: PostFindCriterias | FilterFindCriterias): Promise<number> {
-    return this.postService.findManyPostsCount(postCriterias);
+  async findManyPostsCount(@Body(new ValidationPipe()) criterias: PostFindCriterias | FilterFindCriterias): Promise<number> {
+    return this.postService.findManyPostsCount(criterias);
   }
 
   // Delete a post

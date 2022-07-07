@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
 import { createActionLogout, createActionLoading } from '../reducers/auth';
@@ -53,15 +54,30 @@ const NavigationBar = () => {
         <Navbar expand="lg" bg="dark" variant="dark">
             <div className="container-fluid">
                 <Navbar.Brand href="/">Marc's Blog</Navbar.Brand>
-                <div>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/post" disabled={isLoading}>Posts</Nav.Link>
-                    <Nav.Link href="/category" disabled={isLoading}>Categories</Nav.Link>
-                    {isAdministrator() && <Nav.Link href="/user" disabled={isLoading}>Users</Nav.Link>}
-                </Nav>
+                    <Nav.Link href="/blog">Blogs</Nav.Link>
+                    {isAuthenticated && (
+                        <NavDropdown id="nav-dropdown-manage" title="Manage">
+                         {!isAdministrator() && (
+                            <div>
+                                <NavDropdown.Item href="/post/user">Posts</NavDropdown.Item>
+                            </div>
+                        )
+                        }                        
+                        {isAdministrator() && (
+                            <div>
+                                <NavDropdown.Item href="/post">Posts</NavDropdown.Item>
+                                <NavDropdown.Item href="/category">Categories</NavDropdown.Item>
+                                <NavDropdown.Item href="/user">Users</NavDropdown.Item>
+                            </div>
+                        )
+                        }
+                        </NavDropdown>
+                    )
+                    }
 
-                </div>
+                </Nav>
             </div>
             <Form inline className="mx-3">
                 {authButton()}

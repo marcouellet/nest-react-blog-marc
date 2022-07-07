@@ -49,18 +49,18 @@ export class PostService {
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsForUser(userId: string): Promise<PostDto[]> {
-    return this.dataServicesRepositories.posts.findManyForSubDocument('user', userId, {})
+  async findManyPostsForUser(userId: string, criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('user', userId, criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsForCategory(categoryId: string, postCriterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
-    return this.dataServicesRepositories.posts.findManyForSubDocument('category', categoryId, postCriterias)
+  async findManyPostsForCategory(categoryId: string, criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', categoryId, criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsWithoutCategory(postCriterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
-    return this.dataServicesRepositories.posts.findManyForSubDocument('category', undefined, postCriterias)
+  async findManyPostsWithoutCategory(criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', undefined, criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../components/Home";
+import ListBlogs from "../components/blog/ListBlogs";
 import ListPosts from "../components/post/ListPosts";
+import ListPostsForUser from "../components/post/ListPostsForUser";
 import ListCategories from "../components/category/ListCategories";
 import ViewCategory from "../components/category/ViewCategory";
 import ViewPost from "../components/post/ViewPost";
@@ -29,8 +31,10 @@ export const AppRoutes = () => {
       {controlledRoutes}
       {AdminRoutes()}
       <Route path={"/"} element={<Home/>} />
+      <Route path={"/blog"} element={<ListBlogs/>}/>
       <Route path={"/user/profile"} element={<UserProfile/>} />
       <Route path={"/post"} element={<ListPosts/>}/>
+      <Route path={"/post/user"} element={<ListPostsForUser/>}/>
       <Route path={"/post/create"} element={<CreatePost/>} /> 
       <Route path={"/post/:postId"} element={<ViewPost/>}/>
       <Route path={"/category"} element={<ListCategories/>}/>
