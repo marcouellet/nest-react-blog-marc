@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import JoditEditor from "jodit-react";
 
-type ViewPostContentProps = React.HTMLProps<HTMLElement> & {
+type EditPostContentProps = React.HTMLProps<HTMLElement> & {
     content: string,
     onSaveContent: onSaveContent,
     onCancelEditing?: onCancelEditing,
@@ -12,7 +12,7 @@ export type onChangeContent = (content: string) => void;
 export type onCancelEditing = () => void;
 export type onSaveContent = (content: string) => void;
 
-const EditPostContent: React.FC<ViewPostContentProps> = ({className, content, onCancelEditing, onSaveContent, onChangeContent}) => {
+const EditPostContent: React.FC<EditPostContentProps> = ({className, content, onCancelEditing, onSaveContent, onChangeContent}) => {
 
     const editor = useRef(null);
     const config = {

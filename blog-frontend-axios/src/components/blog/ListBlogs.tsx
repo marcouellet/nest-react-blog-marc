@@ -161,14 +161,6 @@ const ListBlogs = () => {
               className="col-md-2" 
               onChange={e => handlePostTitleFilterChange(e.target.value)}      
             />
-            <div className="col-md-2 pull-right">
-              {
-                !isLoading && isAuthenticated &&
-                (
-                  <Link to={`/post/create`} className="btn btn-sm btn-primary">Create Post</Link>
-                )
-              }
-            </div>
           </div>
         </div>
         {
@@ -183,6 +175,9 @@ const ListBlogs = () => {
                   </th>
                   <th className="col-md-2">
                       Owner
+                  </th>
+                  <th className="col-md-2">
+                      Category
                   </th>
                   <th className="col-md-10">
                     Description
@@ -202,10 +197,13 @@ const ListBlogs = () => {
                       {post.user!.username}
                   </td>
                   <td>
+                  {post.category ? post.category.title : 'No category assigned'}
+                  </td>
+                  <td>
                       {post.description}
                   </td>
                   <td>
-                      <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View</Link>
+                      <Link to={`/blog/${post.id}`} className="btn btn-sm btn-info">View</Link>
                   </td>
               </tr>
             </Table>

@@ -184,6 +184,9 @@ const ListPosts = () => {
                   <th className="col-md-2">
                       Owner
                   </th>
+                  <th className="col-md-2">
+                      Category
+                  </th>
                   <th className="col-md-10">
                     Description
                   </th>
@@ -200,6 +203,9 @@ const ListPosts = () => {
                   </td>
                   <td>
                       {post.user!.username}
+                  </td>
+                  <td>
+                      {post.category ? post.category.title : 'No category assigned'}
                   </td>
                   <td>
                       {post.description}
