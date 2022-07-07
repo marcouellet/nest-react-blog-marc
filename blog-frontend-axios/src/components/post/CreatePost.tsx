@@ -11,7 +11,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
+import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
           minimumPostDescriptionLength } from '../../types';
 import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
@@ -24,13 +24,15 @@ import EditPostContent from './EditPostContent';
 const CreatePost = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading, user }, dispatch } = useAuth();
+  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [editingContent, setEditingContent] = useState<boolean>();
+
+  const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -108,6 +110,16 @@ const CreatePost = () => {
   }
 
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+
+  const goBack = () => {
+    if (isAdministrator()) {
+      navigate('/post');
+    } else if (isAuthenticated) {
+      navigate('/post/user');
+    } else {
+      navigate('/');
+    }
+  }
   
   const onSubmit = async (data: CreateSubmitForm) => {
     dispatch(createActionLoading(true));
@@ -121,7 +133,7 @@ const CreatePost = () => {
 
   const handleSubmitFormSuccess = () => {
     toast.success(`Post created successfully...`);
-    navigate('/post'); 
+    goBack();
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
@@ -171,7 +183,7 @@ const CreatePost = () => {
   }
 
   const handleCancelCreatePost = () => {
-    navigate('/post');   
+    goBack();  
   };
 
   const handleImageUpload = (image: ImageData) => {

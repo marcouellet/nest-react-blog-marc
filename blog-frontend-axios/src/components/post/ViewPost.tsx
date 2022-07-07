@@ -63,6 +63,16 @@ const ViewPost = () => {
     return ReactHtmlParser(html);
   }
 
+  const goBack = () => {
+    if (isAdministrator()) {
+      navigate('/post');
+    } else if (isAuthenticated) {
+      navigate('/post/user');
+    } else {
+      navigate('/');
+    }
+  }
+
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
   
   const handleDeletePost = async (id: string) => {
@@ -71,7 +81,7 @@ const ViewPost = () => {
      .then(() => handleDeletePostSucess())
      .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
     dispatch(createActionLoading(false));
-    navigate('/post');
+    goBack();
   }
   const handleDeletePostSucess = () => {
     toast.success(`Post deleted successfully...`);
@@ -81,7 +91,7 @@ const ViewPost = () => {
     if (checkForbidden(apiErrors)) {
       toast.error(`Post delete failed, session expired`);
       dispatch(createActionSessionExpired());
-      navigate('/post'); 
+      goBack();
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else {
@@ -96,7 +106,7 @@ const ViewPost = () => {
   }
 
   const handleReturn = () => {
-    navigate('/post');  
+    goBack();  
   }
 
   const getDateString = (date: Date): string => {

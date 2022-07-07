@@ -62,17 +62,18 @@ const ListPostsForUser = () => {
       });
       if (category) {
         dispatch(createActionLoading(true));
+        let fetchedPosts: IPost[] = [];
         await PostApiService.finManyPostsForUser(user!.id!, postTitleFilter)
-        .then(posts => setPosts(posts))
+        .then(posts => fetchedPosts = posts)
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         if ( category.id === 'all') {
-          setSelectedPosts(posts);
+          setSelectedPosts(fetchedPosts);
         } 
         else if (category.id === 'no_category') {
-          setSelectedPosts(posts.filter(post => !post.category));
+          setSelectedPosts(fetchedPosts.filter(post => !post.category));
         } 
         else {
-          setSelectedPosts(posts.filter(post => post.category && post.category.id == (category.id)));
+          setSelectedPosts(fetchedPosts.filter(post => post.category && post.category.id == (category.id)));
         }
         dispatch(createActionLoading(false));
       }
