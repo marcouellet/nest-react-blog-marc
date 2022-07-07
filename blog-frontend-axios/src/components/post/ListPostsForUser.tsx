@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory, ImageData } from "../../types";
@@ -18,7 +18,6 @@ const ListPostsForUser = () => {
 
   const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
   const [errors, setErrors] = React.useState<IErrors | null>();
-  const [posts, setPosts] = useState<IPost[]>([]);
   const [selectedPosts, setSelectedPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
@@ -73,7 +72,7 @@ const ListPostsForUser = () => {
           setSelectedPosts(fetchedPosts.filter(post => !post.category));
         } 
         else {
-          setSelectedPosts(fetchedPosts.filter(post => post.category && post.category.id == (category.id)));
+          setSelectedPosts(fetchedPosts.filter(post => post.category && post.category.id === (category.id)));
         }
         dispatch(createActionLoading(false));
       }

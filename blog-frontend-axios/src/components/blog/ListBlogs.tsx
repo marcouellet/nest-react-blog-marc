@@ -16,7 +16,7 @@ import Image from '../common/Image';
 
 const ListBlogs = () => {
 
-  const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
+  const { state: { user, isLoading, categoryFilter }, dispatch } = useAuth();
   const [errors, setErrors] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();

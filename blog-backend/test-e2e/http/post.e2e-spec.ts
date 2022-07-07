@@ -415,15 +415,16 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
-    Logger.debug('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
+  it('POST(12h): (PUT) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
+    Logger.debug('POST(12h): (PUT) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
-      .get(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
+      .put(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
+      .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
       .catch(error => {
-        Logger.error('POST(12h): (GET)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
+        Logger.error('POST(12h): (PUT)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
