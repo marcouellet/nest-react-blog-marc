@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IPost, ICategory, ImageData } from "../../types";
+import { IPost, ICategory } from "../../types";
 import useAuth from '../../contexts/auth';
 import { createActionLoading } from '../../reducers/auth';
-import { resizeImage } from '../../utils/image.utils';
 import ListErrors from '../common/ListErrors';
-import { IErrors, ImageSizeProps } from '../../types';
+import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
-import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
-import ImageResize from '../common/ImageResize';
-import Image from '../common/Image';
+import ViewBlogCards from './ViewBlogCards';
+import { resizeImage } from '../../utils/image.utils';
 
 const ListBlogs = () => {
 
@@ -25,12 +23,19 @@ const ListBlogs = () => {
   const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
+  const imageMaxSize: ImageSizeProps = {maxWidth:120, maxHeight:120}
+
   useEffect(() => {
     (async () => {
       dispatch(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
-        await CategoryApiService.getAllCategories()
+          await getDefaultPostImage()
+          .then(imageData => { setpostDefaultImage(imageData);})
+          .catch(error => {
+            throw new Error(error);
+          });   
+          await CategoryApiService.getAllCategories()
           .then(categories => {
             const all: ICategory = {id:'all', title: 'All', description: ''};
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -54,11 +59,6 @@ const ListBlogs = () => {
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
-      await getDefaultPostImage()
-      .then(imageData => { setpostDefaultImage(imageData);})
-      .catch(error => {
-        throw new Error(error);
-      });
       if (category) {
         dispatch(createActionLoading(true));
         if ( category.id === 'all') {
@@ -83,6 +83,10 @@ const ListBlogs = () => {
   // eslint-disable-next-line
   }, [category, postTitleFilter, user])
 
+  const getDefaultPostImage = (): Promise<ImageData> => {
+    return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
     setErrors(apiErrors);
     toast.error(`Categories reading failed, see error list`);
@@ -92,20 +96,6 @@ const ListBlogs = () => {
     setErrors(apiErrors);
     toast.error(`Post reading failed, see error list`);
   }
-
-  const getDefaultPostImage = (): Promise<ImageData> => {
-    return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
-  }
-
-  const PostImage = (post: IPost) => {
-    if(post.image) {
-      return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
-    }  else {
-      return  postDefaultImage && <Image imageData={postDefaultImage}/> 
-    }
-  }
-
-  const imageMaxSize: ImageSizeProps = {maxWidth:40, maxHeight:40};
 
   const handleCategorySelect=(e: any)=>{
     selectCategory(categories!, e, true);
@@ -126,7 +116,7 @@ const ListBlogs = () => {
   return (
     <section className="blog-area section">
       {errors && <ListErrors errors={errors} />}
-      <Container  className="col-md-10">
+      <Container  className="col-md-12">
         <div className="form-group ">
           <div className="row">
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
@@ -163,52 +153,10 @@ const ListBlogs = () => {
             />
           </div>
         </div>
-        {
-          !isLoading && posts && posts.map((post: IPost) =>    
-          (
-            <div key={post.id}>
-              <Table striped bordered hover>
-                <thead>
-                  <th className="col-auto"/>
-                  <th className="col-md-2">
-                      Name
-                  </th>
-                  <th className="col-md-2">
-                      Owner
-                  </th>
-                  <th className="col-md-2">
-                      Category
-                  </th>
-                  <th className="col-md-10">
-                    Description
-                  </th>
-                  <th className="col-md-2">
-                    Actions
-                  </th>
-                </thead>
-                <tr>
-                  <td>
-                    {PostImage(post)}
-                  </td>
-                  <td>
-                      {post.title}
-                  </td>
-                  <td>
-                      {post.user!.username}
-                  </td>
-                  <td>
-                  {post.category ? post.category.title : 'No category assigned'}
-                  </td>
-                  <td>
-                      {post.description}
-                  </td>
-                  <td>
-                      <Link to={`/blog/${post.id}`} className="btn btn-sm btn-info">View</Link>
-                  </td>
-              </tr>
-            </Table>
+        {!isLoading && posts &&       
+          <div className="row">
+            <ViewBlogCards className="col-lg-4 col-md-6" posts={posts}  defaultPostImage={postDefaultImage!}/> 
           </div>
-          ))
         }
       </Container>
     </section>
