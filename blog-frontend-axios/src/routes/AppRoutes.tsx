@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../components/Home";
-import Blogs from "../components/blog/Blogs";
+import ListBlogs from "../components/blog/ListBlogs";
 import ViewBlog from "../components/blog/ViewBlog";
 import ListPosts from "../components/post/ListPosts";
 import ListPostsForUser from "../components/post/ListPostsForUser";
@@ -32,7 +32,7 @@ export const AppRoutes = () => {
       {controlledRoutes}
       {AdminRoutes()}
       <Route path={"/"} element={<Home/>} />
-      <Route path={"/blog"} element={<Blogs/>}/>
+      <Route path={"/blog"} element={<ListBlogs/>}/>
       <Route path={"/blog/:postId"} element={<ViewBlog/>}/>
       <Route path={"/user/profile"} element={<UserProfile/>} />
       <Route path={"/post"} element={<ListPosts/>}/>

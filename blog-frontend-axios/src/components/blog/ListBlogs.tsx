@@ -117,6 +117,8 @@ const ListBlogs = () => {
     <section className="blog-area section">
       {errors && <ListErrors errors={errors} />}
       <Container  className="col-md-12">
+        <br/>
+        <br/>
         <div className="form-group ">
           <div className="row">
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
