@@ -33,6 +33,24 @@ img {
   height: fit-content;
 }
 
-.list-posts-table {
-  width: 80%;
+.view-blog {
+  flex: 1;
+  overflow-y:auto;
+  white-space: nowrap;
 }
+
+.view-blog-card {
+  flex: 1;
+}
+
+.overflow-scrolling {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.list-blogs {
+  flex: 1;
+  overflow-y:auto;
+  white-space: nowrap;
+}
+

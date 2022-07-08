@@ -44,7 +44,7 @@ const ViewBlog = () => {
       <div className="container-fluid">
         {post && 
         (
-          <div>
+          <div className="view-blog">
             <div className="row">
               <div dangerouslySetInnerHTML={{__html: post.body}} />           
             </div>

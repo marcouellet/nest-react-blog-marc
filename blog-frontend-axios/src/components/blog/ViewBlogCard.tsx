@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import React from 'react';
-import {Container ,Card, Button} from 'react-bootstrap';
+import {Container ,Card } from 'react-bootstrap';
 import { IPost, ImageSizeProps, ImageData } from "../../types";
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
@@ -25,20 +25,22 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
     }
   }
 
+  const onClickCard = () => {
+    onViewBlog(post.id!);
+  }
+
   return (  
-    <div className="ViewCard">  
-      <Container className='p-4'>  
-          <Card>  
-            <Card.Body className="image-container">
+    <div className="view-blog-card">  
+      <Container>  
+          <Card style={{ width: '12.5rem',  cursor: "pointer" }} onClick={onClickCard} >  
+            <Card.Body>
               <Card.Header>
                 <h5>{post.user?.username}</h5>
                 {PostImage()}
               </Card.Header> 
               <Card.Title>
-                <br/>
-                {post.title}
+                <h6>{post.title}</h6>
               </Card.Title>
-                <Button onClick={() => onViewBlog(post.id!)}>View</Button>
             </Card.Body>  
           </Card>  
       </Container>  

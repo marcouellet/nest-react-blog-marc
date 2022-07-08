@@ -51,7 +51,7 @@ const NavigationBar = () => {
 
     return (
     <>
-        <Navbar expand="lg" bg="dark" variant="dark">
+        <Navbar expand="lg" bg="dark" variant="dark" fixed="top">
             <div className="container-fluid">
                 <Navbar.Brand href="/">Marc's Blog</Navbar.Brand>
                 <Nav className="me-auto">
@@ -76,7 +76,6 @@ const NavigationBar = () => {
                         </NavDropdown>
                     )
                     }
-
                 </Nav>
             </div>
             <Form inline className="mx-3">
