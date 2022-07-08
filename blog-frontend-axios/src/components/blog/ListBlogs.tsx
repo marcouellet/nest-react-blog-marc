@@ -155,7 +155,7 @@ const ListBlogs = () => {
         </div>
         {!isLoading && posts &&       
           <div className="row">
-            <ViewBlogCards className="col-lg-4 col-md-6" posts={posts}  defaultPostImage={postDefaultImage!}/> 
+            <ViewBlogCards className="col-lg-3 col-md-4" posts={posts}  defaultPostImage={postDefaultImage!}/> 
           </div>
         }
       </Container>

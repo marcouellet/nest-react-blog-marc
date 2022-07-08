@@ -23,8 +23,8 @@ const ViewPostCards: React.FC<ViewBlogCardsProps> = ({className, posts, defaultP
       {
         posts && posts.map((post: IPost) =>    
         (
-          <div className="col-lg-4 col-md-4" key={post.id}>
-            <ViewBlogCard style={{flex: 1}} post={post} defaultPostImage={defaultPostImage} className={className} onViewBlog={handleViewBlog}/>
+          <div key={post.id}>
+            <ViewBlogCard style={{flex: 1}} post={post} defaultPostImage={defaultPostImage} onViewBlog={handleViewBlog}/>
           </div>
         ))
       }

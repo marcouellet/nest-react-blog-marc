@@ -127,23 +127,29 @@ const ViewPost = () => {
                 {PostImage(post)}
               </div>
               <div className="col-md-7">
-                <h5 className="date">
+                <h6 className="date">
                   <span>
                     Date posted:&nbsp;{getDateString(post.publishDate!)}
                   </span>
-                </h5>
+                </h6>
                 <br/>
-                <h5 className="title">
+                <h6 className="title">
                   <span>
                     Title:&nbsp;{post.title}
                   </span>
-                </h5>
+                </h6>
                 <br/>
-                <h5 className="category">
+                <h6 className="category">
                   <span>
                     Category:&nbsp;{post.category ? post.category.title : 'No category assigned'}
                   </span>
-                </h5>
+                </h6>
+                <br/>
+                <h6 className="description">
+                  <span>
+                    Description:&nbsp;{post.description}
+                  </span>
+                </h6>
                 <br/>
               </div>
             </div>
