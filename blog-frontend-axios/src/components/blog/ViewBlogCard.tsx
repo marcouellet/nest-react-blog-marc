@@ -45,8 +45,8 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
           <Card style={{width: '12.5rem'}} >  
             <Card.Body>
               <Card.Header>
-                <h5>{post.user?.username}</h5>
-                <DisplayModalButton contentToDisplay={modalContent}>User Info</DisplayModalButton>
+                {/* <h5>{post.user?.username}</h5> */}
+                <DisplayModalButton className="display-user-info-button" contentToDisplay={modalContent}>{post.user?.username}</DisplayModalButton>
                 <div style={{cursor:"zoom-in", marginTop: "1rem"}} onClick={onClickCard}>
                   {PostImage()}
                 </div>

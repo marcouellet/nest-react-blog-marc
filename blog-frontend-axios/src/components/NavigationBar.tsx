@@ -83,6 +83,8 @@ const NavigationBar = () => {
             </Form>
         </Navbar>
         <br/>
+        <br/>
+        <br/>
     </>
     );
 }

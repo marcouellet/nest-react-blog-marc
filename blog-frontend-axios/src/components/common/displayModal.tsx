@@ -8,6 +8,7 @@ type DisplayButtonProps = React.HTMLProps<HTMLButtonElement> & {
 const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDisplay, className}) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [hasMouseOver, setHasMouseOver] = useState(false);
 
     const showModal = () => {
         setIsOpen(true);  
@@ -19,7 +20,18 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
 
     return (
         <div>
-            <button className={className} onClick={showModal}>
+            <button 
+                style={{
+                    border: "none",
+                    outline:"none",
+                    borderRadius: "10px",
+                    backgroundColor: hasMouseOver ? "bisque" : "transparent"
+                }}
+                className={className} 
+                onClick={showModal}
+                onMouseEnter={() => setHasMouseOver(true)}
+                onMouseLeave={() => setHasMouseOver(false)}
+            >
                 {children}
             </button>
             <Modal show={isOpen} onHide={hideModal} centered dialogClassName={`modal-md`}>

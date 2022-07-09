@@ -59,3 +59,14 @@ img {
   cursor: "crosshair", auto;
 }
 
+button.display-user-info-button {
+  border-style:groove;
+}
+
+.display-user-info-button {
+  border: none;
+}
+display-user-info-button:focus {
+  border: none;
+  outline: none;
+}
