@@ -6,6 +6,7 @@ import Image from '../common/Image';
 export interface ImageResizeProps {
     imageData: ImageData,
     resize: ImageSizeProps,
+    className?: string;
 }
 
 const ImageResize = (props: ImageResizeProps) => {
@@ -33,7 +34,7 @@ const ImageResize = (props: ImageResizeProps) => {
     
     return ( 
         <>
-            {image && <Image imageData={image} onError={handleOnError}/> }         
+            {image && <Image imageData={image} onError={handleOnError} className={props.className}/>}         
        </>
     ) 
 }

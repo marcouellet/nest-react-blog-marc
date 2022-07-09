@@ -22,9 +22,9 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
 
   const PostImage = () => {
     if(post.image) {
-      return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
+      return <ImageResize imageData={post.image} resize={imageMaxSize} className="blog-content-image"/>;
     }  else {
-      return  defaultPostImage && <Image imageData={defaultPostImage}/> 
+      return  defaultPostImage && <Image imageData={defaultPostImage} className="blog-content-image"/> 
     }
   }
 
@@ -47,7 +47,7 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
               <Card.Header>
                 <h5>{post.user?.username}</h5>
                 <DisplayModalButton contentToDisplay={modalContent}>User Info</DisplayModalButton>
-                <div style={{cursor: "zoom-in", marginTop: "1rem"}} onClick={onClickCard}>
+                <div style={{cursor:"zoom-in", marginTop: "1rem"}} onClick={onClickCard}>
                   {PostImage()}
                 </div>
               </Card.Header> 

@@ -54,3 +54,8 @@ img {
   white-space: nowrap;
 }
 
+.blog-content-image img {
+  /* cursor: url('public/document.cur'), auto; */
+  cursor: "crosshair", auto;
+}
+
