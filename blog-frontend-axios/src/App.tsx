@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from "./routes/AppRoutes";
+import ModalContextProvider from './contexts/modalContext';
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
 import SessionTimeoutHandler from "./components/auth/sessionTimeoutHandler";
 
@@ -18,7 +19,9 @@ const App = () => {
         <BrowserRouter>
           <SessionTimeoutHandler/>
           <NavigationBar/>
-          <AppRoutes />
+          <ModalContextProvider>
+            <AppRoutes />
+          </ModalContextProvider>
           <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
         </BrowserRouter>
       </ConfirmationModalContextProvider>

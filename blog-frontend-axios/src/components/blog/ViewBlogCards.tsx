@@ -7,10 +7,11 @@ import ViewBlogCard, { onViewBlog } from './ViewBlogCard';
 
 type ViewBlogCardsProps = React.HTMLProps<HTMLElement> & {
   posts: IPost[],
-  defaultPostImage: ImageData
+  defaultPostImage: ImageData,
+  defaultUserImage: ImageData,
 }
 
-const ViewPostCards: React.FC<ViewBlogCardsProps> = ({className, posts, defaultPostImage}) => {
+const ViewPostCards: React.FC<ViewBlogCardsProps> = ({className, posts, defaultPostImage, defaultUserImage}) => {
 
   const navigate = useNavigate();
 
@@ -24,7 +25,13 @@ const ViewPostCards: React.FC<ViewBlogCardsProps> = ({className, posts, defaultP
         posts && posts.map((post: IPost) =>    
         (
           <div key={post.id}>
-            <ViewBlogCard style={{flex: 1}} post={post} defaultPostImage={defaultPostImage} onViewBlog={handleViewBlog}/>
+            <ViewBlogCard 
+              style={{flex: 1}} 
+              post={post} 
+              defaultPostImage={defaultPostImage}   
+              defaultUserImage={defaultUserImage} 
+              onViewBlog={handleViewBlog}
+            />
           </div>
         ))
       }

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import CancelButton from '../common/cancelConfirmation'
+import CancelButton from '../common/cancelConfirmation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';

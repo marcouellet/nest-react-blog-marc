@@ -22,6 +22,7 @@ const ListBlogs = () => {
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
   const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
+  const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   const imageMaxSize: ImageSizeProps = {maxWidth:120, maxHeight:120}
 
@@ -35,7 +36,12 @@ const ListBlogs = () => {
           .catch(error => {
             throw new Error(error);
           });   
-          await CategoryApiService.getAllCategories()
+          await getDefaultUserImage()
+          .then(imageData => { setuserDefaultImage(imageData);})
+          .catch(error => {
+            throw new Error(error);
+          });   
+         await CategoryApiService.getAllCategories()
           .then(categories => {
             const all: ICategory = {id:'all', title: 'All', description: ''};
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -85,6 +91,10 @@ const ListBlogs = () => {
 
   const getDefaultPostImage = (): Promise<ImageData> => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
+  }
+
+  const getDefaultUserImage = (): Promise<ImageData> => {
+    return resizeImage('/default-user-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
@@ -155,10 +165,17 @@ const ListBlogs = () => {
             />
           </div>
         </div>
-        {!isLoading && posts &&       
+        {!isLoading && posts &&  
+        (     
           <div className="row">
-            <ViewBlogCards className="col-lg-3 col-md-4" posts={posts}  defaultPostImage={postDefaultImage!}/> 
+            <ViewBlogCards
+              className="col-lg-3 col-md-4"
+              posts={posts}
+              defaultPostImage={postDefaultImage!}
+              defaultUserImage={userDefaultImage!}
+            /> 
           </div>
+        )
         }
       </Container>
     </section>

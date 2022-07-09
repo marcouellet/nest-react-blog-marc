@@ -1,25 +1,6 @@
 import React, {useContext, useRef, useState} from "react";
 import Modal from "react-bootstrap/Modal";
-
-type UseModalShowReturnType = {
-    show: boolean;
-    setShow: (value: boolean) => void;
-    onHide: () => void;
-}
-
-const useModalShow = (): UseModalShowReturnType => {
-    const [show, setShow] = useState(false);
-
-    const handleOnHide = () => {
-        setShow(false);
-    };
-
-    return {
-        show,
-        setShow,
-        onHide: handleOnHide,
-    }
-};
+import { useModalShow } from './useModalShow';
 
 type ModalContextType = {
     showConfirmation: (title: string, message: string | JSX.Element) => Promise<boolean>;

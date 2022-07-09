@@ -1,4 +1,5 @@
 import React from 'react'
+import ModalContextProvider from '../../contexts/modalContext';
 import ScrollArea from 'react-scrollbar';
 import ListBlogs from './ListBlogs';
 
@@ -10,19 +11,20 @@ class Blogs extends React.Component{
 
         return (
             <div>
-                <ScrollArea
-                  className="area"
-                  contentClassName="content"
-                  verticalScrollbarStyle={scrollbarStyles}
-                  verticalContainerStyle={scrollbarStyles}
-                  horizontalScrollbarStyle={scrollbarStyles}
-                  horizontalContainerStyle={scrollbarStyles}
-                  smoothScrolling= {true}
-                  minScrollSize={40}
-                  >
-                  <ListBlogs/>
-                </ScrollArea>
-
+                <ModalContextProvider>
+                    <ScrollArea
+                        className="area"
+                        contentClassName="content"
+                        verticalScrollbarStyle={scrollbarStyles}
+                        verticalContainerStyle={scrollbarStyles}
+                        horizontalScrollbarStyle={scrollbarStyles}
+                        horizontalContainerStyle={scrollbarStyles}
+                        smoothScrolling= {true}
+                        minScrollSize={40}
+                    >
+                    <ListBlogs/>
+                    </ScrollArea>
+                </ModalContextProvider>
             </div>
         );
     }
