@@ -12,7 +12,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
           ImageSizeProps, ImageData } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
@@ -101,21 +101,25 @@ const CreateUser = () => {
     dispatch(createActionLoading(false));
   } 
 
+  const handleApiErrors = (apiErrors: IErrors, process: string, unauthorizedMessage: string = 'Access denied') => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(unauthorizedMessage);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+  
   const handleSubmitFormSuccess = () => {
     toast.success(`User created successfully...`);
     navigate('/user');
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`User creation failed, session expired`);
-      dispatch(createActionSessionExpired());
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`User already exist or access denied`);
-    } else {
-      toast.error(`User creation failed, see error list`);
-      setErrorList(apiErrors);      
-    }
+    handleApiErrors(apiErrors, 'User creation', `User already exist or access denied`);
   }
 
   const cancelCreateUserMessage = () => `User creation and loose changes`;

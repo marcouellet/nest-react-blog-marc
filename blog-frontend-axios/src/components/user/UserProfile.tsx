@@ -8,7 +8,7 @@ import { UserApiService } from "../../services/api/UserApiService";
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import CancelButton from '../common/cancelConfirmation';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
@@ -113,9 +113,20 @@ const UserProfile = () => {
   // eslint-disable-next-line
   }, []);
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchUserError = (apiErrors: IErrors) => {
-    toast.error(`User reading failed, see error list`);
-    setErrorList(apiErrors);
+    handleApiErrors(apiErrors,'User reading');
   }
 
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
@@ -154,16 +165,7 @@ const UserProfile = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-      if (checkForbidden(apiErrors)) {
-      toast.error(`User update failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/'); 
-      } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-      } else {
-      toast.error(`User update failed, see error list`);
-      setErrorList(apiErrors);      
-      }
+    handleApiErrors(apiErrors,'User update');
   }
 
   const cancelEditUserMessage = () => `user edition and loose changes`;

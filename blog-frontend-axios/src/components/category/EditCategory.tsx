@@ -12,7 +12,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const EditCategory = () => {
@@ -72,9 +72,20 @@ const EditCategory = () => {
      }
   } 
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchCategoryError = (apiErrors: IErrors) => {
-    toast.error(`Category reading failed, see error list`);
-    setErrorList(apiErrors);
+    handleApiErrors(apiErrors, 'Category reading');
   }
 
   const handleSubmitFormSucess = () => {
@@ -83,16 +94,7 @@ const EditCategory = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Category update failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate(`/category/${category?.id}`) 
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Category update failed, see error list`);
-      setErrorList(apiErrors);      
-    }
+    handleApiErrors(apiErrors, 'Category update');
 }
 
 const cancelEditCategoryMessage = () => `category edition and loose changes`;

@@ -10,7 +10,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const CreateCategory = () => {
@@ -56,16 +56,20 @@ const CreateCategory = () => {
     navigate('/category');
   }
 
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Category creation failed, session expired`);
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Category already exist or access denied`);
+      toast.error(`Access denied`);
     } else {
-      toast.error(`Category creation failed, see error list`);
+      toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
+  }
+
+  const handleSubmitFormError = (apiErrors: IErrors) => {
+    handleApiErrors(apiErrors,'Category creation');
   }
 
   const cancelCreateCategoryMessage = () => `Category creation and loose changes`;

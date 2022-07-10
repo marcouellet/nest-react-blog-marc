@@ -8,7 +8,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
-import { checkUnauthorized } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { PostApiService } from '../../services/api/PostApiService';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
@@ -19,7 +19,7 @@ const ViewUser = () => {
   const { userId } = useParams<{ userId: string }>();
   const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [userDisplayed, setUserDisplayed] = useState<IUser>();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();
@@ -45,9 +45,19 @@ const ViewUser = () => {
   // eslint-disable-next-line
   }, [user]);
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
   const handleFetchUserError = (apiErrors: IErrors) => {
-    toast.error(`User reading failed, see error list`);
-    setErrors(apiErrors);
+    handleApiErrors(apiErrors,'User reading');
   }
 
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
@@ -90,14 +100,7 @@ const ViewUser = () => {
   }
 
   const handleDeleteUserError = (apiErrors: IErrors) => {
-    if (checkUnauthorized(apiErrors)) {
-      toast.error(`User delete failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/user'); 
-    } else {
-      toast.error(`User delete failed, see error list`);
-      setErrors(apiErrors);      
-    }
+    handleApiErrors(apiErrors,'User delete');
   }
 
     return (
@@ -151,7 +154,7 @@ const ViewUser = () => {
                 </div>
               </div>
               <div className="row">
-                {errors && <ListErrors errors={errors} />}
+                {errorList && <ListErrors errors={errorList} />}
               </div>
           </div>  
           )           

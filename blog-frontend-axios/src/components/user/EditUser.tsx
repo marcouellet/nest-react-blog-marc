@@ -13,7 +13,7 @@ import { createActionLoading, createActionUpdateUser, createActionSessionExpired
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
 import ImageResize from '../common/ImageResize';
@@ -126,11 +126,6 @@ const EditUser = () => {
      }
   } 
 
-  const handleFetchUserError = (apiErrors: IErrors) => {
-    toast.error(`User reading failed, see error list`);
-    setErrorList(apiErrors);
-  }
-
   const handleSubmitFormSuccess = (userUpdated: User) => {
     if (user?.email === userUpdated?.email) {
       // Update state user to refresh user info in NavBar
@@ -140,54 +135,61 @@ const EditUser = () => {
     navigate(`/user/${userEdited!.id}`); 
   }
 
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`User update failed, session expired`);
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
       dispatch(createActionSessionExpired());
-      navigate(`/user/${userEdited!.id}`); 
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else {
-      toast.error(`User update failed, see error list`);
+      toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
-}
+  }
 
-const cancelEditUserMessage = () => `user edition and loose changes`;
+  const handleFetchUserError = (apiErrors: IErrors) => {
+    handleApiErrors(apiErrors, 'User reading');
+  }
 
-const handleResetEditUser = () => {
-  setImageData(userEdited?.image);
-  reset(defaultValues, { keepDirty: false});
-}
+  const handleSubmitFormError = (apiErrors: IErrors) => {
+    handleApiErrors(apiErrors, 'User update');
+  }
 
-const handleCancelEditUser = () => {
-  navigate(`/user/${userEdited!.id}`);   
-};
+  const cancelEditUserMessage = () => `user edition and loose changes`;
 
-const handleRoleSelect=(e: any)=>{
-  setValue('role', e);
-}
+  const handleResetEditUser = () => {
+    setImageData(userEdited?.image);
+    reset(defaultValues, { keepDirty: false});
+  }
 
-const handleImageUpload = (image: ImageData) => {
-  setImageData(image);
-}
+  const handleCancelEditUser = () => {
+    navigate(`/user/${userEdited!.id}`);   
+  };
 
-const handleImageUploadError = (error: any) => {
-  toast.error(`User image upload failed`);
-}
+  const handleRoleSelect=(e: any)=>{
+    setValue('role', e);
+  }
 
-const handleDeleteImage = () => {
-  setImageData(undefined);
-}
+  const handleImageUpload = (image: ImageData) => {
+    setImageData(image);
+  }
 
-const setImageData = (image: ImageData | undefined) => {
-  const isImageDefined = image !== undefined;
-  const isInitialImageDefined = userEdited?.image !== undefined;
-  const imageChanged = (isImageDefined !== isInitialImageDefined) ||
-                        (isImageDefined && image?.base64 !== user?.image?.base64);
-  setValue('imageChanged', imageChanged, {shouldDirty: true});
-  setUserImage(image);
-}
+  const handleImageUploadError = (error: any) => {
+    toast.error(`User image upload failed`);
+  }
+
+  const handleDeleteImage = () => {
+    setImageData(undefined);
+  }
+
+  const setImageData = (image: ImageData | undefined) => {
+    const isImageDefined = image !== undefined;
+    const isInitialImageDefined = userEdited?.image !== undefined;
+    const imageChanged = (isImageDefined !== isInitialImageDefined) ||
+                          (isImageDefined && image?.base64 !== user?.image?.base64);
+    setValue('imageChanged', imageChanged, {shouldDirty: true});
+    setUserImage(image);
+  }
 
   return (
     <div className={'page-wrapper'}>

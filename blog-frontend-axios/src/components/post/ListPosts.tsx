@@ -13,11 +13,13 @@ import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ImageResize from '../common/ImageResize';
 import Image from '../common/Image';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListPosts = () => {
 
   const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
@@ -83,14 +85,24 @@ const ListPosts = () => {
   // eslint-disable-next-line
   }, [category, postTitleFilter, user])
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    setErrors(apiErrors);
-    toast.error(`Categories reading failed, see error list`);
+    handleApiErrors(apiErrors, 'Categories reading');
   }
 
   const handleFetchPostError = (apiErrors: IErrors) => {
-    setErrors(apiErrors);
-    toast.error(`Post reading failed, see error list`);
+    handleApiErrors(apiErrors, 'Post reading');
   }
 
   const getDefaultPostImage = (): Promise<ImageData> => {
@@ -125,7 +137,7 @@ const ListPosts = () => {
 
   return (
     <section className="blog-area section">
-      {errors && <ListErrors errors={errors} />}
+      {errorList && <ListErrors errors={errorList} />}
       <Container  className="col-md-10">
         <div className="form-group ">
           <div className="row">

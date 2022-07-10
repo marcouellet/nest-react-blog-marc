@@ -15,7 +15,7 @@ import { resizeImage } from '../../utils/image.utils';
 const ListBlogs = () => {
 
   const { state: { user, isLoading, categoryFilter }, dispatch } = useAuth();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
@@ -98,12 +98,12 @@ const ListBlogs = () => {
   }
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    setErrors(apiErrors);
+    setErrorList(apiErrors);
     toast.error(`Categories reading failed, see error list`);
   }
 
   const handleFetchPostError = (apiErrors: IErrors) => {
-    setErrors(apiErrors);
+    setErrorList(apiErrors);
     toast.error(`Post reading failed, see error list`);
   }
 
@@ -125,7 +125,7 @@ const ListBlogs = () => {
 
   return (
     <section className="blog-area section">
-      {errors && <ListErrors errors={errors} />}
+      {errorList && <ListErrors errors={errorList} />}
       <Container  className="col-md-12">
         <div className="form-group ">
           <div className="row">

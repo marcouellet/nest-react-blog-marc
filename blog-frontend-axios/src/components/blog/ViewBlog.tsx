@@ -13,7 +13,7 @@ const ViewBlog = () => {
   const { postId } = useParams<{ postId: string }>();
   const { state: { isLoading }, dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const ViewBlog = () => {
 
   const handleFetchPostError = (apiErrors: IErrors) => {
     toast.error(`Post reading failed, see error list`);
-    setErrors(apiErrors);
+    setErrorList(apiErrors);
   }
 
   const handleReturn = () => {
@@ -61,7 +61,7 @@ const ViewBlog = () => {
               </div>
             </div>
             <div className="row">
-                {errors && <ListErrors errors={errors} />}
+                {errorList && <ListErrors errors={errorList} />}
             </div>
           </div>
         )

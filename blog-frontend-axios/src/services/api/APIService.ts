@@ -4,8 +4,7 @@ import { IErrors } from '../../types';
 import TokenService from './TokenService';
 
 axios.defaults.baseURL = API_BASE_URL;
-
-export function handleError(error : any) : Promise<IErrors> {
+function processError(error : any) : IErrors {
   let errorAttributes : IErrors = {};
 
   if (error.message && error.message.length > 0) {
@@ -22,6 +21,10 @@ export function handleError(error : any) : Promise<IErrors> {
       errorAttributes.status = error.response.status;
       errorAttributes.statusText = error.request.statusText;
     }
+    if (error.response.request && error.response.request.authorize) {
+      errorAttributes.authorize = [error.response.request.authorize];
+      errorAttributes.token = [error.response.request.authorize.replace('Bearer ', '').trim()];
+    }
   } else if (error.request) {
     // The client never received a response, and the request was never left
     console.log(error.request);
@@ -30,7 +33,11 @@ export function handleError(error : any) : Promise<IErrors> {
       errorAttributes.statusText = error.request.statusText;
     }
   }
-   return Promise.reject(errorAttributes);
+   return errorAttributes;
+}
+
+export function handleError(error : any) : Promise<IErrors> {
+   return Promise.reject(processError(error));
 }
 
 // Add a request interceptor
@@ -54,7 +61,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     return handleError(error);
-  },
+  }
 );
 
 export default axios;

@@ -9,14 +9,14 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, UserRole } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
-import { checkUnauthorized } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 
 const ViewCategory = () => {
 
   const { categoryId } = useParams<{ categoryId: string }>();
   const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [category, setCategory] = useState<ICategory>();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
@@ -36,9 +36,20 @@ const ViewCategory = () => {
   // eslint-disable-next-line
   }, []);
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchCategoryError = (apiErrors: IErrors) => {
-    toast.error(`Category reading failed, see error list`);
-    setErrors(apiErrors);
+    handleApiErrors(apiErrors,'Category reading');
   }
 
   const handleReturn = () => {
@@ -67,14 +78,7 @@ const ViewCategory = () => {
   }
 
   const handleDeleteCategoryError = (apiErrors: IErrors) => {
-    if (checkUnauthorized(apiErrors)) {
-      toast.error(`Category delete failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/category'); 
-    } else {
-      toast.error(`Category delete failed, see error list`);
-      setErrors(apiErrors);      
-    }
+    handleApiErrors(apiErrors,'Category delete');
   }
 
     return (
@@ -123,7 +127,7 @@ const ViewCategory = () => {
               </div>
             </div>            
             <div className="row">
-                {errors && <ListErrors errors={errors} />}
+                {errorList && <ListErrors errors={errorList} />}
             </div>
           </div>
           )           

@@ -3,18 +3,19 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import useAuth from '../../contexts/auth';
 import { resizeImage } from '../../utils/image.utils';
-import { createActionLoading, createActionSetUserNameFilter } from '../../reducers/auth';
+import { createActionLoading, createActionSetUserNameFilter, createActionSessionExpired } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
 import { UserApiService } from "../../services/api/UserApiService";
 import { Table, Container } from 'react-bootstrap';
 import ImageResize from '../common/ImageResize';
 import Image from '../common/Image';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 
 const ListUsers = () => {
 
   const { state: { user, isLoading }, dispatch } = useAuth();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [users, setUsers] = useState<IUser[]>([]);
   const [userNameFilter, setuserNameFilter] = useState<string>('');
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
@@ -36,9 +37,20 @@ const ListUsers = () => {
     // eslint-disable-next-line
   }, [user, userNameFilter])
  
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchUserError = (apiErrors: IErrors) => {
-    toast.error(`Users reading failed, see error list`);
-    setErrors(apiErrors);
+    handleApiErrors(apiErrors,'Users reading');
   }
 
   const handleUserNameFilterChange = (filter: string)=>{
@@ -62,7 +74,7 @@ const ListUsers = () => {
 
   return (
     <section className="blog-area section">
-      {errors && <ListErrors errors={errors} />}
+      {errorList && <ListErrors errors={errorList} />}
       <Container  className="col-md-10">
         <div className="form-group ">
           <div className="row">

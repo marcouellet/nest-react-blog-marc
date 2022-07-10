@@ -14,7 +14,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { IErrors, ImageData } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
@@ -143,14 +143,25 @@ const EditPost = () => {
      }
   } 
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+      navigate(`/post/${post?.id}`);
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    toast.error(`Categories reading failed, see error list`);
-    setErrorList(apiErrors);
+    handleApiErrors(apiErrors, 'Categories reading');
   }
   
   const handleFetchPostError = (apiErrors: IErrors) => {
-    toast.error(`Post reading failed, see error list`);
-    setErrorList(apiErrors);
+    handleApiErrors(apiErrors, 'Post reading');
   }
 
   const handleSubmitFormSuccess = () => {
@@ -159,86 +170,77 @@ const EditPost = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Post update failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/'); 
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Post update failed, see error list`);
-      setErrorList(apiErrors);      
-    }
-}
-
-const cancelEditPostMessage = () => `post edition and loose changes`;
-
-const handleResetEditPost = () => {
-  setPostContent(post!.body, false);
-  if (post?.category) {
-    selectCategory(categories!, post.category.id!, false);
-  } else {
-    selectCategory(categories!, 'no_category', false);
+    handleApiErrors(apiErrors, 'Post update');
   }
-  setImageData(post?.image);
-  reset(post);
-}
 
-const handleViewContent = () => {
-  setViewingContent(true);
-}
+  const cancelEditPostMessage = () => `post edition and loose changes`;
 
-const handleEditContent = () => {
-  setEditingContent(true);
-}
+  const handleResetEditPost = () => {
+    setPostContent(post!.body, false);
+    if (post?.category) {
+      selectCategory(categories!, post.category.id!, false);
+    } else {
+      selectCategory(categories!, 'no_category', false);
+    }
+    setImageData(post?.image);
+    reset(post);
+  }
 
-const handleCategorySelect=(e: any)=>{
-  selectCategory(categories!, e, true);
-}
+  const handleViewContent = () => {
+    setViewingContent(true);
+  }
 
-const setPostContent = (value: string, shouldDirty: boolean = true) => {
-  setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: false });
-  setEditingContent(false);
-}
+  const handleEditContent = () => {
+    setEditingContent(true);
+  }
 
-const onCloseContentViewing = () => {
-  setViewingContent(false);
-}
+  const handleCategorySelect=(e: any)=>{
+    selectCategory(categories!, e, true);
+  }
 
-const onCancelContentEditing = () => {
-  setEditingContent(false);
-}
+  const setPostContent = (value: string, shouldDirty: boolean = true) => {
+    setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: false });
+    setEditingContent(false);
+  }
 
-const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
-  const category = categories.find(category => category.id === categoryId);
-  setCategory(category?.id === 'no_category' ? undefined: category);
-  setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
-}
+  const onCloseContentViewing = () => {
+    setViewingContent(false);
+  }
 
-const handleCancelEditPost = () => {
-  navigate(`/post/${post?.id}`);   
-};
+  const onCancelContentEditing = () => {
+    setEditingContent(false);
+  }
 
-const handleImageUpload = (image: ImageData) => {
-  setImageData(image);
-}
+  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
+    const category = categories.find(category => category.id === categoryId);
+    setCategory(category?.id === 'no_category' ? undefined: category);
+    setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
+  }
 
-const handleImageUploadError = (error: any) => {
-  toast.error(`User image upload failed`);
-}
+  const handleCancelEditPost = () => {
+    navigate(`/post/${post?.id}`);   
+  };
 
-const handleDeleteImage = () => {
-  setImageData(undefined);
-}
+  const handleImageUpload = (image: ImageData) => {
+    setImageData(image);
+  }
 
-const setImageData = (image: ImageData | undefined) => {
-  const isImageDefined = image !== undefined;
-  const isInitialImageDefined = post?.image !== undefined;
-  const imageChanged = (isImageDefined !== isInitialImageDefined) ||
-                        (isImageDefined && image?.base64 !== post?.image?.base64);
-  setValue('imageChanged', imageChanged, {shouldDirty: true});
-  setPostImage(image);
-}
+  const handleImageUploadError = (error: any) => {
+    toast.error(`User image upload failed`);
+  }
+
+  const handleDeleteImage = () => {
+    setImageData(undefined);
+  }
+
+  const setImageData = (image: ImageData | undefined) => {
+    const isImageDefined = image !== undefined;
+    const isInitialImageDefined = post?.image !== undefined;
+    const imageChanged = (isImageDefined !== isInitialImageDefined) ||
+                          (isImageDefined && image?.base64 !== post?.image?.base64);
+    setValue('imageChanged', imageChanged, {shouldDirty: true});
+    setPostImage(image);
+  }
 
   return (
     <div className={'page-wrapper'}>

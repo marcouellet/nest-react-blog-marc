@@ -13,7 +13,7 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
           minimumPostDescriptionLength } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
@@ -95,8 +95,7 @@ const CreatePost = () => {
   }, []);
 
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    toast.error(`Categories reading failed, see error list`);
-    setErrorList(apiErrors);
+    handleApiErrors(apiErrors, 'Categories reading');
   }
 
   const getDefaultPostImage = (): Promise<ImageData> => {
@@ -133,21 +132,26 @@ const CreatePost = () => {
     dispatch(createActionLoading(false));
   } 
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+      goBack();
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleSubmitFormSuccess = () => {
     toast.success(`Post created successfully...`);
     goBack();
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Post creation failed, session expired`);
-      dispatch(createActionSessionExpired());
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Post creation failed, see error list`);
-      setErrorList(apiErrors);      
-    }
+    handleApiErrors(apiErrors, 'Post creation');
   }
 
   const cancelCreatePostMessage = () => `post creation and loose changes`;

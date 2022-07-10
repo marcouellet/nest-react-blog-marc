@@ -9,7 +9,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageData, ImageSizeProps } from '../../types';
 import { toLocalDateString } from '../../utils/local.storage.utils';
-import { checkUnauthorized, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
 import DeleteButton from '../common/deleteConfirmation';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
@@ -20,7 +20,7 @@ const ViewPost = () => {
   const { postId } = useParams<{ postId: string }>();
   const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();
@@ -75,6 +75,18 @@ const ViewPost = () => {
 
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
   
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleDeletePost = async (id: string) => {
     dispatch(createActionLoading(true));
     await PostApiService.deletePost(id)
@@ -88,21 +100,11 @@ const ViewPost = () => {
   }
 
   const handleDeletePostError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Post delete failed, session expired`);
-      dispatch(createActionSessionExpired());
-      goBack();
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Post delete failed, see error list`);
-      setErrors(apiErrors);      
-    }
+    handleApiErrors(apiErrors,'Post delete');
   }
 
   const handleFetchPostError = (apiErrors: IErrors) => {
-    toast.error(`Post reading failed, see error list`);
-    setErrors(apiErrors);
+    handleApiErrors(apiErrors,'Post reading');
   }
 
   const handleReturn = () => {
@@ -182,7 +184,7 @@ const ViewPost = () => {
               </div>
             </div>
             <div className="row">
-                {errors && <ListErrors errors={errors} />}
+                {errorList && <ListErrors errors={errorList} />}
             </div>
           </div>
         )

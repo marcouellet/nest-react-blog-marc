@@ -8,12 +8,14 @@ import useAuth from '../../contexts/auth';
 import { createActionLoading } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListCategories = () => {
   
   const { state: { user, isAuthenticated, isLoading}, dispatch } = useAuth();
 
-  const [errors, setErrors] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const [categories, setCategorys] = useState<ICategory[]>([]);
 
@@ -28,16 +30,28 @@ const ListCategories = () => {
       dispatch(createActionLoading(false));
     }
     fetchCategories();
+  // eslint-disable-next-line 
   }, [dispatch])
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    toast.error(`Categories reading failed, see error list`);
-    setErrors(apiErrors);
+    handleApiErrors(apiErrors,'Categories reading');
   }
 
   return (
     <section className="blog-area section">
-      {errors && <ListErrors errors={errors} />}
+      {errorList && <ListErrors errors={errorList} />}
       <div className="container">
         <div>
           {
