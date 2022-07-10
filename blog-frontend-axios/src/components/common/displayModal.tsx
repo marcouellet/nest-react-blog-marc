@@ -41,7 +41,7 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
                     </div>                  
                 </Modal.Body>
                     <Modal.Footer>
-                    <button className="btn btn-default" onClick={hideModal}>Close</button>
+                    <button className="btn btn-primary" onClick={hideModal}>Close</button>
                 </Modal.Footer>
             </Modal>
         </div>

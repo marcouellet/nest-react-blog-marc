@@ -7,6 +7,8 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { createActionSessionExpired } from '../../reducers/auth';
 
 const ViewBlog = () => {
 
@@ -31,9 +33,20 @@ const ViewBlog = () => {
   // eslint-disable-next-line
   }, []);
 
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
+  }
+
   const handleFetchPostError = (apiErrors: IErrors) => {
-    toast.error(`Post reading failed, see error list`);
-    setErrorList(apiErrors);
+    handleApiErrors(apiErrors,'Post reading');
   }
 
   const handleReturn = () => {

@@ -11,6 +11,8 @@ import { DropdownButton, Dropdown, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ViewBlogCards from './ViewBlogCards';
 import { resizeImage } from '../../utils/image.utils';
+import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListBlogs = () => {
 
@@ -70,17 +72,17 @@ const ListBlogs = () => {
         if ( category.id === 'all') {
           await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
+          .catch((apiErrors: IErrors) => handleFetchPostsError(apiErrors));
         } 
         else if (category.id === 'no_category') {
           await PostApiService.findManyPostsWithoutCategory(postTitleFilter)
           .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
+          .catch((apiErrors: IErrors) => handleFetchPostsError(apiErrors));
         } 
         else {
           await PostApiService.findManyPostsForCategory(category.id!, postTitleFilter)
           .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
+          .catch((apiErrors: IErrors) => handleFetchPostsError(apiErrors));
         }
         dispatch(createActionLoading(false));
       }
@@ -97,14 +99,24 @@ const ListBlogs = () => {
     return resizeImage('/default-user-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    setErrorList(apiErrors);
-    toast.error(`Categories reading failed, see error list`);
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
   }
 
-  const handleFetchPostError = (apiErrors: IErrors) => {
-    setErrorList(apiErrors);
-    toast.error(`Post reading failed, see error list`);
+  const handleFetchCategoriesError = (apiErrors: IErrors) => {
+    handleApiErrors(apiErrors,'Categories reading');
+  }
+
+  const handleFetchPostsError = (apiErrors: IErrors) => {
+    handleApiErrors(apiErrors,'Posts reading');
   }
 
   const handleCategorySelect=(e: any)=>{
