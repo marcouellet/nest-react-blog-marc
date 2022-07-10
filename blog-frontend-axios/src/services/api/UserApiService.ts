@@ -1,9 +1,9 @@
 import HttpApiService from "./HttpApiService";
-import { IUser, IUpdateUser } from "../../types";
+import { User, IUpdateUser } from "../../types";
 import { buildUserNameFilter } from './FilterApiService';
 
 const USER_ENDPOINT = `/user`;
-class UserApi extends HttpApiService<IUser> {
+class UserApi extends HttpApiService<User> {
 
   getUserById = (id: string) => {
     return this.get(`${USER_ENDPOINT}/${id}`);

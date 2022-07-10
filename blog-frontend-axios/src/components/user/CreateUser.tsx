@@ -107,7 +107,7 @@ const CreateUser = () => {
       dispatch(createActionSessionExpired());
     } else if (checkForbidden(apiErrors)) {
       const message = apiErrors['message'];
-      toast.error(`${process} failed, ${message}`);   
+      toast.error(`${process} failed: ${message}`);   
     } else if (checkUnauthorized(apiErrors)) {
       toast.error('Access denied');
     } else {
@@ -122,7 +122,7 @@ const CreateUser = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'User creation');
+    handleApiErrors(apiErrors, 'Creation');
   }
 
   const cancelCreateUserMessage = () => `User creation and loose changes`;
