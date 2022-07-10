@@ -46,7 +46,8 @@ const Register = () => {
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkForbidden(apiErrors)) {
-      toast.error(`Registration failed, email already used!`);
+      const message = apiErrors['message'];
+      toast.error(`Registration failed: ${message}`);
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else {

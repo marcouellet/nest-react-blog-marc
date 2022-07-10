@@ -76,11 +76,9 @@ export class UserService {
     try {
       user = await this.findUser({ email });
     } catch (error) {}
-
     if (user) {
       throw new ForbiddenException(`User with email "${email}" already exist!`);
-    }
-    
+    }   
     createUserDto.role = userDto.role ? userDto.role :  UserRole.USER;
     createUserDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(createUserDto);

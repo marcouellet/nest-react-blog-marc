@@ -21,6 +21,9 @@ function processError(error : any) : IErrors {
       errorAttributes.status = error.response.status;
       errorAttributes.statusText = error.request.statusText;
     }
+    if (error.response.data) {
+      errorAttributes.message = error.response.data.message;
+    }
     if (error.response.request && error.response.request.authorize) {
       errorAttributes.authorize = [error.response.request.authorize];
       errorAttributes.token = [error.response.request.authorize.replace('Bearer ', '').trim()];
