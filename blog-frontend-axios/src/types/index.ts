@@ -59,7 +59,7 @@ export interface IRefresh {
 }
 
 export interface IErrors {
-  [key: string]: string[];
+  [key: string]: string | string[];
 }
 
 export interface IUpdateUser {

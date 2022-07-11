@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { API_BASE_URL, API_REQUEST_TIMEOUT } from "../../config/api.config";
 import { IErrors } from '../../types';
 import TokenService from './TokenService';
@@ -12,6 +13,10 @@ function processError(error : any) : IErrors {
   if (error.message && error.message.length > 0) {
     console.log('Error: ', error.message);
     errorAttributes.message = error.message;
+  }
+
+  if (error.code && error.code == 'ECONNABORTED') {
+    errorAttributes.status = StatusCodes.REQUEST_TIMEOUT.toString();
   }
 
   if (error.response) {
