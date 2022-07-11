@@ -60,7 +60,8 @@ const ListPosts = () => {
       .then(imageData => { setpostDefaultImage(imageData);})
       .catch(error => {
         throw new Error(error);
-      });
+      })
+      .finally(() => dispatch(createActionLoading(false)));
       if (category) {
         dispatch(createActionLoading(true));
         if ( category.id === 'all') {

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import useAuth from '../../contexts/auth';
 import { useNavigate } from 'react-router-dom';
 import AUTHAPI from '../../services/api/AuthApiService';
-import { createActionLogout, createActionLoadUser } from '../../reducers/auth';
+import { createActionLogout, createActionLoadUser, createActionLoading } from '../../reducers/auth';
 import { useConfirmationModalContext } from "../../contexts/modalConfirmationContext";
 import { toast } from "react-toastify";
 
@@ -33,8 +33,9 @@ const SessionTimeoutHandler = () => {
         }
       };
 
-    const handleRefresh = () => {
-        AUTHAPI.refresh(state.user!)
+    const handleRefresh = async () => {
+        dispatch(createActionLoading(true));
+        await AUTHAPI.refresh(state.user!)
         .then((user) => {
             dispatch(createActionLoadUser(user));
             toast.info(`${user.username} session renewed!`);
@@ -43,7 +44,8 @@ const SessionTimeoutHandler = () => {
         .catch(_ => {
             toast.error(`Refresh session failed, logging out!`);
             handleLogout();
-        });
+        })
+        .finally(() => dispatch(createActionLoading(false)));
       };
 
 

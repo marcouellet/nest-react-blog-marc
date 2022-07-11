@@ -34,11 +34,12 @@ const ViewUser = () => {
         }) 
         .catch(error => {
           throw new Error(error);
-        });
+        })
+        .finally(() => dispatch(createActionLoading(false)));
         await UserApiService.getUserById(userId!)
           .then(user => setUserDisplayed(user))
-          .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
-        dispatch(createActionLoading(false));
+          .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
+          .finally(() => dispatch(createActionLoading(false)));
       }
       fetchData();  
     }

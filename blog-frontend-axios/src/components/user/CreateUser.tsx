@@ -58,8 +58,8 @@ const CreateUser = () => {
         }) 
         .catch(error => {
           throw new Error(error);
-        });
-        dispatch(createActionLoading(false));
+        })
+        .finally(() => dispatch(createActionLoading(false)));
       }
       fetchData();      
     }
@@ -97,8 +97,8 @@ const CreateUser = () => {
     const userData = {...data, image};
     await UserApiService.createUser(userData)
     .then(() => { handleSubmitFormSuccess(); })
-    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-    dispatch(createActionLoading(false));
+    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+    .finally(() => dispatch(createActionLoading(false)));
   } 
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {

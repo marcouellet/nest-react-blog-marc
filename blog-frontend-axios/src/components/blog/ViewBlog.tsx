@@ -26,7 +26,7 @@ const ViewBlog = () => {
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
-        dispatch(createActionLoading(false));
+        .finally(() => dispatch(createActionLoading(false)));
       }
       fetchData();  
     }

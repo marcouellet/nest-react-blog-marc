@@ -77,7 +77,8 @@ const CreatePost = () => {
             .then(imageData => { setpostDefaultImage(imageData);})
             .catch(error => {
               throw new Error(error);
-            });  
+            })
+            .finally(() => dispatch(createActionLoading(false)));  
           await CategoryApiService.getAllCategories()
             .then(categories => {
               const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -85,8 +86,8 @@ const CreatePost = () => {
               setCategories(allCategories);
               selectCategory(allCategories, 'no_category', false);
             })
-            .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
-          dispatch(createActionLoading(false));
+            .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
+            .finally(() => dispatch(createActionLoading(false)));
         }
         fetchCategories();
       }

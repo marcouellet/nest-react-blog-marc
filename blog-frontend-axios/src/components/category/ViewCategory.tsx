@@ -29,7 +29,7 @@ const ViewCategory = () => {
         await CategoryApiService.getCategoryById(categoryId!)
         .then(user => setCategory(user))
         .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors))
-        dispatch(createActionLoading(false));
+        .finally(() => dispatch(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -70,7 +70,7 @@ const ViewCategory = () => {
       await CategoryApiService.deleteCategory(id)
       .then(() => handleDeleteCategorySuccess())
       .catch((apiErrors: IErrors) => handleDeleteCategoryError(apiErrors))
-      dispatch(createActionLoading(false));
+      .finally(() => dispatch(createActionLoading(false)));
       navigate('/category'); 
     }
   }

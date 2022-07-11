@@ -82,11 +82,12 @@ const EditUser = () => {
         }) 
         .catch(error => {
           throw new Error(error);
-        });
+        })
+        .finally(() => dispatch(createActionLoading(false)));
         await UserApiService.getUserById(userId!)
         .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
-        .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
-        dispatch(createActionLoading(false));
+        .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
+        .finally(() => dispatch(createActionLoading(false)));
        }
       fetchData();      
     }

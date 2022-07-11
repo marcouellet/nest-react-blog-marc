@@ -53,8 +53,8 @@ const EditCategory = () => {
         dispatch(createActionLoading(true));
         await CategoryApiService.getCategoryById(userId!)
         .then((category) => { setCategory(category); reset(category);})
-        .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors));
-        dispatch(createActionLoading(false));
+        .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors))
+        .finally(() => dispatch(createActionLoading(false)));
        }
       fetchData();      
     }
@@ -67,8 +67,8 @@ const EditCategory = () => {
       const userData: IUpdateCategory = createCategoryForUpdate({...category, ...data});
       await CategoryApiService.updateCategory(category.id!, userData)
       .then(() => { handleSubmitFormSucess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-      dispatch(createActionLoading(false));
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false)));
      }
   } 
 

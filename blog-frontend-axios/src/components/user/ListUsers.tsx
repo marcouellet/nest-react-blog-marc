@@ -25,13 +25,14 @@ const ListUsers = () => {
       dispatch(createActionLoading(true));
       await UserApiService.findManyUsers(userNameFilter)
         .then(users => setUsers(users))
-        .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors));
+        .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
+        .finally(() => dispatch(createActionLoading(false)));
       await getDefaultUserImage()
         .then(imageData => { setuserDefaultImage(imageData);})
         .catch(error => {
           throw new Error(error);
-        }) 
-      dispatch(createActionLoading(false));
+        })
+        .finally(() => dispatch(createActionLoading(false))); 
     }
     fetchUsers();
     // eslint-disable-next-line

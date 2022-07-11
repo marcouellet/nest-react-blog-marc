@@ -59,8 +59,8 @@ const Login = () => {
           navigate('/');    
         }
       )
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-    dispatch(createActionLoading(false));
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false)));
   } 
 
   return (

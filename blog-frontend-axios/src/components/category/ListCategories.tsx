@@ -27,7 +27,7 @@ const ListCategories = () => {
       CategoryApiService.getAllCategories()
         .then(users => setCategorys(users))
         .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
-      dispatch(createActionLoading(false));
+        .finally(() => dispatch(createActionLoading(false)));
     }
     fetchCategories();
   // eslint-disable-next-line 

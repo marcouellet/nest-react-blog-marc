@@ -47,8 +47,8 @@ const CreateCategory = () => {
     dispatch(createActionLoading(true));
     await CategoryApiService.createCategory(data)
     .then(() => { handleSubmitFormSucess(); })
-    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-    dispatch(createActionLoading(false));
+    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+    .finally(() => dispatch(createActionLoading(false)));
   } 
 
   const handleSubmitFormSucess = () => {

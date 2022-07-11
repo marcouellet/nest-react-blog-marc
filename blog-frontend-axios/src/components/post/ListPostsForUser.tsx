@@ -29,7 +29,6 @@ const ListPostsForUser = () => {
 
   useEffect(() => {
     (async () => {
-      dispatch(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
         await CategoryApiService.getAllCategories()
@@ -44,12 +43,12 @@ const ListPostsForUser = () => {
               selectCategory(allCategories, 'all', false);
             }            
           })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
+          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
+          .finally(() => dispatch(createActionLoading(false)));
         }
         fetchCategories();
       }
       setPostTitleFilter(postTitleFilter);
-      dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
   }, []);
@@ -60,13 +59,15 @@ const ListPostsForUser = () => {
       .then(imageData => { setpostDefaultImage(imageData);})
       .catch(error => {
         throw new Error(error);
-      });
+      })
+      .finally(() => dispatch(createActionLoading(false)));
       if (category) {
         dispatch(createActionLoading(true));
         let fetchedPosts: IPost[] = [];
         await PostApiService.finManyPostsForUser(user!.id!, postTitleFilter)
         .then(posts => fetchedPosts = posts)
-        .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
+        .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
+        .finally(() => dispatch(createActionLoading(false)));
         if ( category.id === 'all') {
           setSelectedPosts(fetchedPosts);
         } 
@@ -76,7 +77,6 @@ const ListPostsForUser = () => {
         else {
           setSelectedPosts(fetchedPosts.filter(post => post.category && post.category.id === (category.id)));
         }
-        dispatch(createActionLoading(false));
       }
     }
     fetchPosts();

@@ -83,7 +83,8 @@ const EditPost = () => {
             setCategories(allCategories);
             selectCategory(allCategories, 'no_category', false);
           })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
+          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
+          .finally(() => dispatch(createActionLoading(false)));
         }
         fetchCategories();
       }
@@ -93,7 +94,8 @@ const EditPost = () => {
           .then(imageData => { setpostDefaultImage(imageData);})
           .catch(error => {
             throw new Error(error);
-          });  
+          })
+          .finally(() => dispatch(createActionLoading(false)));  
           await PostApiService.getPostById(postId!)
           .then(post => { 
             setPost(post); 
@@ -102,7 +104,8 @@ const EditPost = () => {
               selectCategory(allCategories, post.category.id!, false);
             }
           })
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
+          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
+          .finally(() => dispatch(createActionLoading(false)));
         }
         await fetchPost();
       }
@@ -138,8 +141,8 @@ const EditPost = () => {
       const postData: IUpdatePost = createPostForUpdate({...post, ...data, image, category});
       await PostApiService.updatePost(post.id!, postData)
       .then(() => { handleSubmitFormSuccess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-      dispatch(createActionLoading(false));
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false)));
      }
   } 
 

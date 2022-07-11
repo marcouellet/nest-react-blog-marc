@@ -15,7 +15,7 @@ function processError(error : any) : IErrors {
     errorAttributes.message = error.message;
   }
 
-  if (error.code && error.code == 'ECONNABORTED') {
+  if (error.code && error.code === 'ECONNABORTED') {
     errorAttributes.status = StatusCodes.REQUEST_TIMEOUT.toString();
   }
 
