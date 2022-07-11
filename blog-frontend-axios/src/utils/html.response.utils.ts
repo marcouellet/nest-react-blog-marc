@@ -34,3 +34,9 @@ export function checkForbidden(errors: IErrors): boolean {
     const statusCode = parseInt(status);
     return statusCode === StatusCodes.FORBIDDEN;
 }
+
+export function checkTimeout(errors: IErrors): boolean {
+    const status = errors['status'] as any;
+    const statusCode = parseInt(status);
+    return statusCode === StatusCodes.REQUEST_TIMEOUT;
+}

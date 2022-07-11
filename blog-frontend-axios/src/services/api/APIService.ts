@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { API_BASE_URL } from "../../config/api.config";
+import { API_BASE_URL, API_REQUEST_TIMEOUT } from "../../config/api.config";
 import { IErrors } from '../../types';
 import TokenService from './TokenService';
 
 axios.defaults.baseURL = API_BASE_URL;
+axios.defaults.timeout = API_REQUEST_TIMEOUT;
+
 function processError(error : any) : IErrors {
   let errorAttributes : IErrors = {};
 

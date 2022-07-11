@@ -9,7 +9,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, UserRole } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 
 const ViewCategory = () => {
 
@@ -42,6 +42,8 @@ const ViewCategory = () => {
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

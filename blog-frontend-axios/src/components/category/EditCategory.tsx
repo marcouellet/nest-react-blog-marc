@@ -12,7 +12,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const EditCategory = () => {
@@ -78,6 +78,8 @@ const EditCategory = () => {
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

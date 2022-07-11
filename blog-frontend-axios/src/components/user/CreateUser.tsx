@@ -12,7 +12,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
           ImageSizeProps, ImageData } from '../../types';
-import { checkUnauthorized, checkSessionExpired, checkForbidden } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
@@ -110,6 +110,8 @@ const CreateUser = () => {
       toast.error(`${process} failed: ${message}`);   
     } else if (checkUnauthorized(apiErrors)) {
       toast.error('Access denied');
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

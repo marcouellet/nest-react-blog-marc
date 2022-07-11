@@ -11,7 +11,7 @@ import { DropdownButton, Dropdown, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ViewBlogCards from './ViewBlogCards';
 import { resizeImage } from '../../utils/image.utils';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListBlogs = () => {
@@ -105,6 +105,8 @@ const ListBlogs = () => {
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

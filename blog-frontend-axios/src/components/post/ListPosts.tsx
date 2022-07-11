@@ -13,7 +13,7 @@ import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ImageResize from '../common/ImageResize';
 import Image from '../common/Image';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListPosts = () => {
@@ -91,6 +91,8 @@ const ListPosts = () => {
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

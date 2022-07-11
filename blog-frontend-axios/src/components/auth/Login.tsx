@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength } from "../../types";
-import { checkUnauthorized, checkNotFound } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkNotFound, checkTimeout } from '../../utils/html.response.utils';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,12 +35,14 @@ const Login = () => {
   } = useForm<LoginSubmitForm>({
     resolver: yupResolver(validationSchema)
   });
-
+  
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkNotFound(apiErrors)) {
       toast.error(`User not found`);    
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Invalid credentials`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`Login failed, see error list`);
       setErrorList(apiErrors);

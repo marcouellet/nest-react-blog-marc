@@ -8,7 +8,7 @@ import { UserApiService } from "../../services/api/UserApiService";
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import CancelButton from '../common/cancelConfirmation';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
@@ -119,6 +119,8 @@ const UserProfile = () => {
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

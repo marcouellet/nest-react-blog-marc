@@ -14,7 +14,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { IErrors, ImageData } from '../../types';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
@@ -150,6 +150,8 @@ const EditPost = () => {
       navigate(`/post/${post?.id}`);
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

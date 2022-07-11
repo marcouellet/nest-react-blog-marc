@@ -8,7 +8,7 @@ import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { PostApiService } from '../../services/api/PostApiService';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
@@ -51,6 +51,8 @@ const ViewUser = () => {
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      

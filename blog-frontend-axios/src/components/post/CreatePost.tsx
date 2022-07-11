@@ -13,7 +13,7 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
           minimumPostDescriptionLength } from '../../types';
-import { checkUnauthorized, checkSessionExpired } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
@@ -139,6 +139,8 @@ const CreatePost = () => {
       goBack();
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
