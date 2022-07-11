@@ -112,9 +112,6 @@ const ViewCategory = () => {
                   <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
                     Return
                   </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
                   {!isLoading && isAdministrator() &&
                     (
                       <Link to={`/category/edit/${category.id}`} className="btn ml-2 btn-primary">Edit Category</Link>                  

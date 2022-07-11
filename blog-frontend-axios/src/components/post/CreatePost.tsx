@@ -301,15 +301,9 @@ const CreatePost = () => {
                     View Content
                 </button> 
                 &nbsp; 
-                {isLoading &&
-                  <span className="fa fa-circle-o-notch fa-spin" />
-                }
                 <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
                     Edit Content
                 </button>  
-                {isLoading &&
-                  <span className="fa fa-circle-o-notch fa-spin" />
-                }
               </div> 
             </div>
           </div>

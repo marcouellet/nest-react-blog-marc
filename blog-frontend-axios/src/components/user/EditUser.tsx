@@ -22,7 +22,7 @@ import { resizeImage } from '../../utils/image.utils';
 const EditUser = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading, user }, dispatch } = useAuth();
+  const { state: { user }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [userEdited, setUserEdited] = useState<User>();
@@ -273,15 +273,9 @@ const EditUser = () => {
                     <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
                       Reset
                     </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
                     <button className="btn ml-2 btn-success" disabled={!isDirty} type="submit">
                       Update
                     </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
                 </div>
               </div>
             </div>

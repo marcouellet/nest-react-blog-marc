@@ -18,7 +18,7 @@ import { createActionSessionExpired } from '../../reducers/auth';
 const EditCategory = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [category, setCategory] = useState<ICategory>();
@@ -144,15 +144,9 @@ const handleCancelEditCategory = () => {
                   <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleResetEditCategory()} >
                     Reset
                   </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
                   <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
                     Update
                   </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
                 </div>
               </div>
             </div>

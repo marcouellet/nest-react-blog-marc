@@ -169,9 +169,6 @@ const ViewPost = () => {
                   <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
                     Return
                   </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
                   {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
                     (
                       <Link to={`/post/edit/${post.id}`} className="btn ml-2 btn-primary">Edit Post</Link>                  

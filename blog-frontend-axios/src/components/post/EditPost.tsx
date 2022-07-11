@@ -26,7 +26,7 @@ import EditPostContent from './EditPostContent';
 const EditPost = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<IPost>();
@@ -326,19 +326,13 @@ const EditPost = () => {
 
                 <div className="form-group col-md-4">
                   <div className="row">
-                    <button className="btn btn-secondary col-md-3"  onClick={ () => handleViewContent() } >
-                        View Content
-                    </button> 
-                    &nbsp; 
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
                     <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
                         Edit Content
                     </button>  
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
+                    &nbsp; 
+                    <button className="btn btn-secondary col-md-3"  onClick={ () => handleViewContent() } >
+                        View Content
+                    </button> 
                   </div> 
                 </div>
               </div>
@@ -361,15 +355,9 @@ const EditPost = () => {
                     <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
                       Reset
                     </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
                     <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
                       Update
                     </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
                 </div>
               </div>
             </div>

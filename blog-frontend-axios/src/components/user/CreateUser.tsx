@@ -22,7 +22,7 @@ import { resizeImage } from '../../utils/image.utils';
 const CreateUser = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
@@ -236,15 +236,9 @@ const CreateUser = () => {
                 <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
                   Reset
                 </button>
-                {isLoading &&
-                  <span className="fa fa-circle-o-notch fa-spin" />
-                }
                 <button className="btn ml-2 btn-success" disabled={!isDirty} type="submit">
                   Create
                 </button>
-                {isLoading &&
-                  <span className="fa fa-circle-o-notch fa-spin" />
-                }
             </div>
           </div>
         </div>

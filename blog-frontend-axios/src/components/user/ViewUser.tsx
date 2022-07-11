@@ -143,9 +143,6 @@ const ViewUser = () => {
                     <button className="btn ml-2 btn-secondary" onClick={ () => handleReturn() } >
                       Return
                     </button>
-                    {isLoading &&
-                      <span className="fa fa-circle-o-notch fa-spin" />
-                    }
                     {isAuthenticated && !isLoading && 
                       <Link to={`/user/edit/${userDisplayed.id}`} className="btn ml-2 btn-primary">Edit User</Link>
                     }

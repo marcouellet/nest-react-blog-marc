@@ -19,7 +19,7 @@ import { IErrors, User, IUpdateUser, createUserForUpdate, minimumPasswordLength,
 
 const UserProfile = () => {
 
-  const { state: { isLoading, user }, dispatch } = useAuth();
+  const { state: { user }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userEdited, setUserEdited] = useState<User>();
   const [userImage, setUserImage] = useState<ImageData>();
@@ -276,18 +276,12 @@ const UserProfile = () => {
               <button className="btn btn-success" disabled={!isDirty} type="submit">
                 Update
               </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
             </div>
 
             <div className="form-group col-md-1 pull-right">
               <button className="btn btn-secondary" disabled={!isDirty} onClick={() => handleResetEditUser()} >
                 Reset
               </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
             </div>
           </form>
 

@@ -13,7 +13,7 @@ import { createActionSessionExpired } from '../../reducers/auth';
 const ViewBlog = () => {
 
   const { postId } = useParams<{ postId: string }>();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const [post, setPost] = useState<IPost>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -69,10 +69,7 @@ const ViewBlog = () => {
                   <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
                     Return
                   </button>
-                  {isLoading &&
-                    <span className="fa fa-circle-o-notch fa-spin" />
-                  }
-                 </div>
+                </div>
               </div>
             </div>
             <div className="row">

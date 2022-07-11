@@ -16,7 +16,7 @@ import { createActionSessionExpired } from '../../reducers/auth';
 const CreateCategory = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
@@ -119,15 +119,9 @@ const CreateCategory = () => {
               <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleClearCreateCategory()} >
                 Clear
               </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
               <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
                 Create
               </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
             </div>
           </div>
         </div>
