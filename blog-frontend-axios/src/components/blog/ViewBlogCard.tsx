@@ -1,7 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import React from 'react';
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 import {Container ,Card } from 'react-bootstrap';
 import { IPost, ImageSizeProps, ImageData } from "../../types";
 import Image from '../common/Image';
@@ -40,10 +38,6 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
         <ViewUserInfo user={post.user!} defaultUserImage={defaultUserImage}/>
       </div>
     );
-
-    const renderDisplayUserInfoTooltip = (props: any) => (
-      <Tooltip {...props}>Display user info</Tooltip>
-    );
   
   return (  
     <div className="view-blog-card">  
@@ -51,10 +45,11 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
           <Card style={{width: '12.5rem'}} >  
             <Card.Body>
               <Card.Header>
-                {/* <h5>{post.user?.username}</h5> */}
-                <OverlayTrigger placement="top" overlay={renderDisplayUserInfoTooltip}>
-                  <DisplayModalButton className="display-user-info-button" contentToDisplay={modalContent}>{post.user?.username}</DisplayModalButton>
-                </OverlayTrigger>              
+                <DisplayModalButton  
+                  toolTip="Display user info"
+                  className="display-user-info-button" 
+                  contentToDisplay={modalContent}>{post.user?.username}               
+                </DisplayModalButton>           
                 <div style={{cursor:"zoom-in", marginTop: "1rem"}} onClick={onClickCard}>
                   {PostImage()}
                 </div>
