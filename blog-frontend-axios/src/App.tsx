@@ -11,6 +11,7 @@ import { AppRoutes } from "./routes/AppRoutes";
 import ModalContextProvider from './contexts/modalContext';
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
 import SessionTimeoutHandler from "./components/auth/sessionTimeoutHandler";
+import Processing from './components/common/processing';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <BrowserRouter>
           <SessionTimeoutHandler/>
           <NavigationBar/>
+          <Processing/>
           <ModalContextProvider>
             <AppRoutes />
           </ModalContextProvider>

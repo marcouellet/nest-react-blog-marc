@@ -17,7 +17,7 @@ import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils'
+import { resizeImage } from '../../utils/image.utils';
 
 const CreateUser = () => {
 
@@ -178,7 +178,7 @@ const CreateUser = () => {
             {UserImage()}  
             <br/>
 
-            <label htmlFor="username"> Title </label>
+            <label htmlFor="username"> Name </label>
             <input 
               type="text"
               placeholder="Enter user name"

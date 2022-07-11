@@ -218,7 +218,7 @@ const EditUser = () => {
             </div>
 
             <div className="form-group col-md-12">
-              <label htmlFor="username"> Title </label>
+              <label htmlFor="username"> Name </label>
               <input 
                 type="text"
                 placeholder="Enter user name"
