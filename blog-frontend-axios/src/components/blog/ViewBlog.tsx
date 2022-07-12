@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
+import DisplayContent from '../common/displayContent';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
@@ -61,23 +62,14 @@ const ViewBlog = () => {
         (
           <div className="view-blog">
             <div className="row">
-              <div dangerouslySetInnerHTML={{__html: post.body}} />           
-            </div>
-            <div className="row">
-              <div className="col-lg-10 col-md-12">
-                <div className="form-group row-md-6 pull-right">
-                  <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
-                    Return
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-                {errorList && <ListErrors errors={errorList} />}
+              <DisplayContent content={post.body} onClose={handleReturn}/>         
             </div>
           </div>
         )
         }
+        <div className="row">
+          {errorList && <ListErrors errors={errorList} />}
+        </div>
       </div>
     );
 }

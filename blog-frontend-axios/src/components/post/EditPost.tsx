@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,7 +20,6 @@ import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
 import ImageResize from '../common/ImageResize';
 import { resizeImage } from '../../utils/image.utils';
-import ViewPostContent from './ViewPostContent';
 import EditPostContent from './EditPostContent';
 
 const EditPost = () => {
@@ -34,8 +33,8 @@ const EditPost = () => {
   const [category, setCategory] = useState<ICategory>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
-  const [viewingContent, setViewingContent] = useState<boolean>();
   const [editingContent, setEditingContent] = useState<boolean>();
+  const [content, setContent] = useState<string>();
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -191,10 +190,6 @@ const EditPost = () => {
     reset(post);
   }
 
-  const handleViewContent = () => {
-    setViewingContent(true);
-  }
-
   const handleEditContent = () => {
     setEditingContent(true);
   }
@@ -205,11 +200,8 @@ const EditPost = () => {
 
   const setPostContent = (value: string, shouldDirty: boolean = true) => {
     setValue('body', value, { shouldDirty: shouldDirty, shouldValidate: false });
+    setContent(value);
     setEditingContent(false);
-  }
-
-  const onCloseContentViewing = () => {
-    setViewingContent(false);
   }
 
   const onCancelContentEditing = () => {
@@ -326,24 +318,24 @@ const EditPost = () => {
                     <div className="invalid-feedback">{errors.body?.message}</div>
                   </div>
                 </div>
-
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-7">
                   <div className="row">
-                    <button className="btn btn-secondary col-md-3"  onClick={ () => handleEditContent() } >
+                    <button className="btn btn-secondary"  onClick={ () => handleEditContent() } >
                         Edit Content
-                    </button>  
-                    &nbsp; 
-                    <button className="btn btn-secondary col-md-3"  onClick={ () => handleViewContent() } >
-                        View Content
                     </button> 
+                    {content && (
+                      <div className="col-md-6">
+                        <Link to="/post/content" state={{content: content}}>
+                          <button type="button" className="btn btn-secondary col-md-3">
+                            View Content
+                          </button>
+                        </Link>                     
+                      </div>  
+                    )}
                   </div> 
                 </div>
               </div>
             )         
-            }
-            {viewingContent && (
-              <ViewPostContent content={getValues('body')} onClose={onCloseContentViewing}/>
-            ) 
             }
             {editingContent && (
               <EditPostContent content={getValues('body')} onSaveContent={setPostContent} onCancelEditing={onCancelContentEditing}/>

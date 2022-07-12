@@ -8,6 +8,7 @@ import ListPostsForUser from "../components/post/ListPostsForUser";
 import ListCategories from "../components/category/ListCategories";
 import ViewCategory from "../components/category/ViewCategory";
 import ViewPost from "../components/post/ViewPost";
+import ViewPostContent from "../components/post/ViewPostContent";
 import CreatePost from "../components/post/CreatePost";
 import useAuth from '../contexts/auth';
 import PrivateRoutes from "./PrivateRoutes";
@@ -37,7 +38,8 @@ export const AppRoutes = () => {
       <Route path={"/user/profile"} element={<UserProfile/>} />
       <Route path={"/post"} element={<ListPosts/>}/>
       <Route path={"/post/user"} element={<ListPostsForUser/>}/>
-      <Route path={"/post/create"} element={<CreatePost/>} /> 
+      <Route path={"/post/create"} element={<CreatePost/>} />
+      <Route path={"/post/content"} element={<ViewPostContent/>} /> 
       <Route path={"/post/:postId"} element={<ViewPost/>}/>
       <Route path={"/category"} element={<ListCategories/>}/>
       <Route path={"/category/:categoryId"} element={<ViewCategory/>}/>

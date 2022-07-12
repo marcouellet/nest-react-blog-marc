@@ -1,28 +1,33 @@
 import React from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
+import DisplayContent from '../common/displayContent';
 
 type ViewPostContentProps = React.HTMLProps<HTMLElement> & {
-    content: string,
-    onClose: onClose,
 }
 
-export type onClose = () => void;
+const ViewPostContent: React.FC<ViewPostContentProps> = () => {
 
-const ViewPostContent: React.FC<ViewPostContentProps> = ({className, content, onClose}) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { content } = location.state as any;
 
   const handleClose = () => {
-    if (onClose) {
-      onClose();
-    }
+    navigate(-1);
   };
   
-    return (
-      <div>
-        <button className="btn btn-secondary" onClick={() => handleClose()} >
-          Close 
-       </button>                 
-        <div dangerouslySetInnerHTML={{__html: content}} />           
-      </div>
-     );
-}
+  return (
+    <div className="container-fluid">
+      {content && 
+      (
+        <div className="view-blog">
+          <div className="row">
+            <DisplayContent content={content} onClose={handleClose}/>         
+          </div>
+        </div>
+      )
+      }
+    </div>
+  );}
 
 export default ViewPostContent;
