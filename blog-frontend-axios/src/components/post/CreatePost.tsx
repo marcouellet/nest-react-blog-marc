@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import CancelButton from '../common/cancelConfirmation';
@@ -12,7 +12,7 @@ import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
-          minimumPostDescriptionLength } from '../../types';
+          minimumPostDescriptionLength, PostEditingFormState, IPostEditingState } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
@@ -24,6 +24,7 @@ import EditPostContent from './EditPostContent';
 const CreatePost = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [categories, setCategories] = useState<ICategory[]>();
@@ -45,14 +46,6 @@ const CreatePost = () => {
     imageChanged: Yup.bool(),
   });
 
-  type CreateSubmitForm = {
-    categoryTitle: string;
-    title: string;
-    description: string;
-    body: string;
-    imageChanged: boolean;
-  };
-
   const defaultValues = {title: '', description: '', body: '', categoryTitle: '', image: undefined, imageChanged: false};
 
   const {
@@ -62,7 +55,7 @@ const CreatePost = () => {
     reset,
     setValue,
     getValues,
-  } = useForm<CreateSubmitForm>({
+  } = useForm<PostEditingFormState>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
   });
@@ -89,6 +82,9 @@ const CreatePost = () => {
             .finally(() => dispatch(createActionLoading(false)));
         }
         fetchCategories();
+      }
+      if (location.state) {
+        restorePostEditingState(location.state as any);
       }
     })();
  // eslint-disable-next-line
@@ -122,7 +118,7 @@ const CreatePost = () => {
     }
   }
   
-  const onSubmit = async (data: CreateSubmitForm) => {
+  const onSubmit = async (data: PostEditingFormState) => {
     dispatch(createActionLoading(true));
     const image: ImageData | undefined = postImage;
     const postData = {...data, category, image, user};
@@ -206,6 +202,40 @@ const CreatePost = () => {
   
   const handleDeleteImage = () => {
     setPostImage(undefined);
+  }
+
+  const getPostEditingState = () : IPostEditingState => {
+    return {
+      content: content,
+      formState: getValues(),
+      category: category,
+      postImage: postImage,
+      postUrl: location.pathname
+    }
+  }
+
+  const setFormValues = (values: any) => {
+    setValue('title', values.title, {shouldDirty: true});
+    setValue('description', values.description, {shouldDirty: true});
+    setValue('body', values.body, {shouldDirty: true});
+    setValue('categoryTitle', values.categoryTitle, {shouldDirty: true});
+    setValue('imageChanged', values.imageChanged, {shouldDirty: true});
+  }
+
+  const restorePostEditingState = (postEditingState: IPostEditingState) => {
+    if (postEditingState) {
+      setContent(postEditingState.content);
+      setCategory(postEditingState.category);
+      setPostImage(postEditingState.postImage);
+      setFormValues(postEditingState.formState);
+
+    }
+    return {
+      content: content,
+      formState: getValues(),
+      category: category,
+      postImage: postImage
+    }
   }
 
   return (
@@ -295,7 +325,7 @@ const CreatePost = () => {
                 </button>  
                 {content && (
                   <div className="col-md-6">
-                    <Link to="/post/content" state={{content: content}}>
+                    <Link to="/post/content" state={getPostEditingState()}>
                       <button type="button" className="btn btn-secondary col-md-3">
                         View Content
                       </button>

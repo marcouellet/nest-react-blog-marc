@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,7 +13,7 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { IErrors, ImageData } from '../../types';
+import { IErrors, ImageData, PostEditingFormState, IPostEditingState } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
@@ -25,6 +25,7 @@ import EditPostContent from './EditPostContent';
 const EditPost = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
@@ -46,14 +47,6 @@ const EditPost = () => {
     imageChanged: Yup.bool(),
   });
 
-  type UpdateSubmitForm = {
-    categoryTitle: string;
-    title: string;
-    description: string;
-    body: string;
-    imageChanged: boolean;
-  };
-
   const defaultValues = {categoryTitle: '', title: post?.title, description: post?.description, body: post?.body,
                           imageChanged: false};
 
@@ -64,7 +57,7 @@ const EditPost = () => {
     setValue,
     getValues,
     formState: { errors, isDirty }
-  } = useForm<UpdateSubmitForm>({
+  } = useForm<PostEditingFormState>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
   });
@@ -108,6 +101,9 @@ const EditPost = () => {
         }
         await fetchPost();
       }
+      if (location.state) {
+        restorePostEditingState(location.state as any);
+      }
       dispatch(createActionLoading(false));
 
     })();
@@ -133,7 +129,7 @@ const EditPost = () => {
 
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
 
-  const onSubmit = async (data: UpdateSubmitForm) => {
+  const onSubmit = async (data: PostEditingFormState) => {
     if (post && isDirty) {
       dispatch(createActionLoading(true));
       const image = postImage;
@@ -239,6 +235,40 @@ const EditPost = () => {
     setPostImage(image);
   }
 
+  const getPostEditingState = () : IPostEditingState => {
+    return {
+      content: content,
+      formState: getValues(),
+      category: category,
+      postImage: postImage,
+      postUrl: location.pathname
+    }
+  }
+
+  const setFormValues = (values: any) => {
+    setValue('title', values.title, {shouldDirty: true});
+    setValue('description', values.description, {shouldDirty: true});
+    setValue('body', values.body, {shouldDirty: true});
+    setValue('categoryTitle', values.categoryTitle, {shouldDirty: true});
+    setValue('imageChanged', values.imageChanged, {shouldDirty: true});
+  }
+
+  const restorePostEditingState = (postEditingState: IPostEditingState) => {
+    if (postEditingState) {
+      setContent(postEditingState.content);
+      setCategory(postEditingState.category);
+      setPostImage(postEditingState.postImage);
+      setFormValues(postEditingState.formState);
+
+    }
+    return {
+      content: content,
+      formState: getValues(),
+      category: category,
+      postImage: postImage
+    }
+  }
+
   return (
     <div className={'page-wrapper'}>
     {post &&
@@ -325,7 +355,7 @@ const EditPost = () => {
                     </button> 
                     {content && (
                       <div className="col-md-6">
-                        <Link to="/post/content" state={{content: content}}>
+                        <Link to="/post/content" state={getPostEditingState()}>
                           <button type="button" className="btn btn-secondary col-md-3">
                             View Content
                           </button>

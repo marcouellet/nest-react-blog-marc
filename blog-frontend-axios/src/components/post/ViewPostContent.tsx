@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { IPostEditingState } from '../../types';
 import DisplayContent from '../common/displayContent';
 
 type ViewPostContentProps = React.HTMLProps<HTMLElement> & {
@@ -10,19 +11,19 @@ const ViewPostContent: React.FC<ViewPostContentProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { content } = location.state as any;
+  const postState = location.state as IPostEditingState;
 
   const handleClose = () => {
-    navigate(-1);
+    navigate(postState.postUrl,{ state: postState});
   };
   
   return (
     <div className="container-fluid">
-      {content && 
+      {postState.content && 
       (
         <div className="view-blog">
           <div className="row">
-            <DisplayContent content={content} onClose={handleClose}/>         
+            <DisplayContent content={postState.content} onClose={handleClose}/>         
           </div>
         </div>
       )

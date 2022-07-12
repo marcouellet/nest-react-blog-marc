@@ -107,6 +107,21 @@ export interface ImageSizeProps {
   maxHeight:number,
 }
 
+export type PostEditingFormState = {
+  categoryTitle: string;
+  title: string;
+  description: string;
+  body: string;
+  imageChanged: boolean;
+}
+export interface IPostEditingState {
+  content?: string;
+  formState: PostEditingFormState,
+  category?: ICategory,
+  postImage?: ImageData,
+  postUrl: string,
+}
+
 export function createPostForUpdate(post: IPost): IUpdatePost {
   const updatePost: IUpdatePost = {category: post.category, title:post.title, description: post.description, body: post.body,
                                     image: post.image};
