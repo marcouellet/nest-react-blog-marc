@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../contexts/auth';
 import { createActionLogout, createActionLoading } from '../reducers/auth';
 import AUTHAPI from '../services/api/AuthApiService';
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { UserRole } from '../types';
 
 const NavigationBar = () => {
@@ -20,7 +20,7 @@ const NavigationBar = () => {
         dispatch(createActionLoading(true));
         dispatch(createActionLogout());
         AUTHAPI.logout();
-        // toast.info(`${user!.username} is logged out`);
+        toast.info(`${user!.username} is logged out`);
         dispatch(createActionLoading(false));
         navigate('/');
       };

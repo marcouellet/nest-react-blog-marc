@@ -4,7 +4,7 @@ import {Container ,Card } from 'react-bootstrap';
 import { IPost, ImageSizeProps, ImageData } from "../../types";
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
-import DisplayModalButton from '../common/displayModal';
+import DisplayModalButton from '../common/displayModalButton';
 import ViewUserInfo from '../user/ViewUserInfo';
 
 type ViewBlogCardProps = React.HTMLProps<HTMLElement> & {
