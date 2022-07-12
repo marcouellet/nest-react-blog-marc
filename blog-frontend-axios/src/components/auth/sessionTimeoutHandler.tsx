@@ -17,7 +17,7 @@ const SessionTimeoutHandler = () => {
         if (state.isAuthenticated) {
             dispatch(createActionLogout());
             AUTHAPI.logout();
-            // toast.info(`${state.user!.username} is logged out`);
+            toast.info(`${state.user!.username} is logged out`);
             navigate('/');
         }
       };

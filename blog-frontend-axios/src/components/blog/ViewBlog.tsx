@@ -52,7 +52,7 @@ const ViewBlog = () => {
   }
 
   const handleReturn = () => {
-    navigate('/blog');
+    navigate(-1);
   }
 
     return (
