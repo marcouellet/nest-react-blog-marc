@@ -22,6 +22,7 @@ const EditCategory = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [category, setCategory] = useState<ICategory>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
  
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Category title is required')
@@ -62,11 +63,11 @@ const EditCategory = () => {
   }, []);
 
   const onSubmit = async (data: UpdateSubmitForm) => {
-    if (category && isDirty) {
+    if (category && isDirty && submitForm) {
       dispatch(createActionLoading(true));
       const userData: IUpdateCategory = createCategoryForUpdate({...category, ...data});
       await CategoryApiService.updateCategory(category.id!, userData)
-      .then(() => { handleSubmitFormSucess(); })
+      .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
       .finally(() => dispatch(createActionLoading(false)));
      }
@@ -90,7 +91,11 @@ const EditCategory = () => {
     handleApiErrors(apiErrors, 'Category reading');
   }
 
-  const handleSubmitFormSucess = () => {
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
+
+  const handleSubmitFormSuccess = () => {
     toast.success(`Category updated successfully...`);
     navigate(`/category/${category?.id}`)
   }
@@ -144,7 +149,7 @@ const handleCancelEditCategory = () => {
                   <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleResetEditCategory()} >
                     Reset
                   </button>
-                  <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                  <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                     Update
                   </button>
                 </div>

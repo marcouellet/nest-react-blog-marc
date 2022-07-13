@@ -26,6 +26,7 @@ const CreateUser = () => {
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -92,13 +93,15 @@ const CreateUser = () => {
   });
 
   const onSubmit = async (data: CreateSubmitForm) => {
-    dispatch(createActionLoading(true));
-    const image: ImageData | undefined = userImage;
-    const userData = {...data, image};
-    await UserApiService.createUser(userData)
-    .then(() => { handleSubmitFormSuccess(); })
-    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
-    .finally(() => dispatch(createActionLoading(false)));
+    if (submitForm) {
+      dispatch(createActionLoading(true));
+      const image: ImageData | undefined = userImage;
+      const userData = {...data, image};
+      await UserApiService.createUser(userData)
+      .then(() => { handleSubmitFormSuccess(); })
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false)));
+    }
   } 
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
@@ -118,6 +121,10 @@ const CreateUser = () => {
     }
   }
   
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
+
   const handleSubmitFormSuccess = () => {
     toast.success(`User created successfully...`);
     navigate('/user');
@@ -230,13 +237,11 @@ const CreateUser = () => {
           <div className="row">
           <div className="col-lg-10 col-md-12">
             <div className="form-group row-md-5 pull-right">
-                {
-                  <CancelButton prompt={isDirty} message={cancelCreateUserMessage()} onClick={() => handleCancelCreateUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                }
+                <CancelButton prompt={isDirty} message={cancelCreateUserMessage()} onClick={() => handleCancelCreateUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
                 <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreateUser() } >
                   Reset
                 </button>
-                <button className="btn ml-2 btn-success" disabled={!isDirty} type="submit">
+                <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                   Create
                 </button>
             </div>

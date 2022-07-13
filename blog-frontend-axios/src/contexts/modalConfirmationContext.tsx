@@ -34,13 +34,11 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
     };
 
     const handleOk = (event: React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
         onHide();
         resolver.current && resolver.current(true);
     };
 
     const handleCancel = (event: React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
         onHide();
         resolver.current && resolver.current(false);
     };
@@ -51,7 +49,7 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
 
             {content && 
             (
-            <div onClick={e => e.stopPropagation()}>
+            <div>
                 <Modal show={show} onHide={onHide} centered dialogClassName={`modal-md`} backdrop="static" keyboard={false}>
                     <Modal.Header>
                         <label>{content.title}</label>

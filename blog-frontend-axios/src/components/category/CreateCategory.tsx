@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
@@ -18,6 +18,7 @@ const CreateCategory = () => {
   const navigate = useNavigate();
   const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Category title is required')
@@ -44,12 +45,18 @@ const CreateCategory = () => {
   });
 
   const onSubmit = async (data: CreateSubmitForm) => {
-    dispatch(createActionLoading(true));
-    await CategoryApiService.createCategory(data)
-    .then(() => { handleSubmitFormSucess(); })
-    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
-    .finally(() => dispatch(createActionLoading(false)));
+    if (submitForm) {
+      dispatch(createActionLoading(true));
+      await CategoryApiService.createCategory(data)
+      .then(() => { handleSubmitFormSucess(); })
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false)));
+    }
   } 
+
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
 
   const handleSubmitFormSucess = () => {
     toast.success(`Category created successfully...`);
@@ -119,7 +126,7 @@ const CreateCategory = () => {
               <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleClearCreateCategory()} >
                 Clear
               </button>
-              <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+              <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                 Create
               </button>
             </div>

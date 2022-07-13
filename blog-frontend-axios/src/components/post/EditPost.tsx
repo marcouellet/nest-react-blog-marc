@@ -36,6 +36,7 @@ const EditPost = () => {
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [editingContent, setEditingContent] = useState<boolean>();
   const [content, setContent] = useState<string>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required')
@@ -90,11 +91,13 @@ const EditPost = () => {
           .finally(() => dispatch(createActionLoading(false)));  
           await PostApiService.getPostById(postId!)
           .then(post => { 
+            setContent(post.body);
             setPost(post); 
             reset(post);
-            if (post?.category) {
+            if (post.category) {
               selectCategory(allCategories, post.category.id!, false);
             }
+
           })
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
           .finally(() => dispatch(createActionLoading(false)));
@@ -130,7 +133,7 @@ const EditPost = () => {
   const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
 
   const onSubmit = async (data: PostEditingFormState) => {
-    if (post && isDirty) {
+    if (post && isDirty && submitForm) {
       dispatch(createActionLoading(true));
       const image = postImage;
       const postData: IUpdatePost = createPostForUpdate({...post, ...data, image, category});
@@ -226,6 +229,10 @@ const EditPost = () => {
     setImageData(undefined);
   }
 
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
+
   const setImageData = (image: ImageData | undefined) => {
     const isImageDefined = image !== undefined;
     const isInitialImageDefined = post?.image !== undefined;
@@ -241,16 +248,17 @@ const EditPost = () => {
       formState: getValues(),
       category: category,
       postImage: postImage,
-      postUrl: location.pathname
+      postUrl: location.pathname,
+      isDirty: isDirty
     }
   }
 
-  const setFormValues = (values: any) => {
-    setValue('title', values.title, {shouldDirty: true});
-    setValue('description', values.description, {shouldDirty: true});
-    setValue('body', values.body, {shouldDirty: true});
-    setValue('categoryTitle', values.categoryTitle, {shouldDirty: true});
-    setValue('imageChanged', values.imageChanged, {shouldDirty: true});
+  const setFormValues = (formState: PostEditingFormState, isDirty: boolean) => {
+    setValue('title', formState.title, {shouldDirty: isDirty});
+    setValue('description', formState.description, {shouldDirty: isDirty});
+    setValue('body', formState.body, {shouldDirty: isDirty});
+    setValue('categoryTitle', formState.categoryTitle, {shouldDirty: isDirty});
+    setValue('imageChanged', formState.imageChanged, {shouldDirty: isDirty});
   }
 
   const restorePostEditingState = (postEditingState: IPostEditingState) => {
@@ -258,14 +266,7 @@ const EditPost = () => {
       setContent(postEditingState.content);
       setCategory(postEditingState.category);
       setPostImage(postEditingState.postImage);
-      setFormValues(postEditingState.formState);
-
-    }
-    return {
-      content: content,
-      formState: getValues(),
-      category: category,
-      postImage: postImage
+      setFormValues(postEditingState.formState, postEditingState.isDirty);
     }
   }
 
@@ -276,7 +277,7 @@ const EditPost = () => {
         <div className={"col-md-12 form-wrapper"}>
           <h2> Edit Post  </h2>
           {errorList && <ListErrors errors={errorList} />}
-          <form id={"edit-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+          <form id={"edit-post-form"} onSubmit={handleSubmit(onSubmit)} noValidate={false}>
             <div className="form-group col-md-8">
               <div className="row">
                 <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
@@ -374,13 +375,11 @@ const EditPost = () => {
             <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-5 pull-right">
-                    {
-                      <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                    }
+                    <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
                     <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
                       Reset
                     </button>
-                    <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                    <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                       Update
                     </button>
                 </div>

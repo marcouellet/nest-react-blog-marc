@@ -28,6 +28,7 @@ const EditUser = () => {
   const [userEdited, setUserEdited] = useState<User>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
  
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -116,7 +117,7 @@ const EditUser = () => {
   }
 
   const onSubmit = async (data: UpdateSubmitForm) => {
-    if (userEdited && isDirty) {
+    if (userEdited && isDirty && submitForm) {
       dispatch(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
@@ -126,6 +127,10 @@ const EditUser = () => {
       dispatch(createActionLoading(false));
      }
   } 
+
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
 
   const handleSubmitFormSuccess = (userUpdated: User) => {
     if (user?.email === userUpdated?.email) {
@@ -268,13 +273,11 @@ const EditUser = () => {
             <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-5 pull-right">
-                    {
-                      <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                    }
+                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
                     <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
                       Reset
                     </button>
-                    <button className="btn ml-2 btn-success" disabled={!isDirty} type="submit">
+                    <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                       Update
                     </button>
                 </div>

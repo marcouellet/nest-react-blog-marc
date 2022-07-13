@@ -120,6 +120,7 @@ export interface IPostEditingState {
   category?: ICategory,
   postImage?: ImageData,
   postUrl: string,
+  isDirty: boolean
 }
 
 export function createPostForUpdate(post: IPost): IUpdatePost {

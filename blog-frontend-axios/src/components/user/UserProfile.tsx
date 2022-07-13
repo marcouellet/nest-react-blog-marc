@@ -24,6 +24,7 @@ const UserProfile = () => {
   const [userEdited, setUserEdited] = useState<User>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -147,7 +148,7 @@ const UserProfile = () => {
   }
 
   const onSubmit = async (data: UpdateSubmitForm) => {
-      if (userEdited && isDirty) {
+      if (userEdited && isDirty && submitForm) {
       dispatch(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
@@ -157,6 +158,10 @@ const UserProfile = () => {
       dispatch(createActionLoading(false));
       }
   } 
+
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
 
   const handleSubmitFormSuccess = (userUpdated: User) => {
       if (user?.email === userUpdated?.email) {
@@ -274,7 +279,7 @@ const UserProfile = () => {
             </div>
 
             <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success" disabled={!isDirty} type="submit">
+              <button className="btn btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                 Update
               </button>
             </div>
@@ -287,9 +292,7 @@ const UserProfile = () => {
           </form>
 
           <div className="form-group col-md-1 pull-right">
-              {
-              <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn btn-danger">Cancel</CancelButton>
-              }
+            <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn btn-danger">Cancel</CancelButton>
           </div>
 
         </div>

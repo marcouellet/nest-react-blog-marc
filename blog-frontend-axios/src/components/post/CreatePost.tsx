@@ -33,6 +33,7 @@ const CreatePost = () => {
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [editingContent, setEditingContent] = useState<boolean>();
   const [content, setContent] = useState<string>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
@@ -119,14 +120,16 @@ const CreatePost = () => {
   }
   
   const onSubmit = async (data: PostEditingFormState) => {
-    dispatch(createActionLoading(true));
-    const image: ImageData | undefined = postImage;
-    const postData = {...data, category, image, user};
-    await PostApiService.createPost(postData)
-    .then(() => { handleSubmitFormSuccess(); })
-    .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-    dispatch(createActionLoading(false));
-  } 
+    if (submitForm) {
+      dispatch(createActionLoading(true));
+      const image: ImageData | undefined = postImage;
+      const postData = {...data, category, image, user};
+      await PostApiService.createPost(postData)
+      .then(() => { handleSubmitFormSuccess(); })
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
+      dispatch(createActionLoading(false));  
+    }
+   } 
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
@@ -141,6 +144,10 @@ const CreatePost = () => {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
+  }
+
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
   }
 
   const handleSubmitFormSuccess = () => {
@@ -210,16 +217,17 @@ const CreatePost = () => {
       formState: getValues(),
       category: category,
       postImage: postImage,
-      postUrl: location.pathname
+      postUrl: location.pathname,
+      isDirty: isDirty
     }
   }
 
-  const setFormValues = (values: any) => {
-    setValue('title', values.title, {shouldDirty: true});
-    setValue('description', values.description, {shouldDirty: true});
-    setValue('body', values.body, {shouldDirty: true});
-    setValue('categoryTitle', values.categoryTitle, {shouldDirty: true});
-    setValue('imageChanged', values.imageChanged, {shouldDirty: true});
+  const setFormValues = (formState: PostEditingFormState, isDirty: boolean) => {
+    setValue('title', formState.title, {shouldDirty: isDirty});
+    setValue('description', formState.description, {shouldDirty: isDirty});
+    setValue('body', formState.body, {shouldDirty: isDirty});
+    setValue('categoryTitle', formState.categoryTitle, {shouldDirty: isDirty});
+    setValue('imageChanged', formState.imageChanged, {shouldDirty: isDirty});
   }
 
   const restorePostEditingState = (postEditingState: IPostEditingState) => {
@@ -227,17 +235,10 @@ const CreatePost = () => {
       setContent(postEditingState.content);
       setCategory(postEditingState.category);
       setPostImage(postEditingState.postImage);
-      setFormValues(postEditingState.formState);
-
-    }
-    return {
-      content: content,
-      formState: getValues(),
-      category: category,
-      postImage: postImage
+      setFormValues(postEditingState.formState, postEditingState.isDirty);
     }
   }
-
+  
   return (
     <div>
     <div className={"col-md-12 form-wrapper"}>
@@ -345,16 +346,14 @@ const CreatePost = () => {
         <div className="row">
           <div className="col-lg-10 col-md-12">
             <div className="form-group row-md-5 pull-right">
-                {
-                  <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                }
+                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
                 <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
                   Clear
                 </button>
                 {isLoading &&
                   <span className="fa fa-circle-o-notch fa-spin" />
                 }
-                <button className="btn ml-2 btn-success"  disabled={!isDirty} type="submit">
+                <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
                   Create
                 </button>
                 {isLoading &&
