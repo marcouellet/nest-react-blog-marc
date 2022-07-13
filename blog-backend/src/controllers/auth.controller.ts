@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers } from '@nestjs/common';
+import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers, Param } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
@@ -7,6 +7,7 @@ import { Auth } from '../auth/decorators/auth.decorator';
 import { AllRoles } from '../core/enum/user-role.enum';
 import { JwtRefreshTokenAuthGuard } from '../auth/guards/jwt-refresh.guard';
 import { JwtPayload } from 'jwt-decode';
+import { UserRole } from '../core/enum';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -18,6 +19,14 @@ export class AuthController {
     const jwt = auth.replace('Bearer ', '');
     return this.authService.validateToken(jwt);
   }
+
+  // Fetch user profile 
+  @Get('/profile')
+  @Auth([UserRole.ADMIN, UserRole.USER])
+  async getUserProfile(@Headers('Authorization') auth: string): Promise<UserDto> {
+    const jwt = auth.replace('Bearer ', ''); 
+    return this.authService.getUserFromToken(jwt);
+  }  
 
   // Login user
   @Put('/login')

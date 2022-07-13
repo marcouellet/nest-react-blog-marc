@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete,  Headers } from '@nestjs/common';
 import { UserDto } from '../core/dtos';
 import { UserFindCriterias } from '../core/find-criterias/user.find-criterias';
 import { UserService } from '../services/user/user.service';
@@ -16,7 +16,7 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-    // Fetch a particular user using ID
+  // Fetch a particular user using ID
   @Get(':id')
   @Auth([UserRole.ADMIN])
   async getById(@Param('id') id: string): Promise<UserDto> {

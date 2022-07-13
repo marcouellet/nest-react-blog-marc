@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from "react-toastify";
 import { UserApiService } from "../../services/api/UserApiService";
+import AUTHAPI from '../../services/api/AuthApiService';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import CancelButton from '../common/cancelConfirmation';
@@ -102,7 +103,7 @@ const UserProfile = () => {
                 throw new Error(error);
               })
               .finally(() => dispatch(createActionLoading(false)));
-              await UserApiService.getUserById(user!.id!)
+              await AUTHAPI.getUserProfile()
               .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
               .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
               .finally(() => dispatch(createActionLoading(false)));

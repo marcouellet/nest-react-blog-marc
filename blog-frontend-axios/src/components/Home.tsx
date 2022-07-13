@@ -68,6 +68,14 @@ const Home = () => {
                 <div>Server: NestJs, typescript, mongoose, passport, guards, dtos, generic data repositories, jest for unit and integration tests</div>
                 <div>Client: React, hooks, axios, dtos, jwt, bootstrap, typescript</div>
               </h5>
+              <h4>
+              <br/>
+               Play with the application
+              </h4>  
+              <br/>
+              <h5>
+                <div>To test the site, you can login with user as "admin@email.com" and password as "password"</div>
+              </h5>
             </div>
           </div> 
         </div>

@@ -24,14 +24,44 @@ const Register = () => {
     .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
       .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
-    password: Yup.string().required('Password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+    password: Yup.lazy(value => {
+      if (
+      value &&
+      Object.values(value).some(v => !(v === null || v === undefined || v === ""))
+      ) {
+      // Return our normal validation
+      return Yup.string().required()
+          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
+      }
+      // Otherwise, return a simple validation
+      return Yup.mixed().notRequired();
+    }),
+    confirm_password: Yup.lazy(value => {
+    if (
+        value &&
+        Object.values(value).some(v => !(v === null || v === undefined || v === ""))
+    ) {
+        // Return our normal validation
+        return Yup.string().required()
+        .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+        .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
+        .oneOf([Yup.ref('password'), null], "Passwords don't match!");
+        }
+    // Otherwise, return a simple validation
+    return Yup.mixed().when('password', {
+      is: (password: string) => {
+        return password && password.length > 0
+      },
+      then: (schema) => schema.required()
+    });
+    }),
   });
 
   type RegisterSubmitForm = {
     username: string;
     email: string;
     password: string;
+    confirm_password: string;
   };
 
   const {
@@ -85,32 +115,66 @@ const Register = () => {
             {errorList && <ListErrors errors={errorList} />}
             <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset className="form-group">
+                <h4 className="username">
+                  <span>
+                    Enter your user name:
+                  </span>
+                </h4>
+                <br/>
                 <input
                       type="username"
-                      placeholder="Your Name"
+                      placeholder="Your user name"
                       {...register('username')}
                       className={`form-control ${errors.username ? 'is-invalid' : ''}`} 
                 />
                 <div className="invalid-feedback">{errors.username?.message}</div>
               </fieldset>
               <fieldset className="form-group">
+                <h4 className="email">
+                  <span>
+                    Enter your email:
+                  </span>
+                </h4>
+                <br/>
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Your email"
                   {...register('email')}
                   className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
                 />
                 <div className="invalid-feedback">{errors.email?.message}</div>
               </fieldset>
               <fieldset className="form-group">
+              <h4 className="password">
+                  <span>
+                    Enter your password:
+                  </span>
+                </h4>
+                <br/>
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="Your password"
                     {...register('password')}
                     className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
                   />
                 <div className="invalid-feedback">{errors.password?.message}</div>
              </fieldset>
+             <fieldset className="form-group">
+              <h4 className="confirm_password">
+                  <span>
+                    Enter your password again:
+                  </span>
+                </h4>
+                <br/>
+                <input
+                    type="password"
+                    placeholder="Your password again"
+                    {...register('confirm_password')}
+                    className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
+                  />
+                <div className="invalid-feedback">{errors.password?.message}</div>
+             </fieldset>
+
               <button
                 className="btn btn-lg btn-primary pull-xs-right"
                 type="submit"

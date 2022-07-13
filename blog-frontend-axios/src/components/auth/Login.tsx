@@ -75,6 +75,12 @@ const Login = () => {
             {errorList && <ListErrors errors={errorList} />}
             <form onSubmit={handleSubmit(onSubmit)}>
               <fieldset className="form-group">
+                <h4 className="email">
+                  <span>
+                    User email:
+                  </span>
+                 </h4>
+                 <br/>
                 <input
                   type="email"
                   placeholder="Email"
@@ -84,6 +90,12 @@ const Login = () => {
                 <div className="invalid-feedback">{errors.email?.message}</div>
               </fieldset>
               <fieldset className="form-group">
+                <h4 className="email">
+                  <span>
+                    User password:
+                  </span>
+                 </h4>
+                 <br/>
                 <input
                   type="password"
                   placeholder="Password"

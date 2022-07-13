@@ -33,8 +33,37 @@ const CreateUser = () => {
       .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
       .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
-    password: Yup.string().required('Password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+      password: Yup.lazy(value => {
+        if (
+        value &&
+        Object.values(value).some(v => !(v === null || v === undefined || v === ""))
+        ) {
+        // Return our normal validation
+        return Yup.string().required()
+            .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
+        }
+        // Otherwise, return a simple validation
+        return Yup.mixed().notRequired();
+      }),
+      confirm_password: Yup.lazy(value => {
+      if (
+          value &&
+          Object.values(value).some(v => !(v === null || v === undefined || v === ""))
+      ) {
+          // Return our normal validation
+          return Yup.string().required()
+          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+          .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
+          .oneOf([Yup.ref('password'), null], "Passwords don't match!");
+          }
+      // Otherwise, return a simple validation
+      return Yup.mixed().when('password', {
+        is: (password: string) => {
+          return password && password.length > 0
+        },
+        then: (schema) => schema.required()
+      });
+      }), 
     role: Yup.string().required('Role is required'),
     imageChanged: Yup.bool(),
   });
@@ -43,11 +72,12 @@ const CreateUser = () => {
     username: string;
     email: string;
     password: string;
+    confirm_password: string;
     role: string;
     imageChanged: boolean;
   };
 
-  const defaultValues = {username: '', email: '', password: '', role: '', imageChanged: false};
+  const defaultValues = {username: '', email: '', password: '', confirm_password: '', role: '', imageChanged: false};
 
   useEffect(() => {
     if (!userDefaultImage) {
@@ -185,7 +215,7 @@ const CreateUser = () => {
             {UserImage()}  
             <br/>
 
-            <label htmlFor="username"> Name </label>
+            <label htmlFor="username"> Enter user name </label>
             <input 
               type="text"
               placeholder="Enter user name"
@@ -196,7 +226,7 @@ const CreateUser = () => {
           </div>
 
           <div className="form-group col-md-12">
-            <label htmlFor="email"> Email </label>
+            <label htmlFor="email"> Enter email </label>
             <input 
               type="text" 
               placeholder="Enter email"
@@ -207,11 +237,22 @@ const CreateUser = () => {
           </div>
 
           <div className="form-group col-md-12">
-            <label htmlFor="password"> Enter Password </label>
+            <label htmlFor="password"> Enter password </label>
             <input 
               type="text" 
               placeholder="Enter password" 
               {...register('password')}
+              className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
+            />
+            <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+
+          <div className="form-group col-md-12">
+            <label htmlFor="confirm_password"> Enter password again</label>
+            <input 
+              type="text" 
+              placeholder="Enter password" 
+              {...register('confirm_password')}
               className={`form-control ${errors.password ? 'is-invalid' : ''}`}           
             />
             <div className="invalid-feedback">{errors.password?.message}</div>
