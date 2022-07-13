@@ -135,6 +135,7 @@ const CreateUser = () => {
   } 
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    setSubmitForm(false);
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
       dispatch(createActionSessionExpired());
@@ -156,6 +157,7 @@ const CreateUser = () => {
   }
 
   const handleSubmitFormSuccess = () => {
+    setSubmitForm(false);
     toast.success(`User created successfully...`);
     navigate('/user');
   }

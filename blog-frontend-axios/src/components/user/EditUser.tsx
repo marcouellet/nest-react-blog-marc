@@ -122,7 +122,7 @@ const EditUser = () => {
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
       await UserApiService.updateUser(userEdited.id!, userData)
-      .then((userUpdated) => { setUserEdited(userUpdated);  handleSubmitFormSuccess(userUpdated); })
+      .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
       dispatch(createActionLoading(false));
      }
@@ -133,6 +133,8 @@ const EditUser = () => {
   }
 
   const handleSubmitFormSuccess = (userUpdated: User) => {
+    setSubmitForm(false);
+    setUserEdited(userUpdated);
     if (user?.email === userUpdated?.email) {
       // Update state user to refresh user info in NavBar
           dispatch(createActionUpdateUser(userUpdated!));
@@ -163,6 +165,7 @@ const EditUser = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
+    setSubmitForm(false);
     handleApiErrors(apiErrors, 'User update');
   }
 

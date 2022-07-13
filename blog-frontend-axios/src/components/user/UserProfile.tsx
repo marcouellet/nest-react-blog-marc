@@ -167,6 +167,7 @@ const UserProfile = () => {
   }
 
   const handleSubmitFormSuccess = (userUpdated: User) => {
+    setSubmitForm(false);
       if (user?.email === userUpdated?.email) {
       // Update state user to refresh user info in NavBar
           dispatch(createActionUpdateUser(userUpdated!));
@@ -176,6 +177,7 @@ const UserProfile = () => {
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
+    setSubmitForm(false);
     handleApiErrors(apiErrors,'User update');
   }
 
