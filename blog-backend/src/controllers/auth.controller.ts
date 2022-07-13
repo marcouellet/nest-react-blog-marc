@@ -28,6 +28,14 @@ export class AuthController {
     return this.authService.getUserFromToken(jwt);
   }  
 
+  // Update user profile
+  @Put('/profile')
+  @Auth([UserRole.ADMIN, UserRole.USER])
+  async updateUserProfile(@Headers('Authorization') auth: string, @Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
+    const jwt = auth.replace('Bearer ', ''); 
+    return this.authService.updateUserFromToken(jwt, userDto);
+  }
+  
   // Login user
   @Put('/login')
   async login(@Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {

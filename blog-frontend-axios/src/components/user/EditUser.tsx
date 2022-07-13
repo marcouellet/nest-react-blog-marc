@@ -13,7 +13,7 @@ import { createActionLoading, createActionUpdateUser, createActionSessionExpired
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
 import ImageResize from '../common/ImageResize';
@@ -142,7 +142,10 @@ const EditUser = () => {
   }
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
-    if (checkSessionExpired(apiErrors)) {
+    if (checkForbidden(apiErrors)) {
+      const message = apiErrors['message'];
+      toast.error(`Profile update failed: ${message}`);
+    } else if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {

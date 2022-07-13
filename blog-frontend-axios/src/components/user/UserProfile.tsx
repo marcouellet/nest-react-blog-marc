@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from "react-toastify";
-import { UserApiService } from "../../services/api/UserApiService";
 import AUTHAPI from '../../services/api/AuthApiService';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import CancelButton from '../common/cancelConfirmation';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
 import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/auth';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
@@ -117,7 +116,10 @@ const UserProfile = () => {
   }, []);
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
-    if (checkSessionExpired(apiErrors)) {
+    if (checkForbidden(apiErrors)) {
+      const message = apiErrors['message'];
+      toast.error(`Profile update failed: ${message}`);
+    } else if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
@@ -153,9 +155,9 @@ const UserProfile = () => {
       dispatch(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
-      await UserApiService.updateUser(userEdited.id!, userData)
-      .then((userUpdated) => { setUserEdited(userUpdated);  handleSubmitFormSuccess(userUpdated); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
+      await AUTHAPI.updateUserProfile( userData)
+        .then((userUpdated) => { setUserEdited(userUpdated);  handleSubmitFormSuccess(userUpdated); })
+        .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
       dispatch(createActionLoading(false));
       }
   } 

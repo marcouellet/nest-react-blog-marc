@@ -50,10 +50,15 @@ async function getUserProfile() : Promise<User> {
     .then(response => response.data);
 }
 
+async function updateUserProfile(user: User) : Promise<User> {
+  return API.put<User>('/auth/profile', user)
+    .then(response => response.data);
+}
+
 function logout() {
   TokenService.removeUser();
 }
 
-const AUTHAPI = {getCurrentUser, login, register, refresh, logout, getUserProfile}
+const AUTHAPI = {getCurrentUser, login, register, refresh, logout, getUserProfile, updateUserProfile}
 
 export default AUTHAPI

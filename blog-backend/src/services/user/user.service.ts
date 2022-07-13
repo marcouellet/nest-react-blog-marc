@@ -89,7 +89,17 @@ export class UserService {
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
     const updatedUserCriterias = this.userFactoryService.createUpdateUserCriterias(updateUserDto);
     await this.getUserByIdUnrestricted(id)
-      .then(user => {
+      .then(async (user) => {
+        if (user.email !== updateUserDto.email) {
+          let userForEmail: UserDto;
+          let newEmail = updateUserDto.email;
+          try {
+            userForEmail = await this.findUser({email: newEmail });
+          } catch (error) {}
+          if (userForEmail) {
+            throw new ForbiddenException(`User with email "${newEmail}" already exist!`);
+          }                  
+        }
         updatedUserCriterias.password =  (!updatedUserCriterias.password ||
           this.cryptoService.checkPassword(user.password, updatedUserCriterias.password))
         ? user.password
