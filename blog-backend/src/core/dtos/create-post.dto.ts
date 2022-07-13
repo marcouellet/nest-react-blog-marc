@@ -1,5 +1,7 @@
 import { IsString, IsNotEmpty, ValidateNested, MinLength } from '@nestjs/class-validator';
+import { Optional } from '@nestjs/common';
 import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../entities/post.entity';
+import { ImageData } from'../interfaces';
 import { CategoryDto } from './category.dto';
 import { UserDto } from './user.dto';
 
@@ -27,6 +29,9 @@ export class CreatePostDto {
 
     @ValidateNested()
     category: CategoryDto;
+
+    @Optional()
+    image: ImageData;
 
     @IsNotEmpty()
     @ValidateNested()

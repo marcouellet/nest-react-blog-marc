@@ -8,8 +8,8 @@ import { DataModuleStub } from '../stubs/data.module.stub';
 import { Post } from '../../src/core/entities/post.entity';
 import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
-          testUpdatePostDto, testWithTitleFindPostCriterias, testCategoryPostsCount, 
-          testServicePostWithoutCategoryDto } from '../data/post.data';
+          testUpdatePostDto, testWithTitleFindPostCriterias, testCategoryPostsCount, testWithTitleFilterFindCriterias,
+          testServicePostWithoutCategoryDto, testEmptyPostFilterCriterias } from '../data/post.data';
 import { testUserId } from '../data/user.data';
 import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
@@ -62,65 +62,127 @@ describe('PostService', () => {
 
   describe('findManyPostsForUser', () => {
     it('should return 1', async () => {
-      expect(await postService.findManyPostsForUser(testUserId)).toEqual([testServicePostDto]);
+      expect(await postService.findManyPostsForUser(testUserId, testEmptyPostFilterCriterias)).toEqual([testServicePostDto]);
       expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('user', testUserId, {});
     });
   });
 
-  describe('findManyPostsForCategory', () => {
+  describe('findManyPostsForCategory without filter', () => {
     it('should return 1 post', async () => {
-      expect(await postService.findManyPostsForCategory(testCategoryId, {})).toEqual([testServicePostDto]);
-      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId, {});
+      expect(await postService.findManyPostsForCategory(testCategoryId, testEmptyPostFilterCriterias)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId, testEmptyPostFilterCriterias);
     });
   });
 
-  describe('findManyPostsWithoutCategory', () => {
+  describe('findManyPostsForCategory with post find criterias for title', () => {
     it('should return 1 post', async () => {
-      expect(await postService.findManyPostsWithoutCategory({})).toEqual([testServicePostWithoutCategoryDto]);
-      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined, {});
+      expect(await postService.findManyPostsForCategory(testCategoryId, testWithTitleFindPostCriterias)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId, testWithTitleFindPostCriterias);
+    });
+  });
+
+  describe('findManyPostsForCategory with filter find criterias for title', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.findManyPostsForCategory(testCategoryId, testWithTitleFilterFindCriterias)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', testCategoryId, testWithTitleFilterFindCriterias);
+    });
+  });
+
+  describe('findManyPostsWithoutCategory without filter', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.findManyPostsWithoutCategory(testEmptyPostFilterCriterias)).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined, testEmptyPostFilterCriterias);
+    });
+  });
+
+  describe('findManyPostsWithoutCategory with post find criterias for title', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.findManyPostsWithoutCategory(testWithTitleFindPostCriterias)).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined, testWithTitleFindPostCriterias);
+    });
+  });
+
+  describe('findManyPostsWithoutCategory filter find criterias for title', () => {
+    it('should return 1 post', async () => {
+      expect(await postService.findManyPostsWithoutCategory(testWithTitleFilterFindCriterias)).toEqual([testServicePostWithoutCategoryDto]);
+      expect(postRepositoryMock.findManyForSubDocument).toHaveBeenCalledWith('category', undefined, testWithTitleFilterFindCriterias);
     });
   });
 
   describe('getNumberOfPostsForUser', () => {
     it('should return 1 post', async () => {
       expect(await postService.getNumberOfPostsForUser(testUserId)).toEqual(testUserPostsCount);
-      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('user', testPostId);
+      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('user', testPostId, {});
     });
   });
 
   describe('getNumberOfPostsForCategory', () => {
     it('should return 1', async () => {
       expect(await postService.getNumberOfPostsForCategory(testCategoryId)).toEqual(testCategoryPostsCount);
-      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('category', testCategoryId);
+      expect(postRepositoryMock.findManyCountForSubDocument).toHaveBeenCalledWith('category', testCategoryId, {});
     });
   });
 
- 
-  describe('findManyCount', () => {
-    it('should return testServicePostCount', async () => {
-      expect(await postService.findManyPostsCount(testWithTitleFindPostCriterias)).toEqual(testPostCount);
-      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
+  describe('findPost without filter', () => {
+    it('should return a post', async () => {
+      expect(await postService.findPost(testEmptyPostFilterCriterias)).toEqual(testServicePostDto);
+      expect(postRepositoryMock.findOne).toHaveBeenCalledWith(testEmptyPostFilterCriterias);
     });
   });
 
-  describe('findPost', () => {
+  describe('findPost with post find criterias for title', () => {
     it('should return a post', async () => {
       expect(await postService.findPost(testWithTitleFindPostCriterias)).toEqual(testServicePostDto);
       expect(postRepositoryMock.findOne).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 
-  describe('findManyPosts', () => {
+  describe('findPost with filter find criterias for title', () => {
+    it('should return a post', async () => {
+      expect(await postService.findPost(testWithTitleFilterFindCriterias)).toEqual(testServicePostDto);
+      expect(postRepositoryMock.findOne).toHaveBeenCalledWith(testWithTitleFilterFindCriterias);
+    });
+  });
+
+  describe('findManyPosts without filter', () => {
+    it('should return an array of one post', async () => {
+      expect(await postService.findManyPosts(testEmptyPostFilterCriterias)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findMany).toHaveBeenCalledWith(testEmptyPostFilterCriterias);
+    });
+  });
+
+  describe('findManyPosts with post find criterias for title', () => {
     it('should return an array of one post', async () => {
       expect(await postService.findManyPosts(testWithTitleFindPostCriterias)).toEqual([testServicePostDto]);
       expect(postRepositoryMock.findMany).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
     });
   });
 
-  describe('findManPostsCount', () => {
-    it('should return testPostCount', async () => {
+  describe('findManyPosts with filter find criterias for title', () => {
+    it('should return an array of one post', async () => {
+      expect(await postService.findManyPosts(testWithTitleFilterFindCriterias)).toEqual([testServicePostDto]);
+      expect(postRepositoryMock.findMany).toHaveBeenCalledWith(testWithTitleFilterFindCriterias);
+    });
+  });
+
+  describe('findManyPostsCount without filter', () => {
+    it('should return testServicePostCount', async () => {
+      expect(await postService.findManyPostsCount(testEmptyPostFilterCriterias)).toEqual(testPostCount);
+      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testEmptyPostFilterCriterias);
+    });
+  });
+
+  describe('findManyPostsCount with post find criterias for title', () => {
+    it('should return testServicePostCount', async () => {
       expect(await postService.findManyPostsCount(testWithTitleFindPostCriterias)).toEqual(testPostCount);
       expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testWithTitleFindPostCriterias);
+    });
+  });
+
+  describe('findManyPostsCount with filter find criterias for title', () => {
+    it('should return testServicePostCount', async () => {
+      expect(await postService.findManyPostsCount(testWithTitleFilterFindCriterias)).toEqual(testPostCount);
+      expect(postRepositoryMock.findManyCount).toHaveBeenCalledWith(testWithTitleFilterFindCriterias);
     });
   });
 

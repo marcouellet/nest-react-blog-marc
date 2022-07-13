@@ -1,4 +1,4 @@
-import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '../../utils/utils';
+import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '../../utils/local.storage.utils';
 import { IAuthToken, User } from '../../types';
   
 export const USER_KEY = 'user';

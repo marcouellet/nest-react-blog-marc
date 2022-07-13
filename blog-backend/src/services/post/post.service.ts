@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IDataRepositories } from '../../core/repositories';
 import { Post } from '../../core/entities';
 import { PostDto, UpdatePostDto } from '../../core/dtos';
+import { FilterFindCriterias } from '../../core/find-criterias/filter.find-criterias';
 import { PostFindCriterias } from '../../core/find-criterias/post.find-criterias';
 import { PostFactoryService } from './post-factory.service';
 @Injectable()
@@ -26,11 +27,11 @@ export class PostService {
   }
 
   async getNumberOfPostsForUser(userId: string): Promise<number> {
-    return  this.dataServicesRepositories.posts.findManyCountForSubDocument('user', userId);
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocument('user', userId, {});
   }
 
   async getNumberOfPostsForCategory(categoryId: string): Promise<number> {
-    return  this.dataServicesRepositories.posts.findManyCountForSubDocument('category', categoryId);
+    return  this.dataServicesRepositories.posts.findManyCountForSubDocument('category', categoryId, {});
   }
 
   async getPost(id: string): Promise<PostDto> {
@@ -38,32 +39,32 @@ export class PostService {
       .then(post => this.processPost(post));
   }
 
-  async findPost(criterias: PostFindCriterias): Promise<PostDto> {
+  async findPost(criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto> {
     return this.dataServicesRepositories.posts.findOne(criterias)
       .then(post => this.processPost(post));
   }
 
-  async findManyPosts(criterias: PostFindCriterias): Promise<PostDto[]> {
+  async findManyPosts(criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
     return this.dataServicesRepositories.posts.findMany(criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsForUser(userId: string): Promise<PostDto[]> {
-    return this.dataServicesRepositories.posts.findManyForSubDocument('user', userId, {})
+  async findManyPostsForUser(userId: string, criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('user', userId, criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsForCategory(categoryId: string, postCriterias: PostFindCriterias): Promise<PostDto[]> {
-    return this.dataServicesRepositories.posts.findManyForSubDocument('category', categoryId, postCriterias)
+  async findManyPostsForCategory(categoryId: string, criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', categoryId, criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsWithoutCategory(postCriterias: PostFindCriterias): Promise<PostDto[]> {
-    return this.dataServicesRepositories.posts.findManyForSubDocument('category', undefined, postCriterias)
+  async findManyPostsWithoutCategory(criterias: PostFindCriterias | FilterFindCriterias): Promise<PostDto[]> {
+    return this.dataServicesRepositories.posts.findManyForSubDocument('category', undefined, criterias)
       .then(posts => posts.map(post => this.processPost(post)));
   }
 
-  async findManyPostsCount(criterias: PostFindCriterias): Promise<number> {
+  async findManyPostsCount(criterias: PostFindCriterias | FilterFindCriterias): Promise<number> {
     return this.dataServicesRepositories.posts.findManyCount(criterias);
   }
 
@@ -76,18 +77,17 @@ export class PostService {
   async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<PostDto> {
     const updatedPostCriterias = this.postFactoryService.createUpdatePostCriterias(updatePostDto);
     return this.getPost(id)
-      .then(() => {   
+      .then(async () => {   
         if (!updatePostDto.category) {
-          return this.dataServicesRepositories.posts.unset(id, {category: ""})
-          .then(_ => 
-             this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])          
-          )
-          .then(post => this.processPost(post));
-        } else {
-        return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])
-        .then(post => this.processPost(post));
+          await this.dataServicesRepositories.posts.unset(id, {category: ""});
         }
-      })
+        if (!updatePostDto.image) {
+          await this.dataServicesRepositories.posts.unset(id, {image: ""});
+        }
+
+        return this.dataServicesRepositories.posts.update(id, updatedPostCriterias, ['user', 'category'])  
+        .then(post => this.processPost(post));
+      });
   }
 
   async deletePost(id: string): Promise<PostDto> {

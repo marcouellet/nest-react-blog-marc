@@ -18,7 +18,7 @@ import { testE2ERegisterDummyUser_Post, testE2ENonExistingUserFindPostCriterias_
         testE2ELoginDummyUser_Post, testCategoryPostsCount, testE2EWithPartOfUpdatedTitleFindPostCriterias,
         testE2ENonExistingCategoryId_Post, testPostCount, testE2ERegisterAdminUser_Post, testE2EWithTitleFindPostCriterias,
         testE2EmptyPostFilterCriterias, testE2EWithPartOfTitleFindPostCriterias, testE2EWithUpdatedTitleFindPostCriterias,
-        testE2EWithNotPartOfTitleFindPostCriterias } from '../data/post.data';
+        testE2EWithNotPartOfTitleFindPostCriterias, testWithTitleFilterFindCriterias } from '../data/post.data';
 import { PostDto, UserDto, CategoryDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
@@ -415,15 +415,16 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
-    Logger.debug('POST(12h): (GET) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
+  it('POST(12h): (PUT) /post/findMany/user/:userId - Fetch posts for a user (logged not required)', () => {
+    Logger.debug('POST(12h): (PUT) /post/findMany/user/:userId - Fetch posts for a user (logged not required)');
     Logger.flush();
     return request(app.getHttpServer())
-      .get(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
+      .put(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
+      .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
       .catch(error => {
-        Logger.error('POST(12h): (GET)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
+        Logger.error('POST(12h): (PUT)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -469,8 +470,8 @@ describe('PostController (e2e)', () => {
     }
   });
 
-  it('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in)', () => {
-    Logger.debug('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in)');
+  it('POST(14): (PUT) /post/find - Fetch a post based on post criterias (dummy logged in)', () => {
+    Logger.debug('POST(14): (PUT) /post/find - Fetch a post based on post criterias (dummy logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/find')
@@ -479,6 +480,21 @@ describe('PostController (e2e)', () => {
       .expect(response => response && response.body === dummyUserUpdatedPostDto) // Should return one post
       .catch(error => {
         Logger.error('POST(14): (PUT) /post/find - Fetch a post based on criterias (dummy logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(14a): (PUT) /post/find - Fetch a post based on filter criterias (dummy logged in)', () => {
+    Logger.debug('POST(14a): (PUT) /post/find - Fetch a post based on filter criterias (dummy logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put('/post/find')
+      .send(testWithTitleFilterFindCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === dummyUserUpdatedPostDto) // Should return one post
+      .catch(error => {
+        Logger.error('POST(14a): (PUT) /post/find - Fetch a post based on filter criterias (dummy logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -544,8 +560,23 @@ describe('PostController (e2e)', () => {
       });
   });
 
-  it('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in)', () => {
-    Logger.debug('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in)');
+  it('POST(15d): (PUT) /post/findMany with filter criterias on title - Fetch posts based on title criteria (not logged in)', () => {
+    Logger.debug('POST(15d): (PUT) /post/findMany with  filter criterias on title - Fetch posts based on title criteria (not logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put('/post/findMany')
+      .send(testWithTitleFilterFindCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .catch(error => {
+        Logger.error('POST(15d): (PUT) /post/findMany with  filter criterias on title - Fetch posts based on title criteria (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(16): (PUT) /post/findManyCount - Get count of posts meating post criteria on title (not logged in)', () => {
+    Logger.debug('POST(16): (PUT) /post/findManyCount - Get count of posts meating post criteria on title (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/post/findManyCount')
@@ -553,7 +584,22 @@ describe('PostController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === testPostCount) // should be 1
       .catch(error => {
-        Logger.error('POST(16): (PUT) /post/findManyCount - Get count of posts meating title criteria (not logged in) failed, see following error message:');
+        Logger.error('POST(16): (PUT) /post/findManyCount - Get count of posts meating post criteria on title (not logged in) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(16a): (PUT) /post/findManyCount - Get count of posts meating filter criteria on title (not logged in)', () => {
+    Logger.debug('POST(16a): (PUT) /post/findManyCount - Get count of posts meating filter criteria on title (not logged in)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put('/post/findManyCount')
+      .send(testWithTitleFilterFindCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === testPostCount) // should be 1
+      .catch(error => {
+        Logger.error('POST(16a): (PUT) /post/findManyCount - Get count of posts meating filter criteria on title (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -614,6 +660,21 @@ describe('PostController (e2e)', () => {
       .expect(response => response && response.body === []) // Shouldtryurn no post
       .catch(error => {
         Logger.error('POST(17c): (PUT) /post/findMany/nocategory - Fetch posts without category with no part of updated title filter (logged not required) failed, see following error message:');
+        Logger.error(error);
+        Logger.flush();
+      });
+  });
+
+  it('POST(17d): (PUT) /post/findMany/nocategory - Fetch posts without category with filter criterias on title (logged not required)', () => {
+    Logger.debug('POST(17d): (PUT) /post/findMany/nocategory - Fetch posts without category with filter criterias on title (logged not required)');
+    Logger.flush();
+    return request(app.getHttpServer())
+      .put(`/post/findMany/nocategory`)
+      .send(testWithTitleFilterFindCriterias)
+      .expect(StatusCodes.OK)
+      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .catch(error => {
+        Logger.error('POST(17d): (PUT) /post/findMany/nocategory - Fetch posts without category with filter criterias on title (logged not required) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });

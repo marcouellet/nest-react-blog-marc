@@ -1,231 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from "react-toastify";
-import { PostApiService } from "../services/api/PostApiService";
-import { CategoryApiService } from "../services/api/CategoryApiService";
-import { IPost, UserRole } from "../types";
-import useAuth from '../contexts/auth';
-import { createActionLoading } from '../reducers/auth';
-import ListErrors from './common/ListErrors';
-import { ICategory, IErrors } from '../types';
-import DeleteButton from './common/deleteConfirmation';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { checkUnauthorized, checkForbidden } from '../utils/response';
-import { createActionSessionExpired, createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../reducers/auth';
+import { ImageSizeProps, ImageData } from '../types';
+import ImageResize from './common/ImageResize';
+import { resizeImage } from '../utils/image.utils';
 
 const Home = () => {
-  
-  const navigate = useNavigate();
 
-  const { state, dispatch } = useAuth();
-  const [errors, setErrors] = React.useState<IErrors | null>();
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [categories, setCategories] = useState<ICategory[]>();
-  const [category, setCategory] = useState<ICategory>();
-  const [categoryTitle, setCategoryTitle] = useState<string>('All');
-  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
-
-  const _removePostFromView = (id: string) => {
-    const index = posts.findIndex((post: IPost) => post.id! === id);
-    posts.splice(index, 1);
-  }
-
-  const isAdministrator = () => state.isAuthenticated && state.user?.role === UserRole.ADMIN;
-
-  const deletePostMessage = (post: IPost) => `${post.title} post`;
-
-  const handleDeletePost = async (id: string) => {
-    dispatch(createActionLoading(true));
-    await PostApiService.deletePost(id)
-     .then(() => handleDeletePostSucess())
-     .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
-    dispatch(createActionLoading(false));
-    _removePostFromView(id);
-    navigate('/');
-  }
-
-  const handleDeletePostSucess = () => {
-    toast.success(`Post deleted successfully...`);
-  }
-
-  const handleDeletePostError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Post delete failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/'); 
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Post delete failed, see error list`);
-      setErrors(apiErrors);      
-    }
-  }
+  const [homeDefaultImage, sethomeDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
-    (async () => {
-      dispatch(createActionLoading(true));
-      if (!categories) {
-        const fetchCategories = async (): Promise<void> => {
-          CategoryApiService.getAllCategories()
-          .then(categories => {
-            const all: ICategory = {id:'all', title: 'All', description: ''};
-            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
-            const allCategories = [all, noCategory].concat(categories);
-            setCategories(allCategories);
-            if (state.categoryFilter) {
-              selectCategory(allCategories, state.categoryFilter.id!, false);
-            } else {
-              selectCategory(allCategories, 'all', false);
-            }            
-          })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
-        }
-        await fetchCategories();
+    if (!homeDefaultImage) {
+      const fetchData = async (): Promise<void> => {
+        getDefaultHomeImage()
+        .then(imageData => { 
+          sethomeDefaultImage(imageData);
+        }) 
+        .catch(error => {
+          throw new Error(error);
+        });
       }
-      setPostTitleFilter(state.postTitleFilter);
-      dispatch(createActionLoading(false));
-    })();
- // eslint-disable-next-line
+      fetchData();  
+    }
+  // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async (): Promise<void> => {
-      if (category) {
-        if ( category.id === 'all') {
-          PostApiService.findManyPosts(postTitleFilter)
-          .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
-        } 
-        else if (category.id === 'no_category') {
-          PostApiService.findManyPostsWithoutCategory(postTitleFilter)
-          .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
-        } 
-        else {
-          PostApiService.findManyPostsForCategory(category.id!, postTitleFilter)
-          .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
-        }
-      }
-    }
-    fetchPosts();
-  }, [category, postTitleFilter])
-
-  const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    toast.error(`Categories reading failed, see error list`);
+  const getDefaultHomeImage = (): Promise<ImageData> => {
+    return resizeImage('/default-home-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const handleFetchPostError = (apiErrors: IErrors) => {
-    toast.error(`Post reading failed, see error list`);
-  }
+  const imageMaxSize: ImageSizeProps = {maxWidth:500, maxHeight:500}
 
-  const handleCategorySelect=(e: any)=>{
-    selectCategory(categories!, e, true);
-  }
-
-  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
-    const category = categories?.find(category => category.id === categoryId);
-    setCategoryTitle(category!.title!);
-    setCategory(category);
-    dispatch(createActionSetCategoryFilter(category!));
-  }
-
-  const handlePostTitleFilterChange = (filter: string)=>{
-    setPostTitleFilter(filter);
-    dispatch(createActionSetPostTitleFilter(filter));
-  }
-
-    return (
-        <section className="blog-area section">
-        {errors && <ListErrors errors={errors} />}
-        <div className="form-group ">
-          <div className="row">
-            <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-                {categories && categories.map((category: ICategory) => 
-                (
-                  <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
-                ))
-              }
-            </DropdownButton>
-            <input style={ {float: 'right'} } className="col-md-2"   
-              type="text" disabled  placeholder="no category selected" value={categoryTitle}        
-            />
-            <h4 className="col-md-1">
-              <span>
-                Filter:
-              </span>
-            </h4>
-            <input  
-              type="text" name="postTitleFilter" value={postTitleFilter} placeholder="enter some part of post title text" 
-              className="col-md-2" onChange={e => handlePostTitleFilterChange(e.target.value)}      
-            />
-          </div>
-        </div>
-        <div className="container">
-          <div className="row">
-            {posts && posts.map((post: IPost) => (
-              <div className="col-lg-4 col-md-6" key={post.id}>
-              <div className="card h-100">
-                <div className="single-post post-style-1">
-                  <span className="avatar">
-                    <span>
-                     <h4>User: {post.user!.username} </h4> 
-                    </span>
-                  </span>
-
-                  <div className="blog-info">
-
-                    <h4 className="title">
-                      <span>
-                        <b>{post.title}</b>
-                      </span>
-                    </h4>
-                  </div>
-                </div>
-
-                <ul className="post-footer">
-                  {
-                    !state.isLoading &&
-                    (
-                      <li>
-                      {
-                        <p>
-                          <Link to={`/post/${post.id}`} className="btn btn-sm btn-info">View Post</Link>
-                        </p>
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) &&
-                    (
-                      <li>
-                      {
-                        <p>
-                          <Link to={`/post/edit/${post.id}`} className="btn btn-sm btn-primary">Edit Post</Link>
-                        </p>
-                      }
-                      </li>
-                    )
-                  }
-                  {
-                    state.isAuthenticated && !state.isLoading && (isAdministrator() || state.user!.email === post.user!.email) && 
-                    (                   
-                      <li>
-                      {
-                        <DeleteButton message={deletePostMessage(post)} onClick={() => handleDeletePost(post.id!)} className="btn btn-danger">Delete</DeleteButton>
-                      }
-                      </li>
-                    )
-                  }
-                </ul>
-              </div>
+  return (  
+    <div className="Home"> 
+      <div className="container-fluid">
+        <div className="row">
+            <div className="col-md-4">
+              { homeDefaultImage && <ImageResize imageData={homeDefaultImage} resize={imageMaxSize}/>}
             </div>
-            ))}
-          </div>
+            <div className="col-md-7">
+              <h2>
+                Welcome to Marc's Blog
+              </h2>
+              <br/>            
+              <h4>
+               This simple blog application is build on most recent technology. The server is based on NestJs which has a Angular like architecture. MongoDB is used to store data. Web UI has been developped with React using the most recent techniques.
+              </h4>
+              <br/>
+              <h4>
+               Functionalities:
+              </h4>  
+              <br/>
+              <h5>
+                <ul>
+                  <li>Multi users</li>
+                  <li>Post Categories</li>
+                  <li>Filter for posts list on post title</li>
+                  <li>Filter for users list on user name</li>
+                  <li>User and post pictures</li>
+                  <li>User profile update</li>
+                </ul>
+              </h5>
+              <br/>
+              <h4>
+               List of technologies used:
+              </h4>  
+              <br/>
+              <h5>
+                <div>Server: NestJs, typescript, mongoose, passport, guards, dtos, generic data repositories, jest for unit and integration tests</div>
+                <div>Client: React, hooks, axios, dtos, jwt, bootstrap, typescript</div>
+              </h5>
+            </div>
+          </div> 
         </div>
-      </section>
-    );
+      </div>  
+  );  
 }
 
 export default Home;

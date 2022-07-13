@@ -1,25 +1,7 @@
 import React, {useContext, useRef, useState} from "react";
 import Modal from "react-bootstrap/Modal";
-
-type UseModalShowReturnType = {
-    show: boolean;
-    setShow: (value: boolean) => void;
-    onHide: () => void;
-}
-
-const useModalShow = (): UseModalShowReturnType => {
-    const [show, setShow] = useState(false);
-
-    const handleOnHide = () => {
-        setShow(false);
-    };
-
-    return {
-        show,
-        setShow,
-        onHide: handleOnHide,
-    }
-};
+import Button from "react-bootstrap/Button";
+import { useModalShow } from './useModalShow';
 
 type ModalContextType = {
     showConfirmation: (title: string, message: string | JSX.Element) => Promise<boolean>;
@@ -51,14 +33,14 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
         showConfirmation: handleShow
     };
 
-    const handleOk = () => {
-        resolver.current && resolver.current(true);
+    const handleOk = (event: React.MouseEvent<HTMLElement>) => {
         onHide();
+        resolver.current && resolver.current(true);
     };
 
-    const handleCancel = () => {
-        resolver.current && resolver.current(false);
+    const handleCancel = (event: React.MouseEvent<HTMLElement>) => {
         onHide();
+        resolver.current && resolver.current(false);
     };
 
     return (
@@ -67,7 +49,8 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
 
             {content && 
             (
-                <Modal show={show} onHide={onHide} centered dialogClassName={`modal-md`}>
+            <div>
+                <Modal show={show} onHide={onHide} centered dialogClassName={`modal-md`} backdrop="static" keyboard={false}>
                     <Modal.Header>
                         <label>{content.title}</label>
                     </Modal.Header>
@@ -75,10 +58,12 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
                         <label>{content.message}</label>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn btn-default" onClick={handleCancel}>Cancel</button>
-                        <button className="btn btn-primary" onClick={handleOk}>OK</button>
+                        <Button className="btn btn-default" onClick={handleCancel}>Cancel</Button>
+                        <Button className="btn btn-primary" onClick={handleOk}>OK</Button>
                     </Modal.Footer>
                 </Modal>
+            </div>
+
             )}
         </ConfirmationModalContext.Provider>
         
@@ -88,7 +73,6 @@ const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProvide
 const useConfirmationModalContext = (): ModalContextType => useContext(ConfirmationModalContext);
 
 export {
-    useModalShow,
     useConfirmationModalContext,
 }
 

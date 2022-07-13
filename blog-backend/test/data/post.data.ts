@@ -1,6 +1,6 @@
 import { Post } from '../../src/core/entities/post.entity';
 import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostFindCriterias } from '../../src/core';
+import { PostFindCriterias, FilterFindCriterias } from '../../src/core';
 import { testUser, testUserDto, testServiceUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();
@@ -18,6 +18,7 @@ export const testPostDto: PostDto = {
   body: 'content of the post',
   category: undefined,
   user: testUserDto,
+  image: undefined,
   publishDate: publishedOnDate,
 };
 
@@ -26,6 +27,7 @@ export const testCreatePostDto: PostDto = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
   user: testUserDto,
 };
 
@@ -34,6 +36,7 @@ export const testUpdatePostDto: UpdatePostDto = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
 };
 
 export const testPost: Post = {
@@ -42,6 +45,7 @@ export const testPost: Post = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
   user: testUser,
   publishDate: publishedOnDate,
 };
@@ -52,6 +56,7 @@ export const testServicePostDto: PostDto = {
   description: 'description',
   body: 'content of the post',
   category: undefined,
+  image: undefined,
   user: testServiceUserDto,
   publishDate: publishedOnDate,
 };
@@ -61,9 +66,11 @@ export const testServicePostWithoutCategoryDto: PostDto = {
   title: 'title',
   description: 'description',
   body: 'content of the post',
+  image: undefined,
   user: testServiceUserDto,
   publishDate: publishedOnDate,
 };
 
 export const testEmptyPostFilterCriterias: PostFindCriterias = {};
 export const testWithTitleFindPostCriterias: PostFindCriterias = { title: 'title' };
+export const testWithTitleFilterFindCriterias: FilterFindCriterias = { contains: { property:'title', value:'title' }};

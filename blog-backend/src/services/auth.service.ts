@@ -122,6 +122,12 @@ export class AuthService {
       });
     }
 
+  async refresh(userDto: UserDto): Promise<UserDto> {
+    const { email } = userDto;
+    return this.validateUserUnrestricted({ email })
+      .then(user => this.setupUserWithNewTokens(user));
+  }
+
   async register(registerDto: RegisterDto): Promise<UserDto> {
     return this.userService.createUser(registerDto)
     .then(user => this.setupUserWithNewTokens(user));

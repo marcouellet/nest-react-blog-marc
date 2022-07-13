@@ -12,16 +12,17 @@ import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
-import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 
 const EditCategory = () => {
 
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [category, setCategory] = useState<ICategory>();
+  const [submitForm, setSubmitForm] = useState<boolean>(false);
  
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Category title is required')
@@ -53,8 +54,8 @@ const EditCategory = () => {
         dispatch(createActionLoading(true));
         await CategoryApiService.getCategoryById(userId!)
         .then((category) => { setCategory(category); reset(category);})
-        .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors));
-        dispatch(createActionLoading(false));
+        .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors))
+        .finally(() => dispatch(createActionLoading(false)));
        }
       fetchData();      
     }
@@ -62,37 +63,45 @@ const EditCategory = () => {
   }, []);
 
   const onSubmit = async (data: UpdateSubmitForm) => {
-    if (category && isDirty) {
+    if (category && isDirty && submitForm) {
       dispatch(createActionLoading(true));
       const userData: IUpdateCategory = createCategoryForUpdate({...category, ...data});
       await CategoryApiService.updateCategory(category.id!, userData)
-      .then(() => { handleSubmitFormSucess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-      dispatch(createActionLoading(false));
+      .then(() => { handleSubmitFormSuccess(); })
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false)));
      }
   } 
 
-  const handleFetchCategoryError = (apiErrors: IErrors) => {
-    toast.error(`Category reading failed, see error list`);
-    setErrorList(apiErrors);
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
+    if (checkSessionExpired(apiErrors)) {
+      toast.error(`${process} failed, session expired`);
+      dispatch(createActionSessionExpired());
+    } else if (checkUnauthorized(apiErrors)) {
+      toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
+    } else {
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);      
+    }
   }
 
-  const handleSubmitFormSucess = () => {
+  const handleFetchCategoryError = (apiErrors: IErrors) => {
+    handleApiErrors(apiErrors, 'Category reading');
+  }
+
+  const handleSubmitForm = () => {
+    setSubmitForm(true);
+  }
+
+  const handleSubmitFormSuccess = () => {
     toast.success(`Category updated successfully...`);
-    navigate('/category'); 
+    navigate(`/category/${category?.id}`)
   }
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
-    if (checkForbidden(apiErrors)) {
-      toast.error(`Category update failed, session expired`);
-      dispatch(createActionSessionExpired());
-      navigate('/category'); 
-    } else if (checkUnauthorized(apiErrors)) {
-      toast.error(`Access denied`);
-    } else {
-      toast.error(`Category update failed, see error list`);
-      setErrorList(apiErrors);      
-    }
+    handleApiErrors(apiErrors, 'Category update');
 }
 
 const cancelEditCategoryMessage = () => `category edition and loose changes`;
@@ -102,7 +111,7 @@ const handleResetEditCategory = () => {
 }
 
 const handleCancelEditCategory = () => {
-  navigate('/category');   
+  navigate(`/category/${category?.id}`)
 };
 
   return (
@@ -110,9 +119,9 @@ const handleCancelEditCategory = () => {
     {category &&
       (
         <div className={"col-md-12 form-wrapper"}>
-          <h2> Edit Category  </h2>
+          <h2> Edit Category </h2>
           {errorList && <ListErrors errors={errorList} />}
-          <form id={"create-user-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+          <form id={"edit-category-form"} onSubmit={handleSubmit(onSubmit)} noValidate={true}>
             <div className="form-group col-md-12">
               <label htmlFor="title"> Title </label>
               <input 
@@ -122,10 +131,9 @@ const handleCancelEditCategory = () => {
                 className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
               />
               <div className="invalid-feedback">{errors.title?.message}</div>
-           </div>
-
+            </div>
             <div className="form-group col-md-12">
-              <label htmlFor="description"> Email </label>
+              <label htmlFor="description"> Description </label>
               <input 
                 type="text" 
                 placeholder="Enter description"
@@ -134,36 +142,24 @@ const handleCancelEditCategory = () => {
               />
               <div className="invalid-feedback">{errors.description?.message}</div>
             </div>
-
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success"  disabled={!isDirty} type="submit">
-                Update
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
+            <div className="row">
+              <div className="col-lg-10 col-md-12">
+                <div className="form-group row-md-5 pull-right">
+                  <CancelButton prompt={isDirty} message={cancelEditCategoryMessage()} onClick={() => handleCancelEditCategory()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                  <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={() => handleResetEditCategory()} >
+                    Reset
+                  </button>
+                  <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                    Update
+                  </button>
+                </div>
+              </div>
             </div>
-
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditCategory() } >
-                Reset
-              </button>
-              {isLoading &&
-                <span className="fa fa-circle-o-notch fa-spin" />
-              }
-            </div>
-          </form>
-
-          <div className="form-group col-md-1 pull-right">
-              {
-              <CancelButton prompt={isDirty} message={cancelEditCategoryMessage()} onClick={() => handleCancelEditCategory()} className="btn btn-danger">Cancel</CancelButton>
-              }
-           </div>
-
+          </form> 
         </div>
       )
     }
-  </div>
+    </div>
   )
 }
 

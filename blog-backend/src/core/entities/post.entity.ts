@@ -1,11 +1,12 @@
 import { User, Category } from './';
-
+import { ImageData } from '../interfaces';
 export class Post {
   id?: string;
   title: string;
   description: string;
   body: string;
   category: Category;
+  image: ImageData;
   user: User;
   publishDate: Date;
 }

@@ -1,16 +1,22 @@
 import axios from 'axios';
-import { API_BASE_URL } from "../../config/api.config";
+import { StatusCodes } from 'http-status-codes';
+import { API_BASE_URL, API_REQUEST_TIMEOUT } from "../../config/api.config";
 import { IErrors } from '../../types';
 import TokenService from './TokenService';
 
 axios.defaults.baseURL = API_BASE_URL;
+axios.defaults.timeout = API_REQUEST_TIMEOUT;
 
-export function handleError(error : any) : Promise<IErrors> {
+function processError(error : any) : IErrors {
   let errorAttributes : IErrors = {};
 
   if (error.message && error.message.length > 0) {
     console.log('Error: ', error.message);
     errorAttributes.message = error.message;
+  }
+
+  if (error.code && error.code === 'ECONNABORTED') {
+    errorAttributes.status = StatusCodes.REQUEST_TIMEOUT.toString();
   }
 
   if (error.response) {
@@ -22,6 +28,13 @@ export function handleError(error : any) : Promise<IErrors> {
       errorAttributes.status = error.response.status;
       errorAttributes.statusText = error.request.statusText;
     }
+    if (error.response.data) {
+      errorAttributes.message = error.response.data.message;
+    }
+    if (error.response.request && error.response.request.authorize) {
+      errorAttributes.authorize = [error.response.request.authorize];
+      errorAttributes.token = [error.response.request.authorize.replace('Bearer ', '').trim()];
+    }
   } else if (error.request) {
     // The client never received a response, and the request was never left
     console.log(error.request);
@@ -30,7 +43,11 @@ export function handleError(error : any) : Promise<IErrors> {
       errorAttributes.statusText = error.request.statusText;
     }
   }
-   return Promise.reject(errorAttributes);
+   return errorAttributes;
+}
+
+export function handleError(error : any) : Promise<IErrors> {
+   return Promise.reject(processError(error));
 }
 
 // Add a request interceptor
@@ -54,7 +71,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     return handleError(error);
-  },
+  }
 );
 
 export default axios;

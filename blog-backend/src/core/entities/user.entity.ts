@@ -1,11 +1,12 @@
+import { ImageData } from '../interfaces';
 export class User {
   id?: string;
   username: string;
   email: string;
   password?: string;
   role?: string;
-  createdOn: Date;
-  }
+  image?: ImageData;
+}
 
 export const minimumUserNameLength = 2;
 export const minimumUserEmailLength = 10;

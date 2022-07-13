@@ -35,6 +35,7 @@ export class AuthController {
   @Put('/refresh')
  @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Req() req: Request): Promise<UserDto> {
-    return req.user as UserDto;
+    const userDto: UserDto = req.user as UserDto;
+    return this.authService.refresh(userDto);
   }
 }

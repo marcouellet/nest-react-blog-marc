@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
-import { checkUnauthorized, checkForbidden } from '../../utils/response';
+import { checkUnauthorized, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../../types";
 
@@ -46,9 +46,12 @@ const Register = () => {
 
   const handleSubmitFormError = (apiErrors: IErrors) => {
     if (checkForbidden(apiErrors)) {
-      toast.error(`Registration failed, email already used!`);
+      const message = apiErrors['message'];
+      toast.error(`Registration failed: ${message}`);
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
+    } else if (checkTimeout(apiErrors)) {
+      toast.error(`Request timeout`);
     } else {
       toast.error(`User registration failed, see error list`);
       setErrorList(apiErrors);
@@ -66,8 +69,8 @@ const Register = () => {
           navigate('/login');    
         }
       )
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); }); 
-    dispatch(createActionLoading(false));
+      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .finally(() => dispatch(createActionLoading(false))); 
  } 
 
   return (
