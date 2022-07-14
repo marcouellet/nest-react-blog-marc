@@ -31,6 +31,17 @@ const NavigationBar = () => {
 
     const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
+    const userDisplay = () => {
+        let userInfo: string = '';
+        if (isAuthenticated) {
+            userInfo = user!.email;
+        }
+        if (isAdministrator()) {
+            userInfo += ' (administrator)';
+        }
+        return userInfo;
+    }
+
     const authButton = () => {
         if (isAuthenticated) {
             return (
@@ -54,6 +65,7 @@ const NavigationBar = () => {
         <Navbar expand="lg" bg="dark" variant="dark" fixed="top">
             <div className="container-fluid">
                 <Navbar.Brand href="/">Marc's Blog</Navbar.Brand>
+                <Navbar.Text >{userDisplay()}</Navbar.Text>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/blog">Blogs</Nav.Link>
