@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactHtmlParser from 'react-html-parser';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { IPost, UserRole } from "../../types";
 import { toast } from "react-toastify";
@@ -60,10 +59,6 @@ const ViewPost = () => {
     }
   }
 
-  const parseHtml = (html: string) => {
-    return ReactHtmlParser(html);
-  }
-
   const goBack = () => {
     if (isAdministrator()) {
       navigate('/post');
@@ -108,6 +103,10 @@ const ViewPost = () => {
 
   const handleFetchPostError = (apiErrors: IErrors) => {
     handleApiErrors(apiErrors,'Post reading');
+  }
+
+  const handleViewBlog = ()=>{
+    navigate(`/blog/${post!.id}`);
   }
 
   const handleReturn = () => {
@@ -160,15 +159,13 @@ const ViewPost = () => {
             </div>
             <br/>
             <div className="row">
-              <p className="para">
-                {parseHtml(post.body)}
-              </p>                
-            </div>
-            <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-6 pull-right">
-                  <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
+                  <button className="btn ml-2 btn-secondary" onClick={ () => handleReturn() } >
                     Return
+                  </button>
+                  <button type="button" className="btn ml-2 btn-secondary" onClick={ () => handleViewBlog() }>
+                    View Content
                   </button>
                   {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&
                     (
