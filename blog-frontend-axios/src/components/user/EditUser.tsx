@@ -47,6 +47,25 @@ const EditUser = () => {
       // Otherwise, return a simple validation
       return Yup.mixed().notRequired();
     }),
+    confirmPassword: Yup.lazy(value => {
+      if (
+          value &&
+          Object.values(value).some(v => !(v === null || v === undefined || v === ""))
+      ) {
+          // Return our normal validation
+          return Yup.string().required()
+          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+          .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
+          .oneOf([Yup.ref('password'), null], "Passwords don't match!");
+          }
+      // Otherwise, return a simple validation
+      return Yup.string().when('password', {
+        is: (password: string) => {
+          return password && password.length > 0
+        },
+        then: (schema) => schema.required()
+      });
+      }),
     role: Yup.string().required('Role is required'),
     imageChanged: Yup.bool(),
   });
@@ -181,7 +200,7 @@ const EditUser = () => {
   };
 
   const handleRoleSelect=(e: any)=>{
-    setValue('role', e);
+    setValue('role', e, {shouldDirty: true});
   }
 
   const handleImageUpload = (image: ImageData) => {

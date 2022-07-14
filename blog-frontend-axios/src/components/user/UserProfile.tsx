@@ -57,7 +57,7 @@ const UserProfile = () => {
           .oneOf([Yup.ref('password'), null], "Passwords don't match!");
           }
       // Otherwise, return a simple validation
-      return Yup.mixed().when('password', {
+      return Yup.string().when('password', {
         is: (password: string) => {
           return password && password.length > 0
         },

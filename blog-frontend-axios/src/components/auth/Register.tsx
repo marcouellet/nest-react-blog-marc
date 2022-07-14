@@ -24,37 +24,11 @@ const Register = () => {
     .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
       .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
-    password: Yup.lazy(value => {
-      if (
-      value &&
-      Object.values(value).some(v => !(v === null || v === undefined || v === ""))
-      ) {
-      // Return our normal validation
-      return Yup.string().required()
-          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
-      }
-      // Otherwise, return a simple validation
-      return Yup.mixed().notRequired();
-    }),
-    confirm_password: Yup.lazy(value => {
-    if (
-        value &&
-        Object.values(value).some(v => !(v === null || v === undefined || v === ""))
-    ) {
-        // Return our normal validation
-        return Yup.string().required()
-        .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
-        .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
-        .oneOf([Yup.ref('password'), null], "Passwords don't match!");
-        }
-    // Otherwise, return a simple validation
-    return Yup.mixed().when('password', {
-      is: (password: string) => {
-        return password && password.length > 0
-      },
-      then: (schema) => schema.required()
-    });
-    }),
+    password: Yup.string().required()
+      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+    confirm_password: Yup.string().required()
+      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+      .oneOf([Yup.ref('password')], "Passwords don't match!"),
   });
 
   type RegisterSubmitForm = {
@@ -170,9 +144,9 @@ const Register = () => {
                     type="password"
                     placeholder="Your password again"
                     {...register('confirm_password')}
-                    className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
+                    className={`form-control ${errors.confirm_password ? 'is-invalid' : ''}`} 
                   />
-                <div className="invalid-feedback">{errors.password?.message}</div>
+                <div className="invalid-feedback">{errors.confirm_password?.message}</div>
              </fieldset>
 
               <button
