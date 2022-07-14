@@ -74,7 +74,14 @@ const Home = () => {
               </h4>  
               <br/>
               <h5>
-                <div>To test the site, you can login with user as "admin@email.com" and password as "password"</div>
+                <div>To test the application, you can login with user email as "admin@email.com" and password as "password".</div>
+                <div>This user has ADMIN role which allows administration privilege. It can manage user, category and post
+                  creation, update and deletion.
+                </div>
+              </h5>
+              <br/>
+              <h5>
+                <div>P.S. User are identified by their email which must be unique in the application</div>
               </h5>
             </div>
           </div> 
