@@ -80,9 +80,6 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
                 >
                   {PostImage()}            
                 </DisplayModalButton>       
-{/*                 <div style={{cursor:"zoom-in", marginTop: "1rem"}} onClick={onClickImage}>
-                  {PostImage()}
-                </div> */}
               </Card.Header> 
               <Card.Title>
                 <div >

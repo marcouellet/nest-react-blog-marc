@@ -136,7 +136,7 @@ const UserProfile = () => {
     handleApiErrors(apiErrors,'User reading');
   }
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
   const UserImage = () => {
     if(userImage) {
@@ -283,23 +283,21 @@ const UserProfile = () => {
               <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
             </div>
 
-            <div className="form-group col-md-4 pull-right">
-              <button className="btn btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
-                Update
-              </button>
+            <div className="row">
+              <div className="col-lg-10 col-md-12">
+                <div className="form-group row-md-5 pull-right">
+                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
+                      Reset
+                    </button>
+                    <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                      Update
+                    </button>
+                </div>
+              </div>
             </div>
 
-            <div className="form-group col-md-1 pull-right">
-              <button className="btn btn-secondary" disabled={!isDirty} onClick={() => handleResetEditUser()} >
-                Reset
-              </button>
-            </div>
           </form>
-
-          <div className="form-group col-md-1 pull-right">
-            <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn btn-danger">Cancel</CancelButton>
-          </div>
-
         </div>
       )
     }

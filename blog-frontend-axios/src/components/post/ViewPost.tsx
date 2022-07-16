@@ -69,7 +69,7 @@ const ViewPost = () => {
     }
   }
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
   
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
@@ -122,7 +122,7 @@ const ViewPost = () => {
   }
 
     return (
-      <div className="container">
+      <div className="container-fluid">
         {post && 
         (
           <div>

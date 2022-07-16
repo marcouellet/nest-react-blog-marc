@@ -130,7 +130,7 @@ const EditPost = () => {
     }
   }
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
   const onSubmit = async (data: PostEditingFormState) => {
     if (post && isDirty && submitForm) {

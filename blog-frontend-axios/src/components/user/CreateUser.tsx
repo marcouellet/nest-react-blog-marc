@@ -71,7 +71,7 @@ const CreateUser = () => {
   // eslint-disable-next-line
   }, []);
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
   const UserImage = () => {
     if(userImage) {

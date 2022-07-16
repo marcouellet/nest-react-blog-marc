@@ -63,7 +63,7 @@ const ViewUser = () => {
     handleApiErrors(apiErrors,'User reading');
   }
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
   const UserImage = () => {
     if(userDisplayed?.image) {
@@ -107,7 +107,7 @@ const ViewUser = () => {
   }
 
     return (
-      <div className="container">
+      <div className="container-fluid">
           {userDisplayed  &&
           (     
             <div>         

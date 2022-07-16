@@ -121,7 +121,7 @@ const EditUser = () => {
   // eslint-disable-next-line
   }, [user]);
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200}
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
   const UserImage = () => {
     if(userImage) {
