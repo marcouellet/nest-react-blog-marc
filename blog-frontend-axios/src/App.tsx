@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from "./routes/AppRoutes";
 import ModalContextProvider from './contexts/modalContext';
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
-import SessionTimeoutHandler from "./components/auth/sessionTimeoutHandler";
+import SessionHandler from "./components/auth/sessionHandler";
 import Processing from './components/common/processing';
 
 const App = () => {
@@ -18,7 +18,7 @@ const App = () => {
     <>
       <ConfirmationModalContextProvider>
         <BrowserRouter>
-          <SessionTimeoutHandler/>
+          <SessionHandler/>
           <NavigationBar/>
           <Processing/>
           <ModalContextProvider>

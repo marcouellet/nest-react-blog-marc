@@ -1,6 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import { IErrors } from '../types';
-import { isTokenValid } from '../services/api/AuthApiService';
+import { isTokenValid } from '../utils/session.util';
+
+export function getTokenFromErrors(errors: IErrors) {
+    return errors['token'] as any;
+}
 
 export function checkSessionExpired(errors: IErrors): boolean {
     const status = errors['status'] as any;

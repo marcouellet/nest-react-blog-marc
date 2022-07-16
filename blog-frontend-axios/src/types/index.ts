@@ -19,6 +19,7 @@ export class IAuthToken {
 export type JWTPayload = {
   sub: string;
   exp: number;
+  expiresIn: number;
 };
 
 export type User = IUser & { authtoken?: IAuthToken, authrefreshtoken?: IAuthToken };
@@ -56,6 +57,12 @@ export interface IRegister {
 export interface IRefresh {
   authtoken?: IAuthToken;
   authrefreshtoken?: IAuthToken;
+}
+
+export interface ISessionExtension {
+  authtoken?: IAuthToken;
+  authrefreshtoken?: IAuthToken;
+  extension: number;
 }
 
 export interface IErrors {

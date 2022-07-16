@@ -1,4 +1,5 @@
 import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '../../utils/local.storage.utils';
+import { HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
 import { IAuthToken, User } from '../../types';
   
 export const USER_KEY = 'user';
@@ -27,6 +28,14 @@ export const USER_KEY = 'user';
   const removeUser = () => {
     removeLocalStorageValue(USER_KEY);
   };
+
+  const getHttpResponseTimeStamp = (): number => {
+    return getLocalStorageValue(HTTP_RESPONSE_HEADER_TIMESTAMP) as number;
+  };
+  
+  const setHttpResponseTimeStamp = (timestamp: number) => {
+    setLocalStorageValue(HTTP_RESPONSE_HEADER_TIMESTAMP, timestamp);
+  };
   
   const TokenService = {
     getLocalAccessToken,
@@ -34,6 +43,8 @@ export const USER_KEY = 'user';
     getUser,
     setUser,
     removeUser,
+    getHttpResponseTimeStamp,
+    setHttpResponseTimeStamp
   };
   
   export default TokenService;

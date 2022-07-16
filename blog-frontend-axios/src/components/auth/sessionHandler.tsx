@@ -6,7 +6,7 @@ import { createActionLogout, createActionLoadUser, createActionLoading } from '.
 import ConfirmRefresh from '../common/confirmRefresh';
 import { toast } from "react-toastify";
 
-const SessionTimeoutHandler = () => {
+const SessionHandler = () => {
 
     const [askRefresh, setAskRefresh] = useState(false);
     const { state, dispatch } = useAuth();
@@ -25,11 +25,10 @@ const SessionTimeoutHandler = () => {
       const handleRefresh = async () => {
         setAskRefresh(false);
         dispatch(createActionLoading(true));
-        AUTHAPI.refresh(state.user!)
+        AUTHAPI.refresh()
         .then((user) => {
             dispatch(createActionLoadUser(user));
             toast.info(`${user.username} session renewed!`);
-            navigate('/');
             })
         .catch(_ => {
             toast.error(`Refresh session failed, logging out!`);
@@ -43,9 +42,11 @@ const SessionTimeoutHandler = () => {
       }
 
     useEffect(() => {
-        if (state.isAuthenticated && state.isSessionExpired) {
-            setAskRefresh(true);
-        }
+      if (state.isAuthenticated && state.isLoggingOut) {
+        handleLogout();
+      } else if (state.isAuthenticated && state.isSessionExpired) {
+          setAskRefresh(true);
+      }
     // eslint-disable-next-line
     }, [state]);
 
@@ -53,4 +54,4 @@ const SessionTimeoutHandler = () => {
                             onExit={handleConfirmExit}></ConfirmRefresh>;
 }
 
-export default SessionTimeoutHandler;
+export default SessionHandler;

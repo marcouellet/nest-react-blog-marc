@@ -1,6 +1,6 @@
 import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers, Param } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { LoginDto, RegisterDto, UserDto } from '../core/dtos';
+import { LoginDto, RegisterDto, UserDto, SessionExtensionDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Request } from 'express';
 import { Auth } from '../auth/decorators/auth.decorator';
@@ -10,7 +10,7 @@ import { JwtPayload } from 'jwt-decode';
 import { UserRole } from '../core/enum';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {} 
 
   // Get current user
   @Get('/whoami')
@@ -49,10 +49,19 @@ export class AuthController {
   }
 
   // Refresh auth token
-  @Put('/refresh')
- @UseGuards(JwtRefreshTokenAuthGuard)
+  @Put('/session/refresh')
+  @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Req() req: Request): Promise<UserDto> {
     const userDto: UserDto = req.user as UserDto;
     return this.authService.refresh(userDto);
+  }
+
+  // Refresh auth token
+  @Put('/session/extend')
+  @UseGuards(JwtRefreshTokenAuthGuard)
+  async extend(@Req() req: Request, @Body(new ValidationPipe()) body: SessionExtensionDto): Promise<UserDto> {
+    const userDto: UserDto = req.user as UserDto;
+    const extension: Number = body.extension;
+    return this.authService.extend(userDto, extension);
   }
 }

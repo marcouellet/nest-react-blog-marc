@@ -4,11 +4,16 @@ import {
   initialState,
   AuthAction,
   AuthState,
-  createActionLoadUser,
   createActionSessionExpired,
+  createActionLoggingOut,
+  createActionLoadUser,
+  createActionLoading
 } from '../reducers/auth';
 import TokenService from '../services/api/TokenService';
-import { isTokenValid } from '../services/api/AuthApiService';
+import { isTokenValid } from '../utils/session.util';
+import { isAutomaticSessionRenewalRequired, getSessionDuration } from '../utils/session.util';
+import AuthApiService from '../services/api/AuthApiService';
+import { toast } from "react-toastify";
 
 type AuthContextProps = {
   state: AuthState;
@@ -21,7 +26,8 @@ const AuthContext = React.createContext<AuthContextProps>({
 });
 
 export function AuthProvider(props: React.PropsWithChildren<{}>) {
-  const [state, dispatch] = React.useReducer(authReducer, initialState);
+  const [state , dispatch] = React.useReducer(authReducer, initialState);
+  
   React.useEffect(() => {
     const user = TokenService.getUser();
 
@@ -29,8 +35,26 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
 
     dispatch(createActionLoadUser(user));
 
-    if (user.authtoken && !isTokenValid(user.authtoken!.accessToken)) {
-      dispatch(createActionSessionExpired());
+    if (user.authtoken) {
+      const token = user.authtoken!.accessToken;
+
+      if (isTokenValid(token)) {
+        if (isAutomaticSessionRenewalRequired(token)) {
+          const sessionDuration = getSessionDuration(token);
+          AuthApiService.extendUserSession(sessionDuration)
+          .then((user) => {
+            dispatch(createActionLoadUser(user));
+            // toast.info(`${user.username} session renewed!`);
+            })
+          .catch(_ => {
+            toast.error(`Refresh session failed, logging out!`);
+            dispatch(createActionLoggingOut());
+          })
+          .finally(() => dispatch(createActionLoading(false)));
+        }
+      } else {
+        dispatch(createActionSessionExpired());
+      }
     }
   }, []);
 

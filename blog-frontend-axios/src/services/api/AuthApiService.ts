@@ -1,21 +1,6 @@
-import jwtDecode from 'jwt-decode';
 import API from './APIService';
-import { User, ILogin, IRegister, IRefresh, JWTPayload } from '../../types';
+import { User, ILogin, IRegister, IRefresh, JWTPayload, ISessionExtension } from '../../types';
 import TokenService from './TokenService';
-
-export function isTokenValid(token: string) {
-  try {
-    const decoded_jwt: JWTPayload = jwtDecode<JWTPayload>(token);
-    const current_time = Date.now().valueOf() / 1000;
-    return decoded_jwt.exp > current_time;
-  } catch (_) {
-    return false;
-  }
-}
-
-function getCurrentUser(): User {
-  return TokenService.getUser();
-};
 
 async function login(email: string, password: string): Promise<User> {
   const loginParms: ILogin = { email, password }
@@ -35,10 +20,22 @@ async function register(username: string, email: string, password: string) : Pro
     });
 }
 
-async function refresh(user: User) : Promise<User> {
+async function refresh() : Promise<User> {
+  const user = TokenService.getUser();
   const { authtoken, authrefreshtoken } = user;
   const refreshParms: IRefresh = { authtoken, authrefreshtoken };
-  return API.put<User>('/auth/refresh', refreshParms)
+  return API.put<User>('/auth/session/refresh', refreshParms)
+    .then(response => {
+      TokenService.setUser(response.data);
+      return response.data;
+    });
+}
+
+async function extendUserSession(extension: number) : Promise<User> {
+  const user = TokenService.getUser();
+  const { authtoken, authrefreshtoken } = user;
+  const sessionExtensionParms: ISessionExtension = { authtoken, authrefreshtoken, extension };
+  return API.put<User>('/auth/session/extend', sessionExtensionParms)
     .then(response => {
       TokenService.setUser(response.data);
       return response.data;
@@ -59,6 +56,6 @@ function logout() {
   TokenService.removeUser();
 }
 
-const AUTHAPI = {getCurrentUser, login, register, refresh, logout, getUserProfile, updateUserProfile}
+const AUTHAPI = {login, register, refresh, logout, getUserProfile, updateUserProfile, extendUserSession}
 
 export default AUTHAPI

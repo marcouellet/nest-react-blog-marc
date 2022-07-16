@@ -1,9 +1,9 @@
 import { JwtPayload } from '../../src/auth/interfaces/jwt.interface';
 import { UserRole } from '../../src/core/enum';
 
-export const testE2EDummyUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.dummy@email.com'};
-export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin@email.com'};
-export const testE2EUnknownUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.unknown@email.com'};
+export const testE2EDummyUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.dummy@email.com', expiresIn: 0};
+export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin@email.com', expiresIn: 0};
+export const testE2EUnknownUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.unknown@email.com', expiresIn: 0};
 
 export const testE2ERoleUser = UserRole.USER.toString();
 export const testE2ERoleAdmin = UserRole.ADMIN.toString();

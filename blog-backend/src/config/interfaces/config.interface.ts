@@ -3,9 +3,9 @@ export interface IConfig {
     connectionString: string;
     authStrategyName: string;
     authSecretKey: string;
-    authExpiresIn: string;
+    authExpiresIn: string; //seconds
     authRefreshTokenSecretKey: string;
-    authRefreshTokenExpiresIn: string;
+    authRefreshTokenExpiresIn: string; //seconds
     loggerLevels: string[];
 }
 

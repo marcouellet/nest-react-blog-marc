@@ -20,7 +20,8 @@ export class AuthService {
 
   private createToken({ email }: UserDto): IAuthToken {
     const sub = email;
-    const payload: JwtPayload = { sub };
+    const expiresIn = Number(this.configService.getConfig().authExpiresIn);
+    const payload: JwtPayload = { sub, expiresIn };
     const accessToken = this.jwtService.sign(payload, this.getTokenSignOptions());
     return { accessToken } as IAuthToken;
   }
@@ -38,12 +39,20 @@ export class AuthService {
 
   private createRefreshToken({ email }: UserDto): IAuthToken {
     const sub = email;
-    const payload: JwtPayload = { sub };
+    const expiresIn = Number(this.configService.getConfig().authRefreshTokenExpiresIn);
+    const payload: JwtPayload = { sub, expiresIn };
     const accessToken = this.jwtService.sign(payload, this.getRefreshTokenSignOptions());
     return { accessToken } as IAuthToken;
   }
 
   private setupUserWithNewTokens(user: UserDto): UserDto {
+    user.authtoken = this.createToken(user);
+    user.authrefreshtoken = this.createRefreshToken(user);
+    delete user.password;
+    return user;
+  }
+
+  private setupUserWithExtendedTokens(user: UserDto, extension: Number): UserDto {
     user.authtoken = this.createToken(user);
     user.authrefreshtoken = this.createRefreshToken(user);
     delete user.password;
@@ -91,8 +100,8 @@ export class AuthService {
   async validateToken(token: string): Promise<JwtPayload> {
     return this.jwtService.verifyAsync<JwtPayload>(token, this.getTokenVerifyOptions())
     .then (result => {
-      let { sub } = result;
-      return { sub };
+      let { sub, expiresIn } = result;
+      return { sub, expiresIn };
     })
       .catch(_ => { throw new UnauthorizedException('Access Denied'); });
   }
@@ -131,6 +140,12 @@ export class AuthService {
     const { email } = userDto;
     return this.validateUserUnrestricted({ email })
       .then(user => this.setupUserWithNewTokens(user));
+  }
+
+  async extend(userDto: UserDto, extension: Number): Promise<UserDto> {
+    const { email } = userDto;
+    return this.validateUserUnrestricted({ email })
+      .then(user => this.setupUserWithExtendedTokens(user, extension));
   }
 
   async register(registerDto: RegisterDto): Promise<UserDto> {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
-import { API_BASE_URL, API_REQUEST_TIMEOUT } from "../../config/api.config";
+import { API_BASE_URL, API_REQUEST_TIMEOUT, HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
 import { IErrors } from '../../types';
 import TokenService from './TokenService';
 
@@ -67,6 +67,10 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
+    const ts = response.headers[HTTP_RESPONSE_HEADER_TIMESTAMP];
+    const timestamp =Number(ts);
+    TokenService.setHttpResponseTimeStamp(timestamp);
+
     return response;
   },
   (error) => {
