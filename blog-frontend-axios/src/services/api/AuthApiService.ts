@@ -1,5 +1,5 @@
 import API from './APIService';
-import { User, ILogin, IRegister, IRefresh, JWTPayload, ISessionExtension } from '../../types';
+import { User, ILogin, IRegister, IRefresh, ISessionExtension } from '../../types';
 import TokenService from './TokenService';
 
 async function login(email: string, password: string): Promise<User> {
