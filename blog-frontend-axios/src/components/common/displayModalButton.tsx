@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import DisplayTooltip from '../common/displayTooltip';
 
 type DisplayButtonProps = React.HTMLProps<HTMLButtonElement> & {
     contentToDisplay: string | JSX.Element,
@@ -21,19 +20,9 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
         setIsOpen(false);
     };
 
-    const renderButtonTooltip = (props: any) => {
-        return (
-            <Tooltip {...props}>
-                <div style={{color: 'bisque'}}>
-                    {toolTip ? toolTip : 'no tooltip'}
-                </div>
-            </Tooltip> 
-        ) 
-    };
-
     return (
         <div>
-             <OverlayTrigger placement="top" overlay={renderButtonTooltip}>
+            <DisplayTooltip toolTip={toolTip ? toolTip : 'no tooltip'}>
                 <button 
                     style={{
                         border: "none",
@@ -48,8 +37,8 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
                 >
                     {children}
                 </button>
-             </OverlayTrigger>
-            
+            </DisplayTooltip>
+
             <Modal show={isOpen} onHide={hideModal} centered dialogClassName={`modal-md`}>
                 <Modal.Body>
                     <div>

@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 const SessionHandler = () => {
 
   const [askRefresh, setAskRefresh] = useState(false);
-  const { state: { user, isAuthenticated, isLoggingOut, isSessionExpired}, dispatch } = useAuth();
+  const { state: { user, isAuthenticated, isLoggingOut, isSessionExpired }, dispatch } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {

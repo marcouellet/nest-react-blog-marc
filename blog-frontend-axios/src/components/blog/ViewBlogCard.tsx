@@ -6,6 +6,7 @@ import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
 import DisplayModalButton from '../common/displayModalButton';
 import ViewUserInfo from '../user/ViewUserInfo';
+import DisplayTooltip from '../common/displayTooltip';
 
 type ViewBlogCardProps = React.HTMLProps<HTMLElement> & {
   post: IPost,
@@ -28,16 +29,25 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
     }
   }
 
+  const PostFullSizeImage = () => {
+    if(post.image) {
+      return <Image imageData={post.image} className="blog-content-image"/>;
+    }  else {
+      return  defaultPostImage && <Image imageData={defaultPostImage} className="blog-content-image"/> 
+    }
+  }
+
   const onClickCard = () => {
     onViewBlog(post.id!);
   }
 
-  const modalContent =                     
+    const userInfo =                     
     (
       <div>
         <ViewUserInfo user={post.user!} defaultUserImage={defaultUserImage}/>
       </div>
     );
+  
   
   return (  
     <div className="view-blog-card">  
@@ -45,14 +55,34 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
           <Card style={{width: '12.5rem'}} >  
             <Card.Body>
               <Card.Header>
+                <div className="row">
+                  <DisplayTooltip toolTip="Display post content">
+                    <img 
+                      className="post-image"
+                      src="/consult.ico"
+                      alt="content icon not found" 
+                      onClick={onClickCard}
+                    /> 
+                  </DisplayTooltip>
+   
+                  <DisplayModalButton  
+                    toolTip="Display user info"
+                    className="display-user-info-button" 
+                    contentToDisplay={userInfo}
+                  >
+                      {post.user?.username}               
+                  </DisplayModalButton> 
+                </div>  
                 <DisplayModalButton  
-                  toolTip="Display user info"
-                  className="display-user-info-button" 
-                  contentToDisplay={modalContent}>{post.user?.username}               
-                </DisplayModalButton>           
-                <div style={{cursor:"zoom-in", marginTop: "1rem"}} onClick={onClickCard}>
+                    toolTip="Display post image"
+                    className="display-post-image-button" 
+                    contentToDisplay={PostFullSizeImage()}
+                >
+                  {PostImage()}            
+                </DisplayModalButton>       
+{/*                 <div style={{cursor:"zoom-in", marginTop: "1rem"}} onClick={onClickImage}>
                   {PostImage()}
-                </div>
+                </div> */}
               </Card.Header> 
               <Card.Title>
                 <div >
