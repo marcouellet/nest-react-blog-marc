@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AUTHAPI from '../../services/api/AuthApiService';
 import { createActionLoggingOut, createActionLogout, createActionLoadUser, createActionLoading,
         createActionSessionExpired } from '../../reducers/auth';
-import ConfirmRefresh from '../common/confirmRefresh';
+import ConfirmRefresh from './confirmRefresh';
 import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '../../utils/session.util';
 import AuthApiService from '../../services/api/AuthApiService';
 import TokenService from '../../services/api/TokenService';

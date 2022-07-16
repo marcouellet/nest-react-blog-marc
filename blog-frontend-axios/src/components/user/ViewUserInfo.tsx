@@ -12,7 +12,7 @@ type ViewUserInfoProps = React.HTMLProps<HTMLElement> & {
 
 const ViewUserInfo: React.FC<ViewUserInfoProps> = ({className, user, defaultUserImage}) => {
 
-  const imageMaxSize: ImageSizeProps = {maxWidth:200, maxHeight:200};
+  const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400};
 
   const UserImage = () => {
     if(user.image) {
@@ -26,22 +26,24 @@ const ViewUserInfo: React.FC<ViewUserInfoProps> = ({className, user, defaultUser
     <div className="view-user-info">  
       <Container>  
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-8">
             {UserImage()}
           </div>
-          <div>
-          <h5 className="username">
-            <span>
-              Name:
-            </span>
-          </h5>
-          <h6>{user.username}</h6>
-          <h5 className="email">
-            <span>
-              Email:
-            </span>
-          </h5>
-          <h6>{user.email}</h6>
+        </div>        
+        <div className="row">
+          <div className="col-md-8">
+            <h5 className="username">
+              <span>
+                Name:
+              </span>
+            </h5>
+            <h6>{user.username}</h6>
+            <h5 className="email">
+              <span>
+                Email:
+              </span>
+            </h5>
+            <h6>{user.email}</h6>
           </div>
         </div>
       </Container>  

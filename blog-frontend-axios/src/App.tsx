@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from "./routes/AppRoutes";
 import ModalContextProvider from './contexts/modalContext';
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
-import SessionHandler from "./components/auth/sessionHandler";
+import SessionHandler from "./components/common/sessionHandler";
 import Processing from './components/common/processing';
 
 const App = () => {
