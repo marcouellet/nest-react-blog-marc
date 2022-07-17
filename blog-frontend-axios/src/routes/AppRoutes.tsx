@@ -31,7 +31,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       {controlledRoutes}
-      {/* {AdminRoutes()} */}
+      {AdminRoutes()}
       <Route path={"/"} element={<Home/>} />
       <Route path={"/blog"} element={<ListBlogs/>}/>
       <Route path={"/blog/:postId"} element={<ViewBlog/>}/>
