@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
@@ -10,17 +10,6 @@ type DisplayModalConfirmProps = React.HTMLProps<HTMLButtonElement> & {
 }
 
 const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, logout, refresh, onExit, className}) => {
-
-    // const [isOpen, setIsOpen] = useState(show);
- 
-    // const hideModal = () => {
-    //     setIsOpen(false);
-    // };
-
-    // useEffect(() => {
-    //     setIsOpen(show);
-    // // eslint-disable-next-line
-    // }, [show]);
 
     return (
         <div>           

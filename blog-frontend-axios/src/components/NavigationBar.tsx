@@ -47,6 +47,7 @@ const NavigationBar = () => {
             return (
                 <ButtonGroup>
                     <Button variant="secondary" onClick={handleLogout} disabled={isLoading}>Logout</Button>
+                    &nbsp;&nbsp;
                     <Button variant="secondary" onClick={handleUserProfile}  disabled={isLoading}>Profile</Button>
                 </ButtonGroup>
             )
@@ -54,6 +55,7 @@ const NavigationBar = () => {
             return (
                 <ButtonGroup>
                     <Button variant="secondary" as={Link} to="/login" disabled={isLoading}>Login</Button>
+                    &nbsp;&nbsp;
                     <Button variant="secondary" as={Link} to="/register" disabled={isLoading}>Register</Button>
                 </ButtonGroup>
             )              
@@ -90,7 +92,7 @@ const NavigationBar = () => {
                     }
                 </Nav>
             </div>
-            <Form inline className="mx-3">
+            <Form inline>
                 {authButton()}
             </Form>
         </Navbar>
