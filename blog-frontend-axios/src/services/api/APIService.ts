@@ -31,9 +31,9 @@ function processError(error : any) : IErrors {
     if (error.response.data) {
       errorAttributes.message = error.response.data.message;
     }
-    if (error.response.request && error.response.request.authorize) {
-      errorAttributes.authorize = [error.response.request.authorize];
-      errorAttributes.token = [error.response.request.authorize.replace('Bearer ', '').trim()];
+    if (error.config.headers) {
+      errorAttributes.authorize = error.config.headers['Authorization'] as string;
+      errorAttributes.token = [errorAttributes.authorize.replace('Bearer ', '').trim()];
     }
   } else if (error.request) {
     // The client never received a response, and the request was never left

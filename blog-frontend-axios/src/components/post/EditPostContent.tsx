@@ -57,7 +57,6 @@ const EditPostContent: React.FC<EditPostContentProps> = ({className, content, on
                     config={config}
                     onChange={handleChangeContent}
                 />
-                <div dangerouslySetInnerHTML={{ __html: content }} />
             </div>
         </div>
      );

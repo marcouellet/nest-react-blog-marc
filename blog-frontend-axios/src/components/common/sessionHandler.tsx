@@ -7,7 +7,6 @@ import { createActionLoggingOut, createActionLogout, createActionLoadUser, creat
 import ConfirmRefresh from './confirmRefresh';
 import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '../../utils/session.util';
 import AuthApiService from '../../services/api/AuthApiService';
-import TokenService from '../../services/api/TokenService';
 import { toast } from "react-toastify";
 
 const SessionHandler = () => {
@@ -46,16 +45,14 @@ const SessionHandler = () => {
   }
 
   useEffect(() => {
-    // The following 3 lines are a fix to reverse the fact that state is reinitialized while navigating 
-    const user = TokenService.getUser();
-    if (!user) return;
-    dispatch(createActionLoadUser(user));
 
     if (isAuthenticated) {
       if (isLoggingOut) {
         handleLogout();
       } else if (isSessionExpired) {
-        setAskRefresh(true);
+        if (!askRefresh) {
+          setAskRefresh(true);
+        }
       } else if (user && user.authtoken) {
         const token = user.authtoken!.accessToken;
         if (isTokenValid(token)) {
@@ -73,9 +70,10 @@ const SessionHandler = () => {
             .finally(() => dispatch(createActionLoading(false)));
           }
         } else {
-          dispatch(createActionSessionExpired());
+          if (!isSessionExpired) {
+            dispatch(createActionSessionExpired());
+          }
         }
-  
       }
     }
   // eslint-disable-next-line

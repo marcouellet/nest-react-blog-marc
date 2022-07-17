@@ -65,23 +65,23 @@ const NavigationBar = () => {
         <Navbar expand="lg" bg="dark" variant="dark" fixed="top">
             <div className="container-fluid">
                 <Navbar.Brand href="/">Marc's Blog</Navbar.Brand>
-                <Navbar.Text >{userDisplay()}</Navbar.Text>
+                <Navbar.Text>{userDisplay()}</Navbar.Text>
                 <Nav className="me-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/blog">Blogs</Nav.Link>
+                    <Nav.Link as={Link} to="/">Home</Nav.Link>
+                    <Nav.Link as={Link} to="/blog">Blogs</Nav.Link>
                     {isAuthenticated && (
                         <NavDropdown id="nav-dropdown-manage" title="Manage">
                          {!isAdministrator() && (
                             <div>
-                                <NavDropdown.Item href="/post/user">Posts</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/post/user">Posts</NavDropdown.Item>                               
                             </div>
                         )
                         }                        
                         {isAdministrator() && (
                             <div>
-                                <NavDropdown.Item href="/post">Posts</NavDropdown.Item>
-                                <NavDropdown.Item href="/category">Categories</NavDropdown.Item>
-                                <NavDropdown.Item href="/user">Users</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/post">Posts</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/category">Categories</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/user">Users</NavDropdown.Item>
                             </div>
                         )
                         }

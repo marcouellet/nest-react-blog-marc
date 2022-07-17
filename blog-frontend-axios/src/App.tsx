@@ -18,23 +18,21 @@ const App = () => {
     <>
       <ConfirmationModalContextProvider>
         <BrowserRouter>
-          <SessionHandler/>
-          <NavigationBar/>
-          <Processing/>
-          <ModalContextProvider>
-            <AppRoutes />
-          </ModalContextProvider>
-          <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
+          <AuthProvider>
+            <SessionHandler/>
+            <NavigationBar/>
+            <Processing/>
+            <ModalContextProvider>
+              <AppRoutes />
+            </ModalContextProvider>
+            <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
+          </AuthProvider>
         </BrowserRouter>
       </ConfirmationModalContextProvider>
     </>
   );
 }
 
-export default () => (
-  <AuthProvider>
-    <App />
-  </AuthProvider>
-);
+export default App;
 
 

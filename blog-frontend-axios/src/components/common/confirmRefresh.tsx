@@ -11,20 +11,20 @@ type DisplayModalConfirmProps = React.HTMLProps<HTMLButtonElement> & {
 
 const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, logout, refresh, onExit, className}) => {
 
-    const [isOpen, setIsOpen] = useState(show);
+    // const [isOpen, setIsOpen] = useState(show);
  
-    const hideModal = () => {
-        setIsOpen(false);
-    };
+    // const hideModal = () => {
+    //     setIsOpen(false);
+    // };
 
-    useEffect(() => {
-        setIsOpen(show);
-    // eslint-disable-next-line
-    }, [show]);
+    // useEffect(() => {
+    //     setIsOpen(show);
+    // // eslint-disable-next-line
+    // }, [show]);
 
     return (
         <div>           
-            <Modal show={isOpen} onHide={hideModal} onExit={onExit} centered dialogClassName={`modal-md`}>
+            <Modal show={show} onExit={onExit} centered dialogClassName={`modal-md`}>
                 <Modal.Body>
                     <div style={{border: "2px solid blue", padding: "10px"}}>
                         <p>
