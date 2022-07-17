@@ -41,14 +41,13 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
     onViewBlog(post.id!);
   }
 
-    const userInfo =                     
-    (
-      <div>
-        <ViewUserInfo user={post.user!} defaultUserImage={defaultUserImage}/>
-      </div>
-    );
-  
-  
+  const userInfo =                     
+  (
+    <div>
+      <ViewUserInfo user={post.user!} defaultUserImage={defaultUserImage}/>
+    </div>
+  );
+
   return (  
     <div className="view-blog-card">  
       <Container>  
@@ -57,12 +56,14 @@ const ViewBlogCard: React.FC<ViewBlogCardProps> = ({className, post, defaultPost
               <Card.Header>
                 <div className="row">
                   <DisplayTooltip toolTip="Display post content">
-                    <img 
-                      className="post-image"
-                      src="/consult.ico"
-                      alt="content icon not found" 
-                      onClick={onClickCard}
-                    /> 
+                    <button style={{ border: "none", outline:"none", backgroundColor: "transparent" }}>
+                      <img 
+                        className="post-image"
+                        src="/consult.ico"
+                        alt="content icon not found" 
+                        onClick={onClickCard}
+                      /> 
+                    </button>
                   </DisplayTooltip>
    
                   <DisplayModalButton  

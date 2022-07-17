@@ -2,7 +2,12 @@
 .display-user-info-button {
   border: none;
 }
+
 display-user-info-button:focus {
   border: none;
   outline: none;
+}
+
+.post-image-button {
+  border: none;
 }
