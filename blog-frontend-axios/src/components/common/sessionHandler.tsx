@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 const SessionHandler = () => {
 
   const [askRefresh, setAskRefresh] = useState(false);
-  const { state: { user, isAuthenticated, isLoggingOut, isSessionExpired }, dispatch } = useAuth();
+  const { state: { user, isAuthenticated, isLoggingOut, isSessionExpired, lastActivityTimeStamp }, dispatch } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -77,7 +77,7 @@ const SessionHandler = () => {
       }
     }
   // eslint-disable-next-line
-  }, [isAuthenticated, isLoggingOut, isSessionExpired]);
+  }, [isAuthenticated, isLoggingOut, isSessionExpired, lastActivityTimeStamp]);
 
   return (
     <ConfirmRefresh 

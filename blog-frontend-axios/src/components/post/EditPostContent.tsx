@@ -50,6 +50,7 @@ const EditPostContent: React.FC<EditPostContentProps> = ({className, content, on
                     Cancel
                 </button> 
            </div>
+           &nbsp;
             <div>
                 <JoditEditor
                     ref={editor}
