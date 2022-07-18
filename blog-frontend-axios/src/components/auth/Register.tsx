@@ -48,7 +48,7 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleApiErrors = (apiErrors: IErrors) => {
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkForbidden(apiErrors)) {
       const message = apiErrors['message'];
       toast.error(`Registration failed: ${message}`);
@@ -57,8 +57,8 @@ const Register = () => {
     } else if (checkTimeout(apiErrors)) {
       toast.error(`Request timeout`);
     } else {
-      toast.error(`User registration failed, see error list`);
-      setErrorList(apiErrors);
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);   
       }
   }
 
@@ -73,7 +73,7 @@ const Register = () => {
           navigate('/login');    
         }
       )
-      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'User registration') })
       .finally(() => dispatch(createActionLoading(false))); 
  } 
 

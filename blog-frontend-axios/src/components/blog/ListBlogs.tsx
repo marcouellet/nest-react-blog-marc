@@ -55,7 +55,7 @@ const ListBlogs = () => {
               selectCategory(allCategories, 'all', false);
             }            
           })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'));
         }
         fetchCategories();
       }
@@ -72,17 +72,17 @@ const ListBlogs = () => {
         if ( category.id === 'all') {
           await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostsError(apiErrors));
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Posts reading'));
         } 
         else if (category.id === 'no_category') {
           await PostApiService.findManyPostsWithoutCategory(postTitleFilter)
           .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostsError(apiErrors));
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Posts reading'));
         } 
         else {
           await PostApiService.findManyPostsForCategory(category.id!, postTitleFilter)
           .then(posts => setPosts(posts))
-          .catch((apiErrors: IErrors) => handleFetchPostsError(apiErrors));
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Posts reading'));
         }
         dispatch(createActionLoading(false));
       }
@@ -111,14 +111,6 @@ const ListBlogs = () => {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
-  }
-
-  const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'Categories reading');
-  }
-
-  const handleFetchPostsError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'Posts reading');
   }
 
   const handleCategorySelect=(e: any)=>{

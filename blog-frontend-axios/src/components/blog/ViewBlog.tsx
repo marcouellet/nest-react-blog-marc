@@ -26,7 +26,7 @@ const ViewBlog = () => {
         dispatch(createActionLoading(true));
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
-        .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
+        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Post reading'))
         .finally(() => dispatch(createActionLoading(false)));
       }
       fetchData();  
@@ -46,10 +46,6 @@ const ViewBlog = () => {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
-  }
-
-  const handleFetchPostError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'Post reading');
   }
 
   const handleReturn = () => {

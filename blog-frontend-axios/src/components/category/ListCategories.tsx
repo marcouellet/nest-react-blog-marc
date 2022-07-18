@@ -26,7 +26,7 @@ const ListCategories = () => {
       dispatch(createActionLoading(true));
       CategoryApiService.getAllCategories()
         .then(users => setCategorys(users))
-        .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
+        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
         .finally(() => dispatch(createActionLoading(false)));
     }
     fetchCategories();
@@ -45,10 +45,6 @@ const ListCategories = () => {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
-  }
-
-  const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'Categories reading');
   }
 
   return (

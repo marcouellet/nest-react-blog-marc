@@ -49,7 +49,7 @@ const CreateCategory = () => {
       dispatch(createActionLoading(true));
       await CategoryApiService.createCategory(data)
       .then(() => { handleSubmitFormSucess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors,'Category creation') })
       .finally(() => dispatch(createActionLoading(false)));
     }
   } 
@@ -75,10 +75,6 @@ const CreateCategory = () => {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
-  }
-
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'Category creation');
   }
 
   const cancelCreateCategoryMessage = () => `Category creation and loose changes`;

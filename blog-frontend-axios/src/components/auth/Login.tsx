@@ -36,7 +36,7 @@ const Login = () => {
     resolver: yupResolver(validationSchema)
   });
   
-  const handleApiErrors = (apiErrors: IErrors) => {
+  const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkNotFound(apiErrors)) {
       toast.error(`User not found`);    
     } else if (checkUnauthorized(apiErrors)) {
@@ -44,8 +44,8 @@ const Login = () => {
     } else if (checkTimeout(apiErrors)) {
       toast.error(`Request timeout`);
     } else {
-      toast.error(`Login failed, see error list`);
-      setErrorList(apiErrors);
+      toast.error(`${process} failed, see error list`);
+      setErrorList(apiErrors);   
     }
    }
 
@@ -59,7 +59,7 @@ const Login = () => {
           navigate('/');    
         }
       )
-      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Login'); })
       .finally(() => dispatch(createActionLoading(false)));
   } 
 

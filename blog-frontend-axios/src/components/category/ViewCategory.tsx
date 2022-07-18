@@ -28,7 +28,7 @@ const ViewCategory = () => {
         dispatch(createActionLoading(true));
         await CategoryApiService.getCategoryById(categoryId!)
         .then(user => setCategory(user))
-        .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors))
+        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Category reading'))
         .finally(() => dispatch(createActionLoading(false)));
       }
       fetchData();  
@@ -48,10 +48,6 @@ const ViewCategory = () => {
       toast.error(`${process} failed, see error list`);
       setErrorList(apiErrors);      
     }
-  }
-
-  const handleFetchCategoryError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'Category reading');
   }
 
   const handleReturn = () => {
