@@ -48,7 +48,7 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmitFormError = (apiErrors: IErrors) => {
+  const handleApiErrors = (apiErrors: IErrors) => {
     if (checkForbidden(apiErrors)) {
       const message = apiErrors['message'];
       toast.error(`Registration failed: ${message}`);
@@ -73,7 +73,7 @@ const Register = () => {
           navigate('/login');    
         }
       )
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors); })
       .finally(() => dispatch(createActionLoading(false))); 
  } 
 
