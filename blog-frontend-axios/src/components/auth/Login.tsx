@@ -36,7 +36,7 @@ const Login = () => {
     resolver: yupResolver(validationSchema)
   });
   
-  const handleSubmitFormError = (apiErrors: IErrors) => {
+  const handleApiErrors = (apiErrors: IErrors) => {
     if (checkNotFound(apiErrors)) {
       toast.error(`User not found`);    
     } else if (checkUnauthorized(apiErrors)) {
@@ -59,7 +59,7 @@ const Login = () => {
           navigate('/');    
         }
       )
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors); })
       .finally(() => dispatch(createActionLoading(false)));
   } 
 
