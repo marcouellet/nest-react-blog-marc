@@ -79,7 +79,7 @@ const CreatePost = () => {
               setCategories(allCategories);
               selectCategory(allCategories, 'no_category', false);
             })
-            .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
+            .catch((apiErrors: IErrors) =>  handleApiErrors(apiErrors, 'Categories reading'))
             .finally(() => dispatch(createActionLoading(false)));
         }
         fetchCategories();
@@ -90,10 +90,6 @@ const CreatePost = () => {
     })();
  // eslint-disable-next-line
   }, []);
-
-  const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Categories reading');
-  }
 
   const getDefaultPostImage = (): Promise<ImageData> => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
@@ -126,7 +122,7 @@ const CreatePost = () => {
       const postData = {...data, category, image, user};
       await PostApiService.createPost(postData)
       .then(() => { handleSubmitFormSuccess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post creation') });
       dispatch(createActionLoading(false));  
     }
    } 
@@ -153,10 +149,6 @@ const CreatePost = () => {
   const handleSubmitFormSuccess = () => {
     toast.success(`Post created successfully...`);
     goBack();
-  }
-
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Post creation');
   }
 
   const cancelCreatePostMessage = () => `post creation and loose changes`;

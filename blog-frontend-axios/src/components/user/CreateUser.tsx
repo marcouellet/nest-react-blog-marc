@@ -103,7 +103,7 @@ const CreateUser = () => {
       const userData = {...data, image};
       await UserApiService.createUser(userData)
       .then(() => { handleSubmitFormSuccess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Creation') })
       .finally(() => dispatch(createActionLoading(false)));
     }
   } 
@@ -134,10 +134,6 @@ const CreateUser = () => {
     setSubmitForm(false);
     toast.success(`User created successfully...`);
     navigate('/user');
-  }
-
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Creation');
   }
 
   const cancelCreateUserMessage = () => `User creation and loose changes`;
