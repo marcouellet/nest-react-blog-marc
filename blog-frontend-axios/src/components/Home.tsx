@@ -83,6 +83,11 @@ const Home = () => {
               <h5>
                 <div>P.S. User are identified by their email which must be unique in the application</div>
               </h5>
+              <br/>
+              <h5>
+                <div>Code: Want to see the code, go to <a href="https://github.com/marcouellet/nest-react-blog-marc">my project site</a>
+                </div>
+              </h5>
             </div>
           </div> 
         </div>
