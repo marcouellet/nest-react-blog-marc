@@ -120,7 +120,7 @@ const UserProfile = () => {
       const message = apiErrors['message'];
       toast.error(`Profile update failed: ${message}`);
     } else if (checkSessionExpired(apiErrors)) {
-      toast.error(`${process} failed, session expired`);
+      // toast.error(`${process} failed, session expired`);
       dispatch(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);

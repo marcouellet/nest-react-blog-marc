@@ -26,7 +26,7 @@ const SessionHandler = () => {
     };
 
   const handleRefresh = async () => {
-    setAskRefresh(false);
+
     dispatch(createActionLoading(true));
     AUTHAPI.refresh()
     .then((user) => {
@@ -37,7 +37,11 @@ const SessionHandler = () => {
         toast.error(`Refresh session failed, logging out!`);
         handleLogout();
     })
-    .finally(() => dispatch(createActionLoading(false)));
+    .finally(() => {
+      dispatch(createActionLoading(false));
+      setAskRefresh(false);
+    }
+    );
   };
 
   const handleConfirmExit = () => {
