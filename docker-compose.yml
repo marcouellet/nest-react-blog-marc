@@ -22,14 +22,14 @@ services:
         - "5000:5000"
     environment:
       - NODE_ENV=production
-      - MONGODB_URI='mongodb://db_mongo/nest-blog'
+      - MONGODB_URI='mongodb://mongo/nest-react-blog-marc'
     links:
       - mongo
 
 
   mongo:
     image: mongo
-    container_name: db_mongo
+    container_name: mongo
     environment:
       - MONGODB_DATABASE= 'nest-react-blog-marc'
     ports:
