@@ -15,7 +15,7 @@ import Processing from './components/common/processing';
 
 const App = () => {
   return (
-    <>
+    <React.StrictMode>
       <ConfirmationModalContextProvider>
         <BrowserRouter>
           <AuthProvider>
@@ -29,7 +29,7 @@ const App = () => {
           </AuthProvider>
         </BrowserRouter>
       </ConfirmationModalContextProvider>
-    </>
+    </React.StrictMode>
   );
 }
 
