@@ -14,7 +14,6 @@ import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2
 import { UserDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
-import { doesNotReject } from 'assert';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -146,11 +145,11 @@ describe('AuthController (e2e)', () => {
       });
   });
 
-  it('AUTH(5): (PUT) /auth/refresh (not logged in)', () => {
-    Logger.debug('AUTH(5): (PUT) /auth/refresh (not logged in)');
+  it('AUTH(5): (PUT) /auth/session/refresh (not logged in)', () => {
+    Logger.debug('AUTH(5): (PUT) /auth/session/refresh (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/auth/refresh')
+      .put('/auth/session/refresh')
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -192,25 +191,25 @@ describe('AuthController (e2e)', () => {
     }
   });
 
-  it('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in)', () => {
-    Logger.debug('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in)');
+  it('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in)', () => {
+    Logger.debug('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in)');
     Logger.flush();
     if (unknownUserDtoWithTokens) {
       const authtoken = unknownUserDtoWithTokens.authtoken;
       const authrefreshtoken = unknownUserDtoWithTokens.authrefreshtoken;
       const refreshParms: IRefresh = { authtoken, authrefreshtoken };
       return request(app.getHttpServer())
-        .put('/auth/refresh')
+        .put('/auth/session/refresh')
         .set('Authorization', `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
         .send(refreshParms)
         .expect(StatusCodes.OK)
         .catch(error => {
-          Logger.error('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in) failed, see following error message:');
+          Logger.error('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in) failed, see following error message:');
           Logger.error(error);
           Logger.flush();
         });
     } else {
-      Logger.error('AUTH(8): (PUT) /auth/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed');
+      Logger.error('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed');
       Logger.flush();
     }
   });

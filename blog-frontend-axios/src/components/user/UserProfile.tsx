@@ -104,7 +104,7 @@ const UserProfile = () => {
               .finally(() => dispatch(createActionLoading(false)));
               await AUTHAPI.getUserProfile()
               .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
-              .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
+              .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'User reading'))
               .finally(() => dispatch(createActionLoading(false)));
               }
               fetchData();      
@@ -132,10 +132,6 @@ const UserProfile = () => {
     }
   }
 
-  const handleFetchUserError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors,'User reading');
-  }
-
   const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
   const UserImage = () => {
@@ -156,8 +152,8 @@ const UserProfile = () => {
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
       await AUTHAPI.updateUserProfile( userData)
-        .then((userUpdated) => { setUserEdited(userUpdated);  handleSubmitFormSuccess(userUpdated); })
-        .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
+        .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
+        .catch((apiErrors: IErrors) =>  { setSubmitForm(false); handleApiErrors(apiErrors,'User update'); });
       dispatch(createActionLoading(false));
       }
   } 
@@ -167,6 +163,7 @@ const UserProfile = () => {
   }
 
   const handleSubmitFormSuccess = (userUpdated: User) => {
+    setUserEdited(userUpdated);
     setSubmitForm(false);
       if (user?.email === userUpdated?.email) {
       // Update state user to refresh user info in NavBar
@@ -174,11 +171,6 @@ const UserProfile = () => {
       }
       toast.success(`User updated successfully...`);
       navigate('/'); 
-  }
-
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    setSubmitForm(false);
-    handleApiErrors(apiErrors,'User update');
   }
 
   const cancelEditUserMessage = () => `user edition and loose changes`;

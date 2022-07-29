@@ -1,0 +1,7 @@
+name: blog-frontend-axios
+image: okteto/blog-frontend-axios:dev
+command: yarn start
+sync:
+  - .:/usr/src/app
+persistentVolume:
+  enabled: false

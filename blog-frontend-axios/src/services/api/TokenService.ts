@@ -1,5 +1,5 @@
 import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '../../utils/local.storage.utils';
-import { HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
+import { REACT_APP_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
 import { IAuthToken, User } from '../../types';
   
 export const USER_KEY = 'user';
@@ -30,11 +30,11 @@ export const USER_KEY = 'user';
   };
 
   const getHttpResponseTimeStamp = (): number => {
-    return getLocalStorageValue(HTTP_RESPONSE_HEADER_TIMESTAMP) as number;
+    return getLocalStorageValue(REACT_APP_HTTP_RESPONSE_HEADER_TIMESTAMP) as number;
   };
   
   const setHttpResponseTimeStamp = (timestamp: number) => {
-    setLocalStorageValue(HTTP_RESPONSE_HEADER_TIMESTAMP, timestamp);
+    setLocalStorageValue(REACT_APP_HTTP_RESPONSE_HEADER_TIMESTAMP, timestamp);
   };
   
   const TokenService = {

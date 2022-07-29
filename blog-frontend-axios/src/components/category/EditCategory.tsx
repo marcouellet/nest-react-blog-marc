@@ -54,7 +54,7 @@ const EditCategory = () => {
         dispatch(createActionLoading(true));
         await CategoryApiService.getCategoryById(userId!)
         .then((category) => { setCategory(category); reset(category);})
-        .catch((apiErrors: IErrors) => handleFetchCategoryError(apiErrors))
+        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Category reading'))
         .finally(() => dispatch(createActionLoading(false)));
        }
       fetchData();      
@@ -68,7 +68,7 @@ const EditCategory = () => {
       const userData: IUpdateCategory = createCategoryForUpdate({...category, ...data});
       await CategoryApiService.updateCategory(category.id!, userData)
       .then(() => { handleSubmitFormSuccess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Category update'); })
       .finally(() => dispatch(createActionLoading(false)));
      }
   } 
@@ -87,10 +87,6 @@ const EditCategory = () => {
     }
   }
 
-  const handleFetchCategoryError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Category reading');
-  }
-
   const handleSubmitForm = () => {
     setSubmitForm(true);
   }
@@ -100,19 +96,15 @@ const EditCategory = () => {
     navigate(`/category/${category?.id}`)
   }
 
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Category update');
-}
+  const cancelEditCategoryMessage = () => `category edition and loose changes`;
 
-const cancelEditCategoryMessage = () => `category edition and loose changes`;
+  const handleResetEditCategory = () => {
+    reset(defaultValues, { keepDirty: false});
+  }
 
-const handleResetEditCategory = () => {
-  reset(defaultValues, { keepDirty: false});
-}
-
-const handleCancelEditCategory = () => {
-  navigate(`/category/${category?.id}`)
-};
+  const handleCancelEditCategory = () => {
+    navigate(`/category/${category?.id}`)
+  };
 
   return (
     <div className={'page-wrapper'}>

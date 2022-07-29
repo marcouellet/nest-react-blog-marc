@@ -76,7 +76,7 @@ const EditPost = () => {
             setCategories(allCategories);
             selectCategory(allCategories, 'no_category', false);
           })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Categories reading'))
           .finally(() => dispatch(createActionLoading(false)));
         }
         fetchCategories();
@@ -99,7 +99,7 @@ const EditPost = () => {
             }
 
           })
-          .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Post reading'))
           .finally(() => dispatch(createActionLoading(false)));
         }
         await fetchPost();
@@ -139,7 +139,7 @@ const EditPost = () => {
       const postData: IUpdatePost = createPostForUpdate({...post, ...data, image, category});
       await PostApiService.updatePost(post.id!, postData)
       .then(() => { handleSubmitFormSuccess(); })
-      .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); })
+      .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post update') })
       .finally(() => dispatch(createActionLoading(false)));
      }
   } 
@@ -159,21 +159,9 @@ const EditPost = () => {
     }
   }
 
-  const handleFetchCategoriesError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Categories reading');
-  }
-  
-  const handleFetchPostError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Post reading');
-  }
-
   const handleSubmitFormSuccess = () => {
     toast.success(`Post updated successfully...`);
     navigate(`/post/${post?.id}`);
-  }
-
-  const handleSubmitFormError = (apiErrors: IErrors) => {
-    handleApiErrors(apiErrors, 'Post update');
   }
 
   const cancelEditPostMessage = () => `post edition and loose changes`;

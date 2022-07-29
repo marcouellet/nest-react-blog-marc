@@ -1,7 +1,7 @@
 import { IAuthToken, JwtPayload } from '../../src/auth/interfaces/jwt.interface';
 import { LoginDto, RegisterDto } from '../../src/core/dtos';
 
-export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com'};
+export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com', expiresIn: 300};
 export const testAuthToken: IAuthToken =  { accessToken: 'token.signed'};
 
 export const testPassword = 'password';

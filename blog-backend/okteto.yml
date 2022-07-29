@@ -1,0 +1,13 @@
+name: marc-blog-backend
+selector:
+  app.kubernetes.io/component: marc-blog-backend
+image: okteto/golang:1
+command: bash
+sync:
+  - .:/usr/src/app
+persistentVolume:
+  enabled: false
+divert:
+  ingress: catalog-chart
+  service: marc-blog-frontend
+  port: 8080

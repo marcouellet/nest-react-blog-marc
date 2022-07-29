@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  client:
+    restart: always
+    container_name: nest-react-blog-marc
+    build:
+      context: ./blog-frontend-axios
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    links:
+      - api
+
+  api:
+    restart: always
+    container_name: nest-react-blog-marc-api
+    build: 
+      context: ./blog-backend
+      dockerfile: Dockerfile
+    ports:
+        - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI='mongodb://mongo/nest-react-blog-marc'
+    links:
+      - mongo
+
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      - MONGODB_DATABASE= 'nest-react-blog-marc'
+    ports:
+      - 27017:27017
+    volumes:
+      - /data/mongodb/db:/data/db
+  
