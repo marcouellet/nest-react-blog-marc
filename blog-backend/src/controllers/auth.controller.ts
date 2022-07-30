@@ -61,7 +61,7 @@ export class AuthController {
   @UseGuards(JwtRefreshTokenAuthGuard)
   async extend(@Req() req: Request, @Body(new ValidationPipe()) body: SessionExtensionDto): Promise<UserDto> {
     const userDto: UserDto = req.user as UserDto;
-    const extension: Number = body.extension;
+    const extension: number = body.extension;
     return this.authService.extend(userDto, extension);
   }
 }

@@ -5,6 +5,6 @@ import { IAuthToken } from '../../auth/interfaces/jwt.interface';
 export class SessionExtensionDto {
   @IsNotEmpty()
   @IsNumber()
-  extension: Number
+  extension: number;
 
 }
