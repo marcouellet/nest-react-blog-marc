@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+
 import { AppModule } from '../../src/modules/app.module';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
