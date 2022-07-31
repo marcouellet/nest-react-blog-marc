@@ -1,10 +1,11 @@
 import { UnauthorizedException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtService } from '@nestjs/jwt';
+
 import { AuthService } from '../../src/services/auth.service';
 import { UserService } from '../../src/services/user/user.service';
 import { UserFactoryService } from '../../src/services/user/user-factory.service';
 import { CryptographerService } from '../../src/services/cryptographer.service';
-import { JwtService } from '@nestjs/jwt';
 import JwtServiceMock from '../mocks/jwt.service.mock';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import { DataServiceRepositories } from '../../src/services/data.service.repositories';

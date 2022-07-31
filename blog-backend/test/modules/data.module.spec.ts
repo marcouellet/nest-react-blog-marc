@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ModuleMetadata, NotFoundException } from '@nestjs/common';
+
 import { DataModule } from '../../src/modules/data.module';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { MongoDataModule } from '../../src/frameworks/data/mongo/mongo-data.module';

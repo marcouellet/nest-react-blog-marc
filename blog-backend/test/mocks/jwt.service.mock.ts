@@ -1,4 +1,5 @@
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
+
 import { testSignResult, testVerifyResult } from '../data/token.data';
 
 const JwtServiceMock = {
