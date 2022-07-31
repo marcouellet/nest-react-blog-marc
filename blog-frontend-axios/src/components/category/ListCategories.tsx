@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
+
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { ICategory, UserRole } from "../../types";
 import useAuth from '../../contexts/auth';

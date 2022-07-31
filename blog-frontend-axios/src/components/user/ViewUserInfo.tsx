@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import React from 'react';
 import { Container } from 'react-bootstrap';
+
 import { IUser, ImageSizeProps, ImageData } from "../../types";
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';

@@ -1,8 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import React from 'react';
 import {CardDeck } from 'react-bootstrap';
-import { IPost, ImageData } from "../../types";
 import { useNavigate } from 'react-router-dom';
+
+import { IPost, ImageData } from "../../types";
 import ViewBlogCard, { onViewBlog } from './ViewBlogCard';
 
 type ViewBlogCardsProps = React.HTMLProps<HTMLElement> & {

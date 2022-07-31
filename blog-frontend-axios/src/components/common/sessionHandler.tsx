@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import useAuth from '../../contexts/auth';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+
+import useAuth from '../../contexts/auth';
 import AUTHAPI from '../../services/api/AuthApiService';
 import { createActionLoggingOut, createActionLogout, createActionLoadUser, createActionLoading,
         createActionSessionExpired } from '../../reducers/auth';
 import ConfirmRefresh from './confirmRefresh';
 import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '../../utils/session.util';
 import AuthApiService from '../../services/api/AuthApiService';
-import { toast } from "react-toastify";
 
 const SessionHandler = () => {
 

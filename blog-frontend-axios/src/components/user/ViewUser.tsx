@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { IUser } from "../../types";
 import { toast } from "react-toastify";
+
 import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors, ImageSizeProps, ImageData } from '../../types';
+import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { PostApiService } from '../../services/api/PostApiService';

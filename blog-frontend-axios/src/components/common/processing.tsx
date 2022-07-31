@@ -1,5 +1,6 @@
 import React, { CSSProperties } from "react";
 import MoonLoader from "react-spinners/MoonLoader";
+
 import useAuth from '../../contexts/auth';
 
 const override: CSSProperties = {

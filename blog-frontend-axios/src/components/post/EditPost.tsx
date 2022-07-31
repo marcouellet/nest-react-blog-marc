@@ -4,6 +4,8 @@ import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+
 import CancelButton from '../common/cancelConfirmation'
 import { IPost, IUpdatePost, ICategory, createPostForUpdate, minimumPostTitleLength, minimumPostDescriptionLength,
           ImageSizeProps } from "../../types";
@@ -12,7 +14,6 @@ import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { IErrors, ImageData, PostEditingFormState, IPostEditingState } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';

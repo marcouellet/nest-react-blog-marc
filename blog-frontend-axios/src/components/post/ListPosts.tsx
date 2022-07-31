@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
+
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory, ImageData } from "../../types";
 import useAuth from '../../contexts/auth';
@@ -9,7 +11,6 @@ import { resizeImage } from '../../utils/image.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
-import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
 import ImageResize from '../common/ImageResize';
 import Image from '../common/Image';

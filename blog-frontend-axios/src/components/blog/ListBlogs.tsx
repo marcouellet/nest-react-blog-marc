@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
+
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory } from "../../types";
 import useAuth from '../../contexts/auth';

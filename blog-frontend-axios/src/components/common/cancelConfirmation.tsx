@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {useConfirmationModalContext} from "../../contexts/modalConfirmationContext";
 
 type CancelButtonProps = React.HTMLProps<HTMLButtonElement> & {

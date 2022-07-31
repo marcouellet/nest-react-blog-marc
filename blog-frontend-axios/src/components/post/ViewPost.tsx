@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { IPost, UserRole } from "../../types";
 import { toast } from "react-toastify";
+
+import { IPost, UserRole } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';

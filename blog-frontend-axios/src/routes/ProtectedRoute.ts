@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 import useAuth from '../contexts/auth';
 
 type ProtectedRouteProps = React.HTMLProps<HTMLElement> & {

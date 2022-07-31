@@ -3,13 +3,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import CancelButton from '../common/cancelConfirmation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+
+import CancelButton from '../common/cancelConfirmation';
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
           minimumPostDescriptionLength, PostEditingFormState, IPostEditingState } from '../../types';
