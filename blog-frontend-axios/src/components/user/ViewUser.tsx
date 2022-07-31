@@ -141,7 +141,7 @@ const ViewUser = () => {
               <div className="row">
                 <div className="col-lg-10 col-md-12">
                   <div className="form-group row-md-2 pull-right">
-                    <button className="btn ml-2 btn-secondary" onClick={ () => handleReturn() } >
+                    <button className="btn ml-2 btn-secondary" onClick={handleReturn} >
                       Return
                     </button>
                     {isAuthenticated && !isLoading && 

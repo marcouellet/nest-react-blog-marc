@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest-react-blog-marc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nest-react-blog-marc
+  template:
+    metadata:
+      labels:
+        app: todo-client-app
+    spec:
+      containers:
+      - image: todo-client-kubernetes-app:latest
+        name: container1
+        imagePullPolicy: IfNotPresent

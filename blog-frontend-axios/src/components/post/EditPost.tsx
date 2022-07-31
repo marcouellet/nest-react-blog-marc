@@ -276,7 +276,9 @@ const EditPost = () => {
                   }
                 </DropdownButton>
                 <input    
-                  type="text" disabled  placeholder="no category selected" 
+                  type="text" 
+                  disabled  
+                  placeholder="no category selected" 
                   {...register('categoryTitle')}
                   className={`col-md-2 form-control float-right ${errors.categoryTitle ? 'is-invalid' : ''}`}           
                 />
@@ -288,7 +290,7 @@ const EditPost = () => {
               <div className="row">
                 <label className="col-md-2"> Image: </label>
                 { postImage && (
-                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                  <button className="btn btn-secondary col-md-3"  onClick={handleDeleteImage} >
                     Delete Image
                   </button>
                 )  
@@ -339,7 +341,7 @@ const EditPost = () => {
                 </div>
                 <div className="form-group col-md-7">
                   <div className="row">
-                    <button className="btn btn-secondary"  onClick={ () => handleEditContent() } >
+                    <button className="btn btn-secondary"  onClick={handleEditContent} >
                         Edit Content
                     </button> 
                     {content && (
@@ -363,11 +365,11 @@ const EditPost = () => {
             <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-5 pull-right">
-                    <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={() => handleCancelEditPost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditPost() } >
+                    <CancelButton prompt={isDirty} message={cancelEditPostMessage()} onClick={handleCancelEditPost} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={handleResetEditPost} >
                       Reset
                     </button>
-                    <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                    <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={handleSubmitForm}>
                       Update
                     </button>
                 </div>

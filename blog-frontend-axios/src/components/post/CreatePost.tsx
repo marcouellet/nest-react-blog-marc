@@ -264,7 +264,7 @@ const CreatePost = () => {
             <label className="col-md-2"> Image: </label>
             { postImage && 
             (
-              <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+              <button className="btn btn-secondary col-md-3"  onClick={handleDeleteImage} >
                 Delete Image
               </button>
             )  
@@ -313,7 +313,7 @@ const CreatePost = () => {
             </div>
             <div className="form-group col-md-7">
               <div className="row">
-                <button className="btn btn-secondary"  onClick={ () => handleEditContent() } >
+                <button className="btn btn-secondary"  onClick={handleEditContent} >
                     Edit Content
                 </button>  
                 {content && (
@@ -338,14 +338,14 @@ const CreatePost = () => {
         <div className="row">
           <div className="col-lg-10 col-md-12">
             <div className="form-group row-md-5 pull-right">
-                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
+                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={handleCancelCreatePost} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={handleClearCreatePost} >
                   Clear
                 </button>
                 {isLoading &&
                   <span className="fa fa-circle-o-notch fa-spin" />
                 }
-                <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={handleSubmitForm}>
                   Create
                 </button>
                 {isLoading &&

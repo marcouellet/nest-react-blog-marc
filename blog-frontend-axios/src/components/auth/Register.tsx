@@ -130,7 +130,7 @@ const Register = () => {
                     placeholder="Your password"
                     {...register('password')}
                     className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
-                  />
+                />
                 <div className="invalid-feedback">{errors.password?.message}</div>
              </fieldset>
              <fieldset className="form-group">
@@ -145,7 +145,7 @@ const Register = () => {
                     placeholder="Your password again"
                     {...register('confirm_password')}
                     className={`form-control ${errors.confirm_password ? 'is-invalid' : ''}`} 
-                  />
+                />
                 <div className="invalid-feedback">{errors.confirm_password?.message}</div>
              </fieldset>
 

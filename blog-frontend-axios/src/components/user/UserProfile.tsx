@@ -218,7 +218,7 @@ const UserProfile = () => {
               <div className="row">
                 <label className="col-md-2"> Image: </label>
                 { userImage && (
-                      <button className="btn btn-secondary col-md-3"  onClick={() => handleDeleteImage()} >
+                      <button className="btn btn-secondary col-md-3"  onClick={handleDeleteImage} >
                           Delete Image
                       </button>  
                   )
@@ -278,11 +278,11 @@ const UserProfile = () => {
             <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-5 pull-right">
-                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
+                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={handleCancelEditUser} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={handleResetEditUser} >
                       Reset
                     </button>
-                    <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                    <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={handleSubmitForm}>
                       Update
                     </button>
                 </div>

@@ -42,11 +42,11 @@ const EditPostContent: React.FC<EditPostContentProps> = ({className, content, on
     return (
         <div>
            <div>
-                <button className="btn btn-secondary" onClick={() => handleSaveContent()} >
+                <button className="btn btn-secondary" onClick={handleSaveContent} >
                     Save 
                 </button>
                 &nbsp;                 
-                <button className="btn btn-secondary" onClick={() => handleCancelEditing()} >
+                <button className="btn btn-secondary" onClick={handleCancelEditing} >
                     Cancel
                 </button> 
            </div>
