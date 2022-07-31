@@ -1,4 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
+
 import { IDataRepositories, IGenericDataRepository, GenericDataRepository } from './';
 import { User } from '../entities/user.entity';
 import { Post } from '../entities/post.entity';

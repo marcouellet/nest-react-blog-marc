@@ -1,7 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { CustomLogger } from './common/custom.logger';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
+
+import { CustomLogger } from './common/custom.logger';
 import { AppModule } from './modules/app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { HeadersInterceptor } from './common/header.interceptor';

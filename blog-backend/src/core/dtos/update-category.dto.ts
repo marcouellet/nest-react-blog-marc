@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, MinLength } from '@nestjs/class-validator';
+
 import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '../entities/category.entity';
 
 export class UpdateCategoryDto {

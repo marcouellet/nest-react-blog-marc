@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { IDataRepositories, IGenericDataRepository } from '../../../core/repositories';
 import { MongoGenericDataRepository } from './mongo-generic-data-repository';
 import { User, UserDocument } from './model/user.model';

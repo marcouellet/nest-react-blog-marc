@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { UserModule } from './user.module';
 import { CategoryController } from '../controllers/category.controller';
 import { CategoryService } from '../services/category/category.service';

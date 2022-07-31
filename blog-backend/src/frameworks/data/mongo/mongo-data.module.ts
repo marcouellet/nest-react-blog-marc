@@ -1,5 +1,6 @@
 import { Global, Module, UseFilters } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { IDataRepositories } from '../../../core';
 import { IConfigService } from '../../../config/interfaces/config.interface';
 import { User, UserSchema } from './model/user.model';

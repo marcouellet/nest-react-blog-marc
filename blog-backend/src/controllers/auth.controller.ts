@@ -1,12 +1,13 @@
-import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers, Param } from '@nestjs/common';
+import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtPayload } from 'jwt-decode';
+
 import { AuthService } from '../services/auth.service';
 import { LoginDto, RegisterDto, UserDto, SessionExtensionDto } from '../core/dtos';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { Request } from 'express';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { AllRoles } from '../core/enum/user-role.enum';
 import { JwtRefreshTokenAuthGuard } from '../auth/guards/jwt-refresh.guard';
-import { JwtPayload } from 'jwt-decode';
 import { UserRole } from '../core/enum';
 @Controller('auth')
 export class AuthController {
