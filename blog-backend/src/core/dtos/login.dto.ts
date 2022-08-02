@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsEmail, MinLength } from '@nestjs/class-validator';
+
 import { minimumUserEmailLength, minimumUserPasswordLength } from '../entities/user.entity';
 export class LoginDto {
   @IsEmail()

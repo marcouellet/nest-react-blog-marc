@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IDataRepositories, IGenericDataRepository } from '../core/repositories';
-import { User, Post } from '../core/entities';
+
+import { IDataRepositories } from '../core/repositories';
 
 @Injectable()
 export class DataServiceRepositories {

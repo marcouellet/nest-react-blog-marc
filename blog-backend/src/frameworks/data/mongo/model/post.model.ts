@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { Optional } from '@nestjs/common';
+
 import { Category } from './category.model';
 import { User } from './user.model';
 import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../../../../core/entities/post.entity';
-import { Optional } from '@nestjs/common';
 import { Image } from './image.model';
 
 export type PostDocument = Post & Document;

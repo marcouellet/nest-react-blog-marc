@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IPost } from "../../types";
 import { toast } from "react-toastify";
+
+import { IPost, IErrors } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import DisplayContent from '../common/displayContent';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 import { createActionSessionExpired } from '../../reducers/auth';
 

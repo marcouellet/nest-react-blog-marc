@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ImageData } from '../../types';
 
 interface ImageProps {

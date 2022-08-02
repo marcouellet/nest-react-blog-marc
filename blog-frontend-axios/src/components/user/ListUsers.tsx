@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { Table, Container } from 'react-bootstrap';
+
 import useAuth from '../../contexts/auth';
 import { resizeImage } from '../../utils/image.utils';
 import { createActionLoading, createActionSetUserNameFilter, createActionSessionExpired } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
 import { UserApiService } from "../../services/api/UserApiService";
-import { Table, Container } from 'react-bootstrap';
 import ImageResize from '../common/ImageResize';
 import Image from '../common/Image';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';

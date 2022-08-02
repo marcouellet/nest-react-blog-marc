@@ -1,4 +1,5 @@
 import { Module, DynamicModule, Global } from '@nestjs/common';
+
 import { IConfigService } from '../config/interfaces/config.interface';
 
 @Global()

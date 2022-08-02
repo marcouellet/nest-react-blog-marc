@@ -1,4 +1,5 @@
 import { IsString, IsDate, ValidateNested } from '@nestjs/class-validator';
+
 import { UserFindCriterias } from './user.find-criterias';
 
 export class PostFindCriterias {

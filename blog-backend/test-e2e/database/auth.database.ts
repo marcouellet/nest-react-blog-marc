@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+
 import { UserDto } from '../../src/core/dtos';
 import { buildRegisterDto  } from '../../test/builders/auth.dtos.builders';
 import { UserService } from '../../src/services/user/user.service';

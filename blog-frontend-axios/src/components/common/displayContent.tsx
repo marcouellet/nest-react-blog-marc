@@ -17,7 +17,7 @@ const DisplayContent: React.FC<DisplayContentProps> = ({className, content, onCl
   
     return (
     <div className="container-fluid page">
-        <button className="btn btn-secondary pull-right" onClick={() => handleClose()} >
+        <button className="btn btn-secondary pull-right" onClick={handleClose} >
           Close 
        </button>                 
         <div dangerouslySetInnerHTML={{__html: content}} />           

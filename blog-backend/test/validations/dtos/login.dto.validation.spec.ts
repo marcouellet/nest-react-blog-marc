@@ -1,4 +1,5 @@
 import { validate } from '@nestjs/class-validator';
+
 import { testLoginDto } from '../../data/auth.data';
 import { buildLoginDto  } from '../../builders/auth.dtos.builders';
 import { minimumUserEmailLength, minimumUserPasswordLength } from '../../../src/core/entities/user.entity';

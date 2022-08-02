@@ -1,11 +1,12 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
-import AUTHAPI from '../../services/api/AuthApiService';
-import useAuth from '../../contexts/auth';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import AUTHAPI from '../../services/api/AuthApiService';
+import useAuth from '../../contexts/auth';
 import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
 import { checkUnauthorized, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
 import ListErrors from '../common/ListErrors';
@@ -130,7 +131,7 @@ const Register = () => {
                     placeholder="Your password"
                     {...register('password')}
                     className={`form-control ${errors.password ? 'is-invalid' : ''}`} 
-                  />
+                />
                 <div className="invalid-feedback">{errors.password?.message}</div>
              </fieldset>
              <fieldset className="form-group">
@@ -145,7 +146,7 @@ const Register = () => {
                     placeholder="Your password again"
                     {...register('confirm_password')}
                     className={`form-control ${errors.confirm_password ? 'is-invalid' : ''}`} 
-                  />
+                />
                 <div className="invalid-feedback">{errors.confirm_password?.message}</div>
              </fieldset>
 

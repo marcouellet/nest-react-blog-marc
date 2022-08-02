@@ -1,11 +1,12 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
-import AUTHAPI from '../../services/api/AuthApiService';
-import useAuth from '../../contexts/auth';
-import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from "react-toastify";
+import { Link, useNavigate } from 'react-router-dom';
+
+import AUTHAPI from '../../services/api/AuthApiService';
+import useAuth from '../../contexts/auth';
 import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength } from "../../types";

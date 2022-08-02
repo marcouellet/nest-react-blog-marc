@@ -7,6 +7,7 @@ export interface IConfig {
     authRefreshTokenSecretKey: string;
     authRefreshTokenExpiresIn: string; //seconds
     loggerLevels: string[];
+    serverPort: string;
 }
 
 export class IConfigService {

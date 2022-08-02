@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { IPostEditingState } from '../../types';
 import DisplayContent from '../common/displayContent';
 

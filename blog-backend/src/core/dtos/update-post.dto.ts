@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, MinLength, ValidateNested, IsOptional } from '@nestjs/class-validator';
+
 import { Category } from '../../core/entities';
 import { CategoryDto } from '../dtos';
 import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../entities/post.entity';

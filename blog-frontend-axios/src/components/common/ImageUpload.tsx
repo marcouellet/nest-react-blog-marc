@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ImageData, ImageSizeProps } from '../../types';
 import { getImageFromFile, resizeImageData } from '../../utils/image.utils';
 export interface ImageUploadProps {

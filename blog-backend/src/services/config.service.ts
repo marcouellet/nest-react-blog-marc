@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { LogLevel, NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+
 import { IConfig, IConfigService } from '../config/interfaces/config.interface';
 import { EnvConfig } from '../config/interfaces/envconfig.interface';
 import { IConfigOptions } from '../config/interfaces/config-options.interface';
@@ -55,6 +56,7 @@ export class ConfigService implements IConfigService {
         const authRefreshTokenSecretKey = this.getEnvConfig('AUTH_REFRESH_TOKEN_SECRET_KEY');
         const authRefreshTokenExpiresIn = this.getEnvConfig('AUTH_REFRESH_TOKEN_EXPIRES_IN');
         const loggerLevelsString = this.getEnvConfig('LOGGER_LEVELS');
+        const serverPort = this.getEnvConfig('SERVER_PORT');
 
         if (!dataServerName) {
             throw new NotFoundException('Please, provide a value for DATA_SERVER_NAME in env file');
@@ -88,6 +90,10 @@ export class ConfigService implements IConfigService {
             throw new NotFoundException('Please, provide a value for LOGGER_LEVELS in env file');
         }
 
+        if (!serverPort) {
+            throw new NotFoundException('Please, provide a value for SERVER_PORT in env file');
+        }
+
         if (!this.validateAuthStrategyName(authStrategyName)) {
             throw new NotFoundException('Invalid auth strategy name : ' + authStrategyName +
             ', should belong to ' +  VALID_AUTH_STRATEGY_NAMES.toString());
@@ -105,6 +111,7 @@ export class ConfigService implements IConfigService {
         CustomLogger.overrideLogger(this.loggerLevels as LogLevel[]);
 
         return { dataServerName, connectionString, authStrategyName,
-                authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn, loggerLevels: this.loggerLevels };
+                authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn, 
+                loggerLevels: this.loggerLevels, serverPort };
     }
 }

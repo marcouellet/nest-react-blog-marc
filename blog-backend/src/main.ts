@@ -1,7 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { CustomLogger } from './common/custom.logger';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
+
+import { CustomLogger } from './common/custom.logger';
 import { AppModule } from './modules/app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { HeadersInterceptor } from './common/header.interceptor';
@@ -22,7 +23,12 @@ async function bootstrap() {
     app.enableCors({exposedHeaders: [HEADER_HTTP_RESPONSE_HEADER_TIMESTAMP]});
     app.useGlobalFilters(new HttpExceptionFilter());
     app.useGlobalInterceptors(new HeadersInterceptor());
-    await app.listen(5000);
+;
+    const config =GLOBAL_CONFIG_SERVICE.getConfig();
+    await app.listen(config.serverPort);
+
+    Logger.log('Server listening on port ' + config.serverPort);
+    Logger.log('Server database url is ' + config.connectionString);
     Logger.log('Marc Blog Server is up and running!');
   } catch (err) {
     Logger.error(err); // <-- for example, ECONNREFUSED error

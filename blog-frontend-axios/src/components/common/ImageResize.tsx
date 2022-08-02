@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { ImageData, ImageSizeProps } from '../../types';
 import { resizeImageData } from '../../utils/image.utils';
 import Image from '../common/Image';

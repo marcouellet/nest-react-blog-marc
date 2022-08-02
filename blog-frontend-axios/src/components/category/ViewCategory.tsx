@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ICategory } from "../../types";
 import { toast } from "react-toastify";
+
+import { ICategory } from "../../types";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { PostApiService } from '../../services/api/PostApiService';
 import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
@@ -105,7 +106,7 @@ const ViewCategory = () => {
             <div className="row">
               <div className="col-lg-16 col-md-12">
                 <div className="form-group col-md-5 pull-right">
-                  <button className="btn ml-2 btn-secondary"  onClick={ () => handleReturn() } >
+                  <button className="btn ml-2 btn-secondary"  onClick={handleReturn} >
                     Return
                   </button>
                   {!isLoading && isAdministrator() &&

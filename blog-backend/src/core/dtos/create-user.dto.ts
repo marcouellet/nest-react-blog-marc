@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty, IsEmail, IsEnum, MinLength } from '@nestjs/class-validator';
 import { Optional } from '@nestjs/common';
+
 import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '../entities/user.entity';
 import { UserRole } from '../enum';
 import { ImageData } from'../interfaces';

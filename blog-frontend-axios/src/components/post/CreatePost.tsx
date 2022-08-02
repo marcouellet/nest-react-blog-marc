@@ -3,13 +3,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import CancelButton from '../common/cancelConfirmation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+
+import CancelButton from '../common/cancelConfirmation';
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
           minimumPostDescriptionLength, PostEditingFormState, IPostEditingState } from '../../types';
@@ -264,7 +265,7 @@ const CreatePost = () => {
             <label className="col-md-2"> Image: </label>
             { postImage && 
             (
-              <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+              <button className="btn btn-secondary col-md-3"  onClick={handleDeleteImage} >
                 Delete Image
               </button>
             )  
@@ -313,7 +314,7 @@ const CreatePost = () => {
             </div>
             <div className="form-group col-md-7">
               <div className="row">
-                <button className="btn btn-secondary"  onClick={ () => handleEditContent() } >
+                <button className="btn btn-secondary"  onClick={handleEditContent} >
                     Edit Content
                 </button>  
                 {content && (
@@ -338,14 +339,14 @@ const CreatePost = () => {
         <div className="row">
           <div className="col-lg-10 col-md-12">
             <div className="form-group row-md-5 pull-right">
-                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={() => handleCancelCreatePost()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleClearCreatePost() } >
+                <CancelButton prompt={isDirty} message={cancelCreatePostMessage()} onClick={handleCancelCreatePost} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={handleClearCreatePost} >
                   Clear
                 </button>
                 {isLoading &&
                   <span className="fa fa-circle-o-notch fa-spin" />
                 }
-                <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                <button className="btn ml-2 btn-success"  disabled={!isDirty} onClick={handleSubmitForm}>
                   Create
                 </button>
                 {isLoading &&

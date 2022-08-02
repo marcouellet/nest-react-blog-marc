@@ -6,10 +6,11 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+
 import useAuth from '../contexts/auth';
 import { createActionLogout, createActionLoading } from '../reducers/auth';
 import AUTHAPI from '../services/api/AuthApiService';
-import { toast } from "react-toastify";
 import { UserRole } from '../types';
 
 const NavigationBar = () => {

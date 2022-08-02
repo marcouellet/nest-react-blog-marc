@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
+
 import DisplayTooltip from '../common/displayTooltip';
 
 type DisplayButtonProps = React.HTMLProps<HTMLButtonElement> & {

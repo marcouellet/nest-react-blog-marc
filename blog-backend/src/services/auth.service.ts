@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+
 import { CreateUserDto, LoginDto, RegisterDto, UserDto } from '../core/dtos';
 import { IConfigService } from '../config/interfaces/config.interface';
 import { UserService } from '../services/user/user.service';
@@ -52,7 +53,7 @@ export class AuthService {
     return user;
   }
 
-  private setupUserWithExtendedTokens(user: UserDto, extension: Number): UserDto {
+  private setupUserWithExtendedTokens(user: UserDto, extension: number): UserDto {
     user.authtoken = this.createToken(user);
     user.authrefreshtoken = this.createRefreshToken(user);
     delete user.password;
@@ -142,7 +143,7 @@ export class AuthService {
       .then(user => this.setupUserWithNewTokens(user));
   }
 
-  async extend(userDto: UserDto, extension: Number): Promise<UserDto> {
+  async extend(userDto: UserDto, extension: number): Promise<UserDto> {
     const { email } = userDto;
     return this.validateUserUnrestricted({ email })
       .then(user => this.setupUserWithExtendedTokens(user, extension));

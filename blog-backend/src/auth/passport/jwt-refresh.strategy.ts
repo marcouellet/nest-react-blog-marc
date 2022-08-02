@@ -1,8 +1,9 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { IConfigService } from '../../config/interfaces/config.interface';
-import { AuthService } from '../../services/auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
+
+import { IConfigService } from '../../config/interfaces/config.interface';
+import { AuthService } from '../../services/auth.service';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { UserDto } from '../../core/dtos';
 import { JWT_REFRESH_TOKEN_STRATEGY_NAME } from '../guards/jwt-refresh.guard'

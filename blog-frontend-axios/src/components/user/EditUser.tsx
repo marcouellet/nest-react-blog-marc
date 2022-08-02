@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 import CancelButton from '../common/cancelConfirmation';
 import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
-        minimumUserNameLength, ImageData, ImageSizeProps } from "../../types";
+        minimumUserNameLength, ImageData, ImageSizeProps, IErrors } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
 import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
 import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
@@ -231,10 +231,11 @@ const EditUser = () => {
             <div className="form-group col-md-4">
               <div className="row">
                 <label className="col-md-2"> Image: </label>
-                { userImage && 
-                  <button className="btn btn-secondary col-md-3"  onClick={ () => handleDeleteImage() } >
+                { userImage && (
+                  <button className="btn btn-secondary col-md-3"  onClick={handleDeleteImage} >
                     Delete Image
                   </button>  
+                )
                 }   
                 <ImageUpload onImageUpload={handleImageUpload} onImageUploadError={handleImageUploadError} resize={imageMaxSize}/>                     
               </div>
@@ -283,8 +284,11 @@ const EditUser = () => {
                     <Dropdown.Item eventKey='user'>User</Dropdown.Item>
                     <Dropdown.Item eventKey='admin'>Admin</Dropdown.Item>
                 </DropdownButton>
-                <input style={ {float: 'right'} }    
-                  type="text" disabled  placeholder="no role selected" 
+                <input 
+                  style={ {float: 'right'} }    
+                  type="text" 
+                  disabled  
+                  placeholder="no role selected" 
                   {...register('role')}
                   className={`col-md-1 form-control float-right ${errors.role ? 'is-invalid' : ''}`}           
                 />
@@ -294,11 +298,11 @@ const EditUser = () => {
             <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-5 pull-right">
-                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={() => handleCancelEditUser()} className="btn ml-2 btn-danger">Cancel</CancelButton>
-                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={ () => handleResetEditUser() } >
+                    <CancelButton prompt={isDirty} message={cancelEditUserMessage()} onClick={handleCancelEditUser} className="btn ml-2 btn-danger">Cancel</CancelButton>
+                    <button className="btn ml-2 btn-secondary" disabled={!isDirty} onClick={handleResetEditUser} >
                       Reset
                     </button>
-                    <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={ () => handleSubmitForm()}>
+                    <button className="btn ml-2 btn-success" disabled={!isDirty} onClick={handleSubmitForm}>
                       Update
                     </button>
                 </div>

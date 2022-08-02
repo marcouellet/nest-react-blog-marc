@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from '@nestjs/class-validator';
+
 import { testCreatePostDto } from '../../data/post.data';
 import { buildUpdatePostDto  } from '../../builders/post.dtos.builders';
 import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '../../../src/core/entities/post.entity';

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { IPost, UserRole } from "../../types";
 import { toast } from "react-toastify";
+
+import { IPost, UserRole } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
 import useAuth from '../../contexts/auth';
@@ -161,10 +162,10 @@ const ViewPost = () => {
             <div className="row">
               <div className="col-lg-10 col-md-12">
                 <div className="form-group row-md-6 pull-right">
-                  <button className="btn ml-2 btn-secondary" onClick={ () => handleReturn() } >
+                  <button className="btn ml-2 btn-secondary" onClick={handleReturn} >
                     Return
                   </button>
-                  <button type="button" className="btn ml-2 btn-secondary" onClick={ () => handleViewBlog() }>
+                  <button type="button" className="btn ml-2 btn-secondary" onClick={handleViewBlog}>
                     View Content
                   </button>
                   {isAuthenticated && !isLoading && (isAdministrator() || user!.email === post.user!.email) &&

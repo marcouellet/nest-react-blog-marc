@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+
 import { StatusCodes } from 'http-status-codes';
 import { AppModule } from '../../src/modules/app.module';
 import { AuthService } from '../../src/services/auth.service';
