@@ -145,8 +145,7 @@ const ListBlogs = () => {
               }
             </DropdownButton>
             <input 
-              style={{float: 'right'}} 
-              className="col-md-2"   
+              className="float-right col-md-2"   
               type="text" 
               disabled  
               placeholder="no category selected" 
