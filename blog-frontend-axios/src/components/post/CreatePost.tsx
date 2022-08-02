@@ -244,7 +244,9 @@ const CreatePost = () => {
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
                 {categories && categories.map((category: ICategory) => 
                 (
-                  <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                  <div key={category.id}>
+                    <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                  </div>
                 ))
               }
             </DropdownButton>
