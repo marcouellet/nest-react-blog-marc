@@ -27,7 +27,7 @@ const AdminRoutes = () => {
       <Route path={"/user/create"} element={<CreateUser/>} />
       <Route path={"/user/edit/:userId"} element={<EditUser/>} />
       <Route path={"/category/create"} element={<CreateCategory/>} />
-      <Route path={"/category/edit/:userId"} element={<EditCategory/>} />
+      <Route path={"/category/edit/:categoryId"} element={<EditCategory/>} />
     </Route>
    );
 }

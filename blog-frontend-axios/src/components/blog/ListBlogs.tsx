@@ -17,13 +17,12 @@ import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListBlogs = () => {
 
-  const { state: { user, isLoading, categoryFilter }, dispatch } = useAuth();
+  const { state: { user, isLoading, categoryFilter, postTitleFilter }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
-  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
@@ -60,7 +59,6 @@ const ListBlogs = () => {
         }
         fetchCategories();
       }
-      setPostTitleFilter(postTitleFilter);
       dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
@@ -126,7 +124,6 @@ const ListBlogs = () => {
   }
 
   const handlePostTitleFilterChange = (filter: string)=>{
-    setPostTitleFilter(filter);
     dispatch(createActionSetPostTitleFilter(filter));
   }
 

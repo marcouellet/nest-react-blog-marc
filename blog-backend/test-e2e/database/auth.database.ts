@@ -46,7 +46,7 @@ export class AuthDatabaseBuilder {
   }
 
   removeTokensFromUserDto(userDto: UserDto): UserDto {
-    let dto = { ... userDto };
+    const dto = { ... userDto };
     delete dto.authtoken;
     delete dto.authrefreshtoken;
     return dto;

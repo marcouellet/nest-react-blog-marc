@@ -15,10 +15,9 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 
 const ListUsers = () => {
 
-  const { state: { user, isLoading }, dispatch } = useAuth();
+  const { state: { user, isLoading, userNameFilter }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [users, setUsers] = useState<IUser[]>([]);
-  const [userNameFilter, setuserNameFilter] = useState<string>('');
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
@@ -58,7 +57,6 @@ const ListUsers = () => {
   }
 
   const handleUserNameFilterChange = (filter: string)=>{
-    setuserNameFilter(filter);
     dispatch(createActionSetUserNameFilter(filter));
   }
 

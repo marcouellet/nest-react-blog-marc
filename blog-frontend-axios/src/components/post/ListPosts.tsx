@@ -19,19 +19,18 @@ import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListPosts = () => {
 
-  const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
+  const { state: { user, isLoading, categoryFilter, isAuthenticated, postTitleFilter }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
-  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
     (async () => {
-      dispatch(createActionLoading(true));
       if (!categories) {
+        dispatch(createActionLoading(true));
         const fetchCategories = async (): Promise<void> => {
         await CategoryApiService.getAllCategories()
           .then(categories => {
@@ -48,9 +47,8 @@ const ListPosts = () => {
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
         }
         fetchCategories();
+        dispatch(createActionLoading(false));
       }
-      setPostTitleFilter(postTitleFilter);
-      dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
   }, []);
@@ -135,7 +133,6 @@ const ListPosts = () => {
   }
 
   const handlePostTitleFilterChange = (filter: string)=>{
-    setPostTitleFilter(filter);
     dispatch(createActionSetPostTitleFilter(filter));
   }
 

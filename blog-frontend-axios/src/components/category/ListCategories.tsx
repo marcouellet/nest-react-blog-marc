@@ -26,7 +26,7 @@ const ListCategories = () => {
     const fetchCategories = async (): Promise<void> => {
       dispatch(createActionLoading(true));
       CategoryApiService.getAllCategories()
-        .then(users => setCategorys(users))
+        .then(cats => setCategorys(cats))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
         .finally(() => dispatch(createActionLoading(false)));
     }

@@ -21,7 +21,7 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const { dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const { userId } = useParams<{ userId: string }>();
+  const { categoryId } = useParams<{ categoryId: string }>();
   const [category, setCategory] = useState<ICategory>();
   const [submitForm, setSubmitForm] = useState<boolean>(false);
  
@@ -53,7 +53,7 @@ const EditCategory = () => {
     if (!category) {
       const fetchData = async (): Promise<void> => {
         dispatch(createActionLoading(true));
-        await CategoryApiService.getCategoryById(userId!)
+        await CategoryApiService.getCategoryById(categoryId!)
         .then((category) => { setCategory(category); reset(category);})
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Category reading'))
         .finally(() => dispatch(createActionLoading(false)));

@@ -90,7 +90,7 @@ const CreatePost = () => {
       }
     })();
  // eslint-disable-next-line
-  }, []);
+  }, [categories]);
 
   const getDefaultPostImage = (): Promise<ImageData> => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);

@@ -19,13 +19,12 @@ import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListPostsForUser = () => {
 
-  const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
+  const { state: { user, isLoading, categoryFilter, isAuthenticated, postTitleFilter }, dispatch } = useAuth();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [selectedPosts, setSelectedPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
-  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
@@ -49,7 +48,6 @@ const ListPostsForUser = () => {
         }
         fetchCategories();
       }
-      setPostTitleFilter(postTitleFilter);
     })();
  // eslint-disable-next-line
   }, []);
@@ -82,7 +80,7 @@ const ListPostsForUser = () => {
     }
     fetchPosts();
   // eslint-disable-next-line
-  }, [category, postTitleFilter])
+  }, [category, postTitleFilter, user])
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
@@ -132,7 +130,6 @@ const ListPostsForUser = () => {
   }
 
   const handlePostTitleFilterChange = (filter: string)=>{
-    setPostTitleFilter(filter);
     dispatch(createActionSetPostTitleFilter(filter));
   }
 
