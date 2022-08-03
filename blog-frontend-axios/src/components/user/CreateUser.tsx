@@ -8,13 +8,12 @@ import * as Yup from 'yup';
 import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useSessionContext from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
           ImageSizeProps, ImageData } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
@@ -23,7 +22,7 @@ import { resizeImage } from '../../utils/image.utils';
 const CreateUser = () => {
 
   const navigate = useNavigate();
-  const { dispatch } = useAuth();
+  const { dispatchSession } = useSessionContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
@@ -57,7 +56,7 @@ const CreateUser = () => {
   useEffect(() => {
     if (!userDefaultImage) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 
           setuserDefaultImage(imageData);
@@ -65,7 +64,7 @@ const CreateUser = () => {
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
       }
       fetchData();      
     }
@@ -99,13 +98,13 @@ const CreateUser = () => {
 
   const onSubmit = async (data: CreateSubmitForm) => {
     if (submitForm) {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData = {...data, image};
       await UserApiService.createUser(userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Creation') })
-      .finally(() => dispatch(createActionLoading(false)));
+      .finally(() => dispatchSession(createActionLoading(false)));
     }
   } 
 
@@ -113,7 +112,7 @@ const CreateUser = () => {
     setSubmitForm(false);
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkForbidden(apiErrors)) {
       const message = apiErrors['message'];
       toast.error(`${process} failed: ${message}`);   

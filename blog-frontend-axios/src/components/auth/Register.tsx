@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import AUTHAPI from '../../services/api/AuthApiService';
-import useAuth from '../../contexts/auth';
-import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
+import useSessionContext from '../../contexts/session.context';
+import { createActionLoadUser, createActionLoading } from '../../reducers/session.reducer';
 import { checkUnauthorized, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../../types";
@@ -15,10 +15,7 @@ import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEma
 const Register = () => {
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const {
-    state: { isLoading },
-    dispatch,
-  } = useAuth();
+  const { sessionState: { isLoading }, dispatchSession } = useSessionContext();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -64,18 +61,18 @@ const Register = () => {
   }
 
   const onSubmit = async (data: RegisterSubmitForm) => {
-    dispatch(createActionLoading(true));
+    dispatchSession(createActionLoading(true));
     const { username, email, password } = data;
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
           toast.success(`${user.username} is registered`);
-          dispatch(createActionLoadUser(user));
+          dispatchSession(createActionLoadUser(user));
           navigate('/login');    
         }
       )
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'User registration') })
-      .finally(() => dispatch(createActionLoading(false))); 
+      .finally(() => dispatchSession(createActionLoading(false))); 
  } 
 
   return (

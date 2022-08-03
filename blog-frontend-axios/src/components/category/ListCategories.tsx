@@ -5,16 +5,15 @@ import { toast } from "react-toastify";
 
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { ICategory, UserRole } from "../../types";
-import useAuth from '../../contexts/auth';
-import { createActionLoading } from '../../reducers/auth';
+import useSessionContext from '../../contexts/session.context';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListCategories = () => {
   
-  const { state: { user, isAuthenticated, isLoading}, dispatch } = useAuth();
+  const { sessionState: { user, isAuthenticated, isLoading}, dispatchSession } = useSessionContext();
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -24,20 +23,20 @@ const ListCategories = () => {
 
   useEffect(() => {
     const fetchCategories = async (): Promise<void> => {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       CategoryApiService.getAllCategories()
         .then(cats => setCategorys(cats))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
     }
     fetchCategories();
   // eslint-disable-next-line 
-  }, [dispatch])
+  }, [dispatchSession])
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {

@@ -6,15 +6,15 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from 'react-router-dom';
 
 import AUTHAPI from '../../services/api/AuthApiService';
-import useAuth from '../../contexts/auth';
-import { createActionLoadUser, createActionLoading } from '../../reducers/auth';
+import useSessionContext from '../../contexts/session.context';
+import { createActionLoadUser, createActionLoading } from '../../reducers/session.reducer';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength } from "../../types";
 import { checkUnauthorized, checkNotFound, checkTimeout } from '../../utils/html.response.utils';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { state: { isLoading }, dispatch } = useAuth();
+  const { sessionState: { isLoading }, dispatchSession } = useSessionContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
@@ -51,17 +51,17 @@ const Login = () => {
    }
 
   const onSubmit = async (data: LoginSubmitForm) => {
-    dispatch(createActionLoading(true));
+    dispatchSession(createActionLoading(true));
     await AUTHAPI.login(data.email, data.password)
       .then(
         (user) => {
           // toast.info(`${user.username} is logged in`);
-          dispatch(createActionLoadUser(user));
+          dispatchSession(createActionLoadUser(user));
           navigate('/');    
         }
       )
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Login'); })
-      .finally(() => dispatch(createActionLoading(false)));
+      .finally(() => dispatchSession(createActionLoading(false)));
   } 
 
   return (

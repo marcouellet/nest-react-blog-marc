@@ -11,7 +11,7 @@ import ViewCategory from "../components/category/ViewCategory";
 import ViewPost from "../components/post/ViewPost";
 import ViewPostContent from "../components/post/ViewPostContent";
 import CreatePost from "../components/post/CreatePost";
-import useAuth from '../contexts/auth';
+import useContextSession from '../contexts/session.context';
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";
 import AdminRoutes from "./AdminRoutes";
@@ -19,7 +19,7 @@ import UserProfile from "../components/user/UserProfile";
 
 export const AppRoutes = () => {
 
-  const { state : { isAuthenticated } } = useAuth();
+  const { sessionState : { isAuthenticated } } = useContextSession();
   const [controlledRoutes, setControlledRoutes] = useState<JSX.Element>();
 
   // const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;

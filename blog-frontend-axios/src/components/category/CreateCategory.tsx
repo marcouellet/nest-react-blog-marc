@@ -7,17 +7,16 @@ import * as Yup from 'yup';
 import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionLoading } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useSessionContext from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 
 const CreateCategory = () => {
 
   const navigate = useNavigate();
-  const { dispatch } = useAuth();
+  const { dispatchSession } = useSessionContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [submitForm, setSubmitForm] = useState<boolean>(false);
 
@@ -47,11 +46,11 @@ const CreateCategory = () => {
 
   const onSubmit = async (data: CreateSubmitForm) => {
     if (submitForm) {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       await CategoryApiService.createCategory(data)
       .then(() => { handleSubmitFormSucess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors,'Category creation') })
-      .finally(() => dispatch(createActionLoading(false)));
+      .finally(() => dispatchSession(createActionLoading(false)));
     }
   } 
 
@@ -67,7 +66,7 @@ const CreateCategory = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {

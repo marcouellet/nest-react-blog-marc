@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 
 import { IPost, UserRole } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useSessionContext from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageData, ImageSizeProps } from '../../types';
 import { toLocalDateString } from '../../utils/local.storage.utils';
@@ -18,7 +18,7 @@ import { resizeImage } from '../../utils/image.utils';
 const ViewPost = () => {
 
   const { postId } = useParams<{ postId: string }>();
-  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
+  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useSessionContext();
   const [post, setPost] = useState<IPost>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
@@ -31,17 +31,17 @@ const ViewPost = () => {
   useEffect(() => {
     if (!post) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         await getDefaultPostImage()
         .then(imageData => { setpostDefaultImage(imageData);})
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatch(createActionLoading(false))); 
+        .finally(() => dispatchSession(createActionLoading(false))); 
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -75,7 +75,7 @@ const ViewPost = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {
@@ -87,11 +87,11 @@ const ViewPost = () => {
   }
 
   const handleDeletePost = async (id: string) => {
-    dispatch(createActionLoading(true));
+    dispatchSession(createActionLoading(true));
     await PostApiService.deletePost(id)
      .then(() => handleDeletePostSucess())
      .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
-    dispatch(createActionLoading(false));
+     dispatchSession(createActionLoading(false));
     goBack();
   }
   const handleDeletePostSucess = () => {

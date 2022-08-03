@@ -4,17 +4,16 @@ import { toast } from "react-toastify";
 
 import { IPost, IErrors } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
-import { createActionLoading } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import useSessionContext from '../../contexts/session.context';
 import DisplayContent from '../common/displayContent';
 import ListErrors from '../common/ListErrors';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
 
 const ViewBlog = () => {
 
   const { postId } = useParams<{ postId: string }>();
-  const { dispatch } = useAuth();
+  const { dispatchSession } = useSessionContext();
   const [post, setPost] = useState<IPost>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -23,11 +22,11 @@ const ViewBlog = () => {
   useEffect(() => {
     if (!post) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Post reading'))
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -37,7 +36,7 @@ const ViewBlog = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {

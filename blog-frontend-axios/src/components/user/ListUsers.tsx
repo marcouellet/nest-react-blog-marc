@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Table, Container } from 'react-bootstrap';
 
-import useAuth from '../../contexts/auth';
+import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import { resizeImage } from '../../utils/image.utils';
-import { createActionLoading, createActionSetUserNameFilter, createActionSessionExpired } from '../../reducers/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSetUserNameFilter } from '../../reducers/ui.reducer';
 import ListErrors from '../common/ListErrors';
 import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
 import { UserApiService } from "../../services/api/UserApiService";
@@ -15,24 +17,25 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 
 const ListUsers = () => {
 
-  const { state: { user, isLoading, userNameFilter }, dispatch } = useAuth();
+  const { sessionState: { user, isLoading }, dispatchSession } = useSessionContext();
+  const { uiState: { userNameFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [users, setUsers] = useState<IUser[]>([]);
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
     const fetchUsers = async (): Promise<void> => {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       await UserApiService.findManyUsers(userNameFilter)
         .then(users => setUsers(users))
         .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
       await getDefaultUserImage()
         .then(imageData => { setuserDefaultImage(imageData);})
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatch(createActionLoading(false))); 
+        .finally(() => dispatchSession(createActionLoading(false))); 
     }
     fetchUsers();
     // eslint-disable-next-line
@@ -41,7 +44,7 @@ const ListUsers = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {
@@ -57,7 +60,7 @@ const ListUsers = () => {
   }
 
   const handleUserNameFilterChange = (filter: string)=>{
-    dispatch(createActionSetUserNameFilter(filter));
+    dispatchUI(createActionSetUserNameFilter(filter));
   }
 
   const getDefaultUserImage = (): Promise<ImageData> => {

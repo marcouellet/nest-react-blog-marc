@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import { ICategory } from "../../types";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { PostApiService } from '../../services/api/PostApiService';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useSessionContext from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, UserRole } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
@@ -15,7 +15,7 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 const ViewCategory = () => {
 
   const { categoryId } = useParams<{ categoryId: string }>();
-  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
+  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useSessionContext();
   const [category, setCategory] = useState<ICategory>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -26,11 +26,11 @@ const ViewCategory = () => {
   useEffect(() => {
     if (!category) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         await CategoryApiService.getCategoryById(categoryId!)
         .then(user => setCategory(user))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Category reading'))
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -40,7 +40,7 @@ const ViewCategory = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {
@@ -58,16 +58,16 @@ const ViewCategory = () => {
   const deleteCategoryMessage = (category: ICategory) => `${category.title} Category`;
 
   const handleDeleteCategory = async (id: string) => {
-    dispatch(createActionLoading(true));
+    dispatchSession(createActionLoading(true));
     const postscount = await PostApiService.getNumberOfPostsForCategory(id);
     if (postscount) {
       toast.error(`Category has linked posts, delete them first`);
-      dispatch(createActionLoading(false));
+      dispatchSession(createActionLoading(false));
     } else {
       await CategoryApiService.deleteCategory(id)
       .then(() => handleDeleteCategorySuccess())
       .catch((apiErrors: IErrors) => handleDeleteCategoryError(apiErrors))
-      .finally(() => dispatch(createActionLoading(false)));
+      .finally(() => dispatchSession(createActionLoading(false)));
       navigate('/category'); 
     }
   }
