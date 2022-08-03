@@ -5,15 +5,18 @@ import { toast } from "react-toastify";
 import { IPost, IErrors } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import DisplayContent from '../common/displayContent';
 import ListErrors from '../common/ListErrors';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 
 const ViewBlog = () => {
 
   const { postId } = useParams<{ postId: string }>();
   const { dispatchSession } = useSessionContext();
+  const { dispatchUI } = useUIContext();
   const [post, setPost] = useState<IPost>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -22,11 +25,11 @@ const ViewBlog = () => {
   useEffect(() => {
     if (!post) {
       const fetchData = async (): Promise<void> => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Post reading'))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
       }
       fetchData();  
     }

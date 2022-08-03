@@ -9,8 +9,10 @@ import CancelButton from '../common/cancelConfirmation'
 import { ICategory, IUpdateCategory, createCategoryForUpdate, minimumCategoryTitleLength, 
           minimumCategoryDescriptionLength } from "../../types";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
@@ -19,6 +21,7 @@ const EditCategory = () => {
 
   const navigate = useNavigate();
   const { dispatchSession } = useSessionContext();
+  const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { categoryId } = useParams<{ categoryId: string }>();
   const [category, setCategory] = useState<ICategory>();
@@ -51,11 +54,11 @@ const EditCategory = () => {
   useEffect(() => {
     if (!category) {
       const fetchData = async (): Promise<void> => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         await CategoryApiService.getCategoryById(categoryId!)
         .then((category) => { setCategory(category); reset(category);})
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Category reading'))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
        }
       fetchData();      
     }
@@ -64,12 +67,12 @@ const EditCategory = () => {
 
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (category && isDirty && submitForm) {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       const userData: IUpdateCategory = createCategoryForUpdate({...category, ...data});
       await CategoryApiService.updateCategory(category.id!, userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Category update'); })
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
      }
   } 
 

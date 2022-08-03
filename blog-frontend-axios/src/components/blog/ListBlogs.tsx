@@ -5,7 +5,8 @@ import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory } from "../../types";
 import useSessionContext from '../../contexts/session.context';
 import useUIContext from '../../contexts/ui.context';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
@@ -17,8 +18,8 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 
 const ListBlogs = () => {
 
-  const { sessionState: { user, isLoading }, dispatchSession } = useSessionContext();
-  const { uiState: { categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
+  const { sessionState: { user }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading, categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
@@ -31,7 +32,7 @@ const ListBlogs = () => {
 
   useEffect(() => {
     (async () => {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
           await getDefaultPostImage()
@@ -60,7 +61,7 @@ const ListBlogs = () => {
         }
         fetchCategories();
       }
-      dispatchSession(createActionLoading(false));
+      dispatchUI(createActionLoading(false));
     })();
  // eslint-disable-next-line
   }, []);
@@ -68,7 +69,7 @@ const ListBlogs = () => {
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
       if (category) {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         if ( category.id === 'all') {
           await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
@@ -84,7 +85,7 @@ const ListBlogs = () => {
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Posts reading'));
         }
-        dispatchSession(createActionLoading(false));
+        dispatchUI(createActionLoading(false));
       }
     }
     fetchPosts();

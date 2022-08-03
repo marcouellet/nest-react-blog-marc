@@ -1,16 +1,22 @@
 import { ICategory } from '../types';
 
 export enum UIActionType {
+  Loading = 'LOADING',
   SetCategoryFilter = 'SET_CATEGORY_FILTER',
   SetPostTitleFilter = 'SET_POST_TITLE_FILTER',
   SetUserNameFilter = 'SET_USER_NAME_FILTER',
 }
 
+export const createActionLoading = (isLoading: boolean) : UIAction => { return {type:  UIActionType.Loading, isLoading: isLoading}}
 export const createActionSetCategoryFilter = (category: ICategory) : UIAction => { return {type:  UIActionType.SetCategoryFilter, categoryFilter: category}}
 export const createActionSetPostTitleFilter = (titleFilter: string) : UIAction => { return {type:  UIActionType.SetPostTitleFilter, postTitleFilter: titleFilter}}
 export const createActionSetUserNameFilter = (userName: string) : UIAction => { return {type:  UIActionType.SetUserNameFilter, userNameFilter: userName}}
 
 export type UIAction =
+| { 
+    type: UIActionType.Loading;
+    isLoading: boolean;
+  }
 | { 
     type: UIActionType.SetCategoryFilter;
     categoryFilter: ICategory;
@@ -25,12 +31,16 @@ export type UIAction =
   }
 ;
 export interface UIState {
+  isLoading: boolean,
+  lastActivityTimeStamp: Date | undefined,
   categoryFilter: ICategory | undefined,
   postTitleFilter: string,
   userNameFilter: string,
 }
 
 export const initialState: UIState = {
+  isLoading: false,
+  lastActivityTimeStamp: undefined,
   categoryFilter: undefined,
   postTitleFilter: '',
   userNameFilter: ''
@@ -38,6 +48,9 @@ export const initialState: UIState = {
 
 export function UIReducer(state: UIState, action: UIAction):UIState {
   switch (action.type) {
+    case UIActionType.Loading: {
+      return { ...state, isLoading: action.isLoading!, lastActivityTimeStamp: new Date()};
+    }
     case UIActionType.SetCategoryFilter: {
       return { ...state, categoryFilter: action.categoryFilter};
     }

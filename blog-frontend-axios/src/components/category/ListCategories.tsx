@@ -6,14 +6,17 @@ import { toast } from "react-toastify";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { ICategory, UserRole } from "../../types";
 import useSessionContext from '../../contexts/session.context';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useUIContext from '../../contexts/ui.context';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import ListErrors from '../common/ListErrors';
 import { IErrors } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 
 const ListCategories = () => {
   
-  const { sessionState: { user, isAuthenticated, isLoading}, dispatchSession } = useSessionContext();
+  const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading }, dispatchUI } = useUIContext();
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -23,11 +26,11 @@ const ListCategories = () => {
 
   useEffect(() => {
     const fetchCategories = async (): Promise<void> => {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       CategoryApiService.getAllCategories()
         .then(cats => setCategorys(cats))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
     }
     fetchCategories();
   // eslint-disable-next-line 

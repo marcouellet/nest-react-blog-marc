@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import MoonLoader from "react-spinners/MoonLoader";
 
-import useSessionProvider from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 
 const override: CSSProperties = {
   display: "block",
@@ -16,7 +16,7 @@ const override: CSSProperties = {
 
 const Processing = () => {
 
-    const { sessionState: { isLoading } } = useSessionProvider();
+    const { uiState: { isLoading } } = useUIContext();
 
     return (
         <div className="sweet-loading">

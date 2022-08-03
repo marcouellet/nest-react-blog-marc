@@ -9,20 +9,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import useContextSession from '../contexts/session.context';
-import { createActionLogout, createActionLoading } from '../reducers/session.reducer';
+import useUIContext from '../contexts/ui.context';
+import { createActionLogout } from '../reducers/session.reducer';
+import { createActionLoading } from '../reducers/ui.reducer';
 import AUTHAPI from '../services/api/AuthApiService';
 import { UserRole } from '../types';
 
 const NavigationBar = () => {
-    const { sessionState: { user, isAuthenticated, isLoading}, dispatchSession } = useContextSession();
+    const { sessionState: { user, isAuthenticated }, dispatchSession } = useContextSession();
+    const { uiState: { isLoading }, dispatchUI } = useUIContext();
     const navigate = useNavigate();
 
      const handleLogout = () => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         dispatchSession(createActionLogout());
         AUTHAPI.logout();
         toast.info(`${user!.username} is logged out`);
-        dispatchSession(createActionLoading(false));
+        dispatchUI(createActionLoading(false));
         navigate('/');
       };
 

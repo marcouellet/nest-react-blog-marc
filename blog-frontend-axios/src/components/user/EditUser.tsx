@@ -10,8 +10,10 @@ import CancelButton from '../common/cancelConfirmation';
 import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
         minimumUserNameLength, ImageData, ImageSizeProps, IErrors } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
 import Image from '../common/Image';
@@ -23,6 +25,7 @@ const EditUser = () => {
 
   const navigate = useNavigate();
   const { sessionState: { user }, dispatchSession } = useSessionContext();
+  const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [userEdited, setUserEdited] = useState<User>();
@@ -95,7 +98,7 @@ const EditUser = () => {
   useEffect(() => {
     if (!userEdited) {
       const fetchData = async (): Promise<void> => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 
           setuserDefaultImage(imageData);
@@ -103,11 +106,11 @@ const EditUser = () => {
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
         await UserApiService.getUserById(userId!)
         .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'User reading'))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
        }
       fetchData();      
     }
@@ -137,13 +140,13 @@ const EditUser = () => {
 
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (userEdited && isDirty && submitForm) {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
       await UserApiService.updateUser(userEdited.id!, userData)
       .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-      dispatchSession(createActionLoading(false));
+      dispatchUI(createActionLoading(false));
      }
   } 
 

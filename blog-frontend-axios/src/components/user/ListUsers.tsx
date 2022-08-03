@@ -6,7 +6,8 @@ import { Table, Container } from 'react-bootstrap';
 import useSessionContext from '../../contexts/session.context';
 import useUIContext from '../../contexts/ui.context';
 import { resizeImage } from '../../utils/image.utils';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import { createActionSetUserNameFilter } from '../../reducers/ui.reducer';
 import ListErrors from '../common/ListErrors';
 import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
@@ -17,25 +18,25 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 
 const ListUsers = () => {
 
-  const { sessionState: { user, isLoading }, dispatchSession } = useSessionContext();
-  const { uiState: { userNameFilter }, dispatchUI } = useUIContext();
+  const { sessionState: { user }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading, userNameFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [users, setUsers] = useState<IUser[]>([]);
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
     const fetchUsers = async (): Promise<void> => {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       await UserApiService.findManyUsers(userNameFilter)
         .then(users => setUsers(users))
         .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
       await getDefaultUserImage()
         .then(imageData => { setuserDefaultImage(imageData);})
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatchSession(createActionLoading(false))); 
+        .finally(() => dispatchUI(createActionLoading(false))); 
     }
     fetchUsers();
     // eslint-disable-next-line

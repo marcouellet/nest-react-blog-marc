@@ -5,8 +5,10 @@ import { toast } from "react-toastify";
 import { ICategory } from "../../types";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { PostApiService } from '../../services/api/PostApiService';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, UserRole } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
@@ -15,7 +17,8 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 const ViewCategory = () => {
 
   const { categoryId } = useParams<{ categoryId: string }>();
-  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useSessionContext();
+  const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [category, setCategory] = useState<ICategory>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
@@ -26,11 +29,11 @@ const ViewCategory = () => {
   useEffect(() => {
     if (!category) {
       const fetchData = async (): Promise<void> => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         await CategoryApiService.getCategoryById(categoryId!)
         .then(user => setCategory(user))
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Category reading'))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -58,16 +61,16 @@ const ViewCategory = () => {
   const deleteCategoryMessage = (category: ICategory) => `${category.title} Category`;
 
   const handleDeleteCategory = async (id: string) => {
-    dispatchSession(createActionLoading(true));
+    dispatchUI(createActionLoading(true));
     const postscount = await PostApiService.getNumberOfPostsForCategory(id);
     if (postscount) {
       toast.error(`Category has linked posts, delete them first`);
-      dispatchSession(createActionLoading(false));
+      dispatchUI(createActionLoading(false));
     } else {
       await CategoryApiService.deleteCategory(id)
       .then(() => handleDeleteCategorySuccess())
       .catch((apiErrors: IErrors) => handleDeleteCategoryError(apiErrors))
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
       navigate('/category'); 
     }
   }

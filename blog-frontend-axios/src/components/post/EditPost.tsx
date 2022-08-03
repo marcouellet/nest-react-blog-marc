@@ -11,8 +11,10 @@ import { IPost, IUpdatePost, ICategory, createPostForUpdate, minimumPostTitleLen
           ImageSizeProps } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
 import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageData, PostEditingFormState, IPostEditingState } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
@@ -27,6 +29,7 @@ const EditPost = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { dispatchSession } = useSessionContext();
+  const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<IPost>();
@@ -66,7 +69,7 @@ const EditPost = () => {
   useEffect(() => {
     (async () => {
       let allCategories: ICategory[];
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
         await CategoryApiService.getAllCategories()
@@ -77,7 +80,7 @@ const EditPost = () => {
             selectCategory(allCategories, 'no_category', false);
           })
           .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Categories reading'))
-          .finally(() => dispatchSession(createActionLoading(false)));
+          .finally(() => dispatchUI(createActionLoading(false)));
         }
         fetchCategories();
       }
@@ -88,7 +91,7 @@ const EditPost = () => {
           .catch(error => {
             throw new Error(error);
           })
-          .finally(() => dispatchSession(createActionLoading(false)));  
+          .finally(() => dispatchUI(createActionLoading(false)));  
           await PostApiService.getPostById(postId!)
           .then(post => { 
             setContent(post.body);
@@ -100,14 +103,14 @@ const EditPost = () => {
 
           })
           .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Post reading'))
-          .finally(() => dispatchSession(createActionLoading(false)));
+          .finally(() => dispatchUI(createActionLoading(false)));
         }
         await fetchPost();
       }
       if (location.state) {
         restorePostEditingState(location.state as any);
       }
-      dispatchSession(createActionLoading(false));
+      dispatchUI(createActionLoading(false));
 
     })();
   // eslint-disable-next-line
@@ -134,13 +137,13 @@ const EditPost = () => {
 
   const onSubmit = async (data: PostEditingFormState) => {
     if (post && isDirty && submitForm) {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       const image = postImage;
       const postData: IUpdatePost = createPostForUpdate({...post, ...data, image, category});
       await PostApiService.updatePost(post.id!, postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post update') })
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
      }
   } 
 

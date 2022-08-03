@@ -6,11 +6,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from "react-toastify";
 
 import AUTHAPI from '../../services/api/AuthApiService';
-import useContextSession from '../../contexts/session.context';
+import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import CancelButton from '../common/cancelConfirmation';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
-import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import Image from '../common/Image';
 import ImageUpload from '../common/ImageUpload';
 import ImageResize from '../common/ImageResize';
@@ -20,7 +22,8 @@ import { IErrors, User, IUpdateUser, createUserForUpdate, minimumPasswordLength,
 
 const UserProfile = () => {
 
-  const { sessionState: { user }, dispatchSession } = useContextSession();
+  const { sessionState: { user }, dispatchSession } = useSessionContext();
+  const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userEdited, setUserEdited] = useState<User>();
   const [userImage, setUserImage] = useState<ImageData>();
@@ -94,7 +97,7 @@ const UserProfile = () => {
       if (user) {
           if (!userEdited) {
               const fetchData = async (): Promise<void> => {
-              dispatchSession(createActionLoading(true));
+              dispatchUI(createActionLoading(true));
               await getDefaultUserImage()
               .then(imageData => { 
                 setuserDefaultImage(imageData);
@@ -102,11 +105,11 @@ const UserProfile = () => {
               .catch(error => {
                 throw new Error(error);
               })
-              .finally(() => dispatchSession(createActionLoading(false)));
+              .finally(() => dispatchUI(createActionLoading(false)));
               await AUTHAPI.getUserProfile()
               .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
               .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'User reading'))
-              .finally(() => dispatchSession(createActionLoading(false)));
+              .finally(() => dispatchUI(createActionLoading(false)));
               }
               fetchData();      
           }
@@ -149,13 +152,13 @@ const UserProfile = () => {
 
   const onSubmit = async (data: UpdateSubmitForm) => {
       if (userEdited && isDirty && submitForm) {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         const image: ImageData | undefined = userImage;
         const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
         await AUTHAPI.updateUserProfile( userData)
           .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
           .catch((apiErrors: IErrors) =>  { setSubmitForm(false); handleApiErrors(apiErrors,'User update'); });
-        dispatchSession(createActionLoading(false));
+        dispatchUI(createActionLoading(false));
       }
   } 
 

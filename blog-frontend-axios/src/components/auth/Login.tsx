@@ -6,15 +6,18 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from 'react-router-dom';
 
 import AUTHAPI from '../../services/api/AuthApiService';
+import useUIContext from '../../contexts/ui.context';
 import useSessionContext from '../../contexts/session.context';
-import { createActionLoadUser, createActionLoading } from '../../reducers/session.reducer';
+import { createActionLoggedIn } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength } from "../../types";
 import { checkUnauthorized, checkNotFound, checkTimeout } from '../../utils/html.response.utils';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { sessionState: { isLoading }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading }, dispatchUI } = useUIContext();
+  const { dispatchSession } = useSessionContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
@@ -51,17 +54,17 @@ const Login = () => {
    }
 
   const onSubmit = async (data: LoginSubmitForm) => {
-    dispatchSession(createActionLoading(true));
+    dispatchUI(createActionLoading(true));
     await AUTHAPI.login(data.email, data.password)
       .then(
         (user) => {
           // toast.info(`${user.username} is logged in`);
-          dispatchSession(createActionLoadUser(user));
+          dispatchSession(createActionLoggedIn(user));
           navigate('/');    
         }
       )
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Login'); })
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
   } 
 
   return (

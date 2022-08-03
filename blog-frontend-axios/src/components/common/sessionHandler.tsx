@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import AUTHAPI from '../../services/api/AuthApiService';
-import { createActionLoggingOut, createActionLogout, createActionLoadUser, createActionLoading,
-        createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoggingOut, createActionLogout, createActionLoggedIn, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import ConfirmRefresh from './confirmRefresh';
 import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '../../utils/session.util';
 import AuthApiService from '../../services/api/AuthApiService';
@@ -13,7 +14,8 @@ import AuthApiService from '../../services/api/AuthApiService';
 const SessionHandler = () => {
 
   const [askRefresh, setAskRefresh] = useState(false);
-  const { sessionState: { user, isAuthenticated, isLoggingOut, isSessionExpired, lastActivityTimeStamp }, dispatchSession } = useSessionContext();
+  const { sessionState: { user, isAuthenticated, isLoggingOut, isSessionExpired  }, dispatchSession } = useSessionContext();
+  const { uiState: { lastActivityTimeStamp }, dispatchUI } = useUIContext();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -28,10 +30,10 @@ const SessionHandler = () => {
 
   const handleRefresh = async () => {
 
-    dispatchSession(createActionLoading(true));
+    dispatchUI(createActionLoading(true));
     AUTHAPI.refresh()
     .then((user) => {
-        dispatchSession(createActionLoadUser(user));
+        dispatchSession(createActionLoggedIn(user));
         toast.info(`${user.username} session renewed!`);
         })
     .catch(_ => {
@@ -39,7 +41,7 @@ const SessionHandler = () => {
         handleLogout();
     })
     .finally(() => {
-      dispatchSession(createActionLoading(false));
+      dispatchUI(createActionLoading(false));
       setAskRefresh(false);
     }
     );
@@ -65,14 +67,14 @@ const SessionHandler = () => {
             const sessionDuration = getSessionDuration(token);
             AuthApiService.extendUserSession(sessionDuration)
             .then((user) => {
-              dispatchSession(createActionLoadUser(user));
+              dispatchSession(createActionLoggedIn(user));
               // toast.info(`${user.username} session renewed!`);
               })
             .catch(_ => {
               toast.error(`Refresh session failed, logging out!`);
               dispatchSession(createActionLoggingOut());
             })
-            .finally(() => dispatchSession(createActionLoading(false)));
+            .finally(() => dispatchUI(createActionLoading(false)));
           }
         } else {
           if (!isSessionExpired) {

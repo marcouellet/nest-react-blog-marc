@@ -8,8 +8,10 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 import CancelButton from '../common/cancelConfirmation';
 import { PostApiService } from "../../services/api/PostApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
@@ -25,7 +27,8 @@ const CreatePost = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useSessionContext();
+  const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
@@ -65,13 +68,13 @@ const CreatePost = () => {
     (async () => {
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
-          dispatchSession(createActionLoading(true));
+          dispatchUI(createActionLoading(true));
           await getDefaultPostImage()
             .then(imageData => { setpostDefaultImage(imageData);})
             .catch(error => {
               throw new Error(error);
             })
-            .finally(() => dispatchSession(createActionLoading(false)));  
+            .finally(() => dispatchUI(createActionLoading(false)));  
           await CategoryApiService.getAllCategories()
             .then(categories => {
               const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -80,7 +83,7 @@ const CreatePost = () => {
               selectCategory(allCategories, 'no_category', false);
             })
             .catch((apiErrors: IErrors) =>  handleApiErrors(apiErrors, 'Categories reading'))
-            .finally(() => dispatchSession(createActionLoading(false)));
+            .finally(() => dispatchUI(createActionLoading(false)));
         }
         fetchCategories();
       }
@@ -117,13 +120,13 @@ const CreatePost = () => {
   
   const onSubmit = async (data: PostEditingFormState) => {
     if (submitForm) {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = postImage;
       const postData = {...data, category, image, user};
       await PostApiService.createPost(postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post creation') });
-      dispatchSession(createActionLoading(false));  
+      dispatchUI(createActionLoading(false));  
     }
    } 
 

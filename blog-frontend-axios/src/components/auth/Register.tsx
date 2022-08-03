@@ -7,7 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import AUTHAPI from '../../services/api/AuthApiService';
 import useSessionContext from '../../contexts/session.context';
-import { createActionLoadUser, createActionLoading } from '../../reducers/session.reducer';
+import useUIContext from '../../contexts/ui.context';
+import { createActionLoggedIn } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import { checkUnauthorized, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "../../types";
@@ -15,7 +17,8 @@ import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEma
 const Register = () => {
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const { sessionState: { isLoading }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading }, dispatchUI } = useUIContext();
+  const { dispatchSession } = useSessionContext();
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('User name is required')
@@ -61,18 +64,18 @@ const Register = () => {
   }
 
   const onSubmit = async (data: RegisterSubmitForm) => {
-    dispatchSession(createActionLoading(true));
+    dispatchUI(createActionLoading(true));
     const { username, email, password } = data;
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
           toast.success(`${user.username} is registered`);
-          dispatchSession(createActionLoadUser(user));
+          dispatchSession(createActionLoggedIn(user));
           navigate('/login');    
         }
       )
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'User registration') })
-      .finally(() => dispatchSession(createActionLoading(false))); 
+      .finally(() => dispatchUI(createActionLoading(false))); 
  } 
 
   return (

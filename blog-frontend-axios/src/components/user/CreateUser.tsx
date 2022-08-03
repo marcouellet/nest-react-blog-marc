@@ -8,8 +8,10 @@ import * as Yup from 'yup';
 import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
           ImageSizeProps, ImageData } from '../../types';
@@ -23,6 +25,7 @@ const CreateUser = () => {
 
   const navigate = useNavigate();
   const { dispatchSession } = useSessionContext();
+  const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
@@ -56,7 +59,7 @@ const CreateUser = () => {
   useEffect(() => {
     if (!userDefaultImage) {
       const fetchData = async (): Promise<void> => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 
           setuserDefaultImage(imageData);
@@ -64,7 +67,7 @@ const CreateUser = () => {
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
       }
       fetchData();      
     }
@@ -98,13 +101,13 @@ const CreateUser = () => {
 
   const onSubmit = async (data: CreateSubmitForm) => {
     if (submitForm) {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData = {...data, image};
       await UserApiService.createUser(userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Creation') })
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
     }
   } 
 

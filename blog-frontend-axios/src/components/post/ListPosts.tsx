@@ -6,7 +6,8 @@ import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory, ImageData } from "../../types";
 import useSessionContext from '../../contexts/session.context';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import { resizeImage } from '../../utils/image.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps } from '../../types';
@@ -19,8 +20,8 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 
 const ListPosts = () => {
 
-  const { sessionState: { user, isLoading, isAuthenticated }, dispatchSession } = useSessionContext();
-  const { uiState: { categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
+  const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading, categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
@@ -31,7 +32,7 @@ const ListPosts = () => {
   useEffect(() => {
     (async () => {
       if (!categories) {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         const fetchCategories = async (): Promise<void> => {
         await CategoryApiService.getAllCategories()
           .then(categories => {
@@ -48,7 +49,7 @@ const ListPosts = () => {
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
         }
         fetchCategories();
-        dispatchSession(createActionLoading(false));
+        dispatchUI(createActionLoading(false));
       }
     })();
  // eslint-disable-next-line
@@ -61,9 +62,9 @@ const ListPosts = () => {
       .catch(error => {
         throw new Error(error);
       })
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
       if (category) {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         if ( category.id === 'all') {
           await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
@@ -79,7 +80,7 @@ const ListPosts = () => {
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
-        dispatchSession(createActionLoading(false));
+        dispatchUI(createActionLoading(false));
       }
     }
     fetchPosts();

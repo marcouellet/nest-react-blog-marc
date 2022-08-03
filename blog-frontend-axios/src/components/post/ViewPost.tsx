@@ -4,8 +4,10 @@ import { toast } from "react-toastify";
 
 import { IPost, UserRole } from "../../types";
 import { PostApiService } from "../../services/api/PostApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageData, ImageSizeProps } from '../../types';
 import { toLocalDateString } from '../../utils/local.storage.utils';
@@ -18,7 +20,8 @@ import { resizeImage } from '../../utils/image.utils';
 const ViewPost = () => {
 
   const { postId } = useParams<{ postId: string }>();
-  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useSessionContext();
+  const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [post, setPost] = useState<IPost>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
@@ -31,17 +34,17 @@ const ViewPost = () => {
   useEffect(() => {
     if (!post) {
       const fetchData = async (): Promise<void> => {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         await getDefaultPostImage()
         .then(imageData => { setpostDefaultImage(imageData);})
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatchSession(createActionLoading(false))); 
+        .finally(() => dispatchUI(createActionLoading(false))); 
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -87,11 +90,11 @@ const ViewPost = () => {
   }
 
   const handleDeletePost = async (id: string) => {
-    dispatchSession(createActionLoading(true));
+    dispatchUI(createActionLoading(true));
     await PostApiService.deletePost(id)
      .then(() => handleDeletePostSucess())
      .catch((apiErrors: IErrors) => handleDeletePostError(apiErrors))
-     dispatchSession(createActionLoading(false));
+     dispatchUI(createActionLoading(false));
     goBack();
   }
   const handleDeletePostSucess = () => {

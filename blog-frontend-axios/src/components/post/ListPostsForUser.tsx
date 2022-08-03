@@ -7,7 +7,8 @@ import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory, ImageData } from "../../types";
 import useSessionContext from '../../contexts/session.context';
 import useUIContext from '../../contexts/ui.context';
-import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionSessionExpired } from '../../reducers/session.reducer';
+import { createActionLoading } from '../../reducers/ui.reducer';
 import { resizeImage } from '../../utils/image.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps } from '../../types';
@@ -19,8 +20,8 @@ import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../util
 
 const ListPostsForUser = () => {
 
-  const { sessionState: { user, isLoading, isAuthenticated }, dispatchSession } = useSessionContext();
-  const { uiState: { categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
+  const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
+  const { uiState: { isLoading, categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [selectedPosts, setSelectedPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
@@ -45,7 +46,7 @@ const ListPostsForUser = () => {
             }            
           })
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors))
-          .finally(() => dispatchSession(createActionLoading(false)));
+          .finally(() => dispatchUI(createActionLoading(false)));
         }
         fetchCategories();
       }
@@ -55,20 +56,20 @@ const ListPostsForUser = () => {
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
-      dispatchSession(createActionLoading(true));
+      dispatchUI(createActionLoading(true));
       await getDefaultPostImage()
       .then(imageData => { setpostDefaultImage(imageData);})
       .catch(error => {
         throw new Error(error);
       })
-      .finally(() => dispatchSession(createActionLoading(false)));
+      .finally(() => dispatchUI(createActionLoading(false)));
       if (category) {
-        dispatchSession(createActionLoading(true));
+        dispatchUI(createActionLoading(true));
         let fetchedPosts: IPost[] = [];
         await PostApiService.finManyPostsForUser(user!.id!, postTitleFilter)
         .then(posts => fetchedPosts = posts)
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
-        .finally(() => dispatchSession(createActionLoading(false)));
+        .finally(() => dispatchUI(createActionLoading(false)));
         if ( category.id === 'all') {
           setSelectedPosts(fetchedPosts);
         } 
