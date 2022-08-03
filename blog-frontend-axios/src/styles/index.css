@@ -15,3 +15,13 @@ code {
 input[type='file'] {
   color: rgba(0, 0, 0, 0)
 }
+
+.float-right {
+  float:'right'
+}
+
+.transparent-button {
+  border-style: "none";
+  outline-style: "none";
+  background-color: "transparent"
+}

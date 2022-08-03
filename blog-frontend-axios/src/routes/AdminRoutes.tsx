@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
 
-import useAuth from '../contexts/auth';
+import useContextSession from '../contexts/session.context';
 import { UserRole } from '../types';
 import ListUsers from "../components/user/ListUsers";
 import ViewUser from "../components/user/ViewUser";
@@ -12,7 +12,7 @@ import EditCategory from "../components/category/EditCategory";
 
 const AdminRoutes = () => {
 
-  const { state : { user, isAuthenticated } } = useAuth();
+  const { sessionState : { user, isAuthenticated } } = useContextSession();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
@@ -27,7 +27,7 @@ const AdminRoutes = () => {
       <Route path={"/user/create"} element={<CreateUser/>} />
       <Route path={"/user/edit/:userId"} element={<EditUser/>} />
       <Route path={"/category/create"} element={<CreateCategory/>} />
-      <Route path={"/category/edit/:userId"} element={<EditCategory/>} />
+      <Route path={"/category/edit/:categoryId"} element={<EditCategory/>} />
     </Route>
    );
 }

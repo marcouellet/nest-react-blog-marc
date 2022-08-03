@@ -8,21 +8,21 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import useAuth from '../contexts/auth';
-import { createActionLogout, createActionLoading } from '../reducers/auth';
+import useContextSession from '../contexts/session.context';
+import { createActionLogout, createActionLoading } from '../reducers/session.reducer';
 import AUTHAPI from '../services/api/AuthApiService';
 import { UserRole } from '../types';
 
 const NavigationBar = () => {
-    const { state: { user, isAuthenticated, isLoading}, dispatch } = useAuth();
+    const { sessionState: { user, isAuthenticated, isLoading}, dispatchSession } = useContextSession();
     const navigate = useNavigate();
 
      const handleLogout = () => {
-        dispatch(createActionLoading(true));
-        dispatch(createActionLogout());
+        dispatchSession(createActionLoading(true));
+        dispatchSession(createActionLogout());
         AUTHAPI.logout();
         toast.info(`${user!.username} is logged out`);
-        dispatch(createActionLoading(false));
+        dispatchSession(createActionLoading(false));
         navigate('/');
       };
 

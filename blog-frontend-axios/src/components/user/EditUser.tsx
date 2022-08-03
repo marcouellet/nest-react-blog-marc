@@ -10,8 +10,8 @@ import CancelButton from '../common/cancelConfirmation';
 import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
         minimumUserNameLength, ImageData, ImageSizeProps, IErrors } from "../../types";
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
+import useSessionContext from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
 import Image from '../common/Image';
@@ -22,7 +22,7 @@ import { resizeImage } from '../../utils/image.utils';
 const EditUser = () => {
 
   const navigate = useNavigate();
-  const { state: { user }, dispatch } = useAuth();
+  const { sessionState: { user }, dispatchSession } = useSessionContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [userEdited, setUserEdited] = useState<User>();
@@ -95,7 +95,7 @@ const EditUser = () => {
   useEffect(() => {
     if (!userEdited) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 
           setuserDefaultImage(imageData);
@@ -103,11 +103,11 @@ const EditUser = () => {
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
         await UserApiService.getUserById(userId!)
         .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'User reading'))
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
        }
       fetchData();      
     }
@@ -137,13 +137,13 @@ const EditUser = () => {
 
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (userEdited && isDirty && submitForm) {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       const image: ImageData | undefined = userImage;
       const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
       await UserApiService.updateUser(userEdited.id!, userData)
       .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
-      dispatch(createActionLoading(false));
+      dispatchSession(createActionLoading(false));
      }
   } 
 
@@ -156,7 +156,7 @@ const EditUser = () => {
     setUserEdited(userUpdated);
     if (user?.email === userUpdated?.email) {
       // Update state user to refresh user info in NavBar
-          dispatch(createActionUpdateUser(userUpdated!));
+      dispatchSession(createActionUpdateUser(userUpdated!));
     }
     toast.success(`User updated successfully...`);
     navigate(`/user/${userEdited!.id}`); 
@@ -168,7 +168,7 @@ const EditUser = () => {
       toast.error(`Profile update failed: ${message}`);
     } else if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {

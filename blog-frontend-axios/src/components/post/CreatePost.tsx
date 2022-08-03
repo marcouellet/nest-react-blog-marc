@@ -8,14 +8,13 @@ import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 import CancelButton from '../common/cancelConfirmation';
 import { PostApiService } from "../../services/api/PostApiService";
-import { createActionLoading } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useSessionContext from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
           minimumPostDescriptionLength, PostEditingFormState, IPostEditingState } from '../../types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 import ImageUpload from '../common/ImageUpload';
 import Image from '../common/Image';
 import ImageResize from '../common/ImageResize';
@@ -26,7 +25,7 @@ const CreatePost = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
+  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useSessionContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
@@ -66,13 +65,13 @@ const CreatePost = () => {
     (async () => {
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
-          dispatch(createActionLoading(true));
+          dispatchSession(createActionLoading(true));
           await getDefaultPostImage()
             .then(imageData => { setpostDefaultImage(imageData);})
             .catch(error => {
               throw new Error(error);
             })
-            .finally(() => dispatch(createActionLoading(false)));  
+            .finally(() => dispatchSession(createActionLoading(false)));  
           await CategoryApiService.getAllCategories()
             .then(categories => {
               const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
@@ -81,7 +80,7 @@ const CreatePost = () => {
               selectCategory(allCategories, 'no_category', false);
             })
             .catch((apiErrors: IErrors) =>  handleApiErrors(apiErrors, 'Categories reading'))
-            .finally(() => dispatch(createActionLoading(false)));
+            .finally(() => dispatchSession(createActionLoading(false)));
         }
         fetchCategories();
       }
@@ -90,7 +89,7 @@ const CreatePost = () => {
       }
     })();
  // eslint-disable-next-line
-  }, []);
+  }, [categories]);
 
   const getDefaultPostImage = (): Promise<ImageData> => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
@@ -118,20 +117,20 @@ const CreatePost = () => {
   
   const onSubmit = async (data: PostEditingFormState) => {
     if (submitForm) {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       const image: ImageData | undefined = postImage;
       const postData = {...data, category, image, user};
       await PostApiService.createPost(postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post creation') });
-      dispatch(createActionLoading(false));  
+      dispatchSession(createActionLoading(false));  
     }
    } 
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
       goBack();
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
@@ -244,7 +243,9 @@ const CreatePost = () => {
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
                 {categories && categories.map((category: ICategory) => 
                 (
-                  <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                  <div key={category.id}>
+                    <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>
+                  </div>
                 ))
               }
             </DropdownButton>

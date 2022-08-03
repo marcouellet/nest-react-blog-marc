@@ -7,7 +7,8 @@ import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 import NavigationBar from "./components/NavigationBar";
-import { AuthProvider } from './contexts/auth';
+import { SessionProvider } from './contexts/session.context';
+import { UIProvider } from './contexts/ui.context';
 import { AppRoutes } from "./routes/AppRoutes";
 import ModalContextProvider from './contexts/modalContext';
 import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
@@ -19,15 +20,17 @@ const App = () => {
     <React.StrictMode>
       <ConfirmationModalContextProvider>
         <BrowserRouter>
-          <AuthProvider>
+          <SessionProvider>
             <SessionHandler/>
             <NavigationBar/>
             <Processing/>
             <ModalContextProvider>
-              <AppRoutes />
+              <UIProvider>
+                <AppRoutes />
+              </UIProvider>
             </ModalContextProvider>
             <ToastContainer autoClose={3000} position={toast.POSITION.TOP_RIGHT} />
-          </AuthProvider>
+          </SessionProvider>
         </BrowserRouter>
       </ConfirmationModalContextProvider>
     </React.StrictMode>

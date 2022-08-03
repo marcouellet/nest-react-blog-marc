@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-import useAuth from '../contexts/auth';
+import useContextSession from '../contexts/session.context';
 
 type RestrictedRouteProps = React.HTMLProps<HTMLElement> & {
     children: React.ReactElement,
 }
 
 const RestrictedRoute: React.FC<RestrictedRouteProps> = ({children}) => {
-    const { state : { user, isAuthenticated } } = useAuth();
+    const { sessionState : { user, isAuthenticated } } = useContextSession();
     const navigate = useNavigate();
 
     if (isAuthenticated) {

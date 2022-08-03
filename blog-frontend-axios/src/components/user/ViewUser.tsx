@@ -3,8 +3,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import { UserApiService } from "../../services/api/UserApiService";
-import { createActionLoading, createActionSessionExpired } from '../../reducers/auth';
-import useAuth from '../../contexts/auth';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
+import useContextSession from '../../contexts/session.context';
 import ListErrors from '../common/ListErrors';
 import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
 import DeleteButton from '../common/deleteConfirmation';
@@ -17,7 +17,7 @@ import { resizeImage } from '../../utils/image.utils';
 const ViewUser = () => {
 
   const { userId } = useParams<{ userId: string }>();
-  const { state: { isLoading, isAuthenticated, user }, dispatch } = useAuth();
+  const { sessionState: { isLoading, isAuthenticated, user }, dispatchSession } = useContextSession();
   const [userDisplayed, setUserDisplayed] = useState<IUser>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
@@ -27,7 +27,7 @@ const ViewUser = () => {
   useEffect(() => {
     if (!userDisplayed) {
       const fetchData = async (): Promise<void> => {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 
           setuserDefaultImage(imageData);
@@ -35,11 +35,11 @@ const ViewUser = () => {
         .catch(error => {
           throw new Error(error);
         })
-        .finally(() => dispatch(createActionLoading(false)));
+        .finally(() => dispatchSession(createActionLoading(false)));
         await UserApiService.getUserById(userId!)
           .then(user => setUserDisplayed(user))
           .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
-          .finally(() => dispatch(createActionLoading(false)));
+          .finally(() => dispatchSession(createActionLoading(false)));
       }
       fetchData();  
     }
@@ -49,7 +49,7 @@ const ViewUser = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {
@@ -84,16 +84,16 @@ const ViewUser = () => {
   const deleteUserMessage = (user: IUser) => `${user.username} User`;
 
   const handleDeleteUser = async (id: string) => {
-    dispatch(createActionLoading(true));
+    dispatchSession(createActionLoading(true));
     const postscount = await PostApiService.getNumberOfPostsForUser(id);
     if (postscount) {
       toast.error(`User has posts, delete them first`);
-      dispatch(createActionLoading(false));
+      dispatchSession(createActionLoading(false));
     } else {
       await UserApiService.deleteUser(id)
       .then(() => handleDeleteUserSuccess())
       .catch((apiErrors: IErrors) => handleDeleteUserError(apiErrors))
-      dispatch(createActionLoading(false));
+      dispatchSession(createActionLoading(false));
     }
   }
 

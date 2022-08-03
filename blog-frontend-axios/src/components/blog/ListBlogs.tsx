@@ -3,27 +3,27 @@ import { toast } from "react-toastify";
 
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory } from "../../types";
-import useAuth from '../../contexts/auth';
-import { createActionLoading } from '../../reducers/auth';
+import useSessionContext from '../../contexts/session.context';
+import useUIContext from '../../contexts/ui.context';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps, ImageData } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
 import { DropdownButton, Dropdown, Container } from 'react-bootstrap';
-import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
+import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/ui.reducer';
 import ViewBlogCards from './ViewBlogCards';
 import { resizeImage } from '../../utils/image.utils';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListBlogs = () => {
 
-  const { state: { user, isLoading, categoryFilter }, dispatch } = useAuth();
+  const { sessionState: { user, isLoading }, dispatchSession } = useSessionContext();
+  const { uiState: { categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
-  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
@@ -31,7 +31,7 @@ const ListBlogs = () => {
 
   useEffect(() => {
     (async () => {
-      dispatch(createActionLoading(true));
+      dispatchSession(createActionLoading(true));
       if (!categories) {
         const fetchCategories = async (): Promise<void> => {
           await getDefaultPostImage()
@@ -60,8 +60,7 @@ const ListBlogs = () => {
         }
         fetchCategories();
       }
-      setPostTitleFilter(postTitleFilter);
-      dispatch(createActionLoading(false));
+      dispatchSession(createActionLoading(false));
     })();
  // eslint-disable-next-line
   }, []);
@@ -69,7 +68,7 @@ const ListBlogs = () => {
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
       if (category) {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         if ( category.id === 'all') {
           await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
@@ -85,7 +84,7 @@ const ListBlogs = () => {
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Posts reading'));
         }
-        dispatch(createActionLoading(false));
+        dispatchSession(createActionLoading(false));
       }
     }
     fetchPosts();
@@ -103,7 +102,7 @@ const ListBlogs = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {
@@ -122,12 +121,11 @@ const ListBlogs = () => {
     const category = categories?.find(category => category.id === categoryId);
     setCategoryTitle(category!.title!);
     setCategory(category);
-    dispatch(createActionSetCategoryFilter(category!));
+    dispatchUI(createActionSetCategoryFilter(category!));
   }
 
   const handlePostTitleFilterChange = (filter: string)=>{
-    setPostTitleFilter(filter);
-    dispatch(createActionSetPostTitleFilter(filter));
+    dispatchUI(createActionSetPostTitleFilter(filter));
   }
 
   return (
@@ -148,8 +146,7 @@ const ListBlogs = () => {
               }
             </DropdownButton>
             <input 
-              style={{float: 'right'}} 
-              className="col-md-2"   
+              className="float-right col-md-2"   
               type="text" 
               disabled  
               placeholder="no category selected" 

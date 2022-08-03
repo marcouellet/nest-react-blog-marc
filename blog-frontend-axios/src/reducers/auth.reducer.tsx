@@ -24,41 +24,41 @@ export const createActionUpdateUser = (user: User) : AuthAction => { return {typ
 export const createActionSetUserNameFilter = (userName: string) : AuthAction => { return {type:  AuthActionType.SetUserNameFilter, userNameFilter: userName}}
 
 export type AuthAction =
-  | {
-      type: AuthActionType.LoadUser;
-      user: User;
-    }
-  | { type: AuthActionType.Logout }
-  | { 
-      type: AuthActionType.Loading;
-      isLoading: boolean;
-    }
-  | { 
-      type: AuthActionType.SessionExpired;
-    }
-  | { 
-      type: AuthActionType.LoggingOut;
-    }
-  | { 
-    type: AuthActionType.SessionRefresh;
-    }
-  | { 
-      type: AuthActionType.SetCategoryFilter;
-      categoryFilter: ICategory;
-    }
-  | { 
-      type: AuthActionType.SetPostTitleFilter;
-      postTitleFilter: string;
-    }
-  | {
-    type: AuthActionType.UpdateUser;
+| {
+    type: AuthActionType.LoadUser;
     user: User;
   }
-  | { 
-    type: AuthActionType.SetUserNameFilter;
-    userNameFilter: string;
+| { type: AuthActionType.Logout }
+| { 
+    type: AuthActionType.Loading;
+    isLoading: boolean;
   }
-;;
+| { 
+    type: AuthActionType.SessionExpired;
+  }
+| { 
+    type: AuthActionType.LoggingOut;
+  }
+| { 
+  type: AuthActionType.SessionRefresh;
+  }
+| { 
+    type: AuthActionType.SetCategoryFilter;
+    categoryFilter: ICategory;
+  }
+| { 
+    type: AuthActionType.SetPostTitleFilter;
+    postTitleFilter: string;
+  }
+| {
+  type: AuthActionType.UpdateUser;
+  user: User;
+  }
+| { 
+  type: AuthActionType.SetUserNameFilter;
+  userNameFilter: string;
+  }
+;
 export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;

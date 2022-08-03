@@ -5,33 +5,33 @@ import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 
 import { CategoryApiService } from "../../services/api/CategoryApiService";
 import { IPost, ICategory, ImageData } from "../../types";
-import useAuth from '../../contexts/auth';
-import { createActionLoading } from '../../reducers/auth';
+import useSessionContext from '../../contexts/session.context';
+import { createActionLoading, createActionSessionExpired } from '../../reducers/session.reducer';
 import { resizeImage } from '../../utils/image.utils';
 import ListErrors from '../common/ListErrors';
 import { IErrors, ImageSizeProps } from '../../types';
 import { PostApiService } from '../../services/api/PostApiService';
-import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/auth';
+import useUIContext from '../../contexts/ui.context';
+import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/ui.reducer';
 import ImageResize from '../common/ImageResize';
 import Image from '../common/Image';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/auth';
 
 const ListPosts = () => {
 
-  const { state: { user, isLoading, categoryFilter, isAuthenticated }, dispatch } = useAuth();
+  const { sessionState: { user, isLoading, isAuthenticated }, dispatchSession } = useSessionContext();
+  const { uiState: { categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<ICategory[]>();
   const [category, setCategory] = useState<ICategory>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
-  const [postTitleFilter, setPostTitleFilter] = useState<string>('');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
     (async () => {
-      dispatch(createActionLoading(true));
       if (!categories) {
+        dispatchSession(createActionLoading(true));
         const fetchCategories = async (): Promise<void> => {
         await CategoryApiService.getAllCategories()
           .then(categories => {
@@ -48,9 +48,8 @@ const ListPosts = () => {
           .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
         }
         fetchCategories();
+        dispatchSession(createActionLoading(false));
       }
-      setPostTitleFilter(postTitleFilter);
-      dispatch(createActionLoading(false));
     })();
  // eslint-disable-next-line
   }, []);
@@ -62,9 +61,9 @@ const ListPosts = () => {
       .catch(error => {
         throw new Error(error);
       })
-      .finally(() => dispatch(createActionLoading(false)));
+      .finally(() => dispatchSession(createActionLoading(false)));
       if (category) {
-        dispatch(createActionLoading(true));
+        dispatchSession(createActionLoading(true));
         if ( category.id === 'all') {
           await PostApiService.findManyPosts(postTitleFilter)
           .then(posts => setPosts(posts))
@@ -80,7 +79,7 @@ const ListPosts = () => {
           .then(posts => setPosts(posts))
           .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors));
         }
-        dispatch(createActionLoading(false));
+        dispatchSession(createActionLoading(false));
       }
     }
     fetchPosts();
@@ -90,7 +89,7 @@ const ListPosts = () => {
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {
       toast.error(`${process} failed, session expired`);
-      dispatch(createActionSessionExpired());
+      dispatchSession(createActionSessionExpired());
     } else if (checkUnauthorized(apiErrors)) {
       toast.error(`Access denied`);
     } else if (checkTimeout(apiErrors)) {
@@ -131,12 +130,11 @@ const ListPosts = () => {
     const category = categories?.find(category => category.id === categoryId);
     setCategoryTitle(category!.title!);
     setCategory(category);
-    dispatch(createActionSetCategoryFilter(category!));
+    dispatchUI(createActionSetCategoryFilter(category!));
   }
 
   const handlePostTitleFilterChange = (filter: string)=>{
-    setPostTitleFilter(filter);
-    dispatch(createActionSetPostTitleFilter(filter));
+    dispatchUI(createActionSetPostTitleFilter(filter));
   }
 
   return (
