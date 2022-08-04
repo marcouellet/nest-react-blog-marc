@@ -69,9 +69,9 @@ const Register = () => {
     await AUTHAPI.register(username, email, password)
       .then(
         (user: User) => {
-          toast.success(`${user.username} is registered`);
+          toast.success(`${user.username} is registered and logged in`);
           dispatchSession(createActionLoggedIn(user));
-          navigate('/login');    
+          navigate('/');       
         }
       )
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'User registration') })
