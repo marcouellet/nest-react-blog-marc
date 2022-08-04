@@ -1,4 +1,4 @@
-import { Module, DynamicModule } from '@nestjs/common';
+import { DynamicModule } from '@nestjs/common';
 
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
