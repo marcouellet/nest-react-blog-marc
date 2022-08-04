@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest-react-blog-marc-client-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nest-react-blog-marc-client
+  template:
+    metadata:
+      labels:
+        app: nest-react-blog-marc-client
+    spec:
+      containers:
+      - image: nest-react-blog-marc-client:latest
+        name: container
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: IfNotPresent

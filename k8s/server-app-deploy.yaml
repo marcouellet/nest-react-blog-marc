@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nest-react-blog-marc-server-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nest-react-blog-marc-server
+  template:
+    metadata:
+      labels:
+        app: nest-react-blog-marc-server
+    spec:
+      containers:
+      - image: nest-react-blog-marc-server:latest
+        name: container
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: nest-react-blog-marc-server-configs
+        - secretRef:
+            name: nest-react-blog-marc-server-secrets
