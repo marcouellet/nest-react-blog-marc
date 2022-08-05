@@ -18,7 +18,7 @@ describe('UserController Guards', () => {
     it('Method getById:@Auth([UserRole.ADMIN]) should prevent access to not signed on users', () => {
         checkAuthGuard(UserController.prototype.getById, [UserRole.ADMIN]);
     });
-  
+
     it('Method createUser:@Auth([UserRole.ADMIN]) should prevent access to not signed on users', () => {
         checkAuthGuard(UserController.prototype.createUser, [UserRole.ADMIN]);
     });

@@ -15,7 +15,7 @@ export class CategoryFactoryService {
       category.id = categorytDto.id;
       category.title = categorytDto.title;
       category.description = categorytDto.description;
-  
+
       return this.dataServicesRepositories.categories.convertFromGenericEntity(category);
     }
     return undefined;
@@ -28,7 +28,7 @@ export class CategoryFactoryService {
       categorytDto.id = newCategory.id;
       categorytDto.title = newCategory.title;
       categorytDto.description = newCategory.description;
-  
+
       return categorytDto;
     }
     return undefined;

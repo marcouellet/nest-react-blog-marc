@@ -46,11 +46,11 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
   async findManyCountForSubDocument(subDocumentName: string, subDocumentId: string, criterias: {}): Promise<number> {
     const findCriterias = buildMongoFindCriterias(criterias);
     if (subDocumentId) {
-      const id = new Types.ObjectId(subDocumentId); 
+      const id = new Types.ObjectId(subDocumentId);
       return this.repository.count(findCriterias).where(subDocumentName).equals(id).exec();
     } else {
-      let crit = {...findCriterias};
-      crit[subDocumentName] = { $exists: false }
+      const crit = {...findCriterias};
+      crit[subDocumentName] = { $exists: false };
       return this.repository.count(crit).where(subDocumentName).exec();
     }
   }
@@ -58,11 +58,11 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
   async findManyForSubDocument(subDocumentName: string, subDocumentId: string, criterias: {}): Promise<T[]> {
     const findCriterias = buildMongoFindCriterias(criterias);
     if (subDocumentId) {
-      const id = new Types.ObjectId(subDocumentId); 
+      const id = new Types.ObjectId(subDocumentId);
       return this.repository.find(findCriterias).where(subDocumentName).equals(id).populate(this.populateOnFind).exec();
     } else {
-      let crit = {...findCriterias};
-      crit[subDocumentName] = { $exists: false }
+      const crit = {...findCriterias};
+      crit[subDocumentName] = { $exists: false };
       return this.repository.find(crit).where(subDocumentName).populate(this.populateOnFind).exec();
     }
   }
@@ -71,13 +71,13 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
     return this.repository.create(item) as Promise<T>;
   }
 
-  async unset (id: string, unsetParms: {}): Promise<void> {
+  async unset(id: string, unsetParms: {}): Promise<void> {
     this.repository.updateOne({_id: id}, { $unset: unsetParms }).exec();
   }
 
   async update(id: string, update: {}, populate?: string | string[]): Promise<T> {
 
-    const options: {[key: string]: any} = { new: true }
+    const options: {[key: string]: any} = { new: true };
     if (populate) {
       options.populate = populate;
     }
@@ -86,7 +86,7 @@ export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> 
   }
 
   async delete(id: string, populate?: string | string[]): Promise<T> {
-    const options: {[key: string]: any} = { new: true }
+    const options: {[key: string]: any} = { new: true };
     if (populate) {
       options.populate = populate;
     }

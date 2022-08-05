@@ -95,13 +95,13 @@ export class AuthService {
 
   async updateUserFromToken(token: string, userDto: UserDto): Promise<UserDto> {
     return this.getUserFromToken(token)
-      .then(user =>this.userService.updateUser(user.id, userDto));
+      .then(user => this.userService.updateUser(user.id, userDto));
   }
 
   async validateToken(token: string): Promise<JwtPayload> {
     return this.jwtService.verifyAsync<JwtPayload>(token, this.getTokenVerifyOptions())
     .then (result => {
-      let { sub, expiresIn } = result;
+      const { sub, expiresIn } = result;
       return { sub, expiresIn };
     })
       .catch(_ => { throw new UnauthorizedException('Access Denied'); });
@@ -157,7 +157,7 @@ export class AuthService {
   async registerAsAdmin(registerDto: RegisterDto): Promise<UserDto> {
     const {username, email, password} = registerDto;
     const role = UserRole.ADMIN;
-    let createUserDto: CreateUserDto = {username, email, password, role};
+    const createUserDto: CreateUserDto = {username, email, password, role};
     return this.userService.createUser(createUserDto)
     .then(user => this.setupUserWithNewTokens(user));
   }

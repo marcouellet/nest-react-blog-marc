@@ -111,7 +111,7 @@ export class ConfigService implements IConfigService {
         CustomLogger.overrideLogger(this.loggerLevels as LogLevel[]);
 
         return { dataServerName, connectionString, authStrategyName,
-                authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn, 
+                authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn,
                 loggerLevels: this.loggerLevels, serverPort };
     }
 }

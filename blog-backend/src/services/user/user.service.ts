@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 
 import { IDataRepositories } from '../../core/repositories';
 import { User } from '../../core/entities';
-import { UserRole } from '../../core/enum'
+import { UserRole } from '../../core/enum';
 import { UserDto, UpdateUserDto } from '../../core/dtos';
 import { FilterFindCriterias } from '../../core/find-criterias/filter.find-criterias';
 import { UserFindCriterias } from '../../core/find-criterias/user.find-criterias';
@@ -76,14 +76,16 @@ export class UserService {
     let user: UserDto;
     try {
       user = await this.findUser({ email });
+    // tslint:disable-next-line: no-empty
     } catch (error) {}
     if (user) {
       throw new ForbiddenException(`User with email "${email}" already exist!`);
-    }   
+    }
     createUserDto.role = userDto.role ? userDto.role :  UserRole.USER;
     createUserDto.password = this.cryptoService.hashPassword(userDto.password);
     const newUser = this.userFactoryService.createUser(createUserDto);
     return this.dataServicesRepositories.users.create(newUser)
+      // tslint:disable-next-line: no-shadowed-variable
       .then(user => this.processUserUnrestricted(user));
   }
 
@@ -93,13 +95,14 @@ export class UserService {
       .then(async (user) => {
         if (user.email !== updateUserDto.email) {
           let userForEmail: UserDto;
-          let newEmail = updateUserDto.email;
+          const newEmail = updateUserDto.email;
           try {
             userForEmail = await this.findUser({email: newEmail });
+          // tslint:disable-next-line: no-empty
           } catch (error) {}
           if (userForEmail) {
             throw new ForbiddenException(`User with email "${newEmail}" already exist!`);
-          }                  
+          }
         }
         updatedUserCriterias.password =  (!updatedUserCriterias.password ||
           this.cryptoService.checkPassword(user.password, updatedUserCriterias.password))
@@ -107,7 +110,7 @@ export class UserService {
         : this.cryptoService.hashPassword(updatedUserCriterias.password);
       });
     if (!updateUserDto.image) {
-      await this.dataServicesRepositories.users.unset(id, {image: ""});
+      await this.dataServicesRepositories.users.unset(id, {image: ''});
     }
     return this.dataServicesRepositories.users.update(id, updatedUserCriterias)
       .then((user: User) => this.processUserUnrestricted(user));

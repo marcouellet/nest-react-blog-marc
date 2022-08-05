@@ -11,7 +11,7 @@ export class PostDatabaseBuilder {
   constructor(private readonly userService: UserService, private readonly postService: PostService) {}
 
   async findPost(postCriterias: PostFindCriterias): Promise<PostDto> {
-    return this.postService.findPost(postCriterias); 
+    return this.postService.findPost(postCriterias);
   }
 
   async deleteAllE2EUsers() {
@@ -20,11 +20,12 @@ export class PostDatabaseBuilder {
 
       for (const user of users) {
         if (user.email.startsWith('e2e.post.')) {
-          Logger.debug(`POST: deleting user with email "${user.email}"`)
+          Logger.debug(`POST: deleting user with email "${user.email}"`);
           Logger.flush();
           await this.userService.deleteUser(user.id)
+          // tslint:disable-next-line: no-shadowed-variable
           .then(user => {
-            Logger.debug(`POST: user with email "${user.email}" has been deleted`)
+            Logger.debug(`POST: user with email "${user.email}" has been deleted`);
             Logger.flush();
           })
           .catch(error => {
@@ -35,7 +36,7 @@ export class PostDatabaseBuilder {
         }
       }
      } catch (error) {
-      Logger.error('POST: deleteAllE2EUsers failed, see following error message:')
+      Logger.error('POST: deleteAllE2EUsers failed, see following error message:');
       Logger.error(error);
       Logger.flush();
     }
@@ -47,11 +48,12 @@ export class PostDatabaseBuilder {
 
       for (const post of posts) {
         if (post.user.email.startsWith('e2e.post.')) {
-          Logger.debug(`POST: deleting post ${post.title} for user with email "${post.user.email}"`)
+          Logger.debug(`POST: deleting post ${post.title} for user with email "${post.user.email}"`);
           Logger.flush();
           await this.postService.deletePost(post.id)
+          // tslint:disable-next-line: no-shadowed-variable
           .then(post => {
-            Logger.debug(`POST: post ${post.title} for user with email "${post.user.email}" has been deleted`)
+            Logger.debug(`POST: post ${post.title} for user with email "${post.user.email}" has been deleted`);
             Logger.flush();
           })
           .catch(error => {
@@ -62,7 +64,7 @@ export class PostDatabaseBuilder {
         }
       }
     } catch (error) {
-      Logger.error('POST: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:')
+      Logger.error('POST: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:');
       Logger.error(error);
       Logger.flush();
     }
@@ -70,15 +72,15 @@ export class PostDatabaseBuilder {
 
   async createPost(createPostData: any): Promise<PostDto> {
     const createPostDto = buildCreatePostDto(createPostData);
-    return this.postService.createPost(createPostDto); 
+    return this.postService.createPost(createPostDto);
   }
 
   async updatePost(id: string, updatePostData: any): Promise<PostDto> {
     const updatePostDto = buildUpdatePostDto(updatePostData);
-    return this.postService.updatePost(id, updatePostDto); 
+    return this.postService.updatePost(id, updatePostDto);
   }
 
   async deletePost(id: string): Promise<PostDto> {
-    return this.postService.deletePost(id); 
+    return this.postService.deletePost(id);
   }
 }

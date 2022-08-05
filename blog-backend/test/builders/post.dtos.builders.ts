@@ -7,7 +7,7 @@ export function buildCreatePostDto(fields: any ): CreatePostDto {
     createPostDto.description = fields.description;
     createPostDto.body = fields.body;
     createPostDto.user = fields.user;
-  
+
     return createPostDto;
 }
 

@@ -18,10 +18,10 @@ describe('AuthController Guards', () => {
     it('Method whoAmI:@Auth(AllRoles) should fail because the supplied roles are differents from the expected ones', () => {
       try {
         checkAuthGuard( AuthController.prototype.whoAmI, []);
-        throw new Error('Method whoAmI:@Auth(AllRoles) should have failed because the supplied roles are differents from the expected ones')
+        throw new Error('Method whoAmI:@Auth(AllRoles) should have failed because the supplied roles are differents from the expected ones');
       } catch (error) {
         // OK fails as expected
-      };
+      }
     });
 
     it('Method refresh: @UseGuards(JwtRefreshTokenAuthGuard) should prevent access to not signed on users', () => {

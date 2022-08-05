@@ -16,11 +16,12 @@ export class UserDatabaseBuilder {
 
       for (const user of users) {
         if (user.email.startsWith('e2e.user.')) {
-          Logger.debug(`USER: deleting user with email "${user.email}"`)
+          Logger.debug(`USER: deleting user with email "${user.email}"`);
           Logger.flush();
           await this.userService.deleteUser(user.id)
+          // tslint:disable-next-line: no-shadowed-variable
           .then(user => {
-            Logger.debug(`USER: user with email "${user.email}" has been deleted`)
+            Logger.debug(`USER: user with email "${user.email}" has been deleted`);
             Logger.flush();
           })
           .catch(error => {
@@ -31,7 +32,7 @@ export class UserDatabaseBuilder {
         }
       }
      } catch (error) {
-      Logger.error('USER: deleteAllE2EUsers failed, see following error message:')
+      Logger.error('USER: deleteAllE2EUsers failed, see following error message:');
       Logger.error(error);
       Logger.flush();
     }
@@ -43,11 +44,12 @@ export class UserDatabaseBuilder {
 
       for (const post of posts) {
         if (post.user.email.startsWith('e2e.user.')) {
-          Logger.debug(`USER: deleting post ${post.title} for user with email "${post.user.email}"`)
+          Logger.debug(`USER: deleting post ${post.title} for user with email "${post.user.email}"`);
           Logger.flush();
           await this.postService.deletePost(post.id)
+          // tslint:disable-next-line: no-shadowed-variable
           .then(post => {
-            Logger.debug(`USER: post ${post.title} for user with email "${post.user.email}" has been deleted`)
+            Logger.debug(`USER: post ${post.title} for user with email "${post.user.email}" has been deleted`);
             Logger.flush();
           })
           .catch(error => {
@@ -58,27 +60,27 @@ export class UserDatabaseBuilder {
         }
       }
     } catch (error) {
-      Logger.error('USER: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:')
+      Logger.error('USER: deleteAllPostsForE2EUsers getAllPosts failed, see following error message:');
       Logger.error(error);
       Logger.flush();
     }
   }
 
   async findUser(userCriterias: UserFindCriterias): Promise<UserDto> {
-    return this.userService.findUser(userCriterias); 
+    return this.userService.findUser(userCriterias);
   }
 
   async createUser(createUserData: any): Promise<UserDto> {
     const createUserDto = buildCreateUserDto(createUserData);
-    return this.userService.createUser(createUserDto); 
+    return this.userService.createUser(createUserDto);
   }
 
   async updateUser(id: string, updateUserData: any): Promise<UserDto> {
     const updateUserDto = buildUpdateUserDto(updateUserData);
-    return this.userService.updateUser(id, updateUserDto); 
+    return this.userService.updateUser(id, updateUserDto);
   }
 
   async deleteUser(id: string): Promise<UserDto> {
-    return this.userService.deleteUser(id); 
+    return this.userService.deleteUser(id);
   }
 }

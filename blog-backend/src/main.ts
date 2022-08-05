@@ -23,8 +23,8 @@ async function bootstrap() {
     app.enableCors({exposedHeaders: [HEADER_HTTP_RESPONSE_HEADER_TIMESTAMP]});
     app.useGlobalFilters(new HttpExceptionFilter());
     app.useGlobalInterceptors(new HeadersInterceptor());
-;
-    const config =GLOBAL_CONFIG_SERVICE.getConfig();
+
+    const config = GLOBAL_CONFIG_SERVICE.getConfig();
     await app.listen(config.serverPort);
 
     Logger.log('Server listening on port ' + config.serverPort);
