@@ -16,5 +16,5 @@ spec:
       - image: nest-react-blog-marc-client:latest
         name: container
         ports:
-        - containerPort: 3000
+        - containerPort: 80
         imagePullPolicy: IfNotPresent

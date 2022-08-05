@@ -14,12 +14,12 @@ export class MongoDataRepositories extends IDataRepositories {
 
   constructor(
     @InjectModel(User.name)
-    private readonly UserRepository: Model<UserDocument>,
+    private readonly UserRepository: Model<User>,
     @InjectModel(Post.name)
-    private readonly PostRepository: Model<PostDocument>,
+    private readonly PostRepository: Model<Post>,
     @InjectModel(Category.name)
-    private readonly CategoryRepository: Model<CategoryDocument>,
-  ) { 
+    private readonly CategoryRepository: Model<Category>,
+  ) {
     super();
     this.users = new MongoGenericDataRepository<User>(this.UserRepository);
     this.posts = new MongoGenericDataRepository<Post>(this.PostRepository, ['user', 'category']);

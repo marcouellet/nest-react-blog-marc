@@ -18,7 +18,7 @@ LABEL maintainer=Marc-Ouellet
 
 COPY --from=blog-marc-client-build /usr/src/app/build /usr/share/nginx/html
 
-EXPOSE 3000
+EXPOSE 80
 
 
 
