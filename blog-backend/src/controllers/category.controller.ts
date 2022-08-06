@@ -40,19 +40,19 @@ export class CategoryController {
   }
 
   // Fetch a category based on criterias
-  @Put('/find')
+  @Post('/find')
   async findCategory(@Body(new ValidationPipe()) categoriesCriterias: CategoryFindCriterias): Promise<CategoryDto> {
     return this.categoryService.findCategory(categoriesCriterias);
   }
 
   // Fetch categories based on criterias
-  @Put('/findMany')
+  @Post('/findMany')
   async findCanyCategories(@Body(new ValidationPipe()) categoriesCriterias: CategoryFindCriterias): Promise<CategoryDto[]> {
     return this.categoryService.findManyCategories(categoriesCriterias);
   }
 
   // Get count of categories meating criterias
-  @Put('/findManyCount')
+  @Post('/findManyCount')
   async findManyCategorysCount(@Body(new ValidationPipe()) categoriesCriterias: CategoryFindCriterias): Promise<number> {
     return this.categoryService.findManyCategoriesCount(categoriesCriterias);
   }

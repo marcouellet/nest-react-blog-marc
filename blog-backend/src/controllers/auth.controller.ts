@@ -11,7 +11,7 @@ import { JwtRefreshTokenAuthGuard } from '../auth/guards/jwt-refresh.guard';
 import { UserRole } from '../core/enum';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {} 
+  constructor(private readonly authService: AuthService) {}
 
   // Get current user
   @Get('/whoami')
@@ -21,24 +21,24 @@ export class AuthController {
     return this.authService.validateToken(jwt);
   }
 
-  // Fetch user profile 
+  // Fetch user profile
   @Get('/profile')
   @Auth([UserRole.ADMIN, UserRole.USER])
   async getUserProfile(@Headers('Authorization') auth: string): Promise<UserDto> {
-    const jwt = auth.replace('Bearer ', ''); 
+    const jwt = auth.replace('Bearer ', '');
     return this.authService.getUserFromToken(jwt);
-  }  
+  }
 
   // Update user profile
   @Put('/profile')
   @Auth([UserRole.ADMIN, UserRole.USER])
   async updateUserProfile(@Headers('Authorization') auth: string, @Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
-    const jwt = auth.replace('Bearer ', ''); 
+    const jwt = auth.replace('Bearer ', '');
     return this.authService.updateUserFromToken(jwt, userDto);
   }
-  
+
   // Login user
-  @Put('/login')
+  @Post('/login')
   async login(@Body(new ValidationPipe()) body: LoginDto): Promise<UserDto> {
     return this.authService.login(body);
   }
@@ -50,7 +50,7 @@ export class AuthController {
   }
 
   // Refresh auth token
-  @Put('/session/refresh')
+  @Post('/session/refresh')
   @UseGuards(JwtRefreshTokenAuthGuard)
   async refresh(@Req() req: Request): Promise<UserDto> {
     const userDto: UserDto = req.user as UserDto;
@@ -58,7 +58,7 @@ export class AuthController {
   }
 
   // Refresh auth token
-  @Put('/session/extend')
+  @Post('/session/extend')
   @UseGuards(JwtRefreshTokenAuthGuard)
   async extend(@Req() req: Request, @Body(new ValidationPipe()) body: SessionExtensionDto): Promise<UserDto> {
     const userDto: UserDto = req.user as UserDto;

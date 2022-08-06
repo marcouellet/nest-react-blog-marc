@@ -32,19 +32,19 @@ export class UserController {
   }
 
   // Fetch a user based on criterias
-  @Put('/find')
+  @Post('/find')
   async finUser(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<UserDto> {
     return this.userService.findUser(userCriterias);
   }
 
   // Fetch users based on criterias
-  @Put('/findMany')
+  @Post('/findMany')
   async finManyUsers(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<UserDto[]> {
     return this.userService.findManyUsers(userCriterias);
   }
 
   // Get count of users meating criterias 
-  @Put('/findManyCount')
+  @Post('/findManyCount')
   async findManyUsersCount(@Body(new ValidationPipe()) userCriterias: UserFindCriterias): Promise<number> {
     return this.userService.findManyUsersCount(userCriterias);
   }

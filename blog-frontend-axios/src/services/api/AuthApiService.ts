@@ -4,7 +4,7 @@ import TokenService from './TokenService';
 
 async function login(email: string, password: string): Promise<User> {
   const loginParms: ILogin = { email, password }
-  return API.put<User>('/auth/login', loginParms)
+  return API.post<User>('/auth/login', loginParms)
     .then(response => {
       TokenService.setUser(response.data);
       return response.data;
@@ -24,7 +24,7 @@ async function refresh() : Promise<User> {
   const user = TokenService.getUser();
   const { authtoken, authrefreshtoken } = user;
   const refreshParms: IRefresh = { authtoken, authrefreshtoken };
-  return API.put<User>('/auth/session/refresh', refreshParms)
+  return API.post<User>('/auth/session/refresh', refreshParms)
     .then(response => {
       TokenService.setUser(response.data);
       return response.data;
@@ -35,7 +35,7 @@ async function extendUserSession(extension: number) : Promise<User> {
   const user = TokenService.getUser();
   const { authtoken, authrefreshtoken } = user;
   const sessionExtensionParms: ISessionExtension = { authtoken, authrefreshtoken, extension };
-  return API.put<User>('/auth/session/extend', sessionExtensionParms)
+  return API.post<User>('/auth/session/extend', sessionExtensionParms)
     .then(response => {
       TokenService.setUser(response.data);
       return response.data;

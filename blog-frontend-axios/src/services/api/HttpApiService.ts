@@ -40,7 +40,7 @@ class HttpApiService<T> {
   }
 
   protected findMany(endpoint: string, data: {}, conf = {}): Promise<T[]> {
-    return this.put$<T[]>(endpoint, data, conf);
+    return this.post$<T[]>(endpoint, data, conf);
   }
 
   protected create(endpoint: string, data: {}, conf = {}): Promise<T> {
