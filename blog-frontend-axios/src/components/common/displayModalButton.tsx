@@ -22,7 +22,7 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
     };
 
     return (
-        <div>
+        <>
             <DisplayTooltip toolTip={toolTip ? toolTip : 'no tooltip'}>
                 <button 
                     style={{
@@ -50,7 +50,7 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
                     <button className="btn btn-primary" onClick={hideModal}>Close</button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </>
 )
 };
 

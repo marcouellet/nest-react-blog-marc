@@ -233,7 +233,6 @@ const CreatePost = () => {
   }
   
   return (
-    <div>
     <div className={"col-md-12 form-wrapper"}>
       <h2> Create Post </h2>
       {errorList && <ListErrors errors={errorList} />}
@@ -359,7 +358,6 @@ const CreatePost = () => {
         </div>
       </form>
     </div>
-  </div>
   );
 }
 export default CreatePost

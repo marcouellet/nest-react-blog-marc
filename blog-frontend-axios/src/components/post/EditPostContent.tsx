@@ -40,7 +40,7 @@ const EditPostContent: React.FC<EditPostContentProps> = ({className, content, on
     };
 
     return (
-        <div>
+        <>
            <div>
                 <button className="btn btn-secondary" onClick={handleSaveContent} >
                     Save 
@@ -59,7 +59,7 @@ const EditPostContent: React.FC<EditPostContentProps> = ({className, content, on
                     onChange={handleChangeContent}
                 />
             </div>
-        </div>
+        </>
      );
 }
 

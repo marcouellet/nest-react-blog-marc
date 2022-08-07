@@ -12,7 +12,7 @@ type DisplayModalConfirmProps = React.HTMLProps<HTMLButtonElement> & {
 const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, logout, refresh, onExit, className}) => {
 
     return (
-        <div>           
+        <>           
             <Modal show={show} onExit={onExit} centered dialogClassName={`modal-md`}>
                 <Modal.Body>
                     <div style={{border: "2px solid blue", padding: "10px"}}>
@@ -26,7 +26,7 @@ const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, log
                     <Button className="btn btn-primary" onClick={refresh}>Refresh</Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </>
 )
 };
 

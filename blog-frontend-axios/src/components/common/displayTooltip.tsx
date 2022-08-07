@@ -19,13 +19,13 @@ const DisplayTooltip: React.FC<DisplayTooltipProps> = ({children, toolTip, class
     };
 
     return (
-        <div>
+        <>
              <OverlayTrigger placement="top" overlay={renderTooltip}>
                 <div>
                     {children}
                 </div>
              </OverlayTrigger>
-        </div>
+        </>
 )
 };
 

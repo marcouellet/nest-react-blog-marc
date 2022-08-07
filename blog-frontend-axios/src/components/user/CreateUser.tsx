@@ -169,7 +169,7 @@ const CreateUser = () => {
   }
 
   return (
-    <div>
+    <>
       <div className={"col-md-12 form-wrapper"}>
         <h2> Create User </h2>
         {errorList && <ListErrors errors={errorList} />}
@@ -266,7 +266,7 @@ const CreateUser = () => {
         </div>
       </form>
     </div>
-  </div>
+  </>
   );
 
 }
