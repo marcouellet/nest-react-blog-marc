@@ -25,16 +25,18 @@ const ListCategories = () => {
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
   useEffect(() => {
-    const fetchCategories = async (): Promise<void> => {
-      dispatchUI(createActionLoading(true));
-      CategoryApiService.getAllCategories()
-        .then(cats => setCategorys(cats))
-        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
-        .finally(() => dispatchUI(createActionLoading(false)));
-    }
-    fetchCategories();
+    (async () => {
+      const fetchCategories = async (): Promise<void> => {
+        dispatchUI(createActionLoading(true));
+        CategoryApiService.getAllCategories()
+          .then(cats => setCategorys(cats))
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
+          .finally(() => dispatchUI(createActionLoading(false)));
+      }
+      await fetchCategories();
+    })().finally(() => dispatchUI(createActionLoading(false))); 
   // eslint-disable-next-line 
-  }, [dispatchSession])
+  }, [])
 
   const handleApiErrors = (apiErrors: IErrors, process: string) => {
     if (checkSessionExpired(apiErrors)) {

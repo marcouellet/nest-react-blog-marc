@@ -32,7 +32,7 @@ const ViewPost = () => {
   const deletePostMessage = (post: IPost) => `${post.title} post`;
 
   useEffect(() => {
-    if (!post) {
+    (async () => {
       const fetchData = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await getDefaultPostImage()
@@ -44,10 +44,9 @@ const ViewPost = () => {
         await PostApiService.getPostById(postId!)
         .then((post) => setPost(post))
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
-        .finally(() => dispatchUI(createActionLoading(false)));
       }
-      fetchData();  
-    }
+      await fetchData();
+    })().finally(() => dispatchUI(createActionLoading(false))); 
   // eslint-disable-next-line
   }, []);
 

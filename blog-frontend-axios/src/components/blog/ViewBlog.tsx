@@ -23,7 +23,7 @@ const ViewBlog = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!post) {
+    (async () => {
       const fetchData = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await PostApiService.getPostById(postId!)
@@ -31,8 +31,8 @@ const ViewBlog = () => {
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Post reading'))
         .finally(() => dispatchUI(createActionLoading(false)));
       }
-      fetchData();  
-    }
+      await fetchData(); 
+   })().finally(() => dispatchUI(createActionLoading(false))); 
   // eslint-disable-next-line
   }, []);
 

@@ -97,23 +97,26 @@ const EditUser = () => {
 
   useEffect(() => {
     if (!userEdited) {
-      const fetchData = async (): Promise<void> => {
-        dispatchUI(createActionLoading(true));
-        await getDefaultUserImage()
-        .then(imageData => { 
-          setuserDefaultImage(imageData);
-        }) 
-        .catch(error => {
-          throw new Error(error);
-        })
-        .finally(() => dispatchUI(createActionLoading(false)));
-        await UserApiService.getUserById(userId!)
-        .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
-        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'User reading'))
-        .finally(() => dispatchUI(createActionLoading(false)));
-       }
-      fetchData();      
+      (async () => {
+        const fetchData = async (): Promise<void> => {
+          dispatchUI(createActionLoading(true));
+          await getDefaultUserImage()
+          .then(imageData => { 
+            setuserDefaultImage(imageData);
+          }) 
+          .catch(error => {
+            throw new Error(error);
+          })
+          .finally(() => dispatchUI(createActionLoading(false)));
+          await UserApiService.getUserById(userId!)
+          .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
+          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'User reading'))
+          .finally(() => dispatchUI(createActionLoading(false)));
+        }
+        await fetchData();  
+      })().finally(() => dispatchUI(createActionLoading(false)));        
     }
+
   // eslint-disable-next-line
   }, []);
 

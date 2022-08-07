@@ -52,16 +52,15 @@ const EditCategory = () => {
   });
 
   useEffect(() => {
-    if (!category) {
+    (async () => {
       const fetchData = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await CategoryApiService.getCategoryById(categoryId!)
         .then((category) => { setCategory(category); reset(category);})
         .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Category reading'))
-        .finally(() => dispatchUI(createActionLoading(false)));
-       }
-      fetchData();      
-    }
+        }
+      await fetchData();
+    })().finally(() => dispatchUI(createActionLoading(false)));      
   // eslint-disable-next-line
   }, []);
 

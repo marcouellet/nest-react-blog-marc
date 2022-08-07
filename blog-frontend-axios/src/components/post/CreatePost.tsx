@@ -66,33 +66,30 @@ const CreatePost = () => {
 
   useEffect(() => {
     (async () => {
-      if (!categories) {
-        const fetchCategories = async (): Promise<void> => {
-          dispatchUI(createActionLoading(true));
-          await getDefaultPostImage()
-            .then(imageData => { setpostDefaultImage(imageData);})
-            .catch(error => {
-              throw new Error(error);
-            })
-            .finally(() => dispatchUI(createActionLoading(false)));  
-          await CategoryApiService.getAllCategories()
-            .then(categories => {
-              const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
-              const allCategories = [noCategory].concat(categories);
-              setCategories(allCategories);
-              selectCategory(allCategories, 'no_category', false);
-            })
-            .catch((apiErrors: IErrors) =>  handleApiErrors(apiErrors, 'Categories reading'))
-            .finally(() => dispatchUI(createActionLoading(false)));
-        }
-        fetchCategories();
+      const fetchCategories = async (): Promise<void> => {
+        dispatchUI(createActionLoading(true));
+        await getDefaultPostImage()
+          .then(imageData => { setpostDefaultImage(imageData);})
+          .catch(error => {
+            throw new Error(error);
+          })
+        await CategoryApiService.getAllCategories()
+          .then(categories => {
+            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+            const allCategories = [noCategory].concat(categories);
+            setCategories(allCategories);
+            selectCategory(allCategories, 'no_category', false);
+          })
+          .catch((apiErrors: IErrors) =>  handleApiErrors(apiErrors, 'Categories reading'))
       }
+      await fetchCategories();
+
       if (location.state) {
         restorePostEditingState(location.state as any);
       }
-    })();
+    })().finally(() => dispatchUI(createActionLoading(false)));
  // eslint-disable-next-line
-  }, [categories]);
+  }, []);
 
   const getDefaultPostImage = (): Promise<ImageData> => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);

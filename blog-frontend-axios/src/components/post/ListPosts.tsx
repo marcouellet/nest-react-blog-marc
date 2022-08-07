@@ -31,27 +31,24 @@ const ListPosts = () => {
 
   useEffect(() => {
     (async () => {
-      if (!categories) {
-        dispatchUI(createActionLoading(true));
-        const fetchCategories = async (): Promise<void> => {
-        await CategoryApiService.getAllCategories()
-          .then(categories => {
-            const all: ICategory = {id:'all', title: 'All', description: ''};
-            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
-            const allCategories = [all, noCategory].concat(categories);
-            setCategories(allCategories);
-            if (categoryFilter) {
-              selectCategory(allCategories, categoryFilter.id!, false);
-            } else {
-              selectCategory(allCategories, 'all', false);
-            }            
-          })
-          .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
-        }
-        fetchCategories();
-        dispatchUI(createActionLoading(false));
+      dispatchUI(createActionLoading(true));
+      const fetchCategories = async (): Promise<void> => {
+      CategoryApiService.getAllCategories()
+        .then(categories => {
+          const all: ICategory = {id:'all', title: 'All', description: ''};
+          const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+          const allCategories = [all, noCategory].concat(categories);
+          setCategories(allCategories);
+          if (categoryFilter) {
+            selectCategory(allCategories, categoryFilter.id!, false);
+          } else {
+            selectCategory(allCategories, 'all', false);
+          }            
+        })
+        .catch((apiErrors: IErrors) => handleFetchCategoriesError(apiErrors));
       }
-    })();
+      await fetchCategories();
+    })().finally(() => dispatchUI(createActionLoading(false)));
  // eslint-disable-next-line
   }, []);
 

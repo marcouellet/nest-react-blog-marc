@@ -25,20 +25,20 @@ const ListUsers = () => {
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
-    const fetchUsers = async (): Promise<void> => {
-      dispatchUI(createActionLoading(true));
-      await UserApiService.findManyUsers(userNameFilter)
-        .then(users => setUsers(users))
-        .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
-        .finally(() => dispatchUI(createActionLoading(false)));
-      await getDefaultUserImage()
-        .then(imageData => { setuserDefaultImage(imageData);})
-        .catch(error => {
-          throw new Error(error);
-        })
-        .finally(() => dispatchUI(createActionLoading(false))); 
-    }
-    fetchUsers();
+    (async () => {
+      const fetchUsers = async (): Promise<void> => {
+        dispatchUI(createActionLoading(true));
+        await UserApiService.findManyUsers(userNameFilter)
+          .then(users => setUsers(users))
+          .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
+        await getDefaultUserImage()
+          .then(imageData => { setuserDefaultImage(imageData);})
+          .catch(error => {
+            throw new Error(error);
+          })
+      }
+      await fetchUsers();
+    })().finally(() => dispatchUI(createActionLoading(false)));  
     // eslint-disable-next-line
   }, [user, userNameFilter])
  

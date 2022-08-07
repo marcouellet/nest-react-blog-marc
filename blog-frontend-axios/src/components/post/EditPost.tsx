@@ -68,11 +68,10 @@ const EditPost = () => {
 
   useEffect(() => {
     (async () => {
-      let allCategories: ICategory[];
       dispatchUI(createActionLoading(true));
-      if (!categories) {
-        const fetchCategories = async (): Promise<void> => {
-        await CategoryApiService.getAllCategories()
+      let allCategories: ICategory[];
+      const fetchCategories = async (): Promise<void> => {
+        CategoryApiService.getAllCategories()
           .then(categories => {
             const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
             allCategories = [noCategory].concat(categories);
@@ -80,39 +79,32 @@ const EditPost = () => {
             selectCategory(allCategories, 'no_category', false);
           })
           .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Categories reading'))
-          .finally(() => dispatchUI(createActionLoading(false)));
-        }
-        fetchCategories();
       }
-      if (!post) {
-        const fetchPost = async (): Promise<void> => {
-          await getDefaultPostImage()
+      await fetchCategories(); // must wait since allCategories required by fetchPost
+
+      const fetchPost = async (): Promise<void> => {
+        await getDefaultPostImage()
           .then(imageData => { setpostDefaultImage(imageData);})
           .catch(error => {
             throw new Error(error);
           })
-          .finally(() => dispatchUI(createActionLoading(false)));  
-          await PostApiService.getPostById(postId!)
+        await PostApiService.getPostById(postId!)
           .then(post => { 
-            setContent(post.body);
-            setPost(post); 
-            reset(post);
-            if (post.category) {
-              selectCategory(allCategories, post.category.id!, false);
-            }
-
-          })
-          .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Post reading'))
-          .finally(() => dispatchUI(createActionLoading(false)));
-        }
-        await fetchPost();
+          setContent(post.body);
+          setPost(post); 
+          reset(post);
+          if (post.category) {
+            selectCategory(allCategories, post.category.id!, false);
+          }
+        })
+        .catch((apiErrors: IErrors) => handleApiErrors(apiErrors, 'Post reading'))
       }
+      await fetchPost();
+
       if (location.state) {
         restorePostEditingState(location.state as any);
       }
-      dispatchUI(createActionLoading(false));
-
-    })();
+    })().finally(() => dispatchUI(createActionLoading(false)));
   // eslint-disable-next-line
   }, []);
 

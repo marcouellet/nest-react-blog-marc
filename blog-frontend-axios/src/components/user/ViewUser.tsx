@@ -28,6 +28,7 @@ const ViewUser = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    (async () => {
     if (!userDisplayed) {
       const fetchData = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
@@ -42,10 +43,10 @@ const ViewUser = () => {
         await UserApiService.getUserById(userId!)
           .then(user => setUserDisplayed(user))
           .catch((apiErrors: IErrors) => handleFetchUserError(apiErrors))
-          .finally(() => dispatchUI(createActionLoading(false)));
       }
-      fetchData();  
+      await fetchData();  
     }
+    })().finally(() => dispatchUI(createActionLoading(false))); 
   // eslint-disable-next-line
   }, [user]);
 
