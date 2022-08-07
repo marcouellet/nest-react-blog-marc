@@ -136,8 +136,8 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('CATEGORY(4): (PUT) /category/find - Fetch a category based on criterias with no match (not logged in)', () => {
-    Logger.debug('CATEGORY(4): (PUT) /category/find - Fetch a category based on criterias with no match (not logged in)');
+  it('CATEGORY(3): (PUT) /category/find - Fetch a category based on criterias with no match (not logged in)', () => {
+    Logger.debug('CATEGORY(3): (PUT) /category/find - Fetch a category based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/category/find')
@@ -145,8 +145,8 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('CATEGORY(5): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)', () => {
-    Logger.debug('CATEGORY(5): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)');
+  it('CATEGORY(4): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)', () => {
+    Logger.debug('CATEGORY(4): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/category/findMany')
@@ -154,14 +154,14 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response === null)
       .catch(error => {
-        Logger.error('CATEGORY(5): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(4): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(6): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)', () => {
-    Logger.debug('CATEGORY(6): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
+  it('CATEGORY(5): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)', () => {
+    Logger.debug('CATEGORY(5): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/category/findManyCount')
@@ -169,28 +169,28 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response === null)
       .catch(error => {
-        Logger.error('CATEGORY(6): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(5): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(7): (POST) /category/create - Submit a new category (not logged in)', () => {
-    Logger.debug('CATEGORY(7): (POST) /category/create - Submit a new category (not logged in)');
+  it('CATEGORY(6): (POST) /category/create - Submit a new category (not logged in)', () => {
+    Logger.debug('CATEGORY(6): (POST) /category/create - Submit a new category (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .post('/category/create')
       .send(buildCreateCategoryDto(testE2ECreateCategoryDto_Category))
       .expect(StatusCodes.UNAUTHORIZED)
       .catch(error => {
-        Logger.error('CATEGORY(7): (POST) /category/create - Submit a new category (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(6): (POST) /category/create - Submit a new category (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(8): (PUT) /category/update/:categoryId - Update a category (not logged in)', () => {
-    Logger.debug('CATEGORY(8): (PUT) /category/update/:postId - Update a category (not logged in)');
+  it('CATEGORY(7): (PUT) /category/update/:categoryId - Update a category (not logged in)', () => {
+    Logger.debug('CATEGORY(): (PUT) /category/update/:postId - Update a category (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put(`/category/update/${testE2ENonExistingCategoryId_Category}`)
@@ -198,8 +198,8 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
-  it('CATEGORY(9): (DELETE) /category/delete/:categoryId - Delete a category (not logged in)', () => {
-    Logger.debug('CATEGORY(9): (DELETE) /category/delete/:postId - Delete a category (not logged in)');
+  it('CATEGORY(8): (DELETE) /category/delete/:categoryId - Delete a category (not logged in)', () => {
+    Logger.debug('CATEGORY(8): (DELETE) /category/delete/:postId - Delete a category (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .delete(`/category/delete/${testE2ENonExistingCategoryId_Category}`)
@@ -210,8 +210,8 @@ describe('CategoryController (e2e)', () => {
   // Test when user is logged in (authorization token provided)
   //
 
-  it('CATEGORY(10): (POST) /category/create - Submit a new category (dummy logged in)', () => {
-    Logger.debug('CATEGORY(10): (POST) /category/create - Submit a new category (not logged in)');
+  it('CATEGORY(9): (POST) /category/create - Submit a new category (dummy logged in)', () => {
+    Logger.debug('CATEGORY(9): (POST) /category/create - Submit a new category (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
@@ -220,18 +220,18 @@ describe('CategoryController (e2e)', () => {
       .send(buildCreateCategoryDto(testE2ECreateCategoryDto_Category))
       .expect(StatusCodes.UNAUTHORIZED)
       .catch(error => {
-        Logger.error('CATEGORY(10): (POST) /category/create - Submit a new category (dummy logged in) failed, see following error message:');
+        Logger.error('CATEGORY(9): (POST) /category/create - Submit a new category (dummy logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-      Logger.error('CATEGORY(10): (POST) /category/create - Submit a new category - cannot test since dummy user creation failed');
+      Logger.error('CATEGORY(9): (POST) /category/create - Submit a new category - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });
 
-  it('CATEGORY(11): (POST) /category/create - Submit a new category (dummy logged in)', () => {
-    Logger.debug('CATEGORY(11): (POST) /category/create - Submit a new category (dummy logged in)');
+  it('CATEGORY(10): (POST) /category/create - Submit a new category (dummy logged in)', () => {
+    Logger.debug('CATEGORY(10): (POST) /category/create - Submit a new category (dummy logged in)');
     Logger.flush();
     if (adminUserDtoWithTokens) {
       const post = buildCreateCategoryDto(testE2ECreateCategoryDto_Category);
@@ -242,18 +242,18 @@ describe('CategoryController (e2e)', () => {
         .expect(StatusCodes.CREATED)
         .then(response => response && (createdCategoryDto = response.body))
         .catch(error => {
-          Logger.warn('CATEGORY(11): (POST) /category/create - Submit a new category failed, see following error message:');
+          Logger.warn('CATEGORY(10): (POST) /category/create - Submit a new category failed, see following error message:');
           Logger.error(error);
           Logger.flush();
         });
     } else {
-      Logger.error('CATEGORY(11): (POST) /category/create - Submit a new category - cannot test since admin user creation failed');
+      Logger.error('CATEGORY(10): (POST) /category/create - Submit a new category - cannot test since admin user creation failed');
       Logger.flush();
     }
   });
 
-  it('CATEGORY(12): (PUT) /category/update/:categoryId - Update a category (dummy logged in)', () => {
-    Logger.debug('CATEGORY(12): (PUT) /category/update/:categoryId - Update a category (dummy logged in)');
+  it('CATEGORY(11): (PUT) /category/update/:categoryId - Update a category (dummy logged in)', () => {
+    Logger.debug('CATEGORY(11): (PUT) /category/update/:categoryId - Update a category (dummy logged in)');
     Logger.flush();
     if (adminUserDtoWithTokens && createdCategoryDto) {
       return request(app.getHttpServer())
@@ -263,18 +263,18 @@ describe('CategoryController (e2e)', () => {
         .expect(StatusCodes.OK)
         .then(response => response && (updatedCategoryDto = response.body))
         .catch(error => {
-          Logger.error('CATEGORY(12): (PUT) /category/update/:categoryId - Update a category (dummy logged in) failed, see following error message:');
+          Logger.error('CATEGORY(11): (PUT) /category/update/:categoryId - Update a category (dummy logged in) failed, see following error message:');
           Logger.error(error);
           Logger.flush();
         });
     } else {
-      Logger.error('CATEGORY(12): (PUT) /category/update/:categoryId - Update a category - cannot test since dummy user creation failed');
+      Logger.error('CATEGORY(11): (PUT) /category/update/:categoryId - Update a category - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });
 
-  it('CATEGORY(13): (PUT) /category/find - Fetch a category based on criterias (not logged in)', () => {
-    Logger.debug('CATEGORY(13): (PUT) /category/find - Fetch a category based on criterias (dummy logged in)');
+  it('CATEGORY(12): (PUT) /category/find - Fetch a category based on criterias (not logged in)', () => {
+    Logger.debug('CATEGORY(12): (PUT) /category/find - Fetch a category based on criterias (dummy logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/category/find')
@@ -282,15 +282,15 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === updatedCategoryDto)
       .catch(error => {
-        Logger.error('CATEGORY(13): (PUT) /category/find - Fetch a category based on criterias (not logged in) failed,'
+        Logger.error('CATEGORY(12): (PUT) /category/find - Fetch a category based on criterias (not logged in) failed,'
         + 'see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(14): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)', () => {
-    Logger.debug('CATEGORY(14): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)');
+  it('CATEGORY(13): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)', () => {
+    Logger.debug('CATEGORY(13): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/category/findMany')
@@ -298,14 +298,14 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === [updatedCategoryDto])
       .catch(error => {
-        Logger.error('CATEGORY(14): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(13): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(15): (PUT) /category/findManyCount - Get count of categories meating criterias (not logged in)', () => {
-    Logger.debug('CATEGORY(15): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
+  it('CATEGORY(14): (PUT) /category/findManyCount - Get count of categories meating criterias (not logged in)', () => {
+    Logger.debug('CATEGORY(14): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
       .put('/category/findManyCount')
@@ -313,14 +313,14 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(response => response && response.body === '1')
       .catch(error => {
-        Logger.error('CATEGORY(15): (PUT) /category/findManyCount - Get count of categories meating criterias (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(14): (PUT) /category/findManyCount - Get count of categories meating criterias (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)', () => {
-    Logger.debug('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)');
+  it('CATEGORY(15): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)', () => {
+    Logger.debug('CATEGORY(15): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens && updatedCategoryDto) {
     return request(app.getHttpServer())
@@ -328,19 +328,19 @@ describe('CategoryController (e2e)', () => {
       .set('Authorization', `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.UNAUTHORIZED)
       .catch(error => {
-        Logger.error('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in) failed,'
+        Logger.error('CATEGORY(15): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in) failed,'
         + ' see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-        Logger.error('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category - cannot test since dummy user creation failed or post update failed');
+        Logger.error('CATEGORY(15): (DELETE) /category/delete/:categoryId - Delete a category - cannot test since dummy user creation failed or post update failed');
         Logger.flush();
     }
   });
 
-  it('CATEGORY(17): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)', () => {
-    Logger.debug('CATEGORY(17): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)');
+  it('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)', () => {
+    Logger.debug('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in)');
     Logger.flush();
     if (adminUserDtoWithTokens && updatedCategoryDto) {
     return request(app.getHttpServer())
@@ -349,13 +349,13 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.OK)
       .expect(updatedCategoryDto)
       .catch(error => {
-        Logger.error('CATEGORY(17): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in) failed,'
+        Logger.error('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in) failed,'
         + ' see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-        Logger.error('CATEGORY(17): (DELETE) /category/delete/:categoryId - Delete a category - cannot test since dummy user creation failed or post update failed');
+        Logger.error('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category - cannot test since dummy user creation failed or post update failed');
         Logger.flush();
     }
   });
