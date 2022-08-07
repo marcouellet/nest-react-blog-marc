@@ -33,6 +33,7 @@ const ViewPost = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('ViewPost useEffet called');
       const fetchData = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await getDefaultPostImage()

@@ -97,6 +97,7 @@ const UserProfile = () => {
       if (user) {
           if (!userEdited) {
               const fetchData = async (): Promise<void> => {
+              // alert('UserProfile useEffet called');
               dispatchUI(createActionLoading(true));
               await getDefaultUserImage()
               .then(imageData => { 

@@ -26,6 +26,7 @@ const ListCategories = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('ListCategories useEffet called');
       const fetchCategories = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         CategoryApiService.getAllCategories()

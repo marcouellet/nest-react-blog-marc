@@ -98,6 +98,7 @@ const EditUser = () => {
   useEffect(() => {
     if (!userEdited) {
       (async () => {
+        alert('EditUser useEffet called');
         const fetchData = async (): Promise<void> => {
           dispatchUI(createActionLoading(true));
           await getDefaultUserImage()

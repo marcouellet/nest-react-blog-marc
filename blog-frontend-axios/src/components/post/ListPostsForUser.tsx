@@ -31,6 +31,7 @@ const ListPostsForUser = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('ListPostsForUser useEffet called');
       const fetchCategories = async (): Promise<void> => {
       await CategoryApiService.getAllCategories()
         .then(categories => {

@@ -59,6 +59,7 @@ const CreateUser = () => {
   useEffect(() => {
     if (!userDefaultImage) {
       const fetchData = async (): Promise<void> => {
+        // alert('CreateUser useEffet called');
         dispatchUI(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 

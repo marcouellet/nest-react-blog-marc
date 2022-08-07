@@ -53,6 +53,7 @@ const EditCategory = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('EditCategory useEffet called');
       const fetchData = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await CategoryApiService.getCategoryById(categoryId!)

@@ -66,6 +66,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('CreatePost useEffet called');
       const fetchCategories = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await getDefaultPostImage()

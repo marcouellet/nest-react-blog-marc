@@ -26,6 +26,7 @@ const ListUsers = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('ListUsers useEffet called');
       const fetchUsers = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         await UserApiService.findManyUsers(userNameFilter)

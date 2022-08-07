@@ -68,6 +68,7 @@ const EditPost = () => {
 
   useEffect(() => {
     (async () => {
+      // alert('EditPost useEffet called');
       dispatchUI(createActionLoading(true));
       let allCategories: ICategory[];
       const fetchCategories = async (): Promise<void> => {

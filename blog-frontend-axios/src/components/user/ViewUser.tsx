@@ -31,6 +31,7 @@ const ViewUser = () => {
     (async () => {
     if (!userDisplayed) {
       const fetchData = async (): Promise<void> => {
+        // alert('ViewUser useEffet called');
         dispatchUI(createActionLoading(true));
         await getDefaultUserImage()
         .then(imageData => { 
