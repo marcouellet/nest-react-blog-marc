@@ -3,9 +3,9 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { LogLevel, NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-
+import Environment from '../config/config.environment';
 import { IConfig, IConfigService } from '../config/interfaces/config.interface';
-import { EnvConfig } from '../config/interfaces/envconfig.interface';
+import { EnvConfig } from '../config/interfaces/env.config.interface';
 import { IConfigOptions } from '../config/interfaces/config-options.interface';
 import { CustomLogger } from '../common/custom.logger';
 import { VALID_AUTH_STRATEGY_NAMES, VALID_DATA_SERVER_NAMES, VALID_LOGGER_LEVELS } from '../config/config.constants';
@@ -30,7 +30,7 @@ export class ConfigService implements IConfigService {
     }
 
     private getEnvConfig(key: string): string {
-        return this.envConfig[key];
+        return process.env[key] || this.envConfig[key];
     }
 
     private validateAuthStrategyName(authStrategyName: string): boolean {
@@ -46,52 +46,58 @@ export class ConfigService implements IConfigService {
         return this.loggerLevels.every( level => VALID_LOGGER_LEVELS.includes(level));
     }
 
+    private envVarNotFound(envvar: string) {
+        throw new NotFoundException(`Please, provide a value for ${envvar} in env file`);
+    }
+
     private initConfig(): IConfig {
 
-        const dataServerName = this.getEnvConfig('DATA_SERVER_NAME');
-        const connectionString =  this.getEnvConfig('DATA_SERVER_CONNECTION_STRING');
-        const authStrategyName = this.getEnvConfig('AUTH_STRATEGY_NAME');
-        const authSecretKey = this.getEnvConfig('AUTH_SECRET_KEY');
-        const authExpiresIn = this.getEnvConfig('AUTH_EXPIRES_IN');
-        const authRefreshTokenSecretKey = this.getEnvConfig('AUTH_REFRESH_TOKEN_SECRET_KEY');
-        const authRefreshTokenExpiresIn = this.getEnvConfig('AUTH_REFRESH_TOKEN_EXPIRES_IN');
-        const loggerLevelsString = this.getEnvConfig('LOGGER_LEVELS');
-        const serverPort = this.getEnvConfig('SERVER_PORT');
+        const dataServerName = this.getEnvConfig(Environment.DataServerName);
+        const connectionString =  this.getEnvConfig(Environment.DataServerConnectionString);
+        const dataServerUserName = this.getEnvConfig(Environment.DataServerUserName);
+        const dataServerUserPassword = this.getEnvConfig(Environment.DataServerUserPassword);
+        const authStrategyName = this.getEnvConfig(Environment.AuthStrategyName);
+        const authSecretKey = this.getEnvConfig(Environment.AuthSecretKey);
+        const authExpiresIn = this.getEnvConfig(Environment.AuthExpiresIn);
+        const authRefreshTokenSecretKey = this.getEnvConfig(Environment.AuthRefreshTokenSecretKey);
+        const authRefreshTokenExpiresIn = this.getEnvConfig(Environment.AuthRefreshTokenExpiresIn);
+        const loggerLevelsString = this.getEnvConfig(Environment.LoggerLevels);
+        const serverPort = this.getEnvConfig(Environment.ServerPort);
 
         if (!dataServerName) {
-            throw new NotFoundException('Please, provide a value for DATA_SERVER_NAME in env file');
+            this.envVarNotFound(Environment.DataServerName);
         }
 
         if (!connectionString) {
-            throw new NotFoundException('Please, provide a value for DATA_SERVER_CONNECTION_STRING in env file');
+            this.envVarNotFound(Environment.DataServerConnectionString);
         }
 
         if (!authStrategyName) {
-            throw new NotFoundException('Please, provide a value for AUTH_STRATEGY_NAME in env file');
+            this.envVarNotFound(Environment.AuthStrategyName);
         }
 
         if (!authSecretKey) {
-            throw new NotFoundException('Please, provide a value for AUTH_SECRET_KEY in env file');
+            this.envVarNotFound(Environment.AuthSecretKey);
         }
 
         if (!authExpiresIn) {
-            throw new NotFoundException('Please, provide a value for AUTH_EXPIRES_IN in env file');
+            this.envVarNotFound(Environment.AuthExpiresIn);
         }
 
         if (!authRefreshTokenSecretKey) {
-            throw new NotFoundException('Please, provide a value for AUTH_REFRESH_TOKEN_SECRET_KEY in env file');
+            this.envVarNotFound(Environment.AuthRefreshTokenSecretKey);
         }
 
         if (!authRefreshTokenExpiresIn) {
-            throw new NotFoundException('Please, provide a value for AUTH_REFRESH_TOKEN_EXPIRES_IN in env file');
+            this.envVarNotFound(Environment.AuthRefreshTokenExpiresIn);
         }
 
         if (!loggerLevelsString) {
-            throw new NotFoundException('Please, provide a value for LOGGER_LEVELS in env file');
+            this.envVarNotFound(Environment.LoggerLevels);
         }
 
         if (!serverPort) {
-            throw new NotFoundException('Please, provide a value for SERVER_PORT in env file');
+            this.envVarNotFound(Environment.ServerPort);
         }
 
         if (!this.validateAuthStrategyName(authStrategyName)) {
@@ -110,7 +116,7 @@ export class ConfigService implements IConfigService {
 
         CustomLogger.overrideLogger(this.loggerLevels as LogLevel[]);
 
-        return { dataServerName, connectionString, authStrategyName,
+        return { dataServerName, connectionString, authStrategyName, dataServerUserName, dataServerUserPassword,
                 authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn,
                 loggerLevels: this.loggerLevels, serverPort };
     }
