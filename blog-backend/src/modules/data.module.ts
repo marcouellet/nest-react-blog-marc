@@ -14,7 +14,6 @@ export class DataModule {
     const dataServerName = configService.getConfig().dataServerName;
     const dataServerConnectionString = configService.getConfig().connectionString;
 
-    configService.getConfig()
     Logger.log(`Accessing data base ${dataServerName} with connection string: ` + dataServerConnectionString);
 
     switch (dataServerName) {
