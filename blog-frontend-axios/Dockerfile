@@ -7,7 +7,7 @@ RUN npm install
 
 COPY ./public ./public
 COPY ./src ./src
-COPY .env* ./
+COPY .env.docker .env
 
 ENV REACT_APP_API_URI=http://api/api
 
