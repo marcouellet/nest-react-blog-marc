@@ -37,7 +37,7 @@ const Home = () => {
             <div className="col-md-4">
               { homeDefaultImage && <ImageResize imageData={homeDefaultImage} resize={imageMaxSize}/>}
             </div>
-            <div className="col-md-7">
+            <div className="col-md-6">
               <h2>
                 Welcome to Marc's Blog
               </h2>
