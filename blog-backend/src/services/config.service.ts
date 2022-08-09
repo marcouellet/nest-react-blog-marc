@@ -54,8 +54,6 @@ export class ConfigService implements IConfigService {
 
         const dataServerName = this.getEnvConfig(Environment.DataServerName);
         const connectionString =  this.getEnvConfig(Environment.DataServerConnectionString);
-        const dataServerUserName = this.getEnvConfig(Environment.DataServerUserName);
-        const dataServerUserPassword = this.getEnvConfig(Environment.DataServerUserPassword);
         const authStrategyName = this.getEnvConfig(Environment.AuthStrategyName);
         const authSecretKey = this.getEnvConfig(Environment.AuthSecretKey);
         const authExpiresIn = this.getEnvConfig(Environment.AuthExpiresIn);
@@ -116,7 +114,7 @@ export class ConfigService implements IConfigService {
 
         CustomLogger.overrideLogger(this.loggerLevels as LogLevel[]);
 
-        return { dataServerName, connectionString, authStrategyName, dataServerUserName, dataServerUserPassword,
+        return { dataServerName, connectionString, authStrategyName,
                 authSecretKey, authExpiresIn, authRefreshTokenSecretKey, authRefreshTokenExpiresIn,
                 loggerLevels: this.loggerLevels, serverPort };
     }

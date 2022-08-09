@@ -1,7 +1,5 @@
 export interface IConfig {
     dataServerName: string;
-    dataServerUserName: string;
-    dataServerUserPassword: string;
     connectionString: string;
     authStrategyName: string;
     authSecretKey: string;
