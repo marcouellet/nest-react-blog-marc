@@ -35,7 +35,7 @@
     "build": "react-scripts build",
     "postbuild": "npm run build-env",
     "build-env": "cp .env ./build/.env",
-    "build-env-docker": "cp .env.docker ./dist/.env",
+    "build-env-docker": "cp .env.docker ./",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

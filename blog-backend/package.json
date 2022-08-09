@@ -9,7 +9,7 @@
     "build": "nest build",
     "postbuild": "npm run build-env",
     "build-env": "cp .env ./dist/.env",
-    "build-env-docker": "cp .env.docker ./dist/.env",
+    "build-env-docker": "cp .env.docker ./",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
