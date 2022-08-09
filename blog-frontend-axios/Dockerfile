@@ -9,7 +9,7 @@ COPY ./public ./public
 COPY ./src ./src
 COPY .env* ./
 
-ENV REACT_APP_API_URI=http://192.168.99.100:31577/api
+ENV REACT_APP_API_URI=http://api/api
 
 RUN npm run build
 
