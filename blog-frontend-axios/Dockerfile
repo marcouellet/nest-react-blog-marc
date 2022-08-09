@@ -12,7 +12,6 @@ COPY .env* ./
 ENV REACT_APP_API_URI=http://192.168.99.100:31577/api
 
 RUN npm run build
-RUN  npm run build-env-docker
 
 FROM nginx:latest
 
