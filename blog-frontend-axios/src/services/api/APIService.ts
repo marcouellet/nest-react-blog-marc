@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 import { StatusCodes } from 'http-status-codes';
-import { REACT_APP_API_BASE_URL, REACT_APP_API_REQUEST_TIMEOUT, 
-          REACT_APP_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
+import { REACT_APP_BLOG_MARC_API_URI, REACT_APP_BLOG_MARC_API_REQUEST_TIMEOUT, 
+          REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
 import { IErrors } from '../../types';
 import TokenService from './TokenService';
 
-axios.defaults.baseURL = REACT_APP_API_BASE_URL; // 'http://192.168.99.100:5000/api'; 
-axios.defaults.timeout = REACT_APP_API_REQUEST_TIMEOUT;
+axios.defaults.baseURL = REACT_APP_BLOG_MARC_API_URI; // 'http://192.168.99.100:5000/api'; 
+axios.defaults.timeout = REACT_APP_BLOG_MARC_API_REQUEST_TIMEOUT;
 
 function processError(error : any) : IErrors {
   let errorAttributes : IErrors = {};
@@ -73,7 +73,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    const ts = response.headers[REACT_APP_HTTP_RESPONSE_HEADER_TIMESTAMP];
+    const ts = response.headers[REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP];
     const timestamp =Number(ts);
     TokenService.setHttpResponseTimeStamp(timestamp);
 
