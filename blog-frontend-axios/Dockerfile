@@ -7,7 +7,7 @@ RUN npm install
 
 COPY ./public ./public
 COPY ./src ./src
-COPY .env.docker .env
+COPY .env.okteto .env
 
 ENV REACT_APP_BLOG_MARC_API_URI=http://api/api
 

@@ -25,9 +25,9 @@ const Register = () => {
     .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
       .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
-    password: Yup.string().required()
+    password: Yup.string().required('Password is required')
       .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
-    confirm_password: Yup.string().required()
+    confirm_password: Yup.string().required('Confirm password is required')
       .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
       .oneOf([Yup.ref('password')], "Passwords don't match!"),
   });

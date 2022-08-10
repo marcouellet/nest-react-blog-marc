@@ -43,7 +43,7 @@ const UserProfile = () => {
           Object.values(value).some(v => !(v === null || v === undefined || v === ""))
           ) {
           // Return our normal validation
-          return Yup.string().required()
+          return Yup.string().required('Password is required')
               .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
           }
           // Otherwise, return a simple validation
@@ -55,7 +55,7 @@ const UserProfile = () => {
           Object.values(value).some(v => !(v === null || v === undefined || v === ""))
       ) {
           // Return our normal validation
-          return Yup.string().required()
+          return Yup.string().required('Confirm password is required')
           .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
           .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
           .oneOf([Yup.ref('password'), null], "Passwords don't match!");

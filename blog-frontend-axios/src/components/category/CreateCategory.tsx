@@ -24,8 +24,8 @@ const CreateCategory = () => {
   const [submitForm, setSubmitForm] = useState<boolean>(false);
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required('Category title is required')
-      .min(minimumCategoryTitleLength, `Category title must be at least ${minimumCategoryTitleLength} characters long`),
+    title: Yup.string().required('Title is required')
+      .min(minimumCategoryTitleLength, `Title must be at least ${minimumCategoryTitleLength} characters long`),
     description: Yup.string().required('Description is required')
       .min(minimumCategoryDescriptionLength, `Description must be at least ${minimumCategoryDescriptionLength} characters long`),
   });
