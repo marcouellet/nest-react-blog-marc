@@ -10,7 +10,7 @@ services:
     ports:
       - "80:80"
     env_file:
-      - ./blog-frontend-axios/.env.docker  
+      - ./blog-frontend-axios/.env.okteto  
     links:
       - api
 
@@ -23,7 +23,7 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - ./blog-backend/.env.docker  
+      - ./blog-backend/.env.okteto  
     environment:
       - NODE_ENV=production
       - MONGODB_URI='mongodb://mongo/nest-react-blog-marc'
