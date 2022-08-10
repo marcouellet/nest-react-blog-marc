@@ -9,7 +9,7 @@ COPY ./public ./public
 COPY ./src ./src
 COPY .env.okteto .env
 
-ENV REACT_APP_BLOG_MARC_API_URI=http://api/api
+ENV REACT_APP_BLOG_MARC_API_URI=http://api:5000/api
 
 RUN npm run build
 
