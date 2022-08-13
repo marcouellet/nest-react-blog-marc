@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ const ViewBlog = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       // alert('ViewBlog useEffet called');
       const fetchData = async (): Promise<void> => {
