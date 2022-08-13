@@ -23,9 +23,9 @@ const App = () => {
           <SessionProvider>
             <SessionHandler/>
             <NavigationBar/>
-            <Processing/>
             <ModalContextProvider>
               <UIProvider>
+                <Processing/>
                 <AppRoutes />
               </UIProvider>
             </ModalContextProvider>
