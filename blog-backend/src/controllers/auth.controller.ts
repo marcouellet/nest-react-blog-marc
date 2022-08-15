@@ -23,7 +23,7 @@ export class AuthController {
 
   // Fetch user profile
   @Get('/profile')
-  @Auth([UserRole.ADMIN, UserRole.USER])
+  @Auth(AllRoles)
   async getUserProfile(@Headers('Authorization') auth: string): Promise<UserDto> {
     const jwt = auth.replace('Bearer ', '');
     return this.authService.getUserFromToken(jwt);
@@ -31,7 +31,7 @@ export class AuthController {
 
   // Update user profile
   @Put('/profile')
-  @Auth([UserRole.ADMIN, UserRole.USER])
+  @Auth(AllRoles)
   async updateUserProfile(@Headers('Authorization') auth: string, @Body(new ValidationPipe()) userDto: UserDto): Promise<UserDto> {
     const jwt = auth.replace('Bearer ', '');
     return this.authService.updateUserFromToken(jwt, userDto);
