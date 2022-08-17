@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { toast } from "react-toastify";
 
 import { CategoryApiService } from "../../services/api/CategoryApiService";
@@ -29,7 +29,7 @@ const ListBlogs = () => {
 
   const imageMaxSize: ImageSizeProps = {maxWidth:120, maxHeight:120}
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       // alert('listBlogs useEffet called');
       dispatchUI(createActionLoading(true));
@@ -63,7 +63,7 @@ const ListBlogs = () => {
  // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchPosts = async (): Promise<void> => {
       if (category) {
         dispatchUI(createActionLoading(true));
