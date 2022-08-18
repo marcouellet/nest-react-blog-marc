@@ -75,7 +75,8 @@ const Home = () => {
               </h4>  
               <br/>
               <h5>
-                <div>To test the application, you can login with user email as "admin@email.com" and password as "password".</div>
+              <div>To test the application, you can register. You will have USER privilege and create your POSTS.</div>
+                <div>If available, you can login with user email as "admin@email.com" and password as "password".</div>
                 <div>This user has ADMIN role which allows administration privilege. It can manage user, category and post
                   creation, update and deletion.
                 </div>
