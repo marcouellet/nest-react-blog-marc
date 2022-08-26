@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Category, Post, User } from '@blog-common/entities';
 
-import { IDataRepositories, IGenericDataRepository } from '../../../core/repositories';
+import { IDataRepositories, IGenericDataRepository } from '../../../repositories';
 import { MongoGenericDataRepository } from './mongo-generic-data-repository';
-import { User, UserDocument } from './model/user.model';
-import { Post, PostDocument } from './model/post.model';
-import { Category, CategoryDocument } from './model/category.model';
+
 @Injectable()
 export class MongoDataRepositories extends IDataRepositories {
   override users: IGenericDataRepository<User>;

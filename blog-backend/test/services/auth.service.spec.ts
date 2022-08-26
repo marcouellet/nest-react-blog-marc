@@ -1,24 +1,26 @@
 import { UnauthorizedException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+import { AuthService } from '@Services/auth.service';
+import { UserService } from '@Services/user/user.service';
+import { UserFactoryService } from '@Services/user/user-factory.service';
+import { CryptographerService } from '@Services/cryptographer.service';
+import { DataServiceRepositories } from '@Services/data.service.repositories';
+import { ConfigModule } from '@Modules/config.module';
+import { User } from '@blog-common/entities/user.entity';
+import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
-import { AuthService } from '../../src/services/auth.service';
-import { UserService } from '../../src/services/user/user.service';
-import { UserFactoryService } from '../../src/services/user/user-factory.service';
-import { CryptographerService } from '../../src/services/cryptographer.service';
 import JwtServiceMock from '../mocks/jwt.service.mock';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
-import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
-import { User } from '../../src/core/entities/user.entity';
-import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
+
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias,
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
           testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
 import { testToken } from '../data/token.data';
-import { ConfigModule } from '../../src/modules/config.module';
+
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthService', () => {

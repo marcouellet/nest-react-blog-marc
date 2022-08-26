@@ -10,6 +10,13 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "coverageDirectory": "./coverage",
-  "testEnvironment": "node"
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^@blog-common/(.*)$": "<rootDir>/../../blog-common/src/$1",
+    "^@Modules/(.*)$": "<rootDir>/../../blog-backend/src/modules/$1",
+    "^@Controllers/(.*)$": "<rootDir>/../../blog-backend/src/controllers/$1",
+    "^@Services/(.*)$": "<rootDir>/../../blog-backend/src/services/$1",
+    "^@Mongo/(.*)$": "<rootDir>/../../blog-backend/src/frameworks/data/mongo/$1"
+  }
 }
   

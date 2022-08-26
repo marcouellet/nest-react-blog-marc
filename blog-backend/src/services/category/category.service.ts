@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Category } from '@blog-common/entities';
+import { CategoryDto, UpdateCategoryDto } from '@blog-common/dtos';
+import { CategoryFindCriterias } from '@blog-common/find-criterias/category.find-criterias';
 
-import { IDataRepositories } from '../../core/repositories';
-import { Category } from '../../core/entities';
-import { CategoryDto, UpdateCategoryDto } from '../../core/dtos';
-import { CategoryFindCriterias } from '../../core/find-criterias/category.find-criterias';
+import { IDataRepositories } from '../../repositories';
 import { CategoryFactoryService } from './category-factory.service';
 @Injectable()
 export class CategoryService {

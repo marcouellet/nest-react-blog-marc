@@ -1,9 +1,10 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
+import { AppModule } from '@Modules/app.module';
 
 import { CustomLogger } from './common/custom.logger';
-import { AppModule } from './modules/app.module';
+
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { HeadersInterceptor } from './common/header.interceptor';
 import { GLOBAL_CONFIG_SERVICE } from './config/config.global';

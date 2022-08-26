@@ -2,17 +2,17 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import { UserDto } from '@blog-common/dtos';
+import { IRefresh } from '@blog-common/interfaces/jwt-refresh.interface';
+import { AppModule } from '@Modules/app.module';
+import { AuthService } from '@Services/auth.service';
+import { UserService } from '@Services/user/user.service';
+import { buildLoginDto, buildRegisterDto } from '@blog-common/builders/auth.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
-import { AppModule } from '../../src/modules/app.module';
-import { AuthService } from '../../src/services/auth.service';
-import { UserService } from '../../src/services/user/user.service';
-import { IRefresh } from '../../src/auth/interfaces/jwt-refresh.interface';
 import { AuthDatabaseBuilder } from '../database/auth.database';
-import { buildLoginDto, buildRegisterDto } from '../../test/builders/auth.dtos.builders';
 import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
           testE2ERegisterUnknownUser_Auth, testE2EUnknownUserJwtPayload_Auth } from '../data/auth.data';
-import { UserDto } from '../../src/core';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
@@ -146,11 +146,11 @@ describe('AuthController (e2e)', () => {
       });
   });
 
-  it('AUTH(5): (PUT) /auth/session/refresh (not logged in)', () => {
-    Logger.debug('AUTH(5): (PUT) /auth/session/refresh (not logged in)');
+  it('AUTH(5): (POST) /auth/session/refresh (not logged in)', () => {
+    Logger.debug('AUTH(5): (POST) /auth/session/refresh (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/auth/session/refresh')
+      .post('/auth/session/refresh')
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
@@ -192,25 +192,25 @@ describe('AuthController (e2e)', () => {
     }
   });
 
-  it('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in)', () => {
-    Logger.debug('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in)');
+  it('AUTH(8): (POST) /auth/session/refresh unknown user (unknown logged in)', () => {
+    Logger.debug('AUTH(8): (POST) /auth/session/refresh unknown user (unknown logged in)');
     Logger.flush();
     if (unknownUserDtoWithTokens) {
       const authtoken = unknownUserDtoWithTokens.authtoken;
       const authrefreshtoken = unknownUserDtoWithTokens.authrefreshtoken;
       const refreshParms: IRefresh = { authtoken, authrefreshtoken };
       return request(app.getHttpServer())
-        .put('/auth/session/refresh')
+        .post('/auth/session/refresh')
         .set('Authorization', `Bearer ${unknownUserDtoWithTokens.authtoken.accessToken}`)
         .send(refreshParms)
-        .expect(StatusCodes.OK)
+        .expect(StatusCodes.CREATED)
         .catch(error => {
-          Logger.error('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in) failed, see following error message:');
+          Logger.error('AUTH(8): (POST) /auth/session/refresh unknown user (unknown logged in) failed, see following error message:');
           Logger.error(error);
           Logger.flush();
         });
     } else {
-      Logger.error('AUTH(8): (PUT) /auth/session/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed');
+      Logger.error('AUTH(8): (POST) /auth/session/refresh unknown user (unknown logged in) - cannot test since unknown user registration failed');
       Logger.flush();
     }
   });

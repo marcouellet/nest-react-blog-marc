@@ -1,12 +1,12 @@
-import { JwtPayload } from '../../src/auth/interfaces/jwt.interface';
-import { UserRole } from '../../src/core/enum';
+import { JwtPayload } from '@blog-common/interfaces/jwt.interface';
+import { UserRole } from '@blog-common/enum';
 
 export const testE2EDummyUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.dummy@email.com', expiresIn: 300000};
-export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin@email.com', expiresIn: 300000};
+export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin@email.com',  expiresIn: 300000};
 export const testE2EUnknownUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.unknown@email.com', expiresIn: 300000};
 
-export const testE2ERoleUser = UserRole.USER.toString();
-export const testE2ERoleAdmin = UserRole.ADMIN.toString();
+export const testE2ERoleUser = UserRole.USER;
+export const testE2ERoleAdmin = UserRole.ADMIN;
 export const testE2EDummyUserEmail_Auth = 'e2e.auth.dummy@email.com';
 export const testE2EAdminUserEmail_Auth = 'e2e.auth.admin@email.com';
 export const testE2EUnknownUserEmail_Auth = 'e2e.auth.unknown@email.com';

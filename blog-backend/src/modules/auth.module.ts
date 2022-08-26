@@ -1,15 +1,15 @@
 import { Module, Global } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { AuthService } from '@Services/auth.service';
+import { CryptographerService } from '@Services/cryptographer.service';
+import { UserModule } from '@Modules/user.module';
+import { AuthController } from '@Controllers/auth.controller';
 
 import { JwtStrategy } from '../auth/passport/jwt.strategy';
 import { JwtRefreshTokenStrategy } from '../auth/passport/jwt-refresh.strategy';
 import { LocalStrategy } from '../auth/passport/local.strategy';
-import { AuthController } from '../controllers/auth.controller';
-import { AuthService } from '../services/auth.service';
 import { RoleGuard } from '../auth/guards/role.guard';
-import { CryptographerService } from '../services/cryptographer.service';
-import { UserModule } from './user.module';
 import { IConfigService } from '../config/interfaces/config.interface';
 import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/config.constants';
 

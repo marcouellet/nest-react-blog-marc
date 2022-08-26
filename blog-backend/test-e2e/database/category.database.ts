@@ -1,11 +1,10 @@
 import { Logger } from '@nestjs/common';
-
-import { UserDto, PostDto, CategoryDto } from '../../src/core/dtos';
-import { UserService } from '../../src/services/user/user.service';
-import { PostService } from '../../src/services/post/post.service';
-import { CategoryService } from '../../src/services/category/category.service';
-import { CategoryFindCriterias } from '../../src/core';
-import { buildCreateCategoryDto, buildUpdateCategoryDto } from '../../test/builders/category.dtos.builders';
+import { UserDto, PostDto, CategoryDto } from '@blog-common/dtos';
+import { UserService } from '@Services/user/user.service';
+import { PostService } from '@Services/post/post.service';
+import { CategoryService } from '@Services/category/category.service';
+import { CategoryFindCriterias } from '@blog-common/find-criterias';
+import { buildCreateCategoryDto, buildUpdateCategoryDto } from '@blog-common/builders/category.dtos.builders';
 
 export class CategoryDatabaseBuilder {
   constructor(

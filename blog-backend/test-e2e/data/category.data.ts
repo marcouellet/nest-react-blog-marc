@@ -1,5 +1,5 @@
-import { CategoryDto, UpdateCategoryDto } from '../../src/core/dtos';
-import { CategoryFindCriterias } from '../../src/core';
+import { CategoryDto, UpdateCategoryDto } from '@blog-common/dtos';
+import { CategoryFindCriterias } from '@blog-common/find-criterias';
 
 export const testE2ENonExistingCategoryId_Category = 'twelvelong12'; // required by MongoDB
 export const testE2ENonExistingCategoryTitle_Category = 'non existing title';

@@ -1,6 +1,7 @@
-import { Post } from '../../src/core/entities/post.entity';
-import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostFindCriterias, FilterFindCriterias } from '../../src/core';
+import { Post } from '@blog-common/entities';
+import { PostDto, UpdatePostDto } from '@blog-common/dtos';
+import { PostFindCriterias, FilterFindCriterias } from '@blog-common/find-criterias';
+
 import { testUser, testUserDto, testServiceUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();

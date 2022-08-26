@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AppController } from '@Controllers/app.controller';
+import { AppService } from '@Services/app.service';
 
-import { AppController } from '../../src/controllers/app.controller';
-import { AppService } from '../../src/services/app.service';
 import AppServiceMock from '../mocks/app.service.mock';
 import { testServerInfo } from '../data/app.data';
 

@@ -1,6 +1,7 @@
-import { CreateUserDto, UpdateUserDto } from '../../src/core/dtos';
+import { CreateUserDto, UpdateUserDto } from '@blog-common/dtos';
+import { UserFindCriterias } from '@blog-common/find-criterias';
+
 import { testE2ERoleUser, testE2ERoleAdmin } from './auth.data';
-import { UserFindCriterias } from '../../src/core';
 
 export const testE2EDummyUserPostTitle_User = 'dummy title';
 export const testE2EDummyUserPostUpdatedTitle_User = 'dummy updated title';

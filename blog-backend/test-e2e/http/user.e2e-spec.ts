@@ -2,20 +2,21 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import { UserDto } from '@blog-common/dtos';
+import { AppModule } from '@Modules/app.module';
+import { AuthService } from '@Services/auth.service';
+import { UserService } from '@Services/user/user.service';
+import { PostService } from '@Services/post/post.service';
+import { buildCreateUserDto, buildUpdateUserDto } from '@blog-common/builders/user.dtos.builders';
+import { buildLoginDto } from '@blog-common/builders/auth.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
-import { AppModule } from '../../src/modules/app.module';
-import { AuthService } from '../../src/services/auth.service';
-import { UserService } from '../../src/services/user/user.service';
-import { PostService } from '../../src/services/post/post.service';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { UserDatabaseBuilder } from '../database/user.database';
-import { buildLoginDto } from '../../test/builders/auth.dtos.builders';
-import { buildCreateUserDto, buildUpdateUserDto } from '../../test/builders/user.dtos.builders';
 import { testE2ERegisterDummyUser_User, testE2ERegisterAdminUser_User, testE2EFindDummyUserCriterias_User,
         testE2ECreateUnknownUserDto_User, testE2EUpdateUnknownUserNameDto_User, testE2EFindUnknownUserNameUpdatedCriterias_User,
         testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User, testE2ELoginUnknownUser_User } from '../data/user.data';
-import { UserDto } from '../../src/core';
+
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
@@ -125,47 +126,47 @@ describe('UserController (e2e)', () => {
     }
   });
 
-  it('USER(3): (PUT) /user/find - Fetch a user based on criterias (not logged in)', () => {
-    Logger.debug('USER(3): (PUT) /user/find - Fetch a user based on criterias (not logged in)');
+  it('USER(3): (POST) /user/find - Fetch a user based on criterias (not logged in)', () => {
+    Logger.debug('USER(3): (POST) /user/find - Fetch a user based on criterias (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .put('/user/find')
+      .post('/user/find')
       .send(testE2EFindDummyUserCriterias_User)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(body => body != null);
     } else {
-      Logger.error('USER(3): (PUT) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed');
+      Logger.error('USER(3): (POST) /user/find - Fetch a user based on criterias - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });
 
-  it('USER(4): (PUT) /findMany - Fetch users based on criterias (not logged in)', () => {
-    Logger.debug('USER(4): (PUT) /findMany - Fetch users based on criterias (not logged in)');
+  it('USER(4): (POST) /findMany - Fetch users based on criterias (not logged in)', () => {
+    Logger.debug('USER(4): (POST) /findMany - Fetch users based on criterias (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .put('/user/findMany')
+      .post('/user/findMany')
       .send(testE2EFindDummyUserCriterias_User)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(body => body != null);
     } else {
-      Logger.error('USER(4): (PUT) /findMany - Fetch users based on criterias - cannot test since dummy user creation failed');
+      Logger.error('USER(4): (POST) /findMany - Fetch users based on criterias - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });
 
-  it('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias (not logged in)', () => {
-    Logger.debug('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias (not logged in)');
+  it('USER(5): (POST) /user/findManyCount - Get count of users meating criterias (not logged in)', () => {
+    Logger.debug('USER(5): (POST) /user/findManyCount - Get count of users meating criterias (not logged in)');
     Logger.flush();
     if (dummyUserDtoWithTokens) {
     return request(app.getHttpServer())
-      .put('/user/findManyCount')
+      .post('/user/findManyCount')
       .send(testE2EFindDummyUserCriterias_User)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(body => body != null);
     } else {
-      Logger.error('USER(5): (PUT) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');
+      Logger.error('USER(5): (POST) /user/findManyCount - Get count of users meating criterias - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });
@@ -307,17 +308,17 @@ describe('UserController (e2e)', () => {
     }
   });
 
-  it('USER(15): (PUT) /auth/login unknown user (not logged in)', () => {
-    Logger.debug('USER(15): (PUT) /auth/login unknown user (not logged in)');
+  it('USER(15): (POST) /auth/login unknown user (not logged in)', () => {
+    Logger.debug('USER(15): (POST) /auth/login unknown user (not logged in)');
     Logger.flush();
     if (unknownUserDto) {
       return request(app.getHttpServer())
-      .put('/auth/login')
+      .post('/auth/login')
       .send(buildLoginDto(testE2ELoginUnknownUser_User))
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .then(response => unknownUserDtoWithTokens = response.body);
     } else {
-      Logger.error('USER(15): (PUT) /auth/login unknown user (not logged in) - cannot test since unknown user creation failed');
+      Logger.error('USER(15): (POST) /auth/login unknown user (not logged in) - cannot test since unknown user creation failed');
       Logger.flush();
     }
   });
@@ -373,23 +374,23 @@ describe('UserController (e2e)', () => {
     }
   });
 
-  it('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in)', () => {
-    Logger.debug('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in)');
+  it('USER(19): (POST) /user/find - Fetch a user based on username criteria (dummy logged in)', () => {
+    Logger.debug('USER(19): (POST) /user/find - Fetch a user based on username criteria (dummy logged in)');
     Logger.flush();
     if (unknownUserDtoWithTokens && dummyUserDtoWithTokens) {
       return request(app.getHttpServer())
-      .put('/user/find')
+      .post('/user/find')
       .set('Authorization', `Bearer ${dummyUserDtoWithTokens.authtoken.accessToken}`)
       .send(testE2EFindUnknownUserNameUpdatedCriterias_User)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(body => body != null)
       .catch(error => {
-        Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria (dummy logged in) failed, see following error message:');
+        Logger.error('USER(19): (POST) /user/find - Fetch a user based on username criteria (dummy logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
     } else {
-      Logger.error('USER(19): (PUT) /user/find - Fetch a user based on username criteria - cannot test since dummy user creation failed');
+      Logger.error('USER(19): (POST) /user/find - Fetch a user based on username criteria - cannot test since dummy user creation failed');
       Logger.flush();
     }
   });

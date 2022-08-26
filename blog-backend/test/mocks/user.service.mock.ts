@@ -1,6 +1,7 @@
-import { UserService } from '../../src/services/user/user.service';
-import { UserDto, UpdateUserDto } from '../../src/core/dtos';
-import { UserFindCriterias } from '../../src/core/find-criterias/user.find-criterias';
+import { UserService } from '@Services/user/user.service';
+import { UserDto, UpdateUserDto } from '@blog-common/dtos';
+import { UserFindCriterias } from '@blog-common/find-criterias';
+
 import { testUserUnrestricted, testUserCount } from '../data/user.data';
 
 const UserServiceMock = {

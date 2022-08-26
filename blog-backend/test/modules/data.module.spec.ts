@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ModuleMetadata, NotFoundException } from '@nestjs/common';
+import { DataModule } from '@Modules/data.module';
+import { MongoDataModule } from '@Mongo/mongo-data.module';
 
-import { DataModule } from '../../src/modules/data.module';
 import { DataModuleStub } from '../stubs/data.module.stub';
-import { MongoDataModule } from '../../src/frameworks/data/mongo/mongo-data.module';
 import { MongoDataModuleStub } from '../stubs/mongo-data.module.stub';
 import { GLOBAL_TEST_CONFIG_SERVICE, GLOBAL_TEST_CONFIG_SERVICE_WITH_WRONG_OPTIONS } from '../config/config.global';
 

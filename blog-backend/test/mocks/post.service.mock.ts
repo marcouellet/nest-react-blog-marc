@@ -1,6 +1,7 @@
-import { PostService } from '../../src/services/post/post.service';
-import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostFindCriterias } from '../../src/core/find-criterias/post.find-criterias';
+import { PostService } from '@Services/post/post.service';
+import { PostDto, UpdatePostDto } from '@blog-common/dtos';
+import { PostFindCriterias } from '@blog-common/find-criterias/post.find-criterias';
+
 import { testPost, testPostCount } from '../data/post.data';
 
 const PostServiceMock = {

@@ -2,21 +2,20 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import { AppModule } from '@Modules/app.module';
+import { AuthService } from '@Services/auth.service';
+import { UserService } from '@Services/user/user.service';
+import { PostService } from '@Services/post/post.service';
+import { CategoryService } from '@Services/category/category.service';
+import { CategoryDto, UserDto } from '@blog-common/dtos';
+import { buildCreateCategoryDto, buildUpdateCategoryDto } from '@blog-common/builders/category.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
-import { AppModule } from '../../src/modules/app.module';
-import { AuthService } from '../../src/services/auth.service';
-import { UserService } from '../../src/services/user/user.service';
-import { PostService } from '../../src/services/post/post.service';
-import { CategoryService } from '../../src/services/category/category.service';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { CategoryDatabaseBuilder } from '../database/category.database';
-import { buildCreateCategoryDto, buildUpdateCategoryDto } from '../../test/builders/category.dtos.builders';
 import { testE2ERegisterDummyUser_Category, testE2EFindCategoryNonExistingTitleCriterias_Category,
         testE2ENonExistingCategoryId_Category, testE2ECreateCategoryDto_Category, testE2EUpdateCategoryTitleDto_Category,
-        testE2EFindUpdatedCategoryTitleCriterias_Category, testE2EFindCategoryNonExistingTitleCriteriasCount_Category,
-        testE2ERegisterAdminUser_Category } from '../data/category.data';
-import { CategoryDto, UserDto } from '../../src/core';
+        testE2EFindUpdatedCategoryTitleCriterias_Category, testE2ERegisterAdminUser_Category } from '../data/category.data';
 import { CustomLogger } from '../../src/common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
@@ -136,40 +135,40 @@ describe('CategoryController (e2e)', () => {
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('CATEGORY(3): (PUT) /category/find - Fetch a category based on criterias with no match (not logged in)', () => {
-    Logger.debug('CATEGORY(3): (PUT) /category/find - Fetch a category based on criterias with no match (not logged in)');
+  it('CATEGORY(3): (POST) /category/find - Fetch a category based on criterias with no match (not logged in)', () => {
+    Logger.debug('CATEGORY(3): (POST) /category/find - Fetch a category based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/find')
+      .post('/category/find')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.NOT_FOUND);
   });
 
-  it('CATEGORY(4): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)', () => {
-    Logger.debug('CATEGORY(4): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in)');
+  it('CATEGORY(4): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in)', () => {
+    Logger.debug('CATEGORY(4): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/findMany')
+      .post('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(response => response === null)
       .catch(error => {
-        Logger.error('CATEGORY(4): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(4): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(5): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)', () => {
-    Logger.debug('CATEGORY(5): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
+  it('CATEGORY(5): (POST) /category/findManyCount - Get count of categories meating criterias no match (not logged in)', () => {
+    Logger.debug('CATEGORY(5): (POST) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/findManyCount')
+      .post('/category/findManyCount')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(response => response === null)
       .catch(error => {
-        Logger.error('CATEGORY(5): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(5): (POST) /category/findManyCount - Get count of categories meating criterias no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
@@ -273,47 +272,47 @@ describe('CategoryController (e2e)', () => {
     }
   });
 
-  it('CATEGORY(12): (PUT) /category/find - Fetch a category based on criterias (not logged in)', () => {
-    Logger.debug('CATEGORY(12): (PUT) /category/find - Fetch a category based on criterias (dummy logged in)');
+  it('CATEGORY(12): (POST) /category/find - Fetch a category based on criterias (not logged in)', () => {
+    Logger.debug('CATEGORY(12): (POST) /category/find - Fetch a category based on criterias (dummy logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/find')
+      .post('/category/find')
       .send(testE2EFindUpdatedCategoryTitleCriterias_Category)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(response => response && response.body === updatedCategoryDto)
       .catch(error => {
-        Logger.error('CATEGORY(12): (PUT) /category/find - Fetch a category based on criterias (not logged in) failed,'
+        Logger.error('CATEGORY(12): (POST) /category/find - Fetch a category based on criterias (not logged in) failed,'
         + 'see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(13): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)', () => {
-    Logger.debug('CATEGORY(13): (PUT) /category/findMany - Fetch categories based on criterias  (not logged in)');
+  it('CATEGORY(13): (POST) /category/findMany - Fetch categories based on criterias  (not logged in)', () => {
+    Logger.debug('CATEGORY(13): (POST) /category/findMany - Fetch categories based on criterias  (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/findMany')
+      .post('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(response => response && response.body === [updatedCategoryDto])
       .catch(error => {
-        Logger.error('CATEGORY(13): (PUT) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(13): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });
   });
 
-  it('CATEGORY(14): (PUT) /category/findManyCount - Get count of categories meating criterias (not logged in)', () => {
-    Logger.debug('CATEGORY(14): (PUT) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
+  it('CATEGORY(14): (POST) /category/findManyCount - Get count of categories meating criterias (not logged in)', () => {
+    Logger.debug('CATEGORY(14): (POST) /category/findManyCount - Get count of categories meating criterias no match (not logged in)');
     Logger.flush();
     return request(app.getHttpServer())
-      .put('/category/findManyCount')
+      .post('/category/findManyCount')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
-      .expect(StatusCodes.OK)
+      .expect(StatusCodes.CREATED)
       .expect(response => response && response.body === '1')
       .catch(error => {
-        Logger.error('CATEGORY(14): (PUT) /category/findManyCount - Get count of categories meating criterias (not logged in) failed, see following error message:');
+        Logger.error('CATEGORY(14): (POST) /category/findManyCount - Get count of categories meating criterias (not logged in) failed, see following error message:');
         Logger.error(error);
         Logger.flush();
       });

@@ -1,14 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CategoryService } from '@Services/category/category.service';
+import { CategoryFactoryService } from '@Services/category/category-factory.service';
+import { DataServiceRepositories } from '@Services/data.service.repositories';
+import { Category } from '@blog-common/entities/category.entity';
+import { ConfigModule } from '@Modules/config.module';
+import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
-import { CategoryService } from '../../src/services/category/category.service';
-import { CategoryFactoryService } from '../../src/services/category/category-factory.service';
-import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
-import { Category } from '../../src/core/entities/category.entity';
-import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testCategoryId, testServiceCategoryDto, testCategoryCount, testCreateCategoryDto,
           testUpdateCategoryDto, testFindCategoryCriterias } from '../data/category.data';
-import { ConfigModule } from '../../src/modules/config.module';
+
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('CategoryService', () => {

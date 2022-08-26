@@ -1,7 +1,7 @@
 import { DynamicModule } from '@nestjs/common';
+import { AppController } from '@Controllers/app.controller';
+import { AppService } from '@Services/app.service';
 
-import { AppController } from '../controllers/app.controller';
-import { AppService } from '../services/app.service';
 import { ConfigModule } from './config.module';
 import { AuthModule } from './auth.module';
 import { DataModule } from './data.module';

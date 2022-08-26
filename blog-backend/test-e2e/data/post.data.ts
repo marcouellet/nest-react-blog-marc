@@ -1,5 +1,5 @@
-import { PostDto, UpdatePostDto } from '../../src/core/dtos';
-import { PostFindCriterias, FilterFindCriterias } from '../../src/core';
+import { PostDto, UpdatePostDto } from '@blog-common/dtos';
+import { PostFindCriterias, FilterFindCriterias } from '@blog-common/find-criterias';
 
 const publishedOnDate: Date = new Date();
 

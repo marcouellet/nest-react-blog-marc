@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { UserController } from '@Controllers/user.controller';
+import { UserRole } from '@blog-common/enum/user-role.enum';
 
-import { UserController } from '../../../src/controllers/user.controller';
 import { checkAuthGuard } from './check.guards';
-import { UserRole } from '../../../src/core';
 
 describe('UserController Guards', () => {
 

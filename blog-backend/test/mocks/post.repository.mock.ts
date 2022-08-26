@@ -1,5 +1,6 @@
-import { Post } from '../../src/core/entities';
-import { PostFindCriterias } from '../../src/core/find-criterias/post.find-criterias';
+import { Post } from '@blog-common/entities';
+import { PostFindCriterias } from '@blog-common/find-criterias/post.find-criterias';
+
 import { testPost, testPostCount } from '../data/post.data';
 
 const PostRepositoryMock = {

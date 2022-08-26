@@ -1,6 +1,6 @@
 import { Model, Types } from 'mongoose';
 
-import { IGenericDataRepository } from '../../../core/repositories';
+import { IGenericDataRepository } from '../../../repositories';
 import { buildMongoFindCriterias } from './mongo.filter.find-criterias';
 export class MongoGenericDataRepository<T> implements IGenericDataRepository<T> {
 

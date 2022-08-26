@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@Services/config.service';
 
-import { ConfigService } from '../../src/services/config.service';
 import { IConfigService } from '../../src/config/interfaces/config.interface';
 import { testOkConfigOptions, testUnknownDataServerNameConfigOptions, testUnknownAuthStrategyNameConfigOptions } from '../data/config.data';
 

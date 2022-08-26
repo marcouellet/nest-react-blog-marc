@@ -1,5 +1,6 @@
-import { Category } from '../../src/core/entities';
-import { CategoryFindCriterias } from '../../src/core/find-criterias/category.find-criterias';
+import { Category } from '@blog-common/entities';
+import { CategoryFindCriterias } from '@blog-common/find-criterias/category.find-criterias';
+
 import { testCategory, testCategoryCount } from '../data/category.data';
 
 const CategoryRepositoryMock = {

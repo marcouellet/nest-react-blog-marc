@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '../../../../core/entities/category.entity';
+import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@blog-common/entities';
 
 export type CategoryDocument = Category & Document;
 

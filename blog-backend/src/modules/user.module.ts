@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
+import { UserController } from '@Controllers/user.controller';
+import { UserService } from '@Services/user/user.service';
+import { CryptographerService } from '@Services/cryptographer.service';
+import { UserFactoryService } from '@Services/user/user-factory.service';
 
-import { UserController } from '../controllers/user.controller';
-import { UserService } from '../services/user/user.service';
-import { CryptographerService } from '../services/cryptographer.service';
-import { UserFactoryService } from '../services/user/user-factory.service';
 @Module({
   controllers: [UserController],
   providers: [UserFactoryService, UserService, CryptographerService],

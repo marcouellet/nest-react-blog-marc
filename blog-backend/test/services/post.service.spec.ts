@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PostService } from '@Services/post/post.service';
+import { CategoryFactoryService } from '@Services/category/category-factory.service';
+import { PostFactoryService } from '@Services/post/post-factory.service';
+import { UserFactoryService } from '@Services/user/user-factory.service';
+import { DataServiceRepositories } from '@Services/data.service.repositories';
+import { Post } from '@blog-common/entities';
+import { ConfigModule } from '@Modules/config.module';
+import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
-import { PostService } from '../../src/services/post/post.service';
-import { CategoryFactoryService } from '../../src/services/category/category-factory.service';
-import { PostFactoryService } from '../../src/services/post/post-factory.service';
-import { UserFactoryService } from '../../src/services/user/user-factory.service';
-import { DataServiceRepositories } from '../../src/services/data.service.repositories';
 import { DataModuleStub } from '../stubs/data.module.stub';
-import { Post } from '../../src/core/entities/post.entity';
-import { IGenericDataRepository } from '../../src/core/repositories/generic-data-repository.interface';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
           testUpdatePostDto, testWithTitleFindPostCriterias, testCategoryPostsCount, testWithTitleFilterFindCriterias,
           testServicePostWithoutCategoryDto, testEmptyPostFilterCriterias } from '../data/post.data';
 import { testUserId } from '../data/user.data';
-import { ConfigModule } from '../../src/modules/config.module';
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('PostService', () => {

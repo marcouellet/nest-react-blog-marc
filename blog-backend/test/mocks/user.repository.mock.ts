@@ -1,6 +1,7 @@
-import { User } from '../../src/core/entities';
-import { UserFindCriterias } from '../../src/core/find-criterias/user.find-criterias';
-import { UserRole } from '../../src/core';
+import { User } from '@blog-common/entities';
+import { UserFindCriterias } from '@blog-common/find-criterias/user.find-criterias';
+import { UserRole } from '@blog-common/enum';
+
 import { testUserCount, testUserUnrestricted, testUserAdminUnrestricted } from '../data/user.data';
 import { testUnknownEmail } from '../data/auth.data';
 

@@ -1,14 +1,13 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-
-import { CreateUserDto, LoginDto, RegisterDto, UserDto } from '../core/dtos';
-import { IConfigService } from '../config/interfaces/config.interface';
-import { UserService } from '../services/user/user.service';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
-import { JwtPayload, IAuthToken } from '../auth/interfaces/jwt.interface';
-import { CryptographerService } from './cryptographer.service';
-import { UserRole } from '../core/enum';
-import { UserFindCriterias } from '../core/find-criterias/user.find-criterias';
+import { UserRole } from '@blog-common/enum';
+import { CreateUserDto, LoginDto, RegisterDto, UserDto } from '@blog-common/dtos';
+import { JwtPayload, IAuthToken } from '@blog-common/interfaces/jwt.interface';
+import { UserService } from '@Services/user/user.service';
+import { CryptographerService } from '@Services/cryptographer.service';
+import { UserFindCriterias } from '@blog-common/find-criterias/user.find-criterias';
 
+import { IConfigService } from '../config/interfaces/config.interface';
 @Injectable()
 export class AuthService {
 

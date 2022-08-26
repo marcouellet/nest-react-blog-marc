@@ -1,5 +1,5 @@
-import { Category } from '../../src/core/entities/category.entity';
-import { CategoryDto, UpdateCategoryDto } from '../../src/core/dtos';
+import { Category } from '@blog-common/entities';
+import { CategoryDto, UpdateCategoryDto } from '@blog-common/dtos';
 
 export const testCategoryId = 'mnopqrstuvwz';
 export const testCategoryCount = 1;

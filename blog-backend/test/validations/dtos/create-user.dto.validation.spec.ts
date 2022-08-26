@@ -1,9 +1,9 @@
 import { validate } from '@nestjs/class-validator';
+import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '@blog-common/entities/user.entity';
+import { UserRole } from '@blog-common/enum/user-role.enum';
+import { buildCreateUserDto  } from '@blog-common/builders/user.dtos.builders';
 
 import { testCreateUnknownUserDto } from '../../data/user.data';
-import { buildCreateUserDto  } from '../../builders/user.dtos.builders';
-import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '../../../src/core/entities/user.entity';
-import { UserRole } from '../../../src/core/enum/user-role.enum';
 
 describe('CreateUserDto Validation', () => {
 
@@ -32,15 +32,6 @@ describe('CreateUserDto Validation', () => {
     expect(errors.length).toEqual(1);
     const error = errors[0];
     expect(error.property === 'password');
-  });
-
-  it('should complain for invalid role value', async () => {
-    const createUserDto = buildCreateUserDto(testCreateUnknownUserDto);
-    createUserDto.role = 'unknown_role_value';
-    const errors = await validate(createUserDto, { skipMissingProperties: true });
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.property === 'role');
   });
 
   it('should not complain for USER role value', async () => {

@@ -8,13 +8,13 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "postbuild": "npm run build-env",
-    "build-env": "cp .env ./dist/.env",
+    "build-env": "cp .env ./dist/blog-backend/.env",
     "build-env-docker": "cp .env.docker ./",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/blog-backend/main",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest --config test/jest.json",
     "test:watch": "jest --config test/jest.json --watch",
@@ -48,7 +48,8 @@
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
-    "rxjs": "^7"
+    "rxjs": "^7",
+    "tsconfig-paths": "4.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.5",
@@ -76,5 +77,14 @@
     "tsconfig-paths": "^3.9.0",
     "eslint":"^8.21.0",
     "typescript": "^4.0.0"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@blog-common/(.*)$": "../blog-common/src/$1",
+      "^@Modules/(.*)$": "../blog-backend/src/modules/$1",
+      "^@Controllers/(.*)$": "../blog-backend/src/controllers/$1",
+      "^@Services/(.*)$": "../blog-backend/src/services/$1",
+      "^@Mongo/(.*)$": "../blog-backend/src/frameworks/data/mongo/$1"
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { IAuthToken, JwtPayload } from '../../src/auth/interfaces/jwt.interface';
-import { LoginDto, RegisterDto } from '../../src/core/dtos';
+import { IAuthToken, JwtPayload } from '@blog-common/interfaces/jwt.interface';
+import { LoginDto, RegisterDto } from '@blog-common/dtos';
+import { UserRole } from '@blog-common/enum';
 
-export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com', expiresIn: 300};
+export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com', exp: undefined, expiresIn: 300};
 export const testAuthToken: IAuthToken =  { accessToken: 'token.signed'};
 
 export const testPassword = 'password';
@@ -13,8 +14,8 @@ export const testDummyEmail = 'dummy@email.com';
 export const testNotDummyEmail = 'not-dummy@email.com';
 export const testAdminEmail = 'admin@email.com';
 export const testUnknownEmail = 'unknown@email.com';
-export const testRoleUser = 'user';
-export const testRoleAdmin = 'admin';
+export const testRoleUser = UserRole.USER;
+export const testRoleAdmin = UserRole.ADMIN;
 
 export const testRequestWithAuthorize = 'Bearer token';
 
