@@ -2,10 +2,10 @@ import React from 'react';
 
 import {
   sessionReducer,
-  initialState,
+  initialSessionState,
   SessionAction,
   SessionState,
-} from '../reducers/session.reducer';
+} from '@Reducers';
 
 type SessionContextProps = {
   sessionState: SessionState;
@@ -13,18 +13,18 @@ type SessionContextProps = {
 };
 
 const SessionContext = React.createContext<SessionContextProps>({
-  sessionState: initialState,
-  dispatchSession: () => initialState,
+  sessionState: initialSessionState,
+  dispatchSession: () => initialSessionState,
 });
 
 export function SessionProvider(props: React.PropsWithChildren<{}>) {
-  const [state , dispatch] = React.useReducer(sessionReducer, initialState);
+  const [state , dispatch] = React.useReducer(sessionReducer, initialSessionState);
   const dispatchSession = (action: SessionAction) => {
     dispatch(action);
   }
   return <SessionContext.Provider value={{ sessionState: state, dispatchSession }} {...props} />;
 }
 
-export default function useSessionContext() {
+export function useSessionContext() {
   return React.useContext(SessionContext);
 }

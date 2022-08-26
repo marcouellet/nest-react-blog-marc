@@ -1,12 +1,12 @@
 import React from 'react';
 
-import {useConfirmationModalContext} from "../../contexts/modalConfirmationContext";
+import {useConfirmationModalContext} from "@Contexts";
 
 type DeleteButtonProps = React.HTMLProps<HTMLButtonElement> & {
     message: string
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({children, className, message, onClick}) => {
+export const DeleteButton: React.FC<DeleteButtonProps> = ({children, className, message, onClick}) => {
     const modalContext = useConfirmationModalContext();
 
     const handleOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,5 +31,3 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({children, className, message
         </button>
     )
 };
-
-export default DeleteButton;

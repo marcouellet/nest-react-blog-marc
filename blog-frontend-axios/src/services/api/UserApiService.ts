@@ -1,5 +1,6 @@
-import HttpApiService from "./HttpApiService";
-import { User, IUpdateUser } from "../../types";
+import { HttpApiService } from "@Services";
+import { User, IUpdateUser } from '@Types';
+
 import { buildUserNameFilter } from './FilterApiService';
 
 const USER_ENDPOINT = `/user`;

@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
-import { IPost, UserRole } from "../../types";
-import { PostApiService } from "../../services/api/PostApiService";
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { IErrors, ImageData, ImageSizeProps } from '../../types';
-import { toLocalDateString } from '../../utils/local.storage.utils';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import DeleteButton from '../common/deleteConfirmation';
-import Image from '../common/Image';
-import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
+import { IPost, UserRole, IErrors, ImageData, ImageSizeProps } from '@Types';
+import { PostApiService } from '@Services';
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { ListErrors, DeleteButton, Image, ImageResize } from '@Common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, toLocalDateString, resizeImage } from '@Utils';
 
 const ViewPost = () => {
 

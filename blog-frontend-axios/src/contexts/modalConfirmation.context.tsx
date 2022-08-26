@@ -14,7 +14,7 @@ type ConfirmationModalContextProviderProps = {
 
 const ConfirmationModalContext = React.createContext<ModalContextType>({} as ModalContextType);
 
-const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProviderProps> = (props) => {
+export const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProviderProps> = (props) => {
     const {setShow, show, onHide} = useModalShow();
     const [content, setContent] = useState<{ title: string, message: string | JSX.Element} | null>();
     const resolver = useRef<Function>();
@@ -76,5 +76,3 @@ const useConfirmationModalContext = (): ModalContextType => useContext(Confirmat
 export {
     useConfirmationModalContext,
 }
-
-export default ConfirmationModalContextProvider;

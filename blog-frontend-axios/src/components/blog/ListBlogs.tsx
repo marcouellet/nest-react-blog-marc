@@ -1,19 +1,16 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { toast } from "react-toastify";
-
-import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IPost, ICategory } from "../../types";
-import ListErrors from '../common/ListErrors';
-import { IErrors, ImageSizeProps, ImageData } from '../../types';
-import { PostApiService } from '../../services/api/PostApiService';
 import { DropdownButton, Dropdown, Container } from 'react-bootstrap';
-import useSessionContext from '../../contexts/session.context';
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import useUIContext from '../../contexts/ui.context';
-import { createActionLoading, createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/ui.reducer';
+
+import { CategoryApiService, PostApiService } from '@Services';
+import { IPost, ICategory, IErrors, ImageSizeProps, ImageData } from '@Types';
+import { ListErrors } from '@Common';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { createActionSessionExpired, createActionLoading, createActionSetCategoryFilter, 
+        createActionSetPostTitleFilter } from '@Reducers';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+
 import ViewBlogCards from './ViewBlogCards';
-import { resizeImage } from '../../utils/image.utils';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
 
 const ListBlogs = () => {
 

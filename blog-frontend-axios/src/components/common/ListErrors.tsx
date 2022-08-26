@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { IErrors } from '../../types';
+import { IErrors } from '@Types';
 
-const ListErrors = ({ errors }: { errors: IErrors }) => {
+export const ListErrors = ({ errors }: { errors: IErrors }) => {
   return (
     <ul className="error-messages">
       {Object.entries(errors).map(([key, keyError], index) =>  
@@ -16,5 +16,3 @@ const ListErrors = ({ errors }: { errors: IErrors }) => {
     
   );
 }
-
-export default ListErrors;

@@ -7,13 +7,11 @@ import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 import NavigationBar from "./components/NavigationBar";
-import { SessionProvider } from './contexts/session.context';
-import { UIProvider } from './contexts/ui.context';
+import { SessionProvider, UIProvider, ModalContextProvider, ConfirmationModalContextProvider } from '@Contexts';
+
+import { SessionHandler, Processing } from "@Common";
+
 import { AppRoutes } from "./routes/AppRoutes";
-import ModalContextProvider from './contexts/modalContext';
-import ConfirmationModalContextProvider from "./contexts/modalConfirmationContext";
-import SessionHandler from "./components/common/sessionHandler";
-import Processing from './components/common/processing';
 
 const App = () => {
   return (

@@ -5,20 +5,13 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from "react-toastify";
 
-import AUTHAPI from '../../services/api/AuthApiService';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import CancelButton from '../common/cancelConfirmation';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
-import { createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import Image from '../common/Image';
-import ImageUpload from '../common/ImageUpload';
-import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
+import { AUTHAPI } from '@Services';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { ListErrors, CancelButton, Image, ImageUpload, ImageResize } from '@Common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from '@Utils';
+import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from '@Reducers';
 import { IErrors, User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
-          minimumUserNameLength, ImageData, ImageSizeProps } from "../../types";
+          minimumUserNameLength, ImageData, ImageSizeProps } from '@Types';
 
 const UserProfile = () => {
 

@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@blog-common/*": ["../blog-common/src/*"],
+        "@Contexts": ["./src/contexts"],
+        "@Services": ["./src/services/api"],
+        "@Common": ["./src/components/common"],
+        "@Reducers": ["./src/reducers"],
+        "@Utils": ["./src/utils"],
+        "@Types": ["./src/types"]
+      },
+    }
+  }

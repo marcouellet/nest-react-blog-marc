@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { ImageSizeProps, ImageData } from '../types';
-import ImageResize from './common/ImageResize';
-import { resizeImage } from '../utils/image.utils';
+import { ImageSizeProps, ImageData } from '@Types';
+import { ImageResize } from '@Common';
+import { resizeImage } from '@Utils';
 
 const Home = () => {
 

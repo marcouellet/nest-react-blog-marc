@@ -2,17 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { ICategory } from "../../types";
-import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { PostApiService } from '../../services/api/PostApiService';
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { IErrors, UserRole } from '../../types';
-import DeleteButton from '../common/deleteConfirmation';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+import { ICategory, IErrors, UserRole  } from '@Types';
+import { CategoryApiService, PostApiService } from "@Services";
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { ListErrors, DeleteButton } from '@Common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
 
 const ViewCategory = () => {
 

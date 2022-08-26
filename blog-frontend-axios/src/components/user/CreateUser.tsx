@@ -4,22 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
-
-import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UserApiService } from "../../services/api/UserApiService";
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
+
+import { CancelButton, ListErrors, ImageUpload, Image, ImageResize } from '@Common';
+import { UserApiService } from "@Services";
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
 import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
-          ImageSizeProps, ImageData } from '../../types';
-import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout } from '../../utils/html.response.utils';
-import ImageUpload from '../common/ImageUpload';
-import Image from '../common/Image';
-import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
+          ImageSizeProps, ImageData } from '@Types';
+import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout, resizeImage } from '@Utils';
 
 const CreateUser = () => {
 

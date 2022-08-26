@@ -1,4 +1,4 @@
-import { ImageData } from '../types';
+import { ImageData } from '@Types';
 
 const getArrayBuffer = (file: File) => {
     return new Promise<ArrayBuffer>((resolve,reject) => {

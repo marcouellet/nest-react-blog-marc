@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
+import { useSessionContext } from '@Contexts';
+
 import Home from "../components/Home";
 import ListBlogs from "../components/blog/ListBlogs";
 import ViewBlog from "../components/blog/ViewBlog";
@@ -11,15 +13,16 @@ import ViewCategory from "../components/category/ViewCategory";
 import ViewPost from "../components/post/ViewPost";
 import ViewPostContent from "../components/post/ViewPostContent";
 import CreatePost from "../components/post/CreatePost";
-import useContextSession from '../contexts/session.context';
+import UserProfile from "../components/user/UserProfile";
+
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";
 import AdminRoutes from "./AdminRoutes";
-import UserProfile from "../components/user/UserProfile";
+
 
 export const AppRoutes = () => {
 
-  const { sessionState : { isAuthenticated } } = useContextSession();
+  const { sessionState : { isAuthenticated } } = useSessionContext();
   const [controlledRoutes, setControlledRoutes] = useState<JSX.Element>();
 
   // const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;

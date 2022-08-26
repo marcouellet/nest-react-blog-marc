@@ -2,15 +2,12 @@ import React, { useState, useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { IPost, IErrors } from "../../types";
-import { PostApiService } from "../../services/api/PostApiService";
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import DisplayContent from '../common/displayContent';
-import ListErrors from '../common/ListErrors';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
+import { IPost, IErrors } from "@Types";
+import { PostApiService } from "@Services";
+import { useUIContext, useSessionContext } from '@Contexts';
+import { DisplayContent, ListErrors } from '@Common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
 
 const ViewBlog = () => {
 

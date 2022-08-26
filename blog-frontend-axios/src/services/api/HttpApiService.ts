@@ -5,7 +5,7 @@ export enum EnumContentType {
   XML = "application/xml",
   FORM = "application/x-www-form-urlencoded",
 }
-class HttpApiService<T> {
+export class HttpApiService<T> {
 
   private get$<T>(endpoint: string, conf = {}): Promise<T> {
     return API.get<T>(`${endpoint}`, conf)
@@ -59,5 +59,3 @@ class HttpApiService<T> {
     return this.delete$<T>(endpoint, conf);
   }
 }
-
-export default HttpApiService;

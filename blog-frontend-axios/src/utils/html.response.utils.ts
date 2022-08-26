@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
-import { IErrors } from '../types';
-import { isTokenValid } from '../utils/session.util';
+
+import { IErrors } from '@Types';
+import { isTokenValid } from '@Utils';
 
 export function getTokenFromErrors(errors: IErrors) {
     return errors['token'] as any;

@@ -3,18 +3,12 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Table, Container } from 'react-bootstrap';
 
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import { resizeImage } from '../../utils/image.utils';
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import { createActionSetUserNameFilter } from '../../reducers/ui.reducer';
-import ListErrors from '../common/ListErrors';
-import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
-import { UserApiService } from "../../services/api/UserApiService";
-import ImageResize from '../common/ImageResize';
-import Image from '../common/Image';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { createActionSessionExpired, createActionLoading, createActionSetUserNameFilter } from '@Reducers';
+import { ListErrors, ImageResize, Image } from '@Common';
+import { IUser, IErrors, ImageSizeProps, ImageData } from '@Types';
+import { UserApiService } from "@Services";
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
 
 const ListUsers = () => {
 

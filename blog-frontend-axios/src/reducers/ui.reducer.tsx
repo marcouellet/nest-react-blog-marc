@@ -1,4 +1,4 @@
-import { ICategory } from '../types';
+import { ICategory } from '@Types';
 
 export enum UIActionType {
   Loading = 'LOADING',
@@ -38,7 +38,7 @@ export interface UIState {
   userNameFilter: string,
 }
 
-export const initialState: UIState = {
+export const initialUIState: UIState = {
   isLoading: false,
   lastActivityTimeStamp: undefined,
   categoryFilter: undefined,

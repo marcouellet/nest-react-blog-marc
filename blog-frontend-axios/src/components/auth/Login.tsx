@@ -2,17 +2,15 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
-import AUTHAPI from '../../services/api/AuthApiService';
-import useUIContext from '../../contexts/ui.context';
-import useSessionContext from '../../contexts/session.context';
-import { createActionLoggedIn } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import ListErrors from '../common/ListErrors';
-import { IErrors, minimumPasswordLength, minimumEmailLength } from "../../types";
-import { checkUnauthorized, checkNotFound, checkTimeout } from '../../utils/html.response.utils';
+import { AUTHAPI } from '@Services';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { createActionLoggedIn, createActionLoading } from '@Reducers';
+import { ListErrors } from '@Common'; 
+import { IErrors, minimumPasswordLength, minimumEmailLength } from "@Types";
+import { checkUnauthorized, checkNotFound, checkTimeout } from '@Utils';
 
 const Login = () => {
   const navigate = useNavigate();

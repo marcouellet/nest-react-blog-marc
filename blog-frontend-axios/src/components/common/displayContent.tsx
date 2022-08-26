@@ -7,7 +7,7 @@ type DisplayContentProps = React.HTMLProps<HTMLElement> & {
 
 export type onClose = () => void;
 
-const DisplayContent: React.FC<DisplayContentProps> = ({className, content, onClose}) => {
+export const DisplayContent: React.FC<DisplayContentProps> = ({className, content, onClose}) => {
 
   const handleClose = () => {
     if (onClose) {
@@ -24,5 +24,3 @@ const DisplayContent: React.FC<DisplayContentProps> = ({className, content, onCl
       </div>
      );
 }
-
-export default DisplayContent;

@@ -8,15 +8,13 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import useContextSession from '../contexts/session.context';
-import useUIContext from '../contexts/ui.context';
-import { createActionLogout } from '../reducers/session.reducer';
-import { createActionLoading } from '../reducers/ui.reducer';
-import AUTHAPI from '../services/api/AuthApiService';
-import { UserRole } from '../types';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { createActionLogout, createActionLoading } from '@Reducers';
+import { AUTHAPI } from '@Services';
+import { UserRole } from '@Types';
 
 const NavigationBar = () => {
-    const { sessionState: { user, isAuthenticated }, dispatchSession } = useContextSession();
+    const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
     const { uiState: { isLoading }, dispatchUI } = useUIContext();
     const navigate = useNavigate();
 

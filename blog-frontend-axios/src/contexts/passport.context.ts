@@ -1,5 +1,7 @@
 import React, { Component, createContext, useContext } from 'react';
-import { IUser } from "../types";
+
+import { IUser } from '@Types';
+
 interface ContextValueType {
 	isAuthenticated?: boolean,
 	user?: IUser | null,

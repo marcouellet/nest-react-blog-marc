@@ -9,7 +9,7 @@ type DisplayModalConfirmProps = React.HTMLProps<HTMLButtonElement> & {
     onExit: () => void,
 }
 
-const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, logout, refresh, onExit, className}) => {
+export const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, logout, refresh, onExit, className}) => {
 
     return (
         <>           
@@ -29,5 +29,3 @@ const ConfirmRefresh: React.FC<DisplayModalConfirmProps> = ({children, show, log
         </>
 )
 };
-
-export default ConfirmRefresh;

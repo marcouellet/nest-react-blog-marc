@@ -6,22 +6,14 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 
-import CancelButton from '../common/cancelConfirmation'
+import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Common';
 import { IPost, IUpdatePost, ICategory, createPostForUpdate, minimumPostTitleLength, minimumPostDescriptionLength,
-          ImageSizeProps } from "../../types";
-import { PostApiService } from "../../services/api/PostApiService";
-import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { IErrors, ImageData, PostEditingFormState, IPostEditingState } from '../../types';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import Image from '../common/Image';
-import ImageUpload from '../common/ImageUpload';
-import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
+          ImageSizeProps, IErrors, ImageData, PostEditingFormState, IPostEditingState } from '@Types';
+import { PostApiService, CategoryApiService } from "@Services";
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+
 import EditPostContent from './EditPostContent';
 
 const EditPost = () => {

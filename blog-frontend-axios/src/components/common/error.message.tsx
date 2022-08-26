@@ -4,7 +4,7 @@ interface IOwnProps {
   error: any;
 }
 
-const ErrorMessage = (props: IOwnProps) => {
+export const ErrorMessage = (props: IOwnProps) => {
   return (
     <>
       <div className="error">
@@ -14,4 +14,3 @@ const ErrorMessage = (props: IOwnProps) => {
   );
 };
 
-export default ErrorMessage;

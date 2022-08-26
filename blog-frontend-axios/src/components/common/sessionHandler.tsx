@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import AUTHAPI from '../../services/api/AuthApiService';
-import { createActionLoggingOut, createActionLogout, createActionLoggedIn, createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import ConfirmRefresh from './confirmRefresh';
-import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '../../utils/session.util';
-import AuthApiService from '../../services/api/AuthApiService';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { AUTHAPI } from '@Services';
+import { createActionLoggingOut, createActionLogout, createActionLoggedIn, createActionSessionExpired,
+        createActionLoading } from '@Reducers';
+import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '@Utils';
 
-const SessionHandler = () => {
+import { ConfirmRefresh } from './confirmRefresh';
+
+export const SessionHandler = () => {
 
   const [askRefresh, setAskRefresh] = useState(false);
   const { sessionState: { user, isAuthenticated, isLoggingOut, isSessionExpired  }, dispatchSession } = useSessionContext();
@@ -65,7 +64,7 @@ const SessionHandler = () => {
         if (isTokenValid(token)) {
           if (isAutomaticSessionRenewalRequired(token)) {
             const sessionDuration = getSessionDuration(token);
-            AuthApiService.extendUserSession(sessionDuration)
+            AUTHAPI.extendUserSession(sessionDuration)
             .then((user) => {
               dispatchSession(createActionLoggedIn(user));
               // toast.info(`${user.username} session renewed!`);
@@ -95,5 +94,3 @@ const SessionHandler = () => {
     />
   )
 }
-
-export default SessionHandler;

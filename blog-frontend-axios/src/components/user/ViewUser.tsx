@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
-import { UserApiService } from "../../services/api/UserApiService";
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useContextSession from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { IUser, IErrors, ImageSizeProps, ImageData } from '../../types';
-import DeleteButton from '../common/deleteConfirmation';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
-import { PostApiService } from '../../services/api/PostApiService';
-import Image from '../common/Image';
-import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
+import { UserApiService, PostApiService } from '@Services';
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { ListErrors, DeleteButton, Image, ImageResize } from '@Common';
+import { IUser, IErrors, ImageSizeProps, ImageData } from '@Types';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
 
 const ViewUser = () => {
 
   const { userId } = useParams<{ userId: string }>();
-  const { sessionState: { isAuthenticated, user }, dispatchSession } = useContextSession();
+  const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [userDisplayed, setUserDisplayed] = useState<IUser>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();

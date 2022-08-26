@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-import useContextSession from '../contexts/session.context';
-import { UserRole } from '../types';
+import { useSessionContext } from '@Contexts';
+import { UserRole } from '@Types';
 
 type AdminRouteProps = React.HTMLProps<HTMLElement> & {
     children: React.ReactElement,
 }
 
 const AdminRoute: React.FC<AdminRouteProps> = ({children}) => {
-    const { sessionState : { user, isAuthenticated } } = useContextSession();
+    const { sessionState : { user, isAuthenticated } } = useSessionContext();
     const navigate = useNavigate();
 
     const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;

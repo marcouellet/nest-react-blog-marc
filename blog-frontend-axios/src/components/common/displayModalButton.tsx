@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 
-import DisplayTooltip from '../common/displayTooltip';
+import { DisplayTooltip } from '@Common';
 
 type DisplayButtonProps = React.HTMLProps<HTMLButtonElement> & {
     contentToDisplay: string | JSX.Element,
     toolTip?: string
 }
 
-const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDisplay, toolTip, className}) => {
+export const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDisplay, toolTip, className}) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [hasMouseOver, setHasMouseOver] = useState(false);
@@ -53,5 +53,3 @@ const DisplayModalButton: React.FC<DisplayButtonProps> = ({children, contentToDi
         </>
 )
 };
-
-export default DisplayModalButton;

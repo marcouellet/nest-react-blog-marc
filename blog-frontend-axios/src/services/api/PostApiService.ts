@@ -1,5 +1,6 @@
-import HttpApiService from './HttpApiService';
-import { IPost, IUpdatePost } from '../../types';
+import { HttpApiService } from '@Services';
+import { IPost, IUpdatePost } from '@Types';
+
 import { buildPostTitleFilter } from './FilterApiService';
 
 const POST_ENDPOINT = `/post`;

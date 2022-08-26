@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ImageData } from '../../types';
+import { ImageData } from '@Types';
 
 interface ImageProps {
   imageData: ImageData;
@@ -8,7 +8,7 @@ interface ImageProps {
   onError?: (error: any) => void;
 }
 
-const Image = (props: ImageProps) => {
+export const Image = (props: ImageProps) => {
 
   const handleError = (error: any) => {
     props.onError && props.onError(error);
@@ -23,5 +23,3 @@ const Image = (props: ImageProps) => {
     />
   );
 }
-
-export default Image;

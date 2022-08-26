@@ -1,5 +1,5 @@
-import HttpApiService from "./HttpApiService";
-import { ICategory, IUpdateCategory } from "../../types";
+import { HttpApiService } from '@Services';
+import { ICategory, IUpdateCategory } from "@Types";
 
 const CATEGORY_ENDPOINT = `/category`;
 class CategoryApi extends HttpApiService<ICategory> {

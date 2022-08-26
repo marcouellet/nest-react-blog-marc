@@ -3,20 +3,13 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 
-import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { IPost, ICategory, ImageData } from "../../types";
-import useSessionContext from '../../contexts/session.context';
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import { resizeImage } from '../../utils/image.utils';
-import ListErrors from '../common/ListErrors';
-import { IErrors, ImageSizeProps } from '../../types';
-import { PostApiService } from '../../services/api/PostApiService';
-import useUIContext from '../../contexts/ui.context';
-import { createActionSetCategoryFilter, createActionSetPostTitleFilter } from '../../reducers/ui.reducer';
-import ImageResize from '../common/ImageResize';
-import Image from '../common/Image';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+import { PostApiService, CategoryApiService } from '@Services';
+import { IPost, ICategory, ImageData, IErrors, ImageSizeProps } from '@Types';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { createActionSessionExpired, createActionLoading, createActionSetCategoryFilter, 
+        createActionSetPostTitleFilter } from '@Reducers';
+import { ListErrors, ImageResize, Image } from '@Common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
 
 const ListPosts = () => {
 

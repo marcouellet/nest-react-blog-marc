@@ -1,6 +1,7 @@
-import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '../../utils/local.storage.utils';
+import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '@Utils';
 import { REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
-import { IAuthToken, User } from '../../types';
+
+import { IAuthToken, User } from '@Types';
   
 export const USER_KEY = 'user';
 
@@ -37,7 +38,7 @@ export const USER_KEY = 'user';
     setLocalStorageValue(REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP, timestamp);
   };
   
-  const TokenService = {
+  export const TokenService = {
     getLocalAccessToken,
     updateLocalAccessToken,
     getUser,
@@ -47,4 +48,3 @@ export const USER_KEY = 'user';
     setHttpResponseTimeStamp
   };
   
-  export default TokenService;

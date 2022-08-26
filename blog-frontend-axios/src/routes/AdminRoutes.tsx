@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
 
-import useContextSession from '../contexts/session.context';
-import { UserRole } from '../types';
+import { useSessionContext } from '@Contexts';
+import { UserRole } from '@Types';
 import ListUsers from "../components/user/ListUsers";
 import ViewUser from "../components/user/ViewUser";
 import CreateUser from "../components/user/CreateUser";
@@ -12,7 +12,7 @@ import EditCategory from "../components/category/EditCategory";
 
 const AdminRoutes = () => {
 
-  const { sessionState : { user, isAuthenticated } } = useContextSession();
+  const { sessionState : { user, isAuthenticated } } = useSessionContext();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 

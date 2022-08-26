@@ -3,17 +3,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-
-import CancelButton from '../common/cancelConfirmation'
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { IErrors, minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '../../types';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+
+import { CancelButton, ListErrors } from '@Common';
+import { CategoryApiService } from "@Services";
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { IErrors, minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@Types';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
 
 const CreateCategory = () => {
 

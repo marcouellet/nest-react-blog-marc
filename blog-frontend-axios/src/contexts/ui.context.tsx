@@ -2,10 +2,10 @@ import React from 'react';
 
 import {
   UIReducer,
-  initialState,
+  initialUIState,
   UIAction,
   UIState,
-} from '../reducers/ui.reducer';
+} from '@Reducers';
 
 type UIContextProps = {
   uiState: UIState;
@@ -13,18 +13,18 @@ type UIContextProps = {
 };
 
 const UIContext = React.createContext<UIContextProps>({
-  uiState: initialState,
-  dispatchUI: () => initialState,
+  uiState: initialUIState,
+  dispatchUI: () => initialUIState,
 });
 
 export function UIProvider(props: React.PropsWithChildren<{}>) {
-  const [state , dispatch] = React.useReducer(UIReducer, initialState);
+  const [state , dispatch] = React.useReducer(UIReducer, initialUIState);
   const dispatchUI = (action: UIAction) => {
     dispatch(action);
   }
   return <UIContext.Provider value={{ uiState: state, dispatchUI }} {...props} />;
 }
 
-export default function useUIContext() {
+export function useUIContext() {
   return React.useContext(UIContext);
 }

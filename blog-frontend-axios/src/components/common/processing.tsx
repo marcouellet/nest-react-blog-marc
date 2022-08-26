@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import MoonLoader from "react-spinners/MoonLoader";
 
-import useUIContext from '../../contexts/ui.context';
+import { useUIContext } from '@Contexts';
 
 const override: CSSProperties = {
   display: "block",
@@ -14,7 +14,7 @@ const override: CSSProperties = {
   marginLeft: "-50px"
 };
 
-const Processing = () => {
+export const Processing = () => {
 
     const { uiState: { isLoading } } = useUIContext();
 
@@ -24,5 +24,3 @@ const Processing = () => {
         </div>
     );
 }
-
-export default Processing;

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import {useConfirmationModalContext} from "../../contexts/modalConfirmationContext";
+import {useConfirmationModalContext} from "@Contexts";
 
 type CancelButtonProps = React.HTMLProps<HTMLButtonElement> & {
     prompt: boolean
     message: string
 }
 
-const CancelButton: React.FC<CancelButtonProps> = ({children, className, message, prompt, onClick}) => {
+export const CancelButton: React.FC<CancelButtonProps> = ({children, className, message, prompt, onClick}) => {
 
     const modalContext = useConfirmationModalContext();
 
@@ -37,5 +37,3 @@ const CancelButton: React.FC<CancelButtonProps> = ({children, className, message
         </button>
     )
 };
-
-export default CancelButton;

@@ -32,12 +32,12 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "build-env": "cp .env ./build/.env",
     "build-env-docker": "cp .env.docker ./",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -72,6 +72,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "3.2.0",
     "react-toastify": "^8.2.0",
+    "react-app-rewired":"^2.2.1",
+    "react-app-rewire-alias":"^1.1.7",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
     "eslint":"^6.1.0",

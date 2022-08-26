@@ -13,7 +13,7 @@ type ModalContextProviderProps = {
 
 const ModalContext = React.createContext<ModalContextType>({} as ModalContextType);
 
-const ModalContextProvider: React.FC<ModalContextProviderProps> = (props) => {
+export const ModalContextProvider: React.FC<ModalContextProviderProps> = (props) => {
     const {setShow, show, onHide} = useModalShow();
     const [modalContent, setModalContent] = useState<{content:string | JSX.Element} | null>();
     const resolver = useRef<Function>();
@@ -63,5 +63,3 @@ export {
     useModalShow,
     useModalContext,
 }
-
-export default ModalContextProvider;

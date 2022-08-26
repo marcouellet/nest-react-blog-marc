@@ -6,7 +6,7 @@ type DisplayTooltipProps = React.HTMLProps<HTMLButtonElement> & {
     toolTip?: string
 }
 
-const DisplayTooltip: React.FC<DisplayTooltipProps> = ({children, toolTip, className}) => {
+export const DisplayTooltip: React.FC<DisplayTooltipProps> = ({children, toolTip, className}) => {
 
     const renderTooltip = (props: any) => {
         return (
@@ -28,5 +28,3 @@ const DisplayTooltip: React.FC<DisplayTooltipProps> = ({children, toolTip, class
         </>
 )
 };
-
-export default DisplayTooltip;

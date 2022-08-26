@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { ImageData, ImageSizeProps } from '../../types';
-import { getImageFromFile, resizeImageData } from '../../utils/image.utils';
+import { ImageData, ImageSizeProps } from '@Types';
+import { getImageFromFile, resizeImageData } from '@Utils';
+
 export interface ImageUploadProps {
     resize: ImageSizeProps,
     onImageUpload: (imageData: ImageData) => void;
     onImageUploadError: (error: any) => void;
 }
 
-const ImageUpload = (props: ImageUploadProps) => {
+export const ImageUpload = (props: ImageUploadProps) => {
 
      const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -45,4 +46,3 @@ const ImageUpload = (props: ImageUploadProps) => {
     )
 }
 
-export default ImageUpload;

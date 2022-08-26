@@ -5,17 +5,13 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import CancelButton from '../common/cancelConfirmation'
+import { CancelButton, ListErrors } from '@Common';
 import { ICategory, IUpdateCategory, createCategoryForUpdate, minimumCategoryTitleLength, 
-          minimumCategoryDescriptionLength } from "../../types";
-import { CategoryApiService } from "../../services/api/CategoryApiService";
-import { createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { IErrors } from '../../types';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '../../utils/html.response.utils';
+          minimumCategoryDescriptionLength, IErrors } from "@Types";
+import { CategoryApiService } from '@Services';
+import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
 
 const EditCategory = () => {
 

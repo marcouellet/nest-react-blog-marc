@@ -1,6 +1,6 @@
 import API from './APIService';
-import { User, ILogin, IRegister, IRefresh, ISessionExtension } from '../../types';
-import TokenService from './TokenService';
+import { User, ILogin, IRegister, IRefresh, ISessionExtension } from '@Types';
+import { TokenService } from '@Services';
 
 async function login(email: string, password: string): Promise<User> {
   const loginParms: ILogin = { email, password }
@@ -56,6 +56,5 @@ function logout() {
   TokenService.removeUser();
 }
 
-const AUTHAPI = {login, register, refresh, logout, getUserProfile, updateUserProfile, extendUserSession}
+export const AUTHAPI = {login, register, refresh, logout, getUserProfile, updateUserProfile, extendUserSession}
 
-export default AUTHAPI

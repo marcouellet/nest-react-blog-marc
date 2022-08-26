@@ -6,20 +6,13 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import CancelButton from '../common/cancelConfirmation';
+import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Common';
 import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
-        minimumUserNameLength, ImageData, ImageSizeProps, IErrors } from "../../types";
-import { UserApiService } from "../../services/api/UserApiService";
-import { createActionUpdateUser, createActionSessionExpired } from '../../reducers/session.reducer';
-import { createActionLoading } from '../../reducers/ui.reducer';
-import useSessionContext from '../../contexts/session.context';
-import useUIContext from '../../contexts/ui.context';
-import ListErrors from '../common/ListErrors';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden } from '../../utils/html.response.utils';
-import Image from '../common/Image';
-import ImageUpload from '../common/ImageUpload';
-import ImageResize from '../common/ImageResize';
-import { resizeImage } from '../../utils/image.utils';
+        minimumUserNameLength, ImageData, ImageSizeProps, IErrors } from '@Types';
+import { UserApiService } from "@Services";
+import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from '@Reducers';
+import { useUIContext, useSessionContext } from '@Contexts';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from '@Utils';
 
 const EditUser = () => {
 

@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User } from '@Types';
 
 export enum SessionActionType {
   LoggedIn = 'LOGGED_IN',
@@ -44,7 +44,7 @@ export interface SessionState {
   user: User | undefined,
 }
 
-export const initialState: SessionState = {
+export const initialSessionState: SessionState = {
   isAuthenticated: false,
   isLoggingOut: false,
   isSessionExpired: false,

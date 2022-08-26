@@ -1,4 +1,4 @@
-import { IFilterFindContainsCriterias, IFilterFindCriterias }  from '../../types';
+import { IFilterFindContainsCriterias, IFilterFindCriterias }  from '@Types';
 
 export function buildPostTitleFilter(postTitleFilter: string) {
     let filter: any = {};

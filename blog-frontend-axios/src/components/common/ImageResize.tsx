@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { ImageData, ImageSizeProps } from '../../types';
-import { resizeImageData } from '../../utils/image.utils';
-import Image from '../common/Image';
+import { ImageData, ImageSizeProps } from '@Types';
+import { resizeImageData } from '@Utils';
+import { Image } from '@Common';
 
 export interface ImageResizeProps {
     imageData: ImageData,
@@ -10,7 +10,7 @@ export interface ImageResizeProps {
     className?: string;
 }
 
-const ImageResize = (props: ImageResizeProps) => {
+export const ImageResize = (props: ImageResizeProps) => {
 
     const [image, setImage] = useState<ImageData | undefined>(undefined); 
 
@@ -40,4 +40,3 @@ const ImageResize = (props: ImageResizeProps) => {
     ) 
 }
 
-export default ImageResize;
