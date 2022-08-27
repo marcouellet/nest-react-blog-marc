@@ -1,7 +1,6 @@
 import { HttpApiService } from "@Services";
+import { FilterService } from '@Services';
 import { UserDto, UpdateUserDto } from "@blog-common/dtos";
-
-import { buildUserNameFilter } from './FilterApiService';
 
 const USER_ENDPOINT = `/user`;
 class UserApi extends HttpApiService<UserDto> {
@@ -15,7 +14,7 @@ class UserApi extends HttpApiService<UserDto> {
   };
 
   findManyUsers = (userNameFilter: string) => {
-    return super.findMany(`${USER_ENDPOINT}/findMany`, buildUserNameFilter(userNameFilter));
+    return super.findMany(`${USER_ENDPOINT}/findMany`, FilterService.buildUserNameFilter(userNameFilter));
   }
 
   createUser = (data: any) => {

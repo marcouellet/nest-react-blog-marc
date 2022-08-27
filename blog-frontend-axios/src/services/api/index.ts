@@ -1,9 +1,9 @@
-export * from './APIService';
+export * from './AxiosService';
 export * from './AuthApiService';
 export * from './CategoryApiService';
-export * from './FilterApiService';
+export * from './FilterService';
 export * from './HttpApiService';
 export * from './PostApiService';
-export * from './TokenApiService';
+export * from './TokenService';
 export * from './UserApiService';
 

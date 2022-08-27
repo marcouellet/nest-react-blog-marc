@@ -1,6 +1,6 @@
 import { IFilterFindContainsCriterias, FilterFindCriterias } from "@blog-common/find-criterias";
 
-export function buildPostTitleFilter(postTitleFilter: string) {
+function buildPostTitleFilter(postTitleFilter: string) {
     let filter: any = {};
     if (postTitleFilter) {
         const containsFilter: IFilterFindContainsCriterias = {property: 'title', value: postTitleFilter}
@@ -10,7 +10,7 @@ export function buildPostTitleFilter(postTitleFilter: string) {
     return filter;
 }
 
-export function buildUserNameFilter(userNameFilter: string) {
+function buildUserNameFilter(userNameFilter: string) {
     let filter: any = {};
     if (userNameFilter) {
         const containsFilter: IFilterFindContainsCriterias = {property: 'username', value: userNameFilter}
@@ -19,3 +19,5 @@ export function buildUserNameFilter(userNameFilter: string) {
     }
     return filter;
 }
+
+export const FilterService = { buildPostTitleFilter, buildUserNameFilter }

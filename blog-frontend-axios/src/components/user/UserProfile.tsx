@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from "react-toastify";
 
-import { AUTHAPI } from '@Services';
+import { AuthApiService } from '@Services';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { ListErrors, CancelButton, Image, ImageUpload, ImageResize } from '@Common';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from '@Utils';
@@ -93,7 +93,6 @@ const UserProfile = () => {
       if (user) {
           if (!userEdited) {
               const fetchData = async (): Promise<void> => {
-              // alert('UserProfile useEffet called');
               dispatchUI(createActionLoading(true));
               await getDefaultUserImage()
               .then(imageData => { 
@@ -103,7 +102,7 @@ const UserProfile = () => {
                 throw new Error(error);
               })
               .finally(() => dispatchUI(createActionLoading(false)));
-              await AUTHAPI.getUserProfile()
+              await AuthApiService.getUserProfile()
               .then((userRead) => { setUserEdited(userRead); reset(userRead); setUserImage(userRead?.image);})
               .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'User reading'))
               .finally(() => dispatchUI(createActionLoading(false)));
@@ -152,7 +151,7 @@ const UserProfile = () => {
         dispatchUI(createActionLoading(true));
         const image: ImageData | undefined = userImage;
         const userData: UpdateUserDto = createUserForUpdate({...userEdited, ...data, image});
-        await AUTHAPI.updateUserProfile(userData)
+        await AuthApiService.updateUserProfile(userData)
           .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
           .catch((apiErrors: IErrors) =>  { setSubmitForm(false); handleApiErrors(apiErrors,'User update'); });
         dispatchUI(createActionLoading(false));

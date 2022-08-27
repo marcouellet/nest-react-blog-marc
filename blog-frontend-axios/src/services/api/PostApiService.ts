@@ -1,10 +1,8 @@
 import { HttpApiService } from '@Services';
+import { FilterService } from '@Services';
 import { PostDto, UpdatePostDto } from "@blog-common/dtos";
 
-import { buildPostTitleFilter } from './FilterApiService';
-
 const POST_ENDPOINT = `/post`;
-
 class PostApi extends HttpApiService<PostDto> {
 
   getPostById = (id: string) => {
@@ -20,19 +18,19 @@ class PostApi extends HttpApiService<PostDto> {
   };
 
   findManyPosts = (postTitleFilter: string) => {
-    return super.findMany(`${POST_ENDPOINT}/findMany`, buildPostTitleFilter(postTitleFilter));
+    return super.findMany(`${POST_ENDPOINT}/findMany`, FilterService.buildPostTitleFilter(postTitleFilter));
   }
 
   finManyPostsForUser = (userId: string, postTitleFilter: string) => {
-    return super.findMany(`${POST_ENDPOINT}/findMany/user/${userId}`, buildPostTitleFilter(postTitleFilter));
+    return super.findMany(`${POST_ENDPOINT}/findMany/user/${userId}`, FilterService.buildPostTitleFilter(postTitleFilter));
   };
 
   findManyPostsForCategory = (categoryId: string, postTitleFilter: string) => {
-    return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, buildPostTitleFilter(postTitleFilter));
+    return super.findMany(`${POST_ENDPOINT}/findMany/category/${categoryId}`, FilterService.buildPostTitleFilter(postTitleFilter));
   };
 
   findManyPostsWithoutCategory = (postTitleFilter: string) => {
-      return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, buildPostTitleFilter(postTitleFilter));  
+      return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, FilterService.buildPostTitleFilter(postTitleFilter));  
   };
 
   createPost = (data: PostDto) => {

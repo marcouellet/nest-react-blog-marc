@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { AUTHAPI } from '@Services';
+import { AuthApiService } from '@Services';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionLoggedIn, createActionLoading } from '@Reducers';
 import { ListErrors } from '@Common'; 
@@ -54,7 +54,7 @@ const Login = () => {
 
   const onSubmit = async (data: LoginSubmitForm) => {
     dispatchUI(createActionLoading(true));
-    await AUTHAPI.login(data.email, data.password)
+    await AuthApiService.login(data.email, data.password)
       .then(
         (user) => {
           // toast.info(`${user.username} is logged in`);

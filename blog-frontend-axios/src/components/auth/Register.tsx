@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { AUTHAPI } from '@Services';
+import { AuthApiService } from '@Services';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionLoggedIn, createActionLoading } from '@Reducers';
 import { checkUnauthorized, checkForbidden, checkTimeout } from '@Utils';
@@ -66,7 +66,7 @@ const Register = () => {
   const onSubmit = async (data: RegisterSubmitForm) => {
     dispatchUI(createActionLoading(true));
     const { username, email, password } = data;
-    await AUTHAPI.register(username, email, password)
+    await AuthApiService.register(username, email, password)
       .then(
         (user: UserDto) => {
           toast.success(`${user.username} is registered and logged in`);

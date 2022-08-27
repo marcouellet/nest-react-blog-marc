@@ -10,6 +10,7 @@ import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Comm
 import { ImageSizeProps, IErrors } from '@Types';
 import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
 import { UserDto, UpdateUserDto } from "@blog-common/dtos";
+import { UserRole } from "@blog-common/enum";
 import { UserApiService } from "@Services";
 import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
@@ -73,7 +74,7 @@ const EditUser = () => {
     username: string;
     email: string;
     password?: string;
-    role: string;
+    role: UserRole;
     imageChanged: boolean;
   };
 

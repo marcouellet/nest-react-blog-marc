@@ -1,4 +1,4 @@
-import { API } from '@Services';
+import { AxiosService } from '@Services';
 
 export enum EnumContentType {
   JSON = "application/json",
@@ -8,22 +8,22 @@ export enum EnumContentType {
 export class HttpApiService<T> {
 
   private get$<T>(endpoint: string, conf = {}): Promise<T> {
-    return API.get<T>(`${endpoint}`, conf)
+    return AxiosService.get<T>(`${endpoint}`, conf)
     .then(response =>response.data);
   }
 
   private put$<T>(endpoint: string, data: {}, conf = {}): Promise<T> {
-    return API.put<T>(`${endpoint}`, data, conf)
+    return AxiosService.put<T>(`${endpoint}`, data, conf)
     .then(response =>response.data);
   }
 
   private post$<T>(endpoint: string, data: {}, conf = {}): Promise<T> {
-    return API.post<T>(`${endpoint}`, data, conf)
+    return AxiosService.post<T>(`${endpoint}`, data, conf)
     .then(response => response.data);
   }
 
   private delete$<T>(endpoint: string, conf = {}): Promise<T> {
-    return API.delete<T>(`${endpoint}`, conf)
+    return AxiosService.delete<T>(`${endpoint}`, conf)
     .then(response => response.data);
   }
 

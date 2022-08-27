@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import { useUIContext, useSessionContext } from '@Contexts';
-import { AUTHAPI } from '@Services';
+import { AuthApiService } from '@Services';
 import { createActionLoggingOut, createActionLogout, createActionLoggedIn, createActionSessionExpired,
         createActionLoading } from '@Reducers';
 import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '@Utils';
@@ -21,7 +21,7 @@ export const SessionHandler = () => {
       setAskRefresh(false);
       if (isAuthenticated) {
         dispatchSession(createActionLogout());
-          AUTHAPI.logout();
+          AuthApiService.logout();
           toast.info(`${user!.username} is logged out`);
           navigate('/');
       }
@@ -30,7 +30,7 @@ export const SessionHandler = () => {
   const handleRefresh = async () => {
 
     dispatchUI(createActionLoading(true));
-    AUTHAPI.refresh()
+    AuthApiService.refresh()
     .then((user) => {
         dispatchSession(createActionLoggedIn(user));
         toast.info(`${user.username} session renewed!`);
@@ -64,7 +64,7 @@ export const SessionHandler = () => {
         if (isTokenValid(token)) {
           if (isAutomaticSessionRenewalRequired(token)) {
             const sessionDuration = getSessionDuration(token);
-            AUTHAPI.extendUserSession(sessionDuration)
+            AuthApiService.extendUserSession(sessionDuration)
             .then((user) => {
               dispatchSession(createActionLoggedIn(user));
               // toast.info(`${user.username} session renewed!`);

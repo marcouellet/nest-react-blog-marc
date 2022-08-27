@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionLogout, createActionLoading } from '@Reducers';
-import { AUTHAPI } from '@Services';
+import { AuthApiService } from '@Services';
 import { UserRole } from '@blog-common/enum';
 
 const NavigationBar = () => {
@@ -21,7 +21,7 @@ const NavigationBar = () => {
      const handleLogout = () => {
         dispatchUI(createActionLoading(true));
         dispatchSession(createActionLogout());
-        AUTHAPI.logout();
+        AuthApiService.logout();
         toast.info(`${user!.username} is logged out`);
         dispatchUI(createActionLoading(false));
         navigate('/');
