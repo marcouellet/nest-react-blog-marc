@@ -33,16 +33,16 @@
             "console": "integratedTerminal",
         },
         {
-            "name": "Marc Nest Blog FrontEnd-Axios",
+            "name": "Marc Nest Blog FrontEnd",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}\\blog-frontend-axios\\src",
+            "webRoot": "${workspaceFolder}\\blog-frontend\\src",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "sourceMaps": true,
-            "envFile": "${workspaceFolder}\\blog-frontend-axios\\src\\.env",
+            "envFile": "${workspaceFolder}\\blog-frontend\\src\\.env",
             "console": "integratedTerminal",
         },
         {
