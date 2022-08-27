@@ -1,4 +1,4 @@
-import { User } from '@Types';
+import { UserDto } from "@blog-common/dtos";
 
 export enum SessionActionType {
   LoggedIn = 'LOGGED_IN',
@@ -11,15 +11,15 @@ export enum SessionActionType {
 
 export const createActionLogout = () : SessionAction => { return {type:  SessionActionType.Logout}}
 export const createActionLoggingOut = () : SessionAction => { return {type:  SessionActionType.LoggingOut}}
-export const createActionLoggedIn = (user: User) : SessionAction => { return {type:  SessionActionType.LoggedIn, user: user}}
-export const createActionUpdateUser = (user: User) : SessionAction => { return {type:  SessionActionType.UpdateUser, user: user}}
+export const createActionLoggedIn = (user: UserDto) : SessionAction => { return {type:  SessionActionType.LoggedIn, user: user}}
+export const createActionUpdateUser = (user: UserDto) : SessionAction => { return {type:  SessionActionType.UpdateUser, user: user}}
 export const createActionSessionExpired = () : SessionAction => { return {type:  SessionActionType.SessionExpired}}
 export const createActionSessionRefresh = () : SessionAction => { return {type:  SessionActionType.SessionRefresh}}
 
 export type SessionAction =
 | {
     type: SessionActionType.LoggedIn;
-    user: User;
+    user: UserDto;
   }
 | { type: SessionActionType.Logout }
 | { 
@@ -30,7 +30,7 @@ export type SessionAction =
   }
 | {
     type: SessionActionType.UpdateUser;
-    user: User;
+    user: UserDto;
   }
 | { 
     type: SessionActionType.SessionRefresh;
@@ -41,7 +41,7 @@ export interface SessionState {
   isLoggingOut: boolean;
   isSessionExpired: boolean;
   sessionRefresh: boolean;
-  user: User | undefined,
+  user: UserDto | undefined,
 }
 
 export const initialSessionState: SessionState = {

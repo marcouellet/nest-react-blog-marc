@@ -1,4 +1,4 @@
-import API from './APIService';
+import { API } from '@Services';
 
 export enum EnumContentType {
   JSON = "application/json",
@@ -51,7 +51,7 @@ export class HttpApiService<T> {
     return this.post$<T>(endpoint, data, conf);
   }
 
-  protected update(endpoint: string, data: T, conf = {}): Promise<T> {
+  protected update(endpoint: string, data: {}, conf = {}): Promise<T> {
     return this.put$<T>(endpoint, data, conf);
   }
 

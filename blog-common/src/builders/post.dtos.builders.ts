@@ -1,4 +1,4 @@
-import { CreatePostDto, UpdatePostDto } from '../dtos';
+import { PostDto, CreatePostDto, UpdatePostDto } from '../dtos';
 
 export function buildCreatePostDto(fields: any ): CreatePostDto {
     const createPostDto = new CreatePostDto();
@@ -18,3 +18,10 @@ export function buildUpdatePostDto(fields: any ): UpdatePostDto {
 
   return updatePostDto;
 }
+
+export function createPostForUpdate(post: PostDto): UpdatePostDto {
+  const updatePost: UpdatePostDto = {category: post.category, title:post.title, description: post.description, body: post.body,
+                                    image: post.image};
+  return updatePost;
+}
+

@@ -24,11 +24,12 @@ export class UpdatePostDto {
     @IsNotEmpty()
     body: string;
 
+    @IsOptional()
     @ValidateNested()
-    category: CategoryDto;
+    category?: CategoryDto;
 
     @IsOptional()
-    image: ImageData;
+    image?: ImageData;
   }
 
 export interface IUpdatePostCriterias {category: Category, title: string; description: string; body: string; image: ImageData}

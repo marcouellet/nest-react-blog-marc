@@ -2,7 +2,7 @@ import * as React from "react";
 import { Route } from "react-router-dom";
 
 import { useSessionContext } from '@Contexts';
-import { UserRole } from '@Types';
+import { UserRole } from "@blog-common/enum";
 import ListUsers from "../components/user/ListUsers";
 import ViewUser from "../components/user/ViewUser";
 import CreateUser from "../components/user/CreateUser";

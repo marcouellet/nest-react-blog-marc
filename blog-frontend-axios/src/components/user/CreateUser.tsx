@@ -10,9 +10,10 @@ import { CancelButton, ListErrors, ImageUpload, Image, ImageResize } from '@Comm
 import { UserApiService } from "@Services";
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
-import { IErrors, minimumPasswordLength, minimumEmailLength, minimumUserNameLength,
-          ImageSizeProps, ImageData } from '@Types';
+import { IErrors, ImageSizeProps } from '@Types';
+import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
 import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout, resizeImage } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
 
 const CreateUser = () => {
 
@@ -28,11 +29,11 @@ const CreateUser = () => {
     username: Yup.string().required('User name is required')
       .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
-      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+      .min(minimumUserEmailLength, `Email must be at least ${minimumUserEmailLength} characters long`),
     password: Yup.string().required('Password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+      .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`),
     confirm_password: Yup.string().required('Confirm password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+      .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`)
       .oneOf([Yup.ref('password')], "Passwords don't match!"),
     role: Yup.string().required('Role is required'),
     imageChanged: Yup.bool(),

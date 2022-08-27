@@ -9,7 +9,8 @@ import { AUTHAPI } from '@Services';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionLoggedIn, createActionLoading } from '@Reducers';
 import { ListErrors } from '@Common'; 
-import { IErrors, minimumPasswordLength, minimumEmailLength } from "@Types";
+import { IErrors } from "@Types";
+import { minimumUserPasswordLength, minimumUserEmailLength } from "@blog-common/entities";
 import { checkUnauthorized, checkNotFound, checkTimeout } from '@Utils';
 
 const Login = () => {
@@ -20,9 +21,9 @@ const Login = () => {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required')
-      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+      .min(minimumUserEmailLength, `Email must be at least ${minimumUserEmailLength} characters long`),
     password: Yup.string().required('Password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+      .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`),
   });
 
   type LoginSubmitForm = {

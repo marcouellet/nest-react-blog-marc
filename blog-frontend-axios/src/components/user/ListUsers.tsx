@@ -6,16 +6,18 @@ import { Table, Container } from 'react-bootstrap';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionSessionExpired, createActionLoading, createActionSetUserNameFilter } from '@Reducers';
 import { ListErrors, ImageResize, Image } from '@Common';
-import { IUser, IErrors, ImageSizeProps, ImageData } from '@Types';
+import { IErrors, ImageSizeProps } from '@Types';
+import { UserDto } from "@blog-common/dtos";
 import { UserApiService } from "@Services";
 import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
 
 const ListUsers = () => {
 
   const { sessionState: { user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading, userNameFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<UserDto[]>([]);
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const ListUsers = () => {
     return resizeImage('/default-profil-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const UserImage = (user: IUser) => {
+  const UserImage = (user: UserDto) => {
     if(user.image) {
       return <ImageResize imageData={user.image} resize={imageMaxSize}/>;
     }  else {
@@ -104,7 +106,7 @@ const ListUsers = () => {
         <br/>
         </div>
         {
-          !isLoading && users && users.map((user: IUser) =>    
+          !isLoading && users && users.map((user: UserDto) =>    
           (
             <div key={user.id}>
               <Table striped bordered hover>

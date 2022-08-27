@@ -7,12 +7,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Common';
-import { IPost, IUpdatePost, ICategory, createPostForUpdate, minimumPostTitleLength, minimumPostDescriptionLength,
-          ImageSizeProps, IErrors, ImageData, PostEditingFormState, IPostEditingState } from '@Types';
+import { ImageSizeProps, IErrors, IPostEditingFormState, IPostEditingState } from '@Types';
+import { minimumPostTitleLength,  minimumPostDescriptionLength, } from "@blog-common/entities";
 import { PostApiService, CategoryApiService } from "@Services";
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+import { PostDto, UpdatePostDto, CategoryDto } from "@blog-common/dtos";
+import { createPostForUpdate } from "@blog-common/builders";
+import { ImageData } from "@blog-common/interfaces";
 
 import EditPostContent from './EditPostContent';
 
@@ -24,9 +27,9 @@ const EditPost = () => {
   const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
-  const [post, setPost] = useState<IPost>();
-  const [categories, setCategories] = useState<ICategory[]>();
-  const [category, setCategory] = useState<ICategory>();
+  const [post, setPost] = useState<PostDto>();
+  const [categories, setCategories] = useState<CategoryDto[]>();
+  const [category, setCategory] = useState<CategoryDto>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [editingContent, setEditingContent] = useState<boolean>();
@@ -53,7 +56,7 @@ const EditPost = () => {
     setValue,
     getValues,
     formState: { errors, isDirty }
-  } = useForm<PostEditingFormState>({
+  } = useForm<IPostEditingFormState>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
   });
@@ -62,11 +65,11 @@ const EditPost = () => {
     (async () => {
       // alert('EditPost useEffet called');
       dispatchUI(createActionLoading(true));
-      let allCategories: ICategory[];
+      let allCategories: CategoryDto[];
       const fetchCategories = async (): Promise<void> => {
         CategoryApiService.getAllCategories()
           .then(categories => {
-            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+            const noCategory: CategoryDto = {id:'no_category', title: 'No category', description: ''};
             allCategories = [noCategory].concat(categories);
             setCategories(allCategories);
             selectCategory(allCategories, 'no_category', false);
@@ -110,7 +113,7 @@ const EditPost = () => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const PostImage = (post: IPost) => {
+  const PostImage = (post: PostDto) => {
     if(postImage) {
       return <ImageResize imageData={postImage} resize={imageMaxSize}/>;
     }  else {
@@ -120,11 +123,11 @@ const EditPost = () => {
 
   const imageMaxSize: ImageSizeProps = {maxWidth:400, maxHeight:400}
 
-  const onSubmit = async (data: PostEditingFormState) => {
+  const onSubmit = async (data: IPostEditingFormState) => {
     if (post && isDirty && submitForm) {
       dispatchUI(createActionLoading(true));
       const image = postImage;
-      const postData: IUpdatePost = createPostForUpdate({...post, ...data, image, category});
+      const postData: UpdatePostDto = createPostForUpdate({...post, ...data, image, category});
       await PostApiService.updatePost(post.id!, postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post update') })
@@ -183,7 +186,7 @@ const EditPost = () => {
     setEditingContent(false);
   }
 
-  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
+  const selectCategory = (categories: CategoryDto[], categoryId: string, setDirty: boolean)=>{
     const category = categories.find(category => category.id === categoryId);
     setCategory(category?.id === 'no_category' ? undefined: category);
     setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
@@ -229,7 +232,7 @@ const EditPost = () => {
     }
   }
 
-  const setFormValues = (formState: PostEditingFormState, isDirty: boolean) => {
+  const setFormValues = (formState: IPostEditingFormState, isDirty: boolean) => {
     setValue('title', formState.title, {shouldDirty: isDirty});
     setValue('description', formState.description, {shouldDirty: isDirty});
     setValue('body', formState.body, {shouldDirty: isDirty});
@@ -257,7 +260,7 @@ const EditPost = () => {
             <div className="form-group col-md-8">
               <div className="row">
                 <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-                    {categories && categories.map((category: ICategory) => 
+                    {categories && categories.map((category: CategoryDto) => 
                     (
                       <div key={category.id}>
                        <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>

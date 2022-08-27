@@ -7,12 +7,15 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Common';
-import { User, IUpdateUser, createUserForUpdate, minimumPasswordLength, minimumEmailLength, 
-        minimumUserNameLength, ImageData, ImageSizeProps, IErrors } from '@Types';
+import { ImageSizeProps, IErrors } from '@Types';
+import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
+import { UserDto, UpdateUserDto } from "@blog-common/dtos";
 import { UserApiService } from "@Services";
 import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
+import { createUserForUpdate } from "@blog-common/builders";
 
 const EditUser = () => {
 
@@ -21,7 +24,7 @@ const EditUser = () => {
   const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
-  const [userEdited, setUserEdited] = useState<User>();
+  const [userEdited, setUserEdited] = useState<UserDto>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
   const [submitForm, setSubmitForm] = useState<boolean>(false);
@@ -30,7 +33,7 @@ const EditUser = () => {
     username: Yup.string().required('User name is required')
       .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
-      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+      .min(minimumUserEmailLength, `Email must be at least ${minimumUserEmailLength} characters long`),
     password: Yup.lazy(value => {
       if (
         value &&
@@ -38,7 +41,7 @@ const EditUser = () => {
       ) {
         // Return our normal validation
         return Yup.string().required('Password is required')
-          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`);
+          .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`);
         }
       // Otherwise, return a simple validation
       return Yup.mixed().notRequired();
@@ -50,7 +53,7 @@ const EditUser = () => {
       ) {
           // Return our normal validation
           return Yup.string().required('Confirm password is required')
-          .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+          .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`)
           .when('password', {is: (password: string) => password, then: (schema) => schema.required()})
           .oneOf([Yup.ref('password'), null], "Passwords don't match!");
           }
@@ -139,7 +142,7 @@ const EditUser = () => {
     if (userEdited && isDirty && submitForm) {
       dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = userImage;
-      const userData: IUpdateUser = createUserForUpdate({...userEdited, ...data, image});
+      const userData: UpdateUserDto = createUserForUpdate({...userEdited, ...data, image});
       await UserApiService.updateUser(userEdited.id!, userData)
       .then((userUpdated) => { handleSubmitFormSuccess(userUpdated); })
       .catch((apiErrors: IErrors) =>  { handleSubmitFormError(apiErrors); });
@@ -151,7 +154,7 @@ const EditUser = () => {
     setSubmitForm(true);
   }
 
-  const handleSubmitFormSuccess = (userUpdated: User) => {
+  const handleSubmitFormSuccess = (userUpdated: UserDto) => {
     setSubmitForm(false);
     setUserEdited(userUpdated);
     if (user?.email === userUpdated?.email) {

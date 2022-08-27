@@ -1,4 +1,4 @@
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UserDto, UpdateUserDto } from '../dtos';
 
 export function buildCreateUserDto(fields: any ): CreateUserDto {
     const createUsertDto = new CreateUserDto();
@@ -16,4 +16,13 @@ export function buildUpdateUserDto(fields: any ): UpdateUserDto {
   updateUsertDto.password = fields.password;
   updateUsertDto.role = fields.role;
   return updateUsertDto;
+}
+
+export function createUserForUpdate(user: UserDto): UpdateUserDto {
+  const updateUser: UpdateUserDto = {username:user.username, email: user.email, password: user.password, 
+    role: user.role, image: user.image};
+  if (!updateUser.password) {
+    delete updateUser.password;
+  }
+  return updateUser;
 }

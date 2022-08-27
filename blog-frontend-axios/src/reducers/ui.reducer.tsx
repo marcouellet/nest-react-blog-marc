@@ -1,4 +1,4 @@
-import { ICategory } from '@Types';
+import { CategoryDto } from "@blog-common/dtos";
 
 export enum UIActionType {
   Loading = 'LOADING',
@@ -8,7 +8,7 @@ export enum UIActionType {
 }
 
 export const createActionLoading = (isLoading: boolean) : UIAction => { return {type:  UIActionType.Loading, isLoading: isLoading}}
-export const createActionSetCategoryFilter = (category: ICategory) : UIAction => { return {type:  UIActionType.SetCategoryFilter, categoryFilter: category}}
+export const createActionSetCategoryFilter = (category: CategoryDto) : UIAction => { return {type:  UIActionType.SetCategoryFilter, categoryFilter: category}}
 export const createActionSetPostTitleFilter = (titleFilter: string) : UIAction => { return {type:  UIActionType.SetPostTitleFilter, postTitleFilter: titleFilter}}
 export const createActionSetUserNameFilter = (userName: string) : UIAction => { return {type:  UIActionType.SetUserNameFilter, userNameFilter: userName}}
 

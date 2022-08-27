@@ -4,21 +4,23 @@ import { toast } from "react-toastify";
 import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 
 import { PostApiService, CategoryApiService } from '@Services';
-import { IPost, ICategory, ImageData, IErrors, ImageSizeProps } from '@Types';
+import { IErrors, ImageSizeProps } from '@Types';
+import { PostDto, CategoryDto } from "@blog-common/dtos";
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionSessionExpired, createActionLoading, createActionSetCategoryFilter, 
         createActionSetPostTitleFilter } from '@Reducers';
 import { ListErrors, ImageResize, Image } from '@Common';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
 
 const ListPosts = () => {
 
   const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading, categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [categories, setCategories] = useState<ICategory[]>();
-  const [category, setCategory] = useState<ICategory>();
+  const [posts, setPosts] = useState<PostDto[]>([]);
+  const [categories, setCategories] = useState<CategoryDto[]>();
+  const [category, setCategory] = useState<CategoryDto>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
@@ -29,8 +31,8 @@ const ListPosts = () => {
       const fetchCategories = async (): Promise<void> => {
       CategoryApiService.getAllCategories()
         .then(categories => {
-          const all: ICategory = {id:'all', title: 'All', description: ''};
-          const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+          const all: CategoryDto = {id:'all', title: 'All', description: ''};
+          const noCategory: CategoryDto = {id:'no_category', title: 'No category', description: ''};
           const allCategories = [all, noCategory].concat(categories);
           setCategories(allCategories);
           if (categoryFilter) {
@@ -104,7 +106,7 @@ const ListPosts = () => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const PostImage = (post: IPost) => {
+  const PostImage = (post: PostDto) => {
     if(post.image) {
       return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
     }  else {
@@ -118,7 +120,7 @@ const ListPosts = () => {
     selectCategory(categories!, e, true);
   }
 
-  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
+  const selectCategory = (categories: CategoryDto[], categoryId: string, setDirty: boolean)=>{
     const category = categories?.find(category => category.id === categoryId);
     setCategoryTitle(category!.title!);
     setCategory(category);
@@ -136,7 +138,7 @@ const ListPosts = () => {
         <div className="form-group ">
           <div className="row">
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-                {categories && categories.map((category: ICategory) => 
+                {categories && categories.map((category: CategoryDto) => 
                 (
                   <div key={category.id}>
                     <Dropdown.Item eventKey={category.id}>
@@ -178,7 +180,7 @@ const ListPosts = () => {
           </div>
         </div>
         {
-          !isLoading && posts && posts.map((post: IPost) =>    
+          !isLoading && posts && posts.map((post: PostDto) =>    
           (
             <div key={post.id}>
               <Table striped bordered hover>

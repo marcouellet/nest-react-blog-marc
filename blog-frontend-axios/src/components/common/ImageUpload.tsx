@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { ImageData, ImageSizeProps } from '@Types';
+import { ImageSizeProps } from '@Types';
 import { getImageFromFile, resizeImageData } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
 
 export interface ImageUploadProps {
     resize: ImageSizeProps,

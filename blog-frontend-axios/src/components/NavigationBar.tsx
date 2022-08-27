@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionLogout, createActionLoading } from '@Reducers';
 import { AUTHAPI } from '@Services';
-import { UserRole } from '@Types';
+import { UserRole } from '@blog-common/enum';
 
 const NavigationBar = () => {
     const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();

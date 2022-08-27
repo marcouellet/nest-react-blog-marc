@@ -6,12 +6,14 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CancelButton, ListErrors } from '@Common';
-import { ICategory, IUpdateCategory, createCategoryForUpdate, minimumCategoryTitleLength, 
-          minimumCategoryDescriptionLength, IErrors } from "@Types";
+import { IErrors } from "@Types";
 import { CategoryApiService } from '@Services';
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
+import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from "@blog-common/entities";
+import { CategoryDto, UpdateCategoryDto } from "@blog-common/dtos";
+import { createCategoryForUpdate } from "@blog-common/builders";
 
 const EditCategory = () => {
 
@@ -20,7 +22,7 @@ const EditCategory = () => {
   const { dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const { categoryId } = useParams<{ categoryId: string }>();
-  const [category, setCategory] = useState<ICategory>();
+  const [category, setCategory] = useState<CategoryDto>();
   const [submitForm, setSubmitForm] = useState<boolean>(false);
  
   const validationSchema = Yup.object().shape({
@@ -64,7 +66,7 @@ const EditCategory = () => {
   const onSubmit = async (data: UpdateSubmitForm) => {
     if (category && isDirty && submitForm) {
       dispatchUI(createActionLoading(true));
-      const userData: IUpdateCategory = createCategoryForUpdate({...category, ...data});
+      const userData: UpdateCategoryDto = createCategoryForUpdate({...category, ...data});
       await CategoryApiService.updateCategory(category.id!, userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Category update'); })

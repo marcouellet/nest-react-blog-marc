@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
-import { JWTPayload } from '@Types';
+import { JWTPayload } from '@blog-common/interfaces';
 import { TokenService } from '@Services';
 
 export function isTokenValid(token: string) {

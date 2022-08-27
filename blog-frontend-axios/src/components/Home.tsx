@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { ImageSizeProps, ImageData } from '@Types';
+import { ImageSizeProps } from '@Types';
+import { ImageData } from "@blog-common/interfaces";
 import { ImageResize } from '@Common';
 import { resizeImage } from '@Utils';
 

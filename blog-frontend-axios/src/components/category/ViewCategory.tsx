@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { ICategory, IErrors, UserRole  } from '@Types';
+import { IErrors } from '@Types';
 import { CategoryApiService, PostApiService } from "@Services";
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { ListErrors, DeleteButton } from '@Common';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
+import { CategoryDto } from "@blog-common/dtos";
+import { UserRole } from "@blog-common/enum";
 
 const ViewCategory = () => {
 
   const { categoryId } = useParams<{ categoryId: string }>();
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
-  const [category, setCategory] = useState<ICategory>();
+  const [category, setCategory] = useState<CategoryDto>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
@@ -54,7 +56,7 @@ const ViewCategory = () => {
     navigate('/category');  
   }
 
-  const deleteCategoryMessage = (category: ICategory) => `${category.title} Category`;
+  const deleteCategoryMessage = (category: CategoryDto) => `${category.title} Category`;
 
   const handleDeleteCategory = async (id: string) => {
     dispatchUI(createActionLoading(true));

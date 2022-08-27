@@ -8,17 +8,19 @@ import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionSessionExpired, createActionLoading, createActionSetCategoryFilter, 
         createActionSetPostTitleFilter } from '@Reducers';
 import { ListErrors, ImageResize, Image } from '@Common';
-import { IErrors, ImageSizeProps, IPost, ICategory, ImageData } from '@Types';
+import { IErrors, ImageSizeProps } from '@Types';
+import { PostDto, CategoryDto } from "@blog-common/dtos";
 import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
 
 const ListPostsForUser = () => {
 
   const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading, categoryFilter, postTitleFilter }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const [selectedPosts, setSelectedPosts] = useState<IPost[]>([]);
-  const [categories, setCategories] = useState<ICategory[]>();
-  const [category, setCategory] = useState<ICategory>();
+  const [selectedPosts, setSelectedPosts] = useState<PostDto[]>([]);
+  const [categories, setCategories] = useState<CategoryDto[]>();
+  const [category, setCategory] = useState<CategoryDto>();
   const [categoryTitle, setCategoryTitle] = useState<string>('All');
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
@@ -28,8 +30,8 @@ const ListPostsForUser = () => {
       const fetchCategories = async (): Promise<void> => {
       await CategoryApiService.getAllCategories()
         .then(categories => {
-          const all: ICategory = {id:'all', title: 'All', description: ''};
-          const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+          const all: CategoryDto = {id:'all', title: 'All', description: ''};
+          const noCategory: CategoryDto = {id:'no_category', title: 'No category', description: ''};
           const allCategories = [all, noCategory].concat(categories);
           setCategories(allCategories);
           if (categoryFilter) {
@@ -56,7 +58,7 @@ const ListPostsForUser = () => {
       .finally(() => dispatchUI(createActionLoading(false)));
       if (category) {
         dispatchUI(createActionLoading(true));
-        let fetchedPosts: IPost[] = [];
+        let fetchedPosts: PostDto[] = [];
         await PostApiService.finManyPostsForUser(user!.id!, postTitleFilter)
         .then(posts => fetchedPosts = posts)
         .catch((apiErrors: IErrors) => handleFetchPostError(apiErrors))
@@ -102,7 +104,7 @@ const ListPostsForUser = () => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const PostImage = (post: IPost) => {
+  const PostImage = (post: PostDto) => {
     if(post.image) {
       return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
     }  else {
@@ -116,7 +118,7 @@ const ListPostsForUser = () => {
     selectCategory(categories!, e, true);
   }
 
-  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
+  const selectCategory = (categories: CategoryDto[], categoryId: string, setDirty: boolean)=>{
     const category = categories?.find(category => category.id === categoryId);
     setCategoryTitle(category!.title!);
     setCategory(category);
@@ -134,7 +136,7 @@ const ListPostsForUser = () => {
         <div className="form-group ">
           <div className="row">
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-                {categories && categories.map((category: ICategory) => 
+                {categories && categories.map((category: CategoryDto) => 
                 (
                   <div key={category.id}>
                     <Dropdown.Item eventKey={category.id}>
@@ -176,7 +178,7 @@ const ListPostsForUser = () => {
           </div>
         </div>
         {
-          !isLoading && selectedPosts && selectedPosts.map((post: IPost) =>    
+          !isLoading && selectedPosts && selectedPosts.map((post: PostDto) =>    
           (
             <div key={post.id}>
               <Table striped bordered hover>

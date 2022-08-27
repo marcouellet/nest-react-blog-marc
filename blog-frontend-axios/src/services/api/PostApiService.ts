@@ -1,11 +1,11 @@
 import { HttpApiService } from '@Services';
-import { IPost, IUpdatePost } from '@Types';
+import { PostDto, UpdatePostDto } from "@blog-common/dtos";
 
 import { buildPostTitleFilter } from './FilterApiService';
 
 const POST_ENDPOINT = `/post`;
 
-class PostApi extends HttpApiService<IPost> {
+class PostApi extends HttpApiService<PostDto> {
 
   getPostById = (id: string) => {
     return super.get(`${POST_ENDPOINT}/${id}`);
@@ -35,11 +35,11 @@ class PostApi extends HttpApiService<IPost> {
       return super.findMany(`${POST_ENDPOINT}/findMany/nocategory`, buildPostTitleFilter(postTitleFilter));  
   };
 
-  createPost = (data: IPost) => {
+  createPost = (data: PostDto) => {
     return super.create(`${POST_ENDPOINT}/create`, data);
   };
 
-  updatePost = (id: string, data: IUpdatePost) => {
+  updatePost = (id: string, data: UpdatePostDto) => {
     return super.update(`${POST_ENDPOINT}/update/${id}`, data);
   };
 

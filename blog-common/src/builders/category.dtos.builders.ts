@@ -1,4 +1,4 @@
-import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
+import { CategoryDto, CreateCategoryDto, UpdateCategoryDto } from '../dtos';
 
 export function buildCreateCategoryDto(fields: any ): CreateCategoryDto {
     const createCategoryDto = new CreateCategoryDto();
@@ -14,4 +14,9 @@ export function buildUpdateCategoryDto(fields: any ): UpdateCategoryDto {
   updateCategoryDto.description = fields.description;
 
   return updateCategoryDto;
+}
+
+export function createCategoryForUpdate(category: CategoryDto): UpdateCategoryDto {
+  const updateCategory: UpdateCategoryDto = {title:category.title, description: category.description};
+  return updateCategory;
 }

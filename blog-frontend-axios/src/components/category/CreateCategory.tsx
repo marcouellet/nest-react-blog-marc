@@ -9,8 +9,9 @@ import { CancelButton, ListErrors } from '@Common';
 import { CategoryApiService } from "@Services";
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
-import { IErrors, minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@Types';
+import { IErrors } from '@Types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
+import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from "@blog-common/entities";
 
 const CreateCategory = () => {
 

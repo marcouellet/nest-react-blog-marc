@@ -2,14 +2,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {Container ,Card } from 'react-bootstrap';
 
-import { IPost, ImageSizeProps, ImageData } from "@Types";
+import { ImageSizeProps } from "@Types";
 import { Image, ImageResize, DisplayModalButton, DisplayTooltip } from '@Common';
+import { PostDto } from "@blog-common/dtos";
+import { ImageData } from "@blog-common/interfaces";
 
 import ViewUserInfo from '../user/ViewUserInfo';
 
 
 type ViewBlogCardProps = React.HTMLProps<HTMLElement> & {
-  post: IPost,
+  post: PostDto,
   defaultPostImage: ImageData,
   defaultUserImage: ImageData,
   onViewBlog: onViewBlog,

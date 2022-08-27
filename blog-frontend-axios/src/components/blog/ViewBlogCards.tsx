@@ -3,12 +3,13 @@ import React from 'react';
 import { CardDeck } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import { IPost, ImageData } from "@Types";
+import { ImageData } from "@blog-common/interfaces";
+import { PostDto } from "@blog-common/dtos";
 
 import ViewBlogCard, { onViewBlog } from './ViewBlogCard';
 
 type ViewBlogCardsProps = React.HTMLProps<HTMLElement> & {
-  posts: IPost[],
+  posts: PostDto[],
   defaultPostImage: ImageData,
   defaultUserImage: ImageData,
 }
@@ -24,7 +25,7 @@ const ViewPostCards: React.FC<ViewBlogCardsProps> = ({className, posts, defaultP
   return (  
     <CardDeck style={{display: 'flex', flexDirection: 'row'}}>
       {
-        posts && posts.map((post: IPost) =>    
+        posts && posts.map((post: PostDto) =>    
         (
           <div key={post.id}>
             <ViewBlogCard 

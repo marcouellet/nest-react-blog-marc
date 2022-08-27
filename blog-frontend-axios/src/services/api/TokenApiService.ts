@@ -1,28 +1,29 @@
 import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '@Utils';
 import { REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
 
-import { IAuthToken, User } from '@Types';
+import { IAuthToken } from '@blog-common/interfaces';
+import { UserDto } from "@blog-common/dtos";
   
 export const USER_KEY = 'user';
 
   const getLocalAccessToken = (): IAuthToken | null => {
-    const user = getLocalStorageValue(USER_KEY) as User;
+    const user = getLocalStorageValue(USER_KEY) as UserDto;
     return user?.authtoken!;
   };
   
   const updateLocalAccessToken = (token: IAuthToken) => {
-    const user = getLocalStorageValue(USER_KEY) as User;
+    const user = getLocalStorageValue(USER_KEY) as UserDto;
     if (user?.authtoken) {
         user!.authtoken!.accessToken = token.accessToken;
         setLocalStorageValue(USER_KEY, user);
     }
   };
  
-  const getUser = (): User => {
-    return getLocalStorageValue(USER_KEY) as User;
+  const getUser = (): UserDto => {
+    return getLocalStorageValue(USER_KEY) as UserDto;
   };
   
-  const setUser = (user: User) => {
+  const setUser = (user: UserDto) => {
     setLocalStorageValue(USER_KEY, user);
   };
   

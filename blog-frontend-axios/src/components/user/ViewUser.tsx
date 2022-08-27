@@ -6,15 +6,17 @@ import { UserApiService, PostApiService } from '@Services';
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { ListErrors, DeleteButton, Image, ImageResize } from '@Common';
-import { IUser, IErrors, ImageSizeProps, ImageData } from '@Types';
+import { IErrors, ImageSizeProps } from '@Types';
+import { UserDto } from "@blog-common/dtos";
 import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+import { ImageData } from "@blog-common/interfaces";
 
 const ViewUser = () => {
 
   const { userId } = useParams<{ userId: string }>();
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
-  const [userDisplayed, setUserDisplayed] = useState<IUser>();
+  const [userDisplayed, setUserDisplayed] = useState<UserDto>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
@@ -79,7 +81,7 @@ const ViewUser = () => {
     navigate('/user');  
   }
 
-  const deleteUserMessage = (user: IUser) => `${user.username} User`;
+  const deleteUserMessage = (user: UserDto) => `${user.username} User`;
 
   const handleDeleteUser = async (id: string) => {
     dispatchUI(createActionLoading(true));

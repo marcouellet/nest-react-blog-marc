@@ -2,19 +2,20 @@ import React, { useState, useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { IPost, IErrors } from "@Types";
+import { IErrors } from "@Types";
 import { PostApiService } from "@Services";
 import { useUIContext, useSessionContext } from '@Contexts';
 import { DisplayContent, ListErrors } from '@Common';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
+import { PostDto } from "@blog-common/dtos";
 
 const ViewBlog = () => {
 
   const { postId } = useParams<{ postId: string }>();
   const { dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
-  const [post, setPost] = useState<IPost>();
+  const [post, setPost] = useState<PostDto>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
   const navigate = useNavigate();

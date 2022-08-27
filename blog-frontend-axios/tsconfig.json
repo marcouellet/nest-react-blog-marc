@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es2017",
     "lib": [
@@ -22,7 +23,6 @@
     "outDir": "./build",
     "jsx": "react"
   },
-  "extends": "./tsconfig.paths.json",
   "include": [
     "src",
     "config-overrides.js"

@@ -2,26 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { IPost, UserRole, IErrors, ImageData, ImageSizeProps } from '@Types';
+import { IErrors,ImageSizeProps } from '@Types';
+import { PostDto } from "@blog-common/dtos";
+import { ImageData } from "@blog-common/interfaces";
 import { PostApiService } from '@Services';
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { ListErrors, DeleteButton, Image, ImageResize } from '@Common';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, toLocalDateString, resizeImage } from '@Utils';
+import { UserRole } from "@blog-common/enum";
 
 const ViewPost = () => {
 
   const { postId } = useParams<{ postId: string }>();
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
-  const [post, setPost] = useState<IPost>();
+  const [post, setPost] = useState<PostDto>();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
-  const deletePostMessage = (post: IPost) => `${post.title} post`;
+  const deletePostMessage = (post: PostDto) => `${post.title} post`;
 
   useEffect(() => {
     (async () => {
@@ -47,7 +50,7 @@ const ViewPost = () => {
     return resizeImage('/default-post-image.jpg', 'image/jpg', imageMaxSize.maxWidth, imageMaxSize.maxHeight);
   }
 
-  const PostImage = (post: IPost) => {
+  const PostImage = (post: PostDto) => {
     if(post.image) {
       return <ImageResize imageData={post.image} resize={imageMaxSize}/>;
     }  else {

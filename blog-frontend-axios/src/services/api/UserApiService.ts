@@ -1,10 +1,10 @@
 import { HttpApiService } from "@Services";
-import { User, IUpdateUser } from '@Types';
+import { UserDto, UpdateUserDto } from "@blog-common/dtos";
 
 import { buildUserNameFilter } from './FilterApiService';
 
 const USER_ENDPOINT = `/user`;
-class UserApi extends HttpApiService<User> {
+class UserApi extends HttpApiService<UserDto> {
 
   getUserById = (id: string) => {
     return this.get(`${USER_ENDPOINT}/${id}`);
@@ -22,7 +22,7 @@ class UserApi extends HttpApiService<User> {
     return super.create(`${USER_ENDPOINT}/create`, data);
   };
 
-  updateUser = (id: string, data: IUpdateUser) => {
+  updateUser = (id: string, data: UpdateUserDto) => {
     return super.update(`${USER_ENDPOINT}/update/${id}`, data);
   };
 

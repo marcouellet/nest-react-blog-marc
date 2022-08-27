@@ -10,9 +10,13 @@ import { CancelButton, ListErrors, ImageUpload, ImageResize } from '@Common';
 import { PostApiService, CategoryApiService } from "@Services";
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { useUIContext, useSessionContext } from '@Contexts';
-import { UserRole, IErrors, ICategory, ImageData, ImageSizeProps, minimumPostTitleLength, 
-          minimumPostDescriptionLength, PostEditingFormState, IPostEditingState } from '@Types';
+import { IErrors, ImageSizeProps, IPostEditingFormState, IPostEditingState } from '@Types';
 import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+import { minimumPostTitleLength,  minimumPostDescriptionLength, } from "@blog-common/entities";
+import { PostDto, CategoryDto } from "@blog-common/dtos";
+import { UserRole } from "@blog-common/enum";
+import { ImageData } from "@blog-common/interfaces";
+
 
 import EditPostContent from './EditPostContent';
 
@@ -23,8 +27,8 @@ const CreatePost = () => {
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [errorList, setErrorList] = React.useState<IErrors | null>();
-  const [categories, setCategories] = useState<ICategory[]>();
-  const [category, setCategory] = useState<ICategory>();
+  const [categories, setCategories] = useState<CategoryDto[]>();
+  const [category, setCategory] = useState<CategoryDto>();
   const [postImage, setPostImage] = useState<ImageData>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
   const [editingContent, setEditingContent] = useState<boolean>();
@@ -52,7 +56,7 @@ const CreatePost = () => {
     reset,
     setValue,
     getValues,
-  } = useForm<PostEditingFormState>({
+  } = useForm<IPostEditingFormState>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues
   });
@@ -69,7 +73,7 @@ const CreatePost = () => {
           })
         await CategoryApiService.getAllCategories()
           .then(categories => {
-            const noCategory: ICategory = {id:'no_category', title: 'No category', description: ''};
+            const noCategory: CategoryDto = {id:'no_category', title: 'No category', description: ''};
             const allCategories = [noCategory].concat(categories);
             setCategories(allCategories);
             selectCategory(allCategories, 'no_category', false);
@@ -109,11 +113,11 @@ const CreatePost = () => {
     }
   }
   
-  const onSubmit = async (data: PostEditingFormState) => {
+  const onSubmit = async (data: IPostEditingFormState) => {
     if (submitForm) {
       dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = postImage;
-      const postData = {...data, category, image, user};
+      const postData: PostDto = {...data, category, image, user!};
       await PostApiService.createPost(postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post creation') });
@@ -174,7 +178,7 @@ const CreatePost = () => {
     setEditingContent(false);
   }
 
-  const selectCategory = (categories: ICategory[], categoryId: string, setDirty: boolean)=>{
+  const selectCategory = (categories: CategoryDto[], categoryId: string, setDirty: boolean)=>{
     const category = categories?.find(category => category.id === categoryId);
     setCategory(category?.id === 'no_category' ? undefined: category);
     setValue('categoryTitle', category!.title, { shouldDirty: setDirty });
@@ -208,7 +212,7 @@ const CreatePost = () => {
     }
   }
 
-  const setFormValues = (formState: PostEditingFormState, isDirty: boolean) => {
+  const setFormValues = (formState: IPostEditingFormState, isDirty: boolean) => {
     setValue('title', formState.title, {shouldDirty: isDirty});
     setValue('description', formState.description, {shouldDirty: isDirty});
     setValue('body', formState.body, {shouldDirty: isDirty});
@@ -234,7 +238,7 @@ const CreatePost = () => {
         <div className="form-group">
           <div className="row">
             <DropdownButton title="Select Category" onSelect={handleCategorySelect} className="col-md-2">
-                {categories && categories.map((category: ICategory) => 
+                {categories && categories.map((category: CategoryDto) => 
                 (
                   <div key={category.id}>
                     <Dropdown.Item eventKey={category.id}>{category.title}</Dropdown.Item>

@@ -9,8 +9,10 @@ import { AUTHAPI } from '@Services';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionLoggedIn, createActionLoading } from '@Reducers';
 import { checkUnauthorized, checkForbidden, checkTimeout } from '@Utils';
-import { ListErrors } from '@Common';
-import { IErrors, User, minimumUserNameLength, minimumPasswordLength, minimumEmailLength } from "@Types";
+import { ListErrors } from '@Common'; 
+import { IErrors } from "@Types";
+import { minimumUserNameLength, minimumUserPasswordLength, minimumUserEmailLength } from "@blog-common/entities";
+import { UserDto } from "@blog-common/dtos";
 
 const Register = () => {
 
@@ -22,11 +24,11 @@ const Register = () => {
     username: Yup.string().required('User name is required')
     .min(minimumUserNameLength, `User name must be at least ${minimumUserNameLength} characters long`),
     email: Yup.string().required('Email is required')
-      .min(minimumEmailLength, `Email must be at least ${minimumEmailLength} characters long`),
+      .min(minimumUserEmailLength, `Email must be at least ${minimumUserEmailLength} characters long`),
     password: Yup.string().required('Password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`),
+      .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`),
     confirm_password: Yup.string().required('Confirm password is required')
-      .min(minimumPasswordLength, `Password must be at least ${minimumPasswordLength} characters long`)
+      .min(minimumUserPasswordLength, `Password must be at least ${minimumUserPasswordLength} characters long`)
       .oneOf([Yup.ref('password')], "Passwords don't match!"),
   });
 
@@ -66,7 +68,7 @@ const Register = () => {
     const { username, email, password } = data;
     await AUTHAPI.register(username, email, password)
       .then(
-        (user: User) => {
+        (user: UserDto) => {
           toast.success(`${user.username} is registered and logged in`);
           dispatchSession(createActionLoggedIn(user));
           navigate('/');       

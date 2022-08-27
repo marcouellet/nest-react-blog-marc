@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 import { CategoryApiService } from "@Services";
-import { ICategory, UserRole, IErrors } from '@Types';
+import { IErrors } from '@Types';
 import { useUIContext, useSessionContext } from '@Contexts';
 import { createActionSessionExpired, createActionLoading } from '@Reducers';
 import { ListErrors } from '@Common';
 import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
+import { CategoryDto } from "@blog-common/dtos";
+import { UserRole } from "@blog-common/enum";
 
 const ListCategories = () => {
   
@@ -17,7 +19,7 @@ const ListCategories = () => {
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
-  const [categories, setCategorys] = useState<ICategory[]>([]);
+  const [categories, setCategorys] = useState<CategoryDto[]>([]);
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
@@ -77,7 +79,7 @@ const ListCategories = () => {
               </th>
             </thead>
             {
-              categories && categories.map((category: ICategory) => 
+              categories && categories.map((category: CategoryDto) => 
               (
                 <tr key={category.id}>
                   <td>

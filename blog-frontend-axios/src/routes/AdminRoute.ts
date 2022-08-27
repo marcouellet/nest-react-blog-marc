@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { useSessionContext } from '@Contexts';
-import { UserRole } from '@Types';
+import { UserRole } from "@blog-common/enum";
 
 type AdminRouteProps = React.HTMLProps<HTMLElement> & {
     children: React.ReactElement,

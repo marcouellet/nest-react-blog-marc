@@ -85,4 +85,4 @@ axios.interceptors.response.use(
   }
 );
 
-export default axios;
+export const API = axios;

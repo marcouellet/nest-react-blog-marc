@@ -1,8 +1,8 @@
 import { HttpApiService } from '@Services';
-import { ICategory, IUpdateCategory } from "@Types";
+import { CategoryDto, UpdateCategoryDto } from "@blog-common/dtos";
 
 const CATEGORY_ENDPOINT = `/category`;
-class CategoryApi extends HttpApiService<ICategory> {
+class CategoryApi extends HttpApiService<CategoryDto> {
 
   getCategoryById = (id: string) => {
     return this.get(`${CATEGORY_ENDPOINT}/${id}`);
@@ -16,7 +16,7 @@ class CategoryApi extends HttpApiService<ICategory> {
     return super.create(`${CATEGORY_ENDPOINT}/create`, data);
   };
 
-  updateCategory = (id: string, data: IUpdateCategory) => {
+  updateCategory = (id: string, data: UpdateCategoryDto) => {
     return super.update(`${CATEGORY_ENDPOINT}/update/${id}`, data);
   };
 

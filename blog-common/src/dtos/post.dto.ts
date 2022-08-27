@@ -25,7 +25,7 @@ export class PostDto {
   category?: CategoryDto;
 
   @IsOptional()
-  image: ImageData;
+  image?: ImageData;
 
   @IsNotEmpty()
   @ValidateNested()
