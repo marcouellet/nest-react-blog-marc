@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
+      "baseUrl": "./",
       "paths": {
-        "@blog-common/*": ["../blog-common/src/*"],
+        "@blog-common/*": ["node_modules/blog-common/src/*"],
         "@Contexts": ["./src/contexts"],
         "@Services": ["./src/services/api"],
         "@Common": ["./src/components/common"],

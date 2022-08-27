@@ -11,7 +11,7 @@
     "baseUrl": "./",
     "incremental": true,
     "paths": {
-      "@blog-common/*": ["../blog-common/src/*"],
+      "@blog-common/*": ["node_modules/blog-common/src/*"],
       "@Config/*": ["./src/config/*"],
       "@Controllers/*": ["./src/controllers/*"],
       "@Services/*": ["./src/services/*"],

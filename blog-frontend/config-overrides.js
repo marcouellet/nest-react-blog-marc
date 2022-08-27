@@ -1,5 +1,9 @@
-const {aliasDangerous, configPaths} = require('react-app-rewire-alias/lib/aliasDangerous')
+const { alias, configPaths } = require('react-app-rewire-alias')
 
 module.exports = function override(config) {
-    return aliasDangerous(configPaths('tsconfig.paths.json'))(config);
+  alias({
+    ...configPaths('tsconfig.paths.json')
+  })(config)
+
+  return config
 }

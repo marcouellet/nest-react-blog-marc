@@ -14,6 +14,7 @@ import { IErrors, ImageSizeProps } from '@Types';
 import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
 import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout, resizeImage } from '@Utils';
 import { ImageData } from "@blog-common/interfaces";
+import { buildCreateUserDto } from '@blog-common/builders';
 
 const CreateUser = () => {
 
@@ -98,7 +99,7 @@ const CreateUser = () => {
     if (submitForm) {
       dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = userImage;
-      const userData = {...data, image};
+      const userData = buildCreateUserDto({...data, image});
       await UserApiService.createUser(userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Creation') })
