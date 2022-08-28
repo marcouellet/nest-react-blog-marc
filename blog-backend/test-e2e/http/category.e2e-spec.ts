@@ -279,7 +279,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/find')
       .send(testE2EFindUpdatedCategoryTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === updatedCategoryDto)
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(updatedCategoryDto)) 
       .catch(error => {
         Logger.error('CATEGORY(12): (POST) /category/find - Fetch a category based on criterias (not logged in) failed,'
         + 'see following error message:');
@@ -295,7 +295,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [updatedCategoryDto])
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([updatedCategoryDto])) 
       .catch(error => {
         Logger.error('CATEGORY(13): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -346,7 +346,7 @@ describe('CategoryController (e2e)', () => {
       .delete(`/category/delete/${updatedCategoryDto.id}`)
       .set('Authorization', `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
-      .expect(updatedCategoryDto)
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(updatedCategoryDto)) 
       .catch(error => {
         Logger.error('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in) failed,'
         + ' see following error message:');
