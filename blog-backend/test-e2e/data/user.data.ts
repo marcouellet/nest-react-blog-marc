@@ -1,5 +1,5 @@
-import { CreateUserDto, UpdateUserDto } from '@blog-common/dtos';
-import { UserFindCriterias } from '@blog-common/find-criterias';
+import { CreateUserDto, UpdateUserDto } from '@Shared/dtos';
+import { UserFindCriterias } from '@Shared/find-criterias';
 
 import { testE2ERoleUser, testE2ERoleAdmin } from './auth.data';
 

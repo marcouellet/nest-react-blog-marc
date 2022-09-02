@@ -2,13 +2,13 @@ import React, { useState, useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { IErrors } from "@Types";
-import { PostApiService } from "@Services";
-import { useUIContext, useSessionContext } from '@Contexts';
-import { DisplayContent, ListErrors } from '@Common';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { PostDto } from "@blog-common/dtos";
+import { IErrors } from "types";
+import { PostApiService } from "services/api";
+import { useUIContext, useSessionContext } from 'contexts';
+import { DisplayContent, ListErrors } from 'components/common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from 'utils';
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { PostDto } from "shared/dtos";
 
 const ViewBlog = () => {
 

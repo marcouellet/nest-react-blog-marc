@@ -1,5 +1,5 @@
 
-import { JwtPayload } from '@blog-common/interfaces/jwt.interface';
+import { JwtPayload } from '@Shared/interfaces/jwt.interface';
 
 export const testToken = 'token';
 export const testSignResult = 'token.signed';

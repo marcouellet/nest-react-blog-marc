@@ -1,4 +1,4 @@
-import { CryptographerService } from '@Services/cryptographer.service';
+import { CryptographerService } from 'services/api/cryptographer.service';
 
 import { testPassword, testSecretPassword, testNewPassword, testNewSecretPassword } from '../data/auth.data';
 

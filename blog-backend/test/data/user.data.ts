@@ -1,5 +1,5 @@
-import { User } from '@blog-common/entities';
-import { CreateUserDto, UpdateUserDto, UserDto, IUpdateUserCriterias } from '@blog-common/dtos';
+import { User } from '@Shared/entities';
+import { CreateUserDto, UpdateUserDto, UserDto, IUpdateUserCriterias } from '@Shared/dtos';
 
 import { testAuthToken, testPassword, testSecretPassword, testNewPassword, testDummyEmail, testAdminEmail, testUnknownEmail,
           testRoleUser, testRoleAdmin } from './auth.data';

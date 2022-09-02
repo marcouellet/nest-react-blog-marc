@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostController } from '@Controllers/post.controller';
-import { AllRoles } from '@blog-common/enum/user-role.enum';
+import { AllRoles } from '@Shared/enum/user-role.enum';
 
 import { checkAuthGuard } from './check.guards';
 

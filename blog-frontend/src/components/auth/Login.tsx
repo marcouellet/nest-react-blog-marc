@@ -5,13 +5,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { AuthApiService } from '@Services';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { createActionLoggedIn, createActionLoading } from '@Reducers';
-import { ListErrors } from '@Common'; 
-import { IErrors } from "@Types";
-import { minimumUserPasswordLength, minimumUserEmailLength } from "@blog-common/entities";
-import { checkUnauthorized, checkNotFound, checkTimeout } from '@Utils';
+import { AuthApiService } from 'services/api';
+import { useUIContext, useSessionContext } from 'contexts';
+import { createActionLoggedIn, createActionLoading } from 'reducers';
+import { ListErrors } from 'components/common'; 
+import { IErrors } from "types";
+import { minimumUserPasswordLength, minimumUserEmailLength } from 'shared/entities'
+import { checkUnauthorized, checkNotFound, checkTimeout } from 'utils';
 
 const Login = () => {
   const navigate = useNavigate();

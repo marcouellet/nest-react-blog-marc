@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { useUIContext, useSessionContext } from '@Contexts';
-import { AuthApiService } from '@Services';
+import { useUIContext, useSessionContext } from 'contexts';
+import { AuthApiService } from 'services/api';
 import { createActionLoggingOut, createActionLogout, createActionLoggedIn, createActionSessionExpired,
-        createActionLoading } from '@Reducers';
-import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from '@Utils';
+        createActionLoading } from 'reducers';
+import { isTokenValid, isAutomaticSessionRenewalRequired, getSessionDuration } from 'utils';
 
 import { ConfirmRefresh } from './confirmRefresh';
 

@@ -1,5 +1,5 @@
-import { AuthService } from '@Services/auth.service';
-import { LoginDto, RegisterDto } from '@blog-common/dtos';
+import { AuthService } from 'services/api/auth.service';
+import { LoginDto, RegisterDto } from '@Shared/dtos';
 
 import { testJwtPayload } from '../data/auth.data';
 import { testUserDto, testUserUnknownDto} from '../data/user.data';

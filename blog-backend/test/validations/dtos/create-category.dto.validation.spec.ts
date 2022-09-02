@@ -1,7 +1,7 @@
 import 'reflect-metadata'; // to fix TypeError: Reflect.getMetadata is not a function
 import { validate } from '@nestjs/class-validator';
-import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@blog-common/entities/category.entity';
-import { buildCreateCategoryDto  } from '@blog-common/builders/category.dtos.builders';
+import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@Shared/entities/category.entity';
+import { buildCreateCategoryDto  } from '@Shared/builders/category.dtos.builders';
 
 import { testCreateCategoryDto } from '../../data/category.data';
 

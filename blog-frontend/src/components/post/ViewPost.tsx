@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { IErrors,ImageSizeProps } from '@Types';
-import { PostDto } from "@blog-common/dtos";
-import { ImageData } from "@blog-common/interfaces";
-import { PostApiService } from '@Services';
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { ListErrors, DeleteButton, Image, ImageResize } from '@Common';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, toLocalDateString, resizeImage } from '@Utils';
-import { UserRole } from "@blog-common/enum";
+import { IErrors,ImageSizeProps } from 'types';
+import { PostDto } from "shared/dtos";
+import { ImageData } from "shared/interfaces";
+import { PostApiService } from 'services/api';
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { ListErrors, DeleteButton, Image, ImageResize } from 'components/common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, toLocalDateString, resizeImage } from 'utils';
+import { UserRole } from "shared/enum";
 
 const ViewPost = () => {
 

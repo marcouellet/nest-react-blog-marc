@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Post } from '@blog-common/entities';
-import { PostDto, UpdatePostDto } from '@blog-common/dtos';
-import { FilterFindCriterias } from '@blog-common/find-criterias/filter.find-criterias';
-import { PostFindCriterias } from '@blog-common/find-criterias/post.find-criterias';
+import { Post } from '@Shared/entities';
+import { PostDto, UpdatePostDto } from '@Shared/dtos';
+import { FilterFindCriterias } from '@Shared/find-criterias/filter.find-criterias';
+import { PostFindCriterias } from '@Shared/find-criterias/post.find-criterias';
 
 import { IDataRepositories } from '../../repositories';
 import { PostFactoryService } from './post-factory.service';

@@ -1,6 +1,6 @@
-import { HttpApiService } from "@Services";
-import { FilterService } from '@Services';
-import { UserDto, UpdateUserDto } from "@blog-common/dtos";
+import { HttpApiService } from "./HttpApiService";
+import { FilterService } from './FilterService';
+import { UserDto, UpdateUserDto } from "shared/dtos";
 
 const USER_ENDPOINT = `/user`;
 class UserApi extends HttpApiService<UserDto> {

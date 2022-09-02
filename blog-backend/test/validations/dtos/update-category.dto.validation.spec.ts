@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from '@nestjs/class-validator';
-import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@blog-common/entities/category.entity';
-import { buildUpdateCategoryDto  } from '@blog-common/builders/category.dtos.builders';
+import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from '@Shared/entities/category.entity';
+import { buildUpdateCategoryDto  } from '@Shared/builders/category.dtos.builders';
 
 import { testCreateCategoryDto } from '../../data/category.data';
 

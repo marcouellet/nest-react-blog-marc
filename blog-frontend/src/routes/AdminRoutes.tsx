@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
 
-import { useSessionContext } from '@Contexts';
-import { UserRole } from "@blog-common/enum";
+import { useSessionContext } from 'contexts';
+import { UserRole } from "shared/enum";
 import ListUsers from "../components/user/ListUsers";
 import ViewUser from "../components/user/ViewUser";
 import CreateUser from "../components/user/CreateUser";

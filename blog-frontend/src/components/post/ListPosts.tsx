@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { DropdownButton, Dropdown, Table, Container } from 'react-bootstrap';
 
-import { PostApiService, CategoryApiService } from '@Services';
-import { IErrors, ImageSizeProps } from '@Types';
-import { PostDto, CategoryDto } from "@blog-common/dtos";
-import { useUIContext, useSessionContext } from '@Contexts';
+import { PostApiService, CategoryApiService } from 'services/api';
+import { IErrors, ImageSizeProps } from 'types';
+import { PostDto, CategoryDto } from "shared/dtos";
+import { useUIContext, useSessionContext } from 'contexts';
 import { createActionSessionExpired, createActionLoading, createActionSetCategoryFilter, 
-        createActionSetPostTitleFilter } from '@Reducers';
-import { ListErrors, ImageResize, Image } from '@Common';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
-import { ImageData } from "@blog-common/interfaces";
+        createActionSetPostTitleFilter } from 'reducers';
+import { ListErrors, ImageResize, Image } from 'components/common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from 'utils';
+import { ImageData } from "shared/interfaces";
 
 const ListPosts = () => {
 

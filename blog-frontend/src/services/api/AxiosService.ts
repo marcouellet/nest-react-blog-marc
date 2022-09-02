@@ -4,8 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import { REACT_APP_BLOG_MARC_API_URI, REACT_APP_BLOG_MARC_API_REQUEST_TIMEOUT, 
           REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
           
-import { IErrors } from '@Types';
-import { TokenService } from '@Services';
+import { IErrors } from 'types';
+import { TokenService } from 'services/api';
 
 axios.defaults.baseURL = REACT_APP_BLOG_MARC_API_URI; // 'http://192.168.99.100:5000/api'; 
 axios.defaults.timeout = REACT_APP_BLOG_MARC_API_REQUEST_TIMEOUT;

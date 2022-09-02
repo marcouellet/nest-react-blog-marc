@@ -1,7 +1,7 @@
-import { AxiosService } from '@Services';
-import { TokenService } from '@Services';
-import { UserDto, LoginDto, RegisterDto, SessionExtensionDto } from "@blog-common/dtos";
-import { IRefresh } from "@blog-common/interfaces";
+import { AxiosService } from './AxiosService';
+import { TokenService } from './TokenService';
+import { UserDto, LoginDto, RegisterDto, SessionExtensionDto } from "shared/dtos";
+import { IRefresh } from "shared/interfaces";
 
 async function login(email: string, password: string): Promise<UserDto> {
   const loginParms: LoginDto = { email, password }

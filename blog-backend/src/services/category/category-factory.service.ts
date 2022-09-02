@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Category } from '@blog-common/entities';
-import { CategoryDto, IUpdateCategoryCriterias, UpdateCategoryDto } from '@blog-common/dtos';
+import { Category } from '@Shared/entities';
+import { CategoryDto, IUpdateCategoryCriterias, UpdateCategoryDto } from '@Shared/dtos';
 
 import { IDataRepositories } from '../../repositories';
 

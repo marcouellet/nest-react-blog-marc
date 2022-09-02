@@ -1,5 +1,5 @@
-import { Category } from '@blog-common/entities';
-import { CategoryFindCriterias } from '@blog-common/find-criterias/category.find-criterias';
+import { Category } from '@Shared/entities';
+import { CategoryFindCriterias } from '@Shared/find-criterias/category.find-criterias';
 
 import { testCategory, testCategoryCount } from '../data/category.data';
 

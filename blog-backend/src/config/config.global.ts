@@ -1,4 +1,4 @@
-import { ConfigService } from '@Services/config.service';
+import { ConfigService } from 'services/api/config.service';
 
 import { ENV_PROD_DIRECTORY } from '../config/config.constants';
 import { ConfigOptions } from './config.options';

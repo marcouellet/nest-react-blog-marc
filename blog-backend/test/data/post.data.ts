@@ -1,6 +1,6 @@
-import { Post } from '@blog-common/entities';
-import { PostDto, UpdatePostDto } from '@blog-common/dtos';
-import { PostFindCriterias, FilterFindCriterias } from '@blog-common/find-criterias';
+import { Post } from '@Shared/entities';
+import { PostDto, UpdatePostDto } from '@Shared/dtos';
+import { PostFindCriterias, FilterFindCriterias } from '@Shared/find-criterias';
 
 import { testUser, testUserDto, testServiceUserDto } from './user.data';
 

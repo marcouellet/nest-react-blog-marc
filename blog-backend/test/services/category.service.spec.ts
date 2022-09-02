@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryService } from '@Services/category/category.service';
-import { CategoryFactoryService } from '@Services/category/category-factory.service';
-import { DataServiceRepositories } from '@Services/data.service.repositories';
-import { Category } from '@blog-common/entities/category.entity';
+import { CategoryService } from 'services/api/category/category.service';
+import { CategoryFactoryService } from 'services/api/category/category-factory.service';
+import { DataServiceRepositories } from 'services/api/data.service.repositories';
+import { Category } from '@Shared/entities/category.entity';
 import { ConfigModule } from '@Modules/config.module';
 import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 

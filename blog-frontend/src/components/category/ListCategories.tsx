@@ -3,14 +3,14 @@ import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { CategoryApiService } from "@Services";
-import { IErrors } from '@Types';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { ListErrors } from '@Common';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
-import { CategoryDto } from "@blog-common/dtos";
-import { UserRole } from "@blog-common/enum";
+import { CategoryApiService } from "services/api";
+import { IErrors } from 'types';
+import { useUIContext, useSessionContext } from 'contexts';
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { ListErrors } from 'components/common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from 'utils';
+import { CategoryDto } from "shared/dtos";
+import { UserRole } from "shared/enum";
 
 const ListCategories = () => {
   

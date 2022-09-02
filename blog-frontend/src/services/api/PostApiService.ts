@@ -1,6 +1,6 @@
-import { HttpApiService } from '@Services';
-import { FilterService } from '@Services';
-import { PostDto, UpdatePostDto } from "@blog-common/dtos";
+import { HttpApiService } from './HttpApiService';
+import { FilterService } from './FilterService';
+import { PostDto, UpdatePostDto } from "shared/dtos";
 
 const POST_ENDPOINT = `/post`;
 class PostApi extends HttpApiService<PostDto> {

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { UserApiService, PostApiService } from '@Services';
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { ListErrors, DeleteButton, Image, ImageResize } from '@Common';
-import { IErrors, ImageSizeProps } from '@Types';
-import { UserDto } from "@blog-common/dtos";
-import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
-import { ImageData } from "@blog-common/interfaces";
+import { UserApiService, PostApiService } from 'services/api';
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { ListErrors, DeleteButton, Image, ImageResize } from 'components/common';
+import { IErrors, ImageSizeProps } from 'types';
+import { UserDto } from "shared/dtos";
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from 'utils';
+import { ImageData } from "shared/interfaces";
 
 const ViewUser = () => {
 

@@ -5,16 +5,16 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from "react-toastify";
 
-import { AuthApiService } from '@Services';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { ListErrors, CancelButton, Image, ImageUpload, ImageResize } from '@Common';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from '@Utils';
-import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from '@Reducers';
-import { IErrors, ImageSizeProps } from '@Types';
-import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
-import { UserDto, UpdateUserDto } from "@blog-common/dtos";
-import { ImageData } from "@blog-common/interfaces";
-import { createUserForUpdate } from "@blog-common/builders";
+import { AuthApiService } from 'services/api';
+import { useUIContext, useSessionContext } from 'contexts';
+import { ListErrors, CancelButton, Image, ImageUpload, ImageResize } from 'components/common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from 'utils';
+import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from 'reducers';
+import { IErrors, ImageSizeProps } from 'types';
+import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "shared/entities";
+import { UserDto, UpdateUserDto } from "shared/dtos";
+import { ImageData } from "shared/interfaces";
+import { createUserForUpdate } from "shared/builders";
 
 const UserProfile = () => {
 

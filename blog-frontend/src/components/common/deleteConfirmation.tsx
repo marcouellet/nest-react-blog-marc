@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useConfirmationModalContext} from "@Contexts";
+import {useConfirmationModalContext} from "contexts";
 
 type DeleteButtonProps = React.HTMLProps<HTMLButtonElement> & {
     message: string

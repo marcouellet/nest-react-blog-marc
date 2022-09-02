@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { ImageSizeProps } from '@Types';
-import { ImageData } from "@blog-common/interfaces";
-import { ImageResize } from '@Common';
-import { resizeImage } from '@Utils';
+import { ImageSizeProps } from 'types';
+import { ImageData } from "shared/interfaces";
+import { ImageResize } from 'components/common';
+import { resizeImage } from 'utils';
 
 const Home = () => {
 

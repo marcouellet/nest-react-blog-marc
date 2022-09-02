@@ -1,5 +1,5 @@
-import { Post } from '@blog-common/entities';
-import { PostFindCriterias } from '@blog-common/find-criterias/post.find-criterias';
+import { Post } from '@Shared/entities';
+import { PostFindCriterias } from '@Shared/find-criterias/post.find-criterias';
 
 import { testPost, testPostCount } from '../data/post.data';
 

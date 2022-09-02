@@ -1,10 +1,10 @@
 import { ForbiddenException} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from '@Services/user/user.service';
-import { UserFactoryService } from '@Services/user/user-factory.service';
-import { CryptographerService } from '@Services/cryptographer.service';
-import { DataServiceRepositories } from '@Services/data.service.repositories';
-import { User } from '@blog-common/entities';
+import { UserService } from 'services/api/user/user.service';
+import { UserFactoryService } from 'services/api/user/user-factory.service';
+import { CryptographerService } from 'services/api/cryptographer.service';
+import { DataServiceRepositories } from 'services/api/data.service.repositories';
+import { User } from '@Shared/entities';
 import { ConfigModule } from '@Modules/config.module';
 import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 

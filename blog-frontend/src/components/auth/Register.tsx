@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { AuthApiService } from '@Services';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { createActionLoggedIn, createActionLoading } from '@Reducers';
-import { checkUnauthorized, checkForbidden, checkTimeout } from '@Utils';
-import { ListErrors } from '@Common'; 
-import { IErrors } from "@Types";
-import { minimumUserNameLength, minimumUserPasswordLength, minimumUserEmailLength } from "@blog-common/entities";
-import { UserDto } from "@blog-common/dtos";
+import { AuthApiService } from 'services/api';
+import { useUIContext, useSessionContext } from 'contexts';
+import { createActionLoggedIn, createActionLoading } from 'reducers';
+import { checkUnauthorized, checkForbidden, checkTimeout } from 'utils';
+import { ListErrors } from 'components/common'; 
+import { IErrors } from "types";
+import { minimumUserNameLength, minimumUserPasswordLength, minimumUserEmailLength } from "shared/entities";
+import { UserDto } from "shared/dtos";
 
 const Register = () => {
 

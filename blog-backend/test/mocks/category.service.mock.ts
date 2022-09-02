@@ -1,6 +1,6 @@
-import { CategoryService } from '@Services/category/category.service';
-import { CategoryDto, UpdateCategoryDto } from '@blog-common/dtos';
-import { CategoryFindCriterias } from '@blog-common/find-criterias';
+import { CategoryService } from 'services/api/category/category.service';
+import { CategoryDto, UpdateCategoryDto } from '@Shared/dtos';
+import { CategoryFindCriterias } from '@Shared/find-criterias';
 
 import { testCategory, testCategoryCount } from '../data/category.data';
 

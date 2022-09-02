@@ -2,10 +2,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { Container } from 'react-bootstrap';
 
-import { ImageSizeProps } from "@Types";
-import { UserDto } from "@blog-common/dtos";
-import { Image, ImageResize } from '@Common';
-import { ImageData } from "@blog-common/interfaces";
+import { ImageSizeProps } from "types";
+import { UserDto } from "shared/dtos";
+import { Image, ImageResize } from 'components/common';
+import { ImageData } from "shared/interfaces";
 
 type ViewUserInfoProps = React.HTMLProps<HTMLElement> & {
   user: UserDto,

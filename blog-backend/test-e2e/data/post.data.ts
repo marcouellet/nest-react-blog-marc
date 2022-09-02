@@ -1,5 +1,5 @@
-import { PostDto, UpdatePostDto } from '@blog-common/dtos';
-import { PostFindCriterias, FilterFindCriterias } from '@blog-common/find-criterias';
+import { PostDto, UpdatePostDto } from '@Shared/dtos';
+import { PostFindCriterias, FilterFindCriterias } from '@Shared/find-criterias';
 
 const publishedOnDate: Date = new Date();
 

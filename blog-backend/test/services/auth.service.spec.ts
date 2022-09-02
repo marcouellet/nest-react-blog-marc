@@ -1,13 +1,13 @@
 import { UnauthorizedException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from '@Services/auth.service';
-import { UserService } from '@Services/user/user.service';
-import { UserFactoryService } from '@Services/user/user-factory.service';
-import { CryptographerService } from '@Services/cryptographer.service';
-import { DataServiceRepositories } from '@Services/data.service.repositories';
+import { AuthService } from 'services/api/auth.service';
+import { UserService } from 'services/api/user/user.service';
+import { UserFactoryService } from 'services/api/user/user-factory.service';
+import { CryptographerService } from 'services/api/cryptographer.service';
+import { DataServiceRepositories } from 'services/api/data.service.repositories';
 import { ConfigModule } from '@Modules/config.module';
-import { User } from '@blog-common/entities/user.entity';
+import { User } from '@Shared/entities/user.entity';
 import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
 import JwtServiceMock from '../mocks/jwt.service.mock';

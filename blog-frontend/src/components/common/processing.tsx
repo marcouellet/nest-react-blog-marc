@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import MoonLoader from "react-spinners/MoonLoader";
 
-import { useUIContext } from '@Contexts';
+import { useUIContext } from 'contexts';
 
 const override: CSSProperties = {
   display: "block",

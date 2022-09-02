@@ -1,6 +1,6 @@
 {
-  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
+    "baseUrl": "./src",
     "target": "es2017",
     "lib": [
       "dom",
@@ -8,14 +8,15 @@
       "esnext"
     ],
     "allowJs": true,
-    "baseUrl": "./",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
     "module": "esnext",
+    "composite": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -24,16 +25,10 @@
     "jsx": "react"
   },
   "include": [
-    "src",
-    "config-overrides.js"
+    "src"
   ],
   "exclude": [
     "node_modules",
     "dist"
-  ],
-  "references": [
-    {
-      "path": "../blog-common"
-    }
   ]
 }

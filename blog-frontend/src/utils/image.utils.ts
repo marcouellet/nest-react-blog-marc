@@ -1,4 +1,4 @@
-import { ImageData } from "@blog-common/interfaces";
+import { ImageData } from "shared/interfaces";
 
 const getArrayBuffer = (file: File) => {
     return new Promise<ArrayBuffer>((resolve,reject) => {

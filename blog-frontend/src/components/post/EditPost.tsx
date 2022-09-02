@@ -6,16 +6,16 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 
-import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Common';
-import { ImageSizeProps, IErrors, IPostEditingFormState, IPostEditingState } from '@Types';
-import { minimumPostTitleLength,  minimumPostDescriptionLength, } from "@blog-common/entities";
-import { PostApiService, CategoryApiService } from "@Services";
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
-import { PostDto, UpdatePostDto, CategoryDto } from "@blog-common/dtos";
-import { createPostForUpdate } from "@blog-common/builders";
-import { ImageData } from "@blog-common/interfaces";
+import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from 'components/common';
+import { ImageSizeProps, IErrors, IPostEditingFormState, IPostEditingState } from 'types';
+import { minimumPostTitleLength,  minimumPostDescriptionLength, } from "shared/entities";
+import { PostApiService, CategoryApiService } from "services/api";
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from 'utils';
+import { PostDto, UpdatePostDto, CategoryDto } from "shared/dtos";
+import { createPostForUpdate } from "shared/builders";
+import { ImageData } from "shared/interfaces";
 
 import EditPostContent from './EditPostContent';
 

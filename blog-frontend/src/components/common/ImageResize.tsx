@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { ImageSizeProps } from '@Types';
-import { resizeImageData } from '@Utils';
-import { Image } from '@Common';
-import { ImageData } from "@blog-common/interfaces";
+import { ImageSizeProps } from 'types';
+import { resizeImageData } from 'utils';
+import { Image } from 'components/common';
+import { ImageData } from "shared/interfaces";
 
 export interface ImageResizeProps {
     imageData: ImageData,

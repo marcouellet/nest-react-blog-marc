@@ -1,8 +1,8 @@
-import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from '@Utils';
-import { REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "../../config/api.config";
+import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from 'utils';
+import { REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "config/api.config";
 
-import { IAuthToken } from '@blog-common/interfaces';
-import { UserDto } from "@blog-common/dtos";
+import { IAuthToken } from 'shared/interfaces';
+import { UserDto } from "shared/dtos";
   
 export const USER_KEY = 'user';
 

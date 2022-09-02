@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Post } from '@blog-common/entities';
-import { PostDto, IUpdatePostCriterias, UpdatePostDto } from '@blog-common/dtos';
+import { Post } from '@Shared/entities';
+import { PostDto, IUpdatePostCriterias, UpdatePostDto } from '@Shared/dtos';
 
 import { IDataRepositories } from '../../repositories';
 import { UserFactoryService } from '../user/user-factory.service';

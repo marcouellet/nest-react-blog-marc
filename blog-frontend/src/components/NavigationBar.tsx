@@ -8,10 +8,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { useUIContext, useSessionContext } from '@Contexts';
-import { createActionLogout, createActionLoading } from '@Reducers';
-import { AuthApiService } from '@Services';
-import { UserRole } from '@blog-common/enum';
+import { useUIContext, useSessionContext } from 'contexts';
+import { createActionLogout, createActionLoading } from 'reducers';
+import { AuthApiService } from 'services/api';
+import { UserRole } from 'shared/enum';
 
 const NavigationBar = () => {
     const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();

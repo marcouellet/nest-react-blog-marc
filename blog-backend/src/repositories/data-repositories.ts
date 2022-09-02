@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { User, Post, Category } from '@blog-common/entities';
+import { User, Post, Category } from '@Shared/entities';
 
 import { IDataRepositories, IGenericDataRepository, GenericDataRepository } from '.';
 

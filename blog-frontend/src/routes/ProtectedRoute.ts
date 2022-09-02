@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { useSessionContext } from '@Contexts';
+import { useSessionContext } from 'contexts';
 
 type ProtectedRouteProps = React.HTMLProps<HTMLElement> & {
     children: React.ReactElement,

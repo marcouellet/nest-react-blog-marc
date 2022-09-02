@@ -1,5 +1,5 @@
-import { JwtPayload } from '@blog-common/interfaces/jwt.interface';
-import { UserRole } from '@blog-common/enum';
+import { JwtPayload } from '@Shared/interfaces/jwt.interface';
+import { UserRole } from '@Shared/enum';
 
 export const testE2EDummyUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.dummy@email.com', expiresIn: 300000};
 export const testE2EAdminUserJwtPayload_Auth: JwtPayload = { sub: 'e2e.auth.admin@email.com',  expiresIn: 300000};

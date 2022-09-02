@@ -6,10 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-import NavigationBar from "./components/NavigationBar";
-import { SessionProvider, UIProvider, ModalContextProvider, ConfirmationModalContextProvider } from '@Contexts';
+import NavigationBar from "components/NavigationBar";
+import { SessionProvider, UIProvider, ModalContextProvider, ConfirmationModalContextProvider } from 'contexts';
 
-import { SessionHandler, Processing } from "@Common";
+import { SessionHandler, Processing } from "components/common";
 
 import { AppRoutes } from "./routes/AppRoutes";
 

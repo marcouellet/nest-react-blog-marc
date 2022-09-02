@@ -1,4 +1,4 @@
-import { IFilterFindContainsCriterias, FilterFindCriterias } from "@blog-common/find-criterias";
+import { IFilterFindContainsCriterias, FilterFindCriterias } from "shared/find-criterias";
 
 function buildPostTitleFilter(postTitleFilter: string) {
     let filter: any = {};

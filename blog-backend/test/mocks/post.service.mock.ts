@@ -1,6 +1,6 @@
-import { PostService } from '@Services/post/post.service';
-import { PostDto, UpdatePostDto } from '@blog-common/dtos';
-import { PostFindCriterias } from '@blog-common/find-criterias/post.find-criterias';
+import { PostService } from 'services/api/post/post.service';
+import { PostDto, UpdatePostDto } from '@Shared/dtos';
+import { PostFindCriterias } from '@Shared/find-criterias/post.find-criterias';
 
 import { testPost, testPostCount } from '../data/post.data';
 

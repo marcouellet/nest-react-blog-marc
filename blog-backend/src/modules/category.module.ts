@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CategoryController } from '@Controllers/category.controller';
-import { CategoryService } from '@Services/category/category.service';
-import { PostService } from '@Services/post/post.service';
-import { PostFactoryService } from '@Services/post/post-factory.service';
-import { CategoryFactoryService } from '@Services/category/category-factory.service';
+import { CategoryService } from 'services/api/category/category.service';
+import { PostService } from 'services/api/post/post.service';
+import { PostFactoryService } from 'services/api/post/post-factory.service';
+import { CategoryFactoryService } from 'services/api/category/category-factory.service';
 import { UserModule } from '@Modules/user.module';
 
 @Module({

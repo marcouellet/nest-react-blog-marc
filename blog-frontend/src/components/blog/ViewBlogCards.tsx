@@ -3,8 +3,8 @@ import React from 'react';
 import { CardDeck } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import { ImageData } from "@blog-common/interfaces";
-import { PostDto } from "@blog-common/dtos";
+import { ImageData } from "shared/interfaces";
+import { PostDto } from "shared/dtos";
 
 import ViewBlogCard, { onViewBlog } from './ViewBlogCard';
 

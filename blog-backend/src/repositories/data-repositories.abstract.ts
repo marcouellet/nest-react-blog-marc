@@ -1,4 +1,4 @@
-import { Category, Post, User } from '@blog-common/entities';
+import { Category, Post, User } from '@Shared/entities';
 
 import { IGenericDataRepository } from './generic-data-repository.interface';
 

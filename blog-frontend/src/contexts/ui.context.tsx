@@ -5,7 +5,7 @@ import {
   initialUIState,
   UIAction,
   UIState,
-} from '@Reducers';
+} from 'reducers';
 
 type UIContextProps = {
   uiState: UIState;

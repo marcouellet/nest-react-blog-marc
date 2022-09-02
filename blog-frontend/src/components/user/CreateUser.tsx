@@ -6,15 +6,14 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CancelButton, ListErrors, ImageUpload, Image, ImageResize } from '@Common';
-import { UserApiService } from "@Services";
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { IErrors, ImageSizeProps } from '@Types';
-import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
-import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout, resizeImage } from '@Utils';
-import { ImageData } from "@blog-common/interfaces";
-import { buildCreateUserDto } from '@blog-common/builders';
+import { CancelButton, ListErrors, ImageUpload, Image, ImageResize } from 'components/common';
+import { UserApiService } from "services/api";
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { IErrors, ImageSizeProps } from 'types';
+import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "shared/entities";
+import { checkUnauthorized, checkSessionExpired, checkForbidden, checkTimeout, resizeImage } from 'utils';
+import { ImageData } from "shared/interfaces";
 
 const CreateUser = () => {
 
@@ -99,7 +98,7 @@ const CreateUser = () => {
     if (submitForm) {
       dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = userImage;
-      const userData = buildCreateUserDto({...data, image});
+      const userData = {...data, image};
       await UserApiService.createUser(userData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Creation') })

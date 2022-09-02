@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
-import { IErrors } from '@Types';
-import { CategoryApiService, PostApiService } from "@Services";
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { ListErrors, DeleteButton } from '@Common';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
-import { CategoryDto } from "@blog-common/dtos";
-import { UserRole } from "@blog-common/enum";
+import { IErrors } from 'types';
+import { CategoryApiService, PostApiService } from "services/api";
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { ListErrors, DeleteButton } from 'components/common';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from 'utils';
+import { CategoryDto } from "shared/dtos";
+import { UserRole } from "shared/enum";
 
 const ViewCategory = () => {
 

@@ -1,4 +1,4 @@
-import { AxiosService } from '@Services';
+import { AxiosService } from './AxiosService';
 
 export enum EnumContentType {
   JSON = "application/json",

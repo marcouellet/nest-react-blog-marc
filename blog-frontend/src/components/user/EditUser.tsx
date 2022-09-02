@@ -6,17 +6,17 @@ import { DropdownButton, Dropdown } from "react-bootstrap";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from '@Common';
-import { ImageSizeProps, IErrors } from '@Types';
-import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "@blog-common/entities";
-import { UserDto, UpdateUserDto } from "@blog-common/dtos";
-import { UserRole } from "@blog-common/enum";
-import { UserApiService } from "@Services";
-import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from '@Utils';
-import { ImageData } from "@blog-common/interfaces";
-import { createUserForUpdate } from "@blog-common/builders";
+import { CancelButton, ListErrors, Image, ImageUpload, ImageResize } from 'components/common';
+import { ImageSizeProps, IErrors } from 'types';
+import { minimumUserPasswordLength, minimumUserEmailLength, minimumUserNameLength } from "shared/entities";
+import { UserDto, UpdateUserDto } from "shared/dtos";
+import { UserRole } from "shared/enum";
+import { UserApiService } from "services/api";
+import { createActionUpdateUser, createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, checkForbidden, resizeImage } from 'utils';
+import { ImageData } from "shared/interfaces";
+import { createUserForUpdate } from "shared/builders";
 
 const EditUser = () => {
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 
-import { DisplayTooltip } from '@Common';
+import { DisplayTooltip } from 'components/common';
 
 type DisplayButtonProps = React.HTMLProps<HTMLButtonElement> & {
     contentToDisplay: string | JSX.Element,

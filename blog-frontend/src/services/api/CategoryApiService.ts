@@ -1,5 +1,5 @@
-import { HttpApiService } from '@Services';
-import { CategoryDto, UpdateCategoryDto } from "@blog-common/dtos";
+import { HttpApiService } from './HttpApiService';
+import { CategoryDto, UpdateCategoryDto } from "shared/dtos";
 
 const CATEGORY_ENDPOINT = `/category`;
 class CategoryApi extends HttpApiService<CategoryDto> {

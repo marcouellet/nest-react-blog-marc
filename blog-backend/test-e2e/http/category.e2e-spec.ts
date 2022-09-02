@@ -3,12 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '@Modules/app.module';
-import { AuthService } from '@Services/auth.service';
-import { UserService } from '@Services/user/user.service';
-import { PostService } from '@Services/post/post.service';
-import { CategoryService } from '@Services/category/category.service';
-import { CategoryDto, UserDto } from '@blog-common/dtos';
-import { buildCreateCategoryDto, buildUpdateCategoryDto } from '@blog-common/builders/category.dtos.builders';
+import { AuthService } from 'services/api/auth.service';
+import { UserService } from 'services/api/user/user.service';
+import { PostService } from 'services/api/post/post.service';
+import { CategoryService } from 'services/api/category/category.service';
+import { CategoryDto, UserDto } from '@Shared/dtos';
+import { buildCreateCategoryDto, buildUpdateCategoryDto } from '@Shared/builders/category.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
 import { AuthDatabaseBuilder } from '../database/auth.database';
@@ -279,7 +279,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/find')
       .send(testE2EFindUpdatedCategoryTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(updatedCategoryDto)) 
+      .expect(response => response && response.body === updatedCategoryDto)
       .catch(error => {
         Logger.error('CATEGORY(12): (POST) /category/find - Fetch a category based on criterias (not logged in) failed,'
         + 'see following error message:');
@@ -295,7 +295,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([updatedCategoryDto])) 
+      .expect(response => response && response.body === [updatedCategoryDto])
       .catch(error => {
         Logger.error('CATEGORY(13): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -346,7 +346,7 @@ describe('CategoryController (e2e)', () => {
       .delete(`/category/delete/${updatedCategoryDto.id}`)
       .set('Authorization', `Bearer ${adminUserDtoWithTokens.authtoken.accessToken}`)
       .expect(StatusCodes.OK)
-      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(updatedCategoryDto)) 
+      .expect(updatedCategoryDto)
       .catch(error => {
         Logger.error('CATEGORY(16): (DELETE) /category/delete/:categoryId - Delete a category (dummy logged in) failed,'
         + ' see following error message:');

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useConfirmationModalContext} from "@Contexts";
+import {useConfirmationModalContext} from "contexts";
 
 type CancelButtonProps = React.HTMLProps<HTMLButtonElement> & {
     prompt: boolean

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '@Controllers/auth.controller';
-import { AuthService } from '@Services/auth.service';
+import { AuthService } from 'services/api/auth.service';
 
 import AuthServiceMock from '../mocks/auth.service.mock';
 import { testNotLoggedInDto, testRegisterUnknownUserDto, testJwtPayload, testRequestWithAuthorize } from '../data/auth.data';

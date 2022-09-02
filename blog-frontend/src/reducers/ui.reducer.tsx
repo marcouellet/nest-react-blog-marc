@@ -1,4 +1,4 @@
-import { CategoryDto } from "@blog-common/dtos";
+import { CategoryDto } from "shared/dtos";
 
 export enum UIActionType {
   Loading = 'LOADING',
@@ -19,7 +19,7 @@ export type UIAction =
   }
 | { 
     type: UIActionType.SetCategoryFilter;
-    categoryFilter: ICategory;
+    categoryFilter: CategoryDto;
   }
 | { 
     type: UIActionType.SetPostTitleFilter;
@@ -33,7 +33,7 @@ export type UIAction =
 export interface UIState {
   isLoading: boolean,
   lastActivityTimeStamp: Date | undefined,
-  categoryFilter: ICategory | undefined,
+  categoryFilter: CategoryDto | undefined,
   postTitleFilter: string,
   userNameFilter: string,
 }

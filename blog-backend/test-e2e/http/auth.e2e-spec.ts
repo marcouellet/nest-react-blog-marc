@@ -2,12 +2,12 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UserDto } from '@blog-common/dtos';
-import { IRefresh } from '@blog-common/interfaces/jwt-refresh.interface';
+import { UserDto } from '@Shared/dtos';
+import { IRefresh } from '@Shared/interfaces/jwt-refresh.interface';
 import { AppModule } from '@Modules/app.module';
-import { AuthService } from '@Services/auth.service';
-import { UserService } from '@Services/user/user.service';
-import { buildLoginDto, buildRegisterDto } from '@blog-common/builders/auth.dtos.builders';
+import { AuthService } from 'services/api/auth.service';
+import { UserService } from 'services/api/user/user.service';
+import { buildLoginDto, buildRegisterDto } from '@Shared/builders/auth.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
 import { AuthDatabaseBuilder } from '../database/auth.database';

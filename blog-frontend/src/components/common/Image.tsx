@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ImageData } from "@blog-common/interfaces";
+import { ImageData } from "shared/interfaces";
 
 interface ImageProps {
   imageData: ImageData;

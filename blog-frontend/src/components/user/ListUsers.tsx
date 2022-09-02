@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { Table, Container } from 'react-bootstrap';
 
-import { useUIContext, useSessionContext } from '@Contexts';
-import { createActionSessionExpired, createActionLoading, createActionSetUserNameFilter } from '@Reducers';
-import { ListErrors, ImageResize, Image } from '@Common';
-import { IErrors, ImageSizeProps } from '@Types';
-import { UserDto } from "@blog-common/dtos";
-import { UserApiService } from "@Services";
-import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
-import { ImageData } from "@blog-common/interfaces";
+import { useUIContext, useSessionContext } from 'contexts';
+import { createActionSessionExpired, createActionLoading, createActionSetUserNameFilter } from 'reducers';
+import { ListErrors, ImageResize, Image } from 'components/common';
+import { IErrors, ImageSizeProps } from 'types';
+import { UserDto } from "shared/dtos";
+import { UserApiService } from "services/api";
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from 'utils';
+import { ImageData } from "shared/interfaces";
 
 const ListUsers = () => {
 

@@ -1,9 +1,9 @@
 import { Logger } from '@nestjs/common';
-import { UserDto, PostDto } from '@blog-common/dtos';
-import { UserService } from '@Services/user/user.service';
-import { PostService } from '@Services/post/post.service';
-import { UserFindCriterias } from '@blog-common/find-criterias';
-import { buildCreateUserDto, buildUpdateUserDto } from '@blog-common/builders/user.dtos.builders';
+import { UserDto, PostDto } from '@Shared/dtos';
+import { UserService } from 'services/api/user/user.service';
+import { PostService } from 'services/api/post/post.service';
+import { UserFindCriterias } from '@Shared/find-criterias';
+import { buildCreateUserDto, buildUpdateUserDto } from '@Shared/builders/user.dtos.builders';
 
 export class UserDatabaseBuilder {
   constructor(private readonly userService: UserService, private readonly postService: PostService) {}

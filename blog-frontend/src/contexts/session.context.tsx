@@ -5,7 +5,7 @@ import {
   initialSessionState,
   SessionAction,
   SessionState,
-} from '@Reducers';
+} from 'reducers';
 
 type SessionContextProps = {
   sessionState: SessionState;

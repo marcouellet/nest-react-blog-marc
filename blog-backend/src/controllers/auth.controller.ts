@@ -1,9 +1,9 @@
 import { Controller, Get, Put, Post, Req, Body, UseGuards, Headers } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtPayload } from 'jwt-decode';
-import { AllRoles } from '@blog-common/enum';
-import { LoginDto, RegisterDto, UserDto, SessionExtensionDto } from '@blog-common/dtos';
-import { AuthService } from '@Services/auth.service';
+import { AllRoles } from '@Shared/enum';
+import { LoginDto, RegisterDto, UserDto, SessionExtensionDto } from '@Shared/dtos';
+import { AuthService } from 'services/api/auth.service';
 
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';

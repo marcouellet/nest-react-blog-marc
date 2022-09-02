@@ -1,4 +1,4 @@
-import { AppService } from '@Services/app.service';
+import { AppService } from 'services/api/app.service';
 
 import { testServerInfo } from '../data/app.data';
 

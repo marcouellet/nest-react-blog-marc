@@ -1,4 +1,4 @@
-import { UserRole } from '@blog-common/enum/user-role.enum';
+import { UserRole } from '@Shared/enum/user-role.enum';
 
 import { JwtAuthGuard } from '../../../src/auth/guards/jwt.guard';
 import { JwtRefreshTokenAuthGuard } from '../../../src/auth/guards/jwt-refresh.guard';

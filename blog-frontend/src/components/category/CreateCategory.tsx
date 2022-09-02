@@ -5,13 +5,13 @@ import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CancelButton, ListErrors } from '@Common';
-import { CategoryApiService } from "@Services";
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { IErrors } from '@Types';
-import { checkUnauthorized, checkSessionExpired, checkTimeout } from '@Utils';
-import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from "@blog-common/entities";
+import { CancelButton, ListErrors } from 'components/common';
+import { CategoryApiService } from "services/api";
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { IErrors } from 'types';
+import { checkUnauthorized, checkSessionExpired, checkTimeout } from 'utils';
+import { minimumCategoryTitleLength, minimumCategoryDescriptionLength } from "shared/entities";
 
 const CreateCategory = () => {
 

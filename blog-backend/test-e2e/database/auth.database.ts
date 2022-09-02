@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { UserDto } from '@blog-common/dtos';
-import { UserService } from '@Services/user/user.service';
-import { AuthService } from '@Services/auth.service';
-import { buildRegisterDto  } from '@blog-common/builders/auth.dtos.builders';
+import { UserDto } from '@Shared/dtos';
+import { UserService } from 'services/api/user/user.service';
+import { AuthService } from 'services/api/auth.service';
+import { buildRegisterDto  } from '@Shared/builders/auth.dtos.builders';
 
 export class AuthDatabaseBuilder {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}

@@ -1,4 +1,4 @@
-import { UserDto } from "@blog-common/dtos";
+import { UserDto } from "shared/dtos";
 
 export enum SessionActionType {
   LoggedIn = 'LOGGED_IN',

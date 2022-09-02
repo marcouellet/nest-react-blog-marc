@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IErrors } from '@Types';
+import { IErrors } from 'types';
 
 export const ListErrors = ({ errors }: { errors: IErrors }) => {
   return (

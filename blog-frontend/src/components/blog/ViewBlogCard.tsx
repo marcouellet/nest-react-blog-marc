@@ -2,10 +2,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import {Container ,Card } from 'react-bootstrap';
 
-import { ImageSizeProps } from "@Types";
-import { Image, ImageResize, DisplayModalButton, DisplayTooltip } from '@Common';
-import { PostDto } from "@blog-common/dtos";
-import { ImageData } from "@blog-common/interfaces";
+import { ImageSizeProps } from "types";
+import { Image, ImageResize, DisplayModalButton, DisplayTooltip } from 'components/common';
+import { PostDto } from "shared/dtos";
+import { ImageData } from "shared/interfaces";
 
 import ViewUserInfo from '../user/ViewUserInfo';
 

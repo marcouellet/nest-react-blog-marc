@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
-import { UserRole } from '@blog-common/enum';
-import { CategoryDto, UpdateCategoryDto } from '@blog-common/dtos';
-import { CategoryFindCriterias } from '@blog-common/find-criterias/category.find-criterias';
-import { CategoryService } from '@Services/category/category.service';
+import { UserRole } from '@Shared/enum';
+import { CategoryDto, UpdateCategoryDto } from '@Shared/dtos';
+import { CategoryFindCriterias } from '@Shared/find-criterias/category.find-criterias';
+import { CategoryService } from 'services/api/category/category.service';
 
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { Auth } from '../auth/decorators/auth.decorator';

@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { IPostEditingState } from '@Types';
-import { DisplayContent } from '@Common';
+import { IPostEditingState } from 'types';
+import { DisplayContent } from 'components/common';
 
 type ViewPostContentProps = React.HTMLProps<HTMLElement> & {
 }

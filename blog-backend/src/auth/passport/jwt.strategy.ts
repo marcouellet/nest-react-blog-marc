@@ -1,9 +1,9 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtPayload } from '@blog-common/interfaces/jwt.interface';
-import { UserDto } from '@blog-common/dtos';
-import { AuthService } from '@Services/auth.service';
+import { JwtPayload } from '@Shared/interfaces/jwt.interface';
+import { UserDto } from '@Shared/dtos';
+import { AuthService } from 'services/api/auth.service';
 
 import { IConfigService } from '../../config/interfaces/config.interface';
 import { JWT_STRATEGY_NAME } from '../guards/jwt.guard';

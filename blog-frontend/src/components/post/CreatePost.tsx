@@ -6,17 +6,18 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 
-import { CancelButton, ListErrors, ImageUpload, ImageResize, Image } from '@Common';
-import { PostApiService, CategoryApiService } from "@Services";
-import { createActionSessionExpired, createActionLoading } from '@Reducers';
-import { useUIContext, useSessionContext } from '@Contexts';
-import { IErrors, ImageSizeProps, IPostEditingFormState, IPostEditingState } from '@Types';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
-import { minimumPostTitleLength,  minimumPostDescriptionLength, } from "@blog-common/entities";
-import { CategoryDto } from "@blog-common/dtos";
-import { UserRole } from "@blog-common/enum";
-import { ImageData } from "@blog-common/interfaces";
-import { buildCreatePostDto } from '@blog-common/builders';
+import { CancelButton, ListErrors, ImageUpload, ImageResize, Image } from 'components/common';
+import { PostApiService, CategoryApiService } from "services/api";
+import { createActionSessionExpired, createActionLoading } from 'reducers';
+import { useUIContext, useSessionContext } from 'contexts';
+import { IErrors, ImageSizeProps, IPostEditingFormState, IPostEditingState } from 'types';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from 'utils';
+import { minimumPostTitleLength,  minimumPostDescriptionLength, } from "shared/entities";
+import { PostDto, CategoryDto } from "shared/dtos";
+import { buildCreatePostDto } from "shared/builders";
+import { UserRole } from "shared/enum";
+import { ImageData } from "shared/interfaces";
+
 
 import EditPostContent from './EditPostContent';
 
@@ -117,7 +118,8 @@ const CreatePost = () => {
     if (submitForm) {
       dispatchUI(createActionLoading(true));
       const image: ImageData | undefined = postImage;
-      const postData = buildCreatePostDto({...data, category, image, user});
+      const postData: PostDto = buildCreatePostDto({...data, category, image, user});
+      // const postData: PostDto = {...data, category, image, user!};
       await PostApiService.createPost(postData)
       .then(() => { handleSubmitFormSuccess(); })
       .catch((apiErrors: IErrors) =>  { handleApiErrors(apiErrors, 'Post creation') });

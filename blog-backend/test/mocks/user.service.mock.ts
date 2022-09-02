@@ -1,6 +1,6 @@
-import { UserService } from '@Services/user/user.service';
-import { UserDto, UpdateUserDto } from '@blog-common/dtos';
-import { UserFindCriterias } from '@blog-common/find-criterias';
+import { UserService } from 'services/api/user/user.service';
+import { UserDto, UpdateUserDto } from '@Shared/dtos';
+import { UserFindCriterias } from '@Shared/find-criterias';
 
 import { testUserUnrestricted, testUserCount } from '../data/user.data';
 

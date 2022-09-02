@@ -1,10 +1,10 @@
-import React, { Component, createContext, useContext } from 'react';
+import { Component, createContext, useContext } from 'react';
 
-import { IUser } from '@Types';
+import { UserDto } from "shared/dtos";
 
 interface ContextValueType {
 	isAuthenticated?: boolean,
-	user?: IUser | null,
+	user?: UserDto | null,
 	isLoading?: boolean,
 	getIdToken?: (...p: any) => any,
 	loginWithRedirect?: (...p: any) => any,
@@ -13,10 +13,10 @@ interface ContextValueType {
 
 // create the context
 const PassportContext = createContext<ContextValueType | null>(null);
-const usePassport: any = () => useContext(PassportContext);
+export const usePassport: any = () => useContext(PassportContext);
 
 interface IState {
-	user: IUser | null,
+	user: UserDto | null,
 	isLoading: boolean,
 	isAuthenticated: boolean,
 }

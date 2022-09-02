@@ -2,15 +2,15 @@ import React, { useState, useLayoutEffect } from 'react';
 import { toast } from "react-toastify";
 import { DropdownButton, Dropdown, Container } from 'react-bootstrap';
 
-import { CategoryApiService, PostApiService } from '@Services';
-import { IErrors, ImageSizeProps } from '@Types';
-import { CategoryDto, PostDto } from "@blog-common/dtos";
-import { ImageData } from "@blog-common/interfaces";
-import { ListErrors } from '@Common';
-import { useUIContext, useSessionContext } from '@Contexts';
+import { CategoryApiService, PostApiService } from 'services/api';
+import { IErrors, ImageSizeProps } from 'types';
+import { CategoryDto, PostDto } from "shared/dtos";
+import { ImageData } from "shared/interfaces";
+import { ListErrors } from 'components/common';
+import { useUIContext, useSessionContext } from 'contexts';
 import { createActionSessionExpired, createActionLoading, createActionSetCategoryFilter, 
-        createActionSetPostTitleFilter } from '@Reducers';
-import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from '@Utils';
+        createActionSetPostTitleFilter } from 'reducers';
+import { checkUnauthorized, checkSessionExpired, checkTimeout, resizeImage } from 'utils';
 
 import ViewBlogCards from './ViewBlogCards';
 

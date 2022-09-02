@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -8,13 +9,12 @@
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
     "incremental": true,
     "paths": {
-      "@blog-common/*": ["node_modules/blog-common/src/*"],
+      "@Shared/*": ["../blog-frontend/src/shared/*"],
       "@Config/*": ["./src/config/*"],
       "@Controllers/*": ["./src/controllers/*"],
-      "@Services/*": ["./src/services/*"],
+      "services/api/*": ["./src/services/*"],
       "@Guards/*": ["./src/auth/guards/*"],
       "@Repositories/*": ["./src/core/repositories/*"],
       "@Modules/*": ["./src/modules/*"],
@@ -24,7 +24,7 @@
   "exclude": ["node_modules", "dist"],
   "references": [
     {
-        "path": "../blog-common"
+        "path": "../blog-frontend"
     }
   ],
 }
