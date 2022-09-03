@@ -1,8 +1,8 @@
 import 'reflect-metadata'; // to fix TypeError: Reflect.getMetadata is not a function
 import { validate } from '@nestjs/class-validator';
-import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '@Shared/entities/post.entity';
-import { buildCreatePostDto  } from '@Shared/builders/post.dtos.builders';
 
+import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from 'shared/entities/post.entity';
+import { buildCreatePostDto  } from 'shared/builders/post.dtos.builders';
 import { testCreatePostDto } from '../../data/post.data';
 
 describe('CreatePostDto Validation', () => {

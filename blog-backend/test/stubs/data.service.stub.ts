@@ -1,6 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 
-import { IDataRepositories, DataRepositories } from '../../src/repositories';
+import { IDataRepositories, DataRepositories } from 'repositories';
 import UserRepositoryMock from '../mocks/user.repository.mock';
 import PostRepositoryMock from '../mocks/post.repository.mock';
 import CategoryRepositoryMock from '../mocks/category.repository.mock';

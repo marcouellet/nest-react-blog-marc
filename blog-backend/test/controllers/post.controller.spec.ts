@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostController } from '@Controllers/post.controller';
-import { UserService } from 'services/api/user/user.service';
-import { PostService } from 'services/api/post/post.service';
 
+import { PostController } from 'controllers/post.controller';
+import { UserService } from 'services/user/user.service';
+import { PostService } from 'services/post/post.service';
 import UserServiceMock from '../mocks/user.service.mock';
 import PostServiceMock from '../mocks/post.service.mock';
 import { testUserId } from '../data/user.data';

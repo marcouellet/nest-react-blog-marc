@@ -1,11 +1,11 @@
 import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
-import { UserRole } from '@Shared/enum';
-import { CategoryDto, UpdateCategoryDto } from '@Shared/dtos';
-import { CategoryFindCriterias } from '@Shared/find-criterias/category.find-criterias';
-import { CategoryService } from 'services/api/category/category.service';
 
-import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { Auth } from '../auth/decorators/auth.decorator';
+import { UserRole } from 'shared/enum';
+import { CategoryDto, UpdateCategoryDto } from 'shared/dtos';
+import { CategoryFindCriterias } from 'shared/find-criterias/category.find-criterias';
+import { CategoryService } from 'services/category/category.service';
+import { ValidationPipe } from 'common/pipes/validation.pipe';
+import { Auth } from 'auth/decorators/auth.decorator';
 
 @Controller('category')
 export class CategoryController {

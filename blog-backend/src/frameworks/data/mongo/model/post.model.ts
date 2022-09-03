@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Optional } from '@nestjs/common';
-import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from '@Shared/entities';
+import { minimumPostTitleLength, minimumPostDescriptionLength, minimumPostBodyLength } from 'shared/entities';
 
 import { Category } from './category.model';
 import { User } from './user.model';

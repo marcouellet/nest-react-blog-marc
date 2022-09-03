@@ -1,5 +1,5 @@
-import { IConfigOptions } from '../../src/config/interfaces/config-options.interface';
-import { ConfigOptions } from '../../src/config/config.options';
+import { IConfigOptions } from 'config/interfaces/config-options.interface';
+import { ConfigOptions } from 'config/config.options';
 import { ENV_TEST_DIRECTORY } from '../config/config.constants';
 
 export const testOkConfigOptions: IConfigOptions = new ConfigOptions(ENV_TEST_DIRECTORY, 'ok.env');

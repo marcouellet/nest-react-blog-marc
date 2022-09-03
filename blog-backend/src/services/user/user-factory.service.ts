@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@Shared/entities';
-import { UserDto, IUpdateUserCriterias, UpdateUserDto } from '@Shared/dtos';
 
-import { IDataRepositories } from '../../repositories';
+import { User } from 'shared/entities';
+import { UserDto, IUpdateUserCriterias, UpdateUserDto } from 'shared/dtos';
+import { IDataRepositories } from 'repositories';
 @Injectable()
 export class UserFactoryService {
 

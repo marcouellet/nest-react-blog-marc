@@ -2,14 +2,15 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { PostDto, UserDto, CategoryDto } from '@Shared/dtos';
-import { AppModule } from '@Modules/app.module';
-import { AuthService } from 'services/api/auth.service';
-import { UserService } from 'services/api/user/user.service';
-import { PostService } from 'services/api/post/post.service';
-import { buildLoginDto } from '@Shared/builders/auth.dtos.builders';
-import { buildCreatePostDto, buildUpdatePostDto } from '@Shared/builders/post.dtos.builders';
-import { buildCreateCategoryDto } from '@Shared/builders/category.dtos.builders';
+
+import { PostDto, UserDto, CategoryDto } from 'shared/dtos';
+import { AppModule } from 'modules/app.module';
+import { AuthService } from 'services/auth.service';
+import { UserService } from 'services/user/user.service';
+import { PostService } from 'services/post/post.service';
+import { buildLoginDto } from 'shared/builders/auth.dtos.builders';
+import { buildCreatePostDto, buildUpdatePostDto } from 'shared/builders/post.dtos.builders';
+import { buildCreateCategoryDto } from 'shared/builders/category.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
 import { AuthDatabaseBuilder } from '../database/auth.database';
@@ -137,7 +138,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/post/count/user/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.OK)
-      .expect(response => response === null) // No post created yet
+      .expect(response => response == null) // No post created yet
       .catch(error => {
         Logger.error('POST(3): (GET) /post/count/user/:userId - Get number of posts owned by user with dummy userId (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -156,7 +157,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/post/count/category/${testE2ENonExistingCategoryId_Post}`)
       .expect(StatusCodes.OK)
-      .expect(response => response === null) // No post created yet
+      .expect(response => response == null) // No post created yet
       .catch(error => {
         Logger.error('POST(3a): (GET) /post/category/:userId - Get number of posts using a category with dummy userId (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -184,7 +185,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findMany')
       .send(testE2ENonExistingUserFindPostCriterias_Post)
       .expect(StatusCodes.CREATED)
-      .expect(response => response === null)
+      .expect(response => response == null)
       .catch(error => {
         Logger.error('POST(5): (PUT) /post/findMany - Fetch posts based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -199,7 +200,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findManyCount')
       .send(testE2ENonExistingUserFindPostCriterias_Post)
       .expect(StatusCodes.CREATED)
-      .expect(response => response === null)
+      .expect(response => response == null)
       .catch(error => {
         Logger.error('POST(6): (POST) /post/findManyCount - Get count of posts meating criterias no match (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -459,7 +460,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/post/count/category/${createdCategoryDto.id}`)
       .expect(StatusCodes.OK)
-      .expect(response => response.body === 0) // Should be 0
+      .expect(response => response.body == 0) // Should be 0
       .catch(error => {
         Logger.error('POST(13a): (GET) /post/count/category/:userId - Get number of posts using no category with dummy userId (not logged in) failed, see following error message:');
         Logger.error(error);

@@ -2,18 +2,18 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UserDto } from '@Shared/dtos';
-import { IRefresh } from '@Shared/interfaces/jwt-refresh.interface';
-import { AppModule } from '@Modules/app.module';
-import { AuthService } from 'services/api/auth.service';
-import { UserService } from 'services/api/user/user.service';
-import { buildLoginDto, buildRegisterDto } from '@Shared/builders/auth.dtos.builders';
 
+import { UserDto } from 'shared/dtos';
+import { IRefresh } from 'shared/interfaces/jwt-refresh.interface';
+import { AppModule } from 'modules/app.module';
+import { AuthService } from 'services/auth.service';
+import { UserService } from 'services/user/user.service';
+import { buildLoginDto, buildRegisterDto } from 'shared/builders/auth.dtos.builders';
 import { StatusCodes } from 'http-status-codes';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { testE2ELoginNonExistingUser_Auth, testE2ERegisterAdminUser_Auth, testE2ERegisterDummyUser_Auth,
           testE2ERegisterUnknownUser_Auth, testE2EUnknownUserJwtPayload_Auth } from '../data/auth.data';
-import { CustomLogger } from '../../src/common/custom.logger';
+import { CustomLogger } from 'common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthController (e2e)', () => {

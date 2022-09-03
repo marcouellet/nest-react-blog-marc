@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '@Controllers/user.controller';
-import { UserRole } from '@Shared/enum/user-role.enum';
 
+import { UserController } from 'controllers/user.controller';
+import { UserRole } from 'shared/enum/user-role.enum';
 import { checkAuthGuard } from './check.guards';
 
 describe('UserController Guards', () => {

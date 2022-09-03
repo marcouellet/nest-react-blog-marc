@@ -80,11 +80,11 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@Shared/(.*)$": "../blog-frontend/src/shared/$1",
-      "^@Modules/(.*)$": "../blog-backend/src/modules/$1",
-      "^@Controllers/(.*)$": "../blog-backend/src/controllers/$1",
+      "^shared/(.*)$": "../blog-frontend/src/shared/$1",
+      "^modules/(.*)$": "../blog-backend/src/modules/$1",
+      "^controllers/(.*)$": "../blog-backend/src/controllers/$1",
       "^services/api/(.*)$": "../blog-backend/src/services/$1",
-      "^@Mongo/(.*)$": "../blog-backend/src/frameworks/data/mongo/$1"
+      "^mongo/(.*)$": "../blog-backend/src/frameworks/data/mongo/$1"
     }
   }
 }

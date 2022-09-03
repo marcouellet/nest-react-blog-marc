@@ -1,5 +1,4 @@
-import { AppService } from 'services/api/app.service';
-
+import { AppService } from 'services/app.service';
 import { testServerInfo } from '../data/app.data';
 
 const AppServiceMock = {

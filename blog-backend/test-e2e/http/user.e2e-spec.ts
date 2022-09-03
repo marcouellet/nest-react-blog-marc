@@ -2,22 +2,21 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UserDto } from '@Shared/dtos';
-import { AppModule } from '@Modules/app.module';
-import { AuthService } from 'services/api/auth.service';
-import { UserService } from 'services/api/user/user.service';
-import { PostService } from 'services/api/post/post.service';
-import { buildCreateUserDto, buildUpdateUserDto } from '@Shared/builders/user.dtos.builders';
-import { buildLoginDto } from '@Shared/builders/auth.dtos.builders';
 
+import { UserDto } from 'shared/dtos';
+import { AppModule } from 'modules/app.module';
+import { AuthService } from 'services/auth.service';
+import { UserService } from 'services/user/user.service';
+import { PostService } from 'services/post/post.service';
+import { buildCreateUserDto, buildUpdateUserDto } from 'shared/builders/user.dtos.builders';
+import { buildLoginDto } from 'shared/builders/auth.dtos.builders';
 import { StatusCodes } from 'http-status-codes';
 import { AuthDatabaseBuilder } from '../database/auth.database';
 import { UserDatabaseBuilder } from '../database/user.database';
 import { testE2ERegisterDummyUser_User, testE2ERegisterAdminUser_User, testE2EFindDummyUserCriterias_User,
         testE2ECreateUnknownUserDto_User, testE2EUpdateUnknownUserNameDto_User, testE2EFindUnknownUserNameUpdatedCriterias_User,
         testE2ENonExistingUserId_User, testE2EUpdateUnknownUserPasswordDto_User, testE2ELoginUnknownUser_User } from '../data/user.data';
-
-import { CustomLogger } from '../../src/common/custom.logger';
+import { CustomLogger } from 'common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('UserController (e2e)', () => {

@@ -1,8 +1,8 @@
 import { validate } from '@nestjs/class-validator';
-import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from '@Shared/entities/user.entity';
-import { UserRole } from '@Shared/enum/user-role.enum';
-import { buildUpdateUserDto  } from '@Shared/builders/user.dtos.builders';
 
+import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from 'shared/entities/user.entity';
+import { UserRole } from 'shared/enum/user-role.enum';
+import { buildUpdateUserDto  } from 'shared/builders/user.dtos.builders';
 import { testCreateUnknownUserDto } from '../../data/user.data';
 
 describe('UpdateUserDto Validation', () => {

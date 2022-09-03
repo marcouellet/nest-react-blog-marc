@@ -1,4 +1,4 @@
-import { IFilterFindContainsCriterias, IFilterFindExistCriterias } from '@Shared/find-criterias/filter.find-criterias';
+import { IFilterFindContainsCriterias, IFilterFindExistCriterias } from 'shared/find-criterias/filter.find-criterias';
 
 function buildMongoFindFilterCriterias(criterias: {}): {} {
     const filter = {};

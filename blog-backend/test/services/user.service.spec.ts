@@ -1,20 +1,19 @@
 import { ForbiddenException} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from 'services/api/user/user.service';
-import { UserFactoryService } from 'services/api/user/user-factory.service';
-import { CryptographerService } from 'services/api/cryptographer.service';
-import { DataServiceRepositories } from 'services/api/data.service.repositories';
-import { User } from '@Shared/entities';
-import { ConfigModule } from '@Modules/config.module';
-import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
+import { UserService } from 'services/user/user.service';
+import { UserFactoryService } from 'services/user/user-factory.service';
+import { CryptographerService } from 'services/cryptographer.service';
+import { DataServiceRepositories } from 'services/data.service.repositories';
+import { User } from 'shared/entities';
+import { ConfigModule } from 'modules/config.module';
+import { IGenericDataRepository } from 'repositories/generic-data-repository.interface';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import { testServiceUserDto, testServiceUserDtoUnrestricted, testUserId, testFindUserCriterias, testUserCount,
           testCreateUnknownUserDto, testCreateExistingUserDto, testUpdateUserNoPasswordSuppliedDto, testUpdateUserDto,
           testFindUserWithUnknownUserEmailCriterias, testUserUnrestricted, testUpdateUserSamePasswordSuppliedDto,
           testUpdateUserNewPasswordSuppliedDto } from '../data/user.data';
-
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('UserService', () => {

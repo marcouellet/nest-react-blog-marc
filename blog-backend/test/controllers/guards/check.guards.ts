@@ -1,8 +1,7 @@
-import { UserRole } from '@Shared/enum/user-role.enum';
-
-import { JwtAuthGuard } from '../../../src/auth/guards/jwt.guard';
-import { JwtRefreshTokenAuthGuard } from '../../../src/auth/guards/jwt-refresh.guard';
-import { RoleGuard } from '../../../src/auth/guards/role.guard';
+import { UserRole } from 'shared/enum/user-role.enum';
+import { JwtAuthGuard } from 'auth/guards/jwt.guard';
+import { JwtRefreshTokenAuthGuard } from 'auth/guards/jwt-refresh.guard';
+import { RoleGuard } from 'auth/guards/role.guard';
 
 function compareRoles(rolesSupplied: UserRole[], rolesExpected: UserRole[]): boolean {
     const suppliedSet = new Set(rolesSupplied);

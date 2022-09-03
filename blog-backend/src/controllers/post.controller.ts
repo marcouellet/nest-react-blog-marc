@@ -1,13 +1,13 @@
 import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
-import { AllRoles } from '@Shared/enum';
-import { PostDto, UpdatePostDto } from '@Shared/dtos';
-import { FilterFindCriterias } from '@Shared/find-criterias/filter.find-criterias';
-import { PostFindCriterias } from '@Shared/find-criterias/post.find-criterias';
-import { PostService } from 'services/api/post/post.service';
-import { UserService } from 'services/api/user/user.service';
 
-import { ValidationPipe } from '../common/pipes/validation.pipe';
-import { Auth } from '../auth/decorators/auth.decorator';
+import { AllRoles } from 'shared/enum';
+import { PostDto, UpdatePostDto } from 'shared/dtos';
+import { FilterFindCriterias } from 'shared/find-criterias/filter.find-criterias';
+import { PostFindCriterias } from 'shared/find-criterias/post.find-criterias';
+import { PostService } from 'services/post/post.service';
+import { UserService } from 'services/user/user.service';
+import { ValidationPipe } from 'common/pipes/validation.pipe';
+import { Auth } from 'auth/decorators/auth.decorator';
 @Controller('post')
 export class PostController {
 

@@ -1,4 +1,4 @@
-import { Category, Post, User } from '@Shared/entities';
+import { Category, Post, User } from 'shared/entities';
 
 import { IGenericDataRepository } from './generic-data-repository.interface';
 

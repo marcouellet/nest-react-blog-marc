@@ -1,8 +1,9 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { IConfigService } from '../config/interfaces/config.interface';
-import { MONGO_SERVER_NAME } from '../config/config.constants';
-import { MongoDataModule } from '../frameworks/data/mongo/mongo-data.module';
+
+import { IConfigService } from 'config/interfaces/config.interface';
+import { MONGO_SERVER_NAME } from 'config/config.constants';
+import { MongoDataModule } from 'mongo/mongo-data.module';
 @Module({})
 export class DataModule {
 

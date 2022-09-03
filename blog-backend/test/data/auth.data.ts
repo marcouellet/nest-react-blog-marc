@@ -1,6 +1,6 @@
-import { IAuthToken, JwtPayload } from '@Shared/interfaces/jwt.interface';
-import { LoginDto, RegisterDto } from '@Shared/dtos';
-import { UserRole } from '@Shared/enum';
+import { IAuthToken, JwtPayload } from 'shared/interfaces/jwt.interface';
+import { LoginDto, RegisterDto } from 'shared/dtos';
+import { UserRole } from 'shared/enum';
 
 export const testJwtPayload: JwtPayload = { sub: 'dummy@email.com', exp: undefined, expiresIn: 300};
 export const testAuthToken: IAuthToken =  { accessToken: 'token.signed'};

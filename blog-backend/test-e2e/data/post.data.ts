@@ -1,5 +1,5 @@
-import { PostDto, UpdatePostDto } from '@Shared/dtos';
-import { PostFindCriterias, FilterFindCriterias } from '@Shared/find-criterias';
+import { PostDto, UpdatePostDto } from 'shared/dtos';
+import { PostFindCriterias, FilterFindCriterias } from 'shared/find-criterias';
 
 const publishedOnDate: Date = new Date();
 

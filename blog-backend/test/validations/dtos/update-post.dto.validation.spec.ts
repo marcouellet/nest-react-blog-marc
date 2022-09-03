@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { validate } from '@nestjs/class-validator';
-import { minimumPostTitleLength, minimumPostDescriptionLength } from '@Shared/entities/post.entity';
-import { buildUpdatePostDto  } from '@Shared/builders/post.dtos.builders';
 
+import { minimumPostTitleLength, minimumPostDescriptionLength } from 'shared/entities/post.entity';
+import { buildUpdatePostDto  } from 'shared/builders/post.dtos.builders';
 import { testCreatePostDto } from '../../data/post.data';
 
 describe('UpdatePostDto Validation', () => {

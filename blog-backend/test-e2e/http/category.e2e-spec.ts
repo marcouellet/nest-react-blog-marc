@@ -2,13 +2,14 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from '@Modules/app.module';
-import { AuthService } from 'services/api/auth.service';
-import { UserService } from 'services/api/user/user.service';
-import { PostService } from 'services/api/post/post.service';
-import { CategoryService } from 'services/api/category/category.service';
-import { CategoryDto, UserDto } from '@Shared/dtos';
-import { buildCreateCategoryDto, buildUpdateCategoryDto } from '@Shared/builders/category.dtos.builders';
+
+import { AppModule } from 'modules/app.module';
+import { AuthService } from 'services/auth.service';
+import { UserService } from 'services/user/user.service';
+import { PostService } from 'services/post/post.service';
+import { CategoryService } from 'services/category/category.service';
+import { CategoryDto, UserDto } from 'shared/dtos';
+import { buildCreateCategoryDto, buildUpdateCategoryDto } from 'shared/builders/category.dtos.builders';
 
 import { StatusCodes } from 'http-status-codes';
 import { AuthDatabaseBuilder } from '../database/auth.database';
@@ -16,7 +17,7 @@ import { CategoryDatabaseBuilder } from '../database/category.database';
 import { testE2ERegisterDummyUser_Category, testE2EFindCategoryNonExistingTitleCriterias_Category,
         testE2ENonExistingCategoryId_Category, testE2ECreateCategoryDto_Category, testE2EUpdateCategoryTitleDto_Category,
         testE2EFindUpdatedCategoryTitleCriterias_Category, testE2ERegisterAdminUser_Category } from '../data/category.data';
-import { CustomLogger } from '../../src/common/custom.logger';
+import { CustomLogger } from 'common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('CategoryController (e2e)', () => {
@@ -151,7 +152,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/findMany')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response === null)
+      .expect(response => response == null)
       .catch(error => {
         Logger.error('CATEGORY(4): (POST) /category/findMany - Fetch categories based on criterias with no match (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -166,7 +167,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/findManyCount')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response === null)
+      .expect(response => response == null)
       .catch(error => {
         Logger.error('CATEGORY(5): (POST) /category/findManyCount - Get count of categories meating criterias no match (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -310,7 +311,7 @@ describe('CategoryController (e2e)', () => {
       .post('/category/findManyCount')
       .send(testE2EFindCategoryNonExistingTitleCriterias_Category)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === '1')
+      .expect(response => response && response.body == '1')
       .catch(error => {
         Logger.error('CATEGORY(14): (POST) /category/findManyCount - Get count of categories meating criterias (not logged in) failed, see following error message:');
         Logger.error(error);

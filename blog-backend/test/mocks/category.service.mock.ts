@@ -1,7 +1,6 @@
-import { CategoryService } from 'services/api/category/category.service';
-import { CategoryDto, UpdateCategoryDto } from '@Shared/dtos';
-import { CategoryFindCriterias } from '@Shared/find-criterias';
-
+import { CategoryService } from 'services/category/category.service';
+import { CategoryDto, UpdateCategoryDto } from 'shared/dtos';
+import { CategoryFindCriterias } from 'shared/find-criterias';
 import { testCategory, testCategoryCount } from '../data/category.data';
 
 const CategoryServiceMock = {

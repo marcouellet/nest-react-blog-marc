@@ -1,6 +1,5 @@
-import { Post } from '@Shared/entities';
-import { PostFindCriterias } from '@Shared/find-criterias/post.find-criterias';
-
+import { Post } from 'shared/entities';
+import { PostFindCriterias } from 'shared/find-criterias/post.find-criterias';
 import { testPost, testPostCount } from '../data/post.data';
 
 const PostRepositoryMock = {

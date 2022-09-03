@@ -1,6 +1,5 @@
-import { Category } from '@Shared/entities';
-import { CategoryFindCriterias } from '@Shared/find-criterias/category.find-criterias';
-
+import { Category } from 'shared/entities';
+import { CategoryFindCriterias } from 'shared/find-criterias/category.find-criterias';
 import { testCategory, testCategoryCount } from '../data/category.data';
 
 const CategoryRepositoryMock = {

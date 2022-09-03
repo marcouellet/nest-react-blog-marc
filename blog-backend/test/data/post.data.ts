@@ -1,7 +1,6 @@
-import { Post } from '@Shared/entities';
-import { PostDto, UpdatePostDto } from '@Shared/dtos';
-import { PostFindCriterias, FilterFindCriterias } from '@Shared/find-criterias';
-
+import { Post } from 'shared/entities';
+import { PostDto, UpdatePostDto } from 'shared/dtos';
+import { PostFindCriterias, FilterFindCriterias } from 'shared/find-criterias';
 import { testUser, testUserDto, testServiceUserDto } from './user.data';
 
 const publishedOnDate: Date = new Date();

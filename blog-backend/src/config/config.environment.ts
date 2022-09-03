@@ -1,4 +1,4 @@
-import { ENVIRONMENT_VARIABLES_PREFIX } from '../config/config.constants';
+import { ENVIRONMENT_VARIABLES_PREFIX } from 'config/config.constants';
 
 class Environment {
 

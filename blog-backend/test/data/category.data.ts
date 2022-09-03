@@ -1,5 +1,5 @@
-import { Category } from '@Shared/entities';
-import { CategoryDto, UpdateCategoryDto } from '@Shared/dtos';
+import { Category } from 'shared/entities';
+import { CategoryDto, UpdateCategoryDto } from 'shared/dtos';
 
 export const testCategoryId = 'mnopqrstuvwz';
 export const testCategoryCount = 1;

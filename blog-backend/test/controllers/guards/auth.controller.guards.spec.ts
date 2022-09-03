@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@Controllers/auth.controller';
-import { AllRoles } from '@Shared/enum/user-role.enum';
+
+import { AuthController } from 'controllers/auth.controller';
+import { AllRoles } from 'shared/enum/user-role.enum';
 
 import { checkAuthGuard, checkJwtRefreshAuthGuard } from './check.guards';
 

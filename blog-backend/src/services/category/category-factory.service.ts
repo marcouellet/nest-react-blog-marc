@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Category } from '@Shared/entities';
-import { CategoryDto, IUpdateCategoryCriterias, UpdateCategoryDto } from '@Shared/dtos';
 
-import { IDataRepositories } from '../../repositories';
+import { Category } from 'shared/entities';
+import { CategoryDto, IUpdateCategoryCriterias, UpdateCategoryDto } from 'shared/dtos';
+import { IDataRepositories } from 'repositories';
 
 @Injectable()
 export class CategoryFactoryService {

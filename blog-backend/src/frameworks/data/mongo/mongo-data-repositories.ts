@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Category, Post, User } from '@Shared/entities';
 
-import { IDataRepositories, IGenericDataRepository } from '../../../repositories';
+import { Category, Post, User } from 'shared/entities';
+import { IDataRepositories, IGenericDataRepository } from 'repositories';
 import { MongoGenericDataRepository } from './mongo-generic-data-repository';
 
 @Injectable()

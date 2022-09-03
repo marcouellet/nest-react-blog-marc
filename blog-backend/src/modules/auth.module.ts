@@ -1,17 +1,17 @@
 import { Module, Global } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AuthService } from 'services/api/auth.service';
-import { CryptographerService } from 'services/api/cryptographer.service';
-import { UserModule } from '@Modules/user.module';
-import { AuthController } from '@Controllers/auth.controller';
 
-import { JwtStrategy } from '../auth/passport/jwt.strategy';
-import { JwtRefreshTokenStrategy } from '../auth/passport/jwt-refresh.strategy';
-import { LocalStrategy } from '../auth/passport/local.strategy';
-import { RoleGuard } from '../auth/guards/role.guard';
-import { IConfigService } from '../config/interfaces/config.interface';
-import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from '../config/config.constants';
+import { AuthService } from 'services/auth.service';
+import { CryptographerService } from 'services/cryptographer.service';
+import { UserModule } from 'modules/user.module';
+import { AuthController } from 'controllers/auth.controller';
+import { JwtStrategy } from 'auth/passport/jwt.strategy';
+import { JwtRefreshTokenStrategy } from 'auth/passport/jwt-refresh.strategy';
+import { LocalStrategy } from 'auth/passport/local.strategy';
+import { RoleGuard } from 'auth/guards/role.guard';
+import { IConfigService } from 'config/interfaces/config.interface';
+import { LOCAL_AUTH_STRATEGY_NAME, JWT_AUTH_STRATEGY_NAME } from 'config/config.constants';
 
 @Global()
 @Module({

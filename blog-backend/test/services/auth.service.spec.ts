@@ -1,26 +1,24 @@
 import { UnauthorizedException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from 'services/api/auth.service';
-import { UserService } from 'services/api/user/user.service';
-import { UserFactoryService } from 'services/api/user/user-factory.service';
-import { CryptographerService } from 'services/api/cryptographer.service';
-import { DataServiceRepositories } from 'services/api/data.service.repositories';
-import { ConfigModule } from '@Modules/config.module';
-import { User } from '@Shared/entities/user.entity';
-import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
+import { AuthService } from 'services/auth.service';
+import { UserService } from 'services/user/user.service';
+import { UserFactoryService } from 'services/user/user-factory.service';
+import { CryptographerService } from 'services/cryptographer.service';
+import { DataServiceRepositories } from 'services/data.service.repositories';
+import { ConfigModule } from 'modules/config.module';
+import { User } from 'shared/entities/user.entity';
+import { IGenericDataRepository } from 'repositories/generic-data-repository.interface';
 import JwtServiceMock from '../mocks/jwt.service.mock';
 import CryptographerServiceMock from '../mocks/cryptographer.service.mock';
 import { DataModuleStub } from '../stubs/data.module.stub';
-
 import { testServiceUserDto, testFindUserCriterias, testServiceUserDtoUnrestricted, testFindUserAdminCriterias,
           testUserAdminDto, testUserDto, testFindUserWithDummyUserEmailCriterias,
           testFindUserWithUnknownUserEmailCriterias } from '../data/user.data';
 import { testJwtPayload, testLoginDto, testAlreadyLoggedInDto, testRegisterUnknownUserDto, testLoginUnknownUserDto,
           testRegisterExistingUserDto } from '../data/auth.data';
 import { testToken } from '../data/token.data';
-
 import { GLOBAL_TEST_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AuthService', () => {

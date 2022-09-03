@@ -1,5 +1,5 @@
 import { Prop } from '@nestjs/mongoose';
-import { ImageData } from '@Shared/interfaces';
+import { ImageData } from 'shared/interfaces';
 
 export class Image implements ImageData {
   @Prop({ type: String })

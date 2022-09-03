@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from '@Modules/app.module';
+import { AppModule } from 'modules/app.module';
 
-import { CustomLogger } from '../../src/common/custom.logger';
+import { CustomLogger } from 'common/custom.logger';
 import { GLOBAL_TEST_E2E_CONFIG_SERVICE } from '../config/config.global';
 
 describe('AppController (e2e)', () => {

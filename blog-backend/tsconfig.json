@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -11,14 +11,8 @@
     "outDir": "./dist",
     "incremental": true,
     "paths": {
-      "@Shared/*": ["../blog-frontend/src/shared/*"],
-      "@Config/*": ["./src/config/*"],
-      "@Controllers/*": ["./src/controllers/*"],
-      "services/api/*": ["./src/services/*"],
-      "@Guards/*": ["./src/auth/guards/*"],
-      "@Repositories/*": ["./src/core/repositories/*"],
-      "@Modules/*": ["./src/modules/*"],
-      "@Mongo/*": ["./src/frameworks/data/mongo/*"],
+      "shared/*": ["../../blog-frontend/src/shared/*"],
+      "mongo/*": ["./frameworks/data/mongo/*"],
     },
   },
   "exclude": ["node_modules", "dist"],

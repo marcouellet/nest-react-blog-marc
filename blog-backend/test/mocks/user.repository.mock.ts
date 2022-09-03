@@ -1,7 +1,6 @@
-import { User } from '@Shared/entities';
-import { UserFindCriterias } from '@Shared/find-criterias/user.find-criterias';
-import { UserRole } from '@Shared/enum';
-
+import { User } from 'shared/entities';
+import { UserFindCriterias } from 'shared/find-criterias/user.find-criterias';
+import { UserRole } from 'shared/enum';
 import { testUserCount, testUserUnrestricted, testUserAdminUnrestricted } from '../data/user.data';
 import { testUnknownEmail } from '../data/auth.data';
 

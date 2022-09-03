@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
-import { ConfigService } from 'services/api/config.service';
 
-import { IConfigService } from '../../src/config/interfaces/config.interface';
+import { ConfigService } from 'services/config.service';
+import { IConfigService } from 'config/interfaces/config.interface';
 import { testOkConfigOptions, testUnknownDataServerNameConfigOptions, testUnknownAuthStrategyNameConfigOptions } from '../data/config.data';
 
 describe('ConfigService - ok.env', () => {

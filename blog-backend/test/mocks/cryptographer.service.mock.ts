@@ -1,5 +1,4 @@
-import { CryptographerService } from 'services/api/cryptographer.service';
-
+import { CryptographerService } from 'services/cryptographer.service';
 import { testPassword, testSecretPassword, testNewPassword, testNewSecretPassword } from '../data/auth.data';
 
 export const passwordHashed = 'password.hashed';

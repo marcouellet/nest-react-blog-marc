@@ -4,12 +4,12 @@ import * as fs from 'fs';
 import { LogLevel, NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 
-import Environment from '../config/config.environment';
-import { IConfig, IConfigService } from '../config/interfaces/config.interface';
-import { EnvConfig } from '../config/interfaces/env.config.interface';
-import { IConfigOptions } from '../config/interfaces/config-options.interface';
-import { CustomLogger } from '../common/custom.logger';
-import { VALID_AUTH_STRATEGY_NAMES, VALID_DATA_SERVER_NAMES, VALID_LOGGER_LEVELS } from '../config/config.constants';
+import Environment from 'config/config.environment';
+import { IConfig, IConfigService } from 'config/interfaces/config.interface';
+import { EnvConfig } from 'config/interfaces/env.config.interface';
+import { IConfigOptions } from 'config/interfaces/config-options.interface';
+import { CustomLogger } from 'common/custom.logger';
+import { VALID_AUTH_STRATEGY_NAMES, VALID_DATA_SERVER_NAMES, VALID_LOGGER_LEVELS } from 'config/config.constants';
 
 @Injectable()
 export class ConfigService implements IConfigService {

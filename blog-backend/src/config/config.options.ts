@@ -1,4 +1,4 @@
-import {IConfigOptions } from '../config/interfaces/config-options.interface';
+import {IConfigOptions } from 'config/interfaces/config-options.interface';
 
 export class ConfigOptions extends IConfigOptions {
 

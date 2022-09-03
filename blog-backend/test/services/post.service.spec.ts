@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostService } from 'services/api/post/post.service';
-import { CategoryFactoryService } from 'services/api/category/category-factory.service';
-import { PostFactoryService } from 'services/api/post/post-factory.service';
-import { UserFactoryService } from 'services/api/user/user-factory.service';
-import { DataServiceRepositories } from 'services/api/data.service.repositories';
-import { Post } from '@Shared/entities';
-import { ConfigModule } from '@Modules/config.module';
-import { IGenericDataRepository } from 'src/repositories/generic-data-repository.interface';
 
+import { PostService } from 'services/post/post.service';
+import { CategoryFactoryService } from 'services/category/category-factory.service';
+import { PostFactoryService } from 'services/post/post-factory.service';
+import { UserFactoryService } from 'services/user/user-factory.service';
+import { DataServiceRepositories } from 'services/data.service.repositories';
+import { Post } from 'shared/entities';
+import { ConfigModule } from 'modules/config.module';
+import { IGenericDataRepository } from 'repositories/generic-data-repository.interface';
 import { DataModuleStub } from '../stubs/data.module.stub';
 import { testPostId, testServicePostDto, testPostCount, testUserPostsCount, testCreatePostDto, testCategoryId,
           testUpdatePostDto, testWithTitleFindPostCriterias, testCategoryPostsCount, testWithTitleFilterFindCriterias,

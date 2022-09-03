@@ -1,8 +1,8 @@
 import { Global, Module, UseFilters } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { IDataRepositories } from '../../../repositories';
-import { IConfigService } from '../../../config/interfaces/config.interface';
+import { IDataRepositories } from 'repositories';
+import { IConfigService } from 'config/interfaces/config.interface';
 import { User, UserSchema } from './model/user.model';
 import { Post, PostSchema } from './model/post.model';
 import { Category, CategorySchema } from './model/category.model';

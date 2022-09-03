@@ -1,7 +1,7 @@
 import { validate } from '@nestjs/class-validator';
-import { minimumUserEmailLength, minimumUserPasswordLength } from '@Shared/entities/user.entity';
-import { buildLoginDto  } from '@Shared/builders/auth.dtos.builders';
 
+import { minimumUserEmailLength, minimumUserPasswordLength } from 'shared/entities/user.entity';
+import { buildLoginDto  } from 'shared/builders/auth.dtos.builders';
 import { testLoginDto } from '../../data/auth.data';
 
 describe('LoginDto Validation', () => {

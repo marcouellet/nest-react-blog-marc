@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { IDataRepositories } from '../../repositories';
-import { User } from '@Shared/entities';
-import { UserRole } from '@Shared/enum';
-import { UserDto, UpdateUserDto } from '@Shared/dtos';
-import { UserFindCriterias, FilterFindCriterias } from '@Shared/find-criterias';
-import { CryptographerService } from 'services/api/cryptographer.service';
+
+import { IDataRepositories } from 'repositories';
+import { User } from 'shared/entities';
+import { UserRole } from 'shared/enum';
+import { UserDto, UpdateUserDto } from 'shared/dtos';
+import { UserFindCriterias, FilterFindCriterias } from 'shared/find-criterias';
+import { CryptographerService } from 'services/cryptographer.service';
 
 import { UserFactoryService } from './user-factory.service';
 @Injectable()
