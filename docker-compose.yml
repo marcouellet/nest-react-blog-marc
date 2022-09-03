@@ -5,7 +5,7 @@ services:
     restart: always
     container_name: nest-react-blog-marc
     build:
-      context: ./blog-frontend-axios
+      context: ./blog-frontend
       dockerfile: Dockerfile
     ports:
       - "80:80"
