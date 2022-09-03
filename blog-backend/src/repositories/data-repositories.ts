@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { User, Post, Category } from 'shared/entities';
 
+import { User, Post, Category } from 'shared/entities';
 import { IDataRepositories, IGenericDataRepository, GenericDataRepository } from '.';
 
 @Injectable()

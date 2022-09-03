@@ -1,12 +1,11 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
+
 import { JwtPayload } from 'shared/interfaces/jwt.interface';
 import { UserDto } from 'shared/dtos';
 import { AuthService } from 'services/auth.service';
-
 import { IConfigService } from 'config/interfaces/config.interface';
-
 import { JWT_REFRESH_TOKEN_STRATEGY_NAME } from 'auth/guards/jwt-refresh.guard'
 
 @Injectable()

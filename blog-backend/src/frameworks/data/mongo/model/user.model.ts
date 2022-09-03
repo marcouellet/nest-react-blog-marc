@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Optional } from '@nestjs/common';
-import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from 'shared/entities';
 
+import { minimumUserNameLength, minimumUserEmailLength, minimumUserPasswordLength } from 'shared/entities';
 import { Image } from './image.model';
 
 export type UserDocument = User & Document;

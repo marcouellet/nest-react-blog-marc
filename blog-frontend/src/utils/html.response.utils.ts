@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes';
-
 import { IErrors } from 'types';
 import { isTokenValid } from 'utils';
 

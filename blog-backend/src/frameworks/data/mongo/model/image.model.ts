@@ -1,4 +1,5 @@
 import { Prop } from '@nestjs/mongoose';
+
 import { ImageData } from 'shared/interfaces';
 
 export class Image implements ImageData {

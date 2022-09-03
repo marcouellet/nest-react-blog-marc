@@ -1,5 +1,4 @@
 import { ConfigService } from 'services/config.service';
-
 import { ENV_PROD_DIRECTORY } from 'config/config.constants';
 import { ConfigOptions } from './config.options';
 

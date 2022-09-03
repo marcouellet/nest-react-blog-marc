@@ -3,17 +3,17 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { useSessionContext } from 'contexts';
 
-import Home from "../components/Home";
-import ListBlogs from "../components/blog/ListBlogs";
-import ViewBlog from "../components/blog/ViewBlog";
-import ListPosts from "../components/post/ListPosts";
-import ListPostsForUser from "../components/post/ListPostsForUser";
-import ListCategories from "../components/category/ListCategories";
-import ViewCategory from "../components/category/ViewCategory";
-import ViewPost from "../components/post/ViewPost";
-import ViewPostContent from "../components/post/ViewPostContent";
-import CreatePost from "../components/post/CreatePost";
-import UserProfile from "../components/user/UserProfile";
+import Home from "components/Home";
+import ListBlogs from "components/blog/ListBlogs";
+import ViewBlog from "components/blog/ViewBlog";
+import ListPosts from "components/post/ListPosts";
+import ListPostsForUser from "components/post/ListPostsForUser";
+import ListCategories from "components/category/ListCategories";
+import ViewCategory from "components/category/ViewCategory";
+import ViewPost from "components/post/ViewPost";
+import ViewPostContent from "components/post/ViewPostContent";
+import CreatePost from "components/post/CreatePost";
+import UserProfile from "components/user/UserProfile";
 
 import PrivateRoutes from "./PrivateRoutes";
 import RestrictedRoutes from "./RestrictedRoutes";

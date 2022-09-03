@@ -1,8 +1,8 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-import Login from "../components/auth/Login";
-import Register from "../components/auth/Register";
+import Login from "components/auth/Login";
+import Register from "components/auth/Register";
 
 const RestrictedRoutes = () => {
   return (

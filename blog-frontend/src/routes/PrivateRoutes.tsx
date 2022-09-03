@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
 
-import UserProfile from "../components/user/UserProfile";
-import ListPostsForUser from "../components/post/ListPostsForUser";
-import CreatePost from "../components/post/CreatePost";
-import EditPost from "../components/post/EditPost";
+import UserProfile from "components/user/UserProfile";
+import ListPostsForUser from "components/post/ListPostsForUser";
+import CreatePost from "components/post/CreatePost";
+import EditPost from "components/post/EditPost";
 
 const PrivateRoutes = () => {
   return (

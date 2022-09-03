@@ -1,6 +1,5 @@
 import { setLocalStorageValue, removeLocalStorageValue, getLocalStorageValue } from 'utils';
 import { REACT_APP_BLOG_MARC_HTTP_RESPONSE_HEADER_TIMESTAMP } from "config/api.config";
-
 import { IAuthToken } from 'shared/interfaces';
 import { UserDto } from "shared/dtos";
   
