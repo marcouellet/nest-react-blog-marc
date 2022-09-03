@@ -335,7 +335,7 @@ describe('PostController (e2e)', () => {
     return request(app.getHttpServer())
       .get(`/post/count/user/${dummyUserDtoWithTokens.id}`)
       .expect(StatusCodes.OK)
-      .expect(response => response && response.body === testPostCount) // Should be 1
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(testPostCount)) // Should be 1
       .catch(error => {
         Logger.error('POST(12b): (GET) /post/count/user/:userId - Get number of posts owned by user with dummy userId (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -355,7 +355,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/category/${createdCategoryDto.id}`)
       .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([createdCategoryDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(12c): (POST) /post/findMany/category/:categoryId without filter - Fetch posts based on category (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -370,7 +370,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/category/${createdCategoryDto.id}`)
       .send(testE2EWithTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([createdCategoryDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(12d): (POST) /post/findMany/category/:categoryId with title filter - Fetch posts based on category (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -385,7 +385,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/category/${createdCategoryDto.id}`)
       .send(testE2EWithPartOfTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([createdCategoryDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(12e): (POST) /post/findMany/category/:categoryId with part of title filter - Fetch posts based on category (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -400,7 +400,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/category/${createdCategoryDto.id}`)
       .send(testE2EWithNotPartOfTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === []) // Should return no post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([])) // Should return no post
       .catch(error => {
         Logger.error('POST(12f): (POST) /post/findMany/category/:categoryId with no part of title filter - Fetch posts based on category (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -424,7 +424,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/user/${dummyUserDtoWithTokens.id}`)
       .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [createdCategoryDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([createdCategoryDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(12h): (POST)/post/findMany/user/:userId - Fetch posts for a user (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -479,7 +479,7 @@ describe('PostController (e2e)', () => {
       .post('/post/find')
       .send(testE2EWithUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === dummyUserUpdatedPostDto) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(dummyUserUpdatedPostDto)) // Should return one post
       .catch(error => {
         Logger.error('POST(14): (POST) /post/find - Fetch a post based on criterias (dummy logged in) failed, see following error message:');
         Logger.error(error);
@@ -494,7 +494,7 @@ describe('PostController (e2e)', () => {
       .post('/post/find')
       .send(testWithTitleFilterFindCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === dummyUserUpdatedPostDto) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(dummyUserUpdatedPostDto)) // Should return one post
       .catch(error => {
         Logger.error('POST(14a): (POST) /post/find - Fetch a post based on filter criterias (dummy logged in) failed, see following error message:');
         Logger.error(error);
@@ -509,7 +509,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findMany')
       .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(15): (POST) /post/findMany with no filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -524,7 +524,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findMany')
       .send(testE2EWithUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(15a): (POST) /post/findMany with title filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -539,7 +539,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findMany')
       .send(testE2EWithPartOfTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(15b): (POST) /post/findMany with part of title filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -554,7 +554,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findMany')
       .send(testE2EWithNotPartOfTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === []) // Should return no post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([])) // Should return no post
       .catch(error => {
         Logger.error('POST(15c): (POST) /post/findMany with no part of title filter - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -569,7 +569,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findMany')
       .send(testWithTitleFilterFindCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should return one post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should return one post
       .catch(error => {
         Logger.error('POST(15d): (PUT) /post/findMany with  filter criterias on title - Fetch posts based on title criteria (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -584,7 +584,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findManyCount')
       .send(testE2EWithUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === testPostCount) // should be 1
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(testPostCount)) // should be 1
       .catch(error => {
         Logger.error('POST(16): (POST) /post/findManyCount - Get count of posts meating post criteria on title (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -599,7 +599,7 @@ describe('PostController (e2e)', () => {
       .post('/post/findManyCount')
       .send(testWithTitleFilterFindCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === testPostCount) // should be 1
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify(testPostCount)) // should be 1
       .catch(error => {
         Logger.error('POST(16a): (POST) /post/findManyCount - Get count of posts meating filter criteria on title (not logged in) failed, see following error message:');
         Logger.error(error);
@@ -614,7 +614,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/nocategory`)
       .send(testE2EmptyPostFilterCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should be 1 post found
       .catch(error => {
         Logger.error('POST(17): (POST) /post/findMany/nocategory - Fetch posts without category without filter (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -629,7 +629,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/nocategory`)
       .send(testE2EWithUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should be 1 post found
       .catch(error => {
         Logger.error('POST(17a): (POST) /post/findMany/nocategory - Fetch posts without category with updated title filter (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -644,7 +644,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/nocategory`)
       .send(testE2EWithPartOfUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should be 1 post found
       .catch(error => {
         Logger.error('POST(17b): (POST) /post/findMany/nocategory - Fetch posts without category with part of updated title filter (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -659,7 +659,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/nocategory`)
       .send(testE2EWithNotPartOfUpdatedTitleFindPostCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === []) // Shouldtryurn no post
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([])) // Shouldtryurn no post
       .catch(error => {
         Logger.error('POST(17c): (POST) /post/findMany/nocategory - Fetch posts without category with no part of updated title filter (logged not required) failed, see following error message:');
         Logger.error(error);
@@ -674,7 +674,7 @@ describe('PostController (e2e)', () => {
       .post(`/post/findMany/nocategory`)
       .send(testWithTitleFilterFindCriterias)
       .expect(StatusCodes.CREATED)
-      .expect(response => response && response.body === [dummyUserUpdatedPostDto]) // Should be 1 post found
+      .expect(response => response && JSON.stringify(response.body) === JSON.stringify([dummyUserUpdatedPostDto])) // Should be 1 post found
       .catch(error => {
         Logger.error('POST(17d): (POST) /post/findMany/nocategory - Fetch posts without category with filter criterias on title (logged not required) failed, see following error message:');
         Logger.error(error);
