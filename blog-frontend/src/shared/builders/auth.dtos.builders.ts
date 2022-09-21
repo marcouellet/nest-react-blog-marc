@@ -1,10 +1,10 @@
 import { LoginDto, RegisterDto } from '../dtos';
 
 export function buildLoginDto(fields: any ): LoginDto {
-    const logintDto = new LoginDto();
-    logintDto.email = fields.email;
-    logintDto.password = fields.password;
-    return logintDto;
+    const loginDto = new LoginDto();
+    loginDto.email = fields.email;
+    loginDto.password = fields.password;
+    return loginDto;
 }
 
 export function buildRegisterDto(fields: any ): RegisterDto {

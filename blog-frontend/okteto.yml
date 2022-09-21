@@ -1,4 +1,4 @@
-name: blog-frontend-axios
+name: blog-frontend
 image: okteto/node:14
 command: bash
 sync:

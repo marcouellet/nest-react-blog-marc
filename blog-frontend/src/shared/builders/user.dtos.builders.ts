@@ -1,21 +1,21 @@
 import { CreateUserDto, UserDto, UpdateUserDto } from '../dtos';
 
 export function buildCreateUserDto(fields: any ): CreateUserDto {
-    const createUsertDto = new CreateUserDto();
-    createUsertDto.username = fields.username;
-    createUsertDto.email = fields.email;
-    createUsertDto.password = fields.password;
-    createUsertDto.role = fields.role;
-    return createUsertDto;
+    const createUserDto = new CreateUserDto();
+    createUserDto.username = fields.username;
+    createUserDto.email = fields.email;
+    createUserDto.password = fields.password;
+    createUserDto.role = fields.role;
+    return createUserDto;
 }
 
 export function buildUpdateUserDto(fields: any ): UpdateUserDto {
-  const updateUsertDto = new UpdateUserDto();
-  updateUsertDto.username = fields.username;
-  updateUsertDto.email = fields.email;
-  updateUsertDto.password = fields.password;
-  updateUsertDto.role = fields.role;
-  return updateUsertDto;
+  const updateUserDto = new UpdateUserDto();
+  updateUserDto.username = fields.username;
+  updateUserDto.email = fields.email;
+  updateUserDto.password = fields.password;
+  updateUserDto.role = fields.role;
+  return updateUserDto;
 }
 
 export function createUserForUpdate(user: UserDto): UpdateUserDto {
