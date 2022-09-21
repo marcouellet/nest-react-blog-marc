@@ -19,7 +19,7 @@ const ListCategories = () => {
 
   const [errorList, setErrorList] = React.useState<IErrors | null>();
 
-  const [categories, setCategorys] = useState<CategoryDto[]>([]);
+  const [categories, setCategories] = useState<CategoryDto[]>([]);
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 
@@ -29,7 +29,7 @@ const ListCategories = () => {
       const fetchCategories = async (): Promise<void> => {
         dispatchUI(createActionLoading(true));
         CategoryApiService.getAllCategories()
-          .then(cats => setCategorys(cats))
+          .then(cats => setCategories(cats))
           .catch((apiErrors: IErrors) => handleApiErrors(apiErrors,'Categories reading'))
           .finally(() => dispatchUI(createActionLoading(false)));
       }
