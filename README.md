@@ -81,7 +81,7 @@ Open another terminal from the `nest-react-blog-marc` and navigate to the `blog-
 
 ### Frontend dependencies
 ```bash
-cd blog-frontend-axios
+cd blog-frontend
 npm install
 ```
 
