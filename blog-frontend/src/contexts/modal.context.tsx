@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef } from "react";
+import React, {useContext, createContext, useState, useRef } from "react";
 import Modal from "react-bootstrap/Modal";
 
 import { useModalShow } from './useModalShow';
@@ -11,7 +11,7 @@ type ModalContextProviderProps = {
     children: string | JSX.Element
 }
 
-const ModalContext = React.createContext<ModalContextType>({} as ModalContextType);
+const ModalContext = createContext<ModalContextType>({} as ModalContextType);
 
 export const ModalContextProvider: React.FC<ModalContextProviderProps> = (props) => {
     const {setShow, show, onHide} = useModalShow();

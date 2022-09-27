@@ -27,7 +27,7 @@ const CreatePost = () => {
   const location = useLocation();
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const [categories, setCategories] = useState<CategoryDto[]>();
   const [category, setCategory] = useState<CategoryDto>();
   const [postImage, setPostImage] = useState<ImageData>();

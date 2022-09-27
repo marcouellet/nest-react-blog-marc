@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 
 type ContentContextProps = {
   content: any;
 };
 
-const ContentContext = React.createContext<ContentContextProps>({
+const ContentContext = createContext<ContentContextProps>({
     content: undefined,
 });
 
@@ -14,5 +14,5 @@ export function ContentContextProvider(props: React.PropsWithChildren<ContentCon
 }
 
 export default function useContent() {
-  return React.useContext(ContentContext);
+  return useContext(ContentContext);
 }

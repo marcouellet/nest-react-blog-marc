@@ -25,7 +25,7 @@ const EditPost = () => {
   const location = useLocation();
   const { dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<PostDto>();
   const [categories, setCategories] = useState<CategoryDto[]>();

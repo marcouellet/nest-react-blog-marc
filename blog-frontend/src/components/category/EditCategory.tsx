@@ -20,7 +20,7 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const { dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const { categoryId } = useParams<{ categoryId: string }>();
   const [category, setCategory] = useState<CategoryDto>();
   const [submitForm, setSubmitForm] = useState<boolean>(false);

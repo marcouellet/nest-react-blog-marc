@@ -20,7 +20,7 @@ const CreateUser = () => {
   const navigate = useNavigate();
   const { dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
   const [submitForm, setSubmitForm] = useState<boolean>(false);

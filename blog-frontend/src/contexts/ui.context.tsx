@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer, useContext, createContext } from 'react';
 
 import {
   UIReducer,
@@ -12,13 +12,13 @@ type UIContextProps = {
   dispatchUI: React.Dispatch<UIAction>;
 };
 
-const UIContext = React.createContext<UIContextProps>({
+const UIContext = createContext<UIContextProps>({
   uiState: initialUIState,
   dispatchUI: () => initialUIState,
 });
 
 export function UIProvider(props: React.PropsWithChildren<{}>) {
-  const [state , dispatch] = React.useReducer(UIReducer, initialUIState);
+  const [state , dispatch] = useReducer(UIReducer, initialUIState);
   const dispatchUI = (action: UIAction) => {
     dispatch(action);
   }
@@ -26,5 +26,5 @@ export function UIProvider(props: React.PropsWithChildren<{}>) {
 }
 
 export function useUIContext() {
-  return React.useContext(UIContext);
+  return useContext(UIContext);
 }

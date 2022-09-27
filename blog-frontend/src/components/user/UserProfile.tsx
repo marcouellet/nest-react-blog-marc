@@ -20,7 +20,7 @@ const UserProfile = () => {
 
   const { sessionState: { user }, dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const [userEdited, setUserEdited] = useState<UserDto>();
   const [userImage, setUserImage] = useState<ImageData>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();

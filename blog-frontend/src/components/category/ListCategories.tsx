@@ -17,7 +17,7 @@ const ListCategories = () => {
   const { sessionState: { user, isAuthenticated }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
 
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
 
   const [categories, setCategories] = useState<CategoryDto[]>([]);
 

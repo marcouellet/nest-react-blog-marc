@@ -17,7 +17,7 @@ const ViewUser = () => {
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [userDisplayed, setUserDisplayed] = useState<UserDto>();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();

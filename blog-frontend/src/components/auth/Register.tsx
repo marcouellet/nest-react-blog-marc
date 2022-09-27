@@ -16,7 +16,7 @@ import { UserDto } from "shared/dtos";
 
 const Register = () => {
 
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const { dispatchSession } = useSessionContext();
 

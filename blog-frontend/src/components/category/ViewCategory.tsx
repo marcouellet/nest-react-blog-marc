@@ -17,7 +17,7 @@ const ViewCategory = () => {
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [category, setCategory] = useState<CategoryDto>();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
 
   const isAdministrator = () => isAuthenticated && user?.role === UserRole.ADMIN;
 

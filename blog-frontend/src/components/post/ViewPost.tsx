@@ -18,7 +18,7 @@ const ViewPost = () => {
   const { sessionState: { isAuthenticated, user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const [post, setPost] = useState<PostDto>();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const [postDefaultImage, setpostDefaultImage] = useState<ImageData>();
 
   const navigate = useNavigate();

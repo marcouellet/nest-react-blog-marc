@@ -23,7 +23,7 @@ const EditUser = () => {
   const navigate = useNavigate();
   const { sessionState: { user }, dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const { userId } = useParams<{ userId: string }>();
   const [userEdited, setUserEdited] = useState<UserDto>();
   const [userImage, setUserImage] = useState<ImageData>();

@@ -16,7 +16,7 @@ const ListUsers = () => {
 
   const { sessionState: { user }, dispatchSession } = useSessionContext();
   const { uiState: { isLoading, userNameFilter }, dispatchUI } = useUIContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
   const [users, setUsers] = useState<UserDto[]>([]);
   const [userDefaultImage, setuserDefaultImage] = useState<ImageData>();
 

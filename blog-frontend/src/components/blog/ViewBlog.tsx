@@ -16,7 +16,7 @@ const ViewBlog = () => {
   const { dispatchSession } = useSessionContext();
   const { dispatchUI } = useUIContext();
   const [post, setPost] = useState<PostDto>();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
 
   const navigate = useNavigate();
 

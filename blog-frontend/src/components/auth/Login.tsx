@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { uiState: { isLoading }, dispatchUI } = useUIContext();
   const { dispatchSession } = useSessionContext();
-  const [errorList, setErrorList] = React.useState<IErrors | null>();
+  const [errorList, setErrorList] = useState<IErrors | null>();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required')

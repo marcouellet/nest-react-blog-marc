@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, createContext, useRef, useState} from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
@@ -12,7 +12,7 @@ type ConfirmationModalContextProviderProps = {
     children: React.ReactNode
 }
 
-const ConfirmationModalContext = React.createContext<ModalContextType>({} as ModalContextType);
+const ConfirmationModalContext = createContext<ModalContextType>({} as ModalContextType);
 
 export const ConfirmationModalContextProvider: React.FC<ConfirmationModalContextProviderProps> = (props) => {
     const {setShow, show, onHide} = useModalShow();
