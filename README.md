@@ -77,7 +77,7 @@ This will start the backend application on port `5000`. This was modified to avo
 
 
 ## Frontend
-Open another terminal from the `nest-react-blog-marc` and navigate to the `blog-frontend-axios` folder to setup the frontend
+Open another terminal from the `nest-react-blog-marc` and navigate to the `blog-frontend` folder to setup the frontend
 
 ### Frontend dependencies
 ```bash
