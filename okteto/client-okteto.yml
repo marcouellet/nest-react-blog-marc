@@ -1,5 +1,5 @@
-name: blog-frontend-axios
-image: okteto/blog-frontend-axios:dev
+name: blog-frontend
+image: okteto/blog-frontend:dev
 command: yarn start
 sync:
   - .:/usr/src/app
